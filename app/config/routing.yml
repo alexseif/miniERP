@@ -1,0 +1,8 @@
+me_visa_crm:
+    resource: "@MeVisaCRMBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+app:
+    resource: "@AppBundle/Controller/"
+    type:     annotation
