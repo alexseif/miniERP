@@ -3,7 +3,8 @@
 {% block content %}
     <!-- Page Heading -->
     <div class="row">
-        <div class="col-lg-12">
+        <div class="col-md-12">
+{#            <h3 class="page-header">#}
             <h3 class="page-header">
                 Customers <small> {{ entities|length }} </small>
             </h3>
@@ -16,14 +17,10 @@
         </div>
     </div>
     <!-- /.row -->
-
     <!-- page content -->
     <div class="row">
         <div class="col-lg-12">
             <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h3 class="panel-title"><i class="fa fa-money fa-fw"></i> Transactions Panel</h3>
-                </div>
                 <div class="panel-body">
                     <div class="table-responsive">
                         <table class="table table-bordered table-hover table-striped records_list">
@@ -39,19 +36,14 @@
                             <tbody>
                                 {% for entity in entities %}
                                     <tr>
-                                        <td><a href="{{ path('customer_show', { 'id': entity.id }) }}">{{ entity.name }}</a></td>
+                                        {# <td><a href="{{ path('customer_show', { 'id': entity.id }) }}">{{ entity.name }}</a></td>#}
+                                        <td>{{ entity.name }}</td>
                                         <td>{{ entity.email }}</td>
                                         <td>{{ entity.phone }}</td>
                                         <td>{{ entity.nationality }}</td>
                                         <td>
-                                            <ul>
-                                                <li>
-                                                    <a class="" href="{{ path('customer_show', { 'id': entity.id }) }}">show</a>
-                                                </li>
-                                                <li>
-                                                    <a href="{{ path('customer_edit', { 'id': entity.id }) }}">edit</a>
-                                                </li>
-                                            </ul>
+                                            <a class="btn btn-primary" href="{{ path('customer_show', { 'id': entity.id }) }}">show</a>
+                                            <a class="btn btn-primary" href="{{ path('customer_edit', { 'id': entity.id }) }}">edit</a>
                                         </td>
                                     </tr>
                                 {% endfor %}
@@ -62,12 +54,6 @@
             </div>
         </div>
     </div>
-
-    <ul>
-        <li>
-            <a href="{{ path('customer_new') }}">
-                Create a new entry
-            </a>
-        </li>
-    </ul>
+    <!-- /.row -->
+    <a class="btn btn-primary" href="{{ path('customer_new') }}">Create a new entry</a>
 {% endblock %}
