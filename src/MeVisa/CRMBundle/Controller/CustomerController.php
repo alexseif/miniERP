@@ -77,7 +77,7 @@ class CustomerController extends Controller
             'method' => 'POST',
         ));
 
-        $form->add('submit', 'submit', array('label' => 'Create'));
+        $form->add('submit', 'submit', array('label' => 'Create', 'attr' => array('class' => 'btn-success')));
 
         return $form;
     }
@@ -166,7 +166,7 @@ class CustomerController extends Controller
             'method' => 'PUT',
         ));
 
-        $form->add('submit', 'submit', array('label' => 'Update', 'attr' => array('class' => 'btn-primary')));
+        $form->add('submit', 'submit', array('label' => 'Update', 'attr' => array('class' => 'btn-success')));
 
         return $form;
     }
