@@ -2,6 +2,7 @@
 
 namespace MeVisa\CRMBundle\Entity;
 
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -32,6 +33,7 @@ class Customer
      * @var string
      *
      * @ORM\Column(name="Email", type="string", length=255)
+     * @Assert\Email()
      */
     private $email;
 

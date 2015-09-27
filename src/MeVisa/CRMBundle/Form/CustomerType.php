@@ -8,6 +8,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class CustomerType extends AbstractType
 {
+
     /**
      * @param FormBuilderInterface $builder
      * @param array $options
@@ -15,13 +16,16 @@ class CustomerType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name')
-            ->add('email')
-            ->add('phone')
-            ->add('nationality')
-        ;
+                ->add('name')
+                ->add('email', 'email')
+                ->add('phone')
+                ->add('nationality', 'country', array(
+                    'preferred_choices' => array('RU', 'UA'),
+                    'data' => 'RU',
+                        )
+        );
     }
-    
+
     /**
      * @param OptionsResolverInterface $resolver
      */
@@ -39,4 +43,5 @@ class CustomerType extends AbstractType
     {
         return 'mevisa_crmbundle_customer';
     }
+
 }
