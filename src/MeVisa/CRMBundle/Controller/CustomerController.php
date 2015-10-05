@@ -77,7 +77,7 @@ class CustomerController extends Controller
             'method' => 'POST',
         ));
 
-        $form->add('submit', 'submit', array('label' => 'Create', 'attr' => array('class' => 'btn-success')));
+        $form->add('submit', 'submit', array('label' => 'Create'));
 
         return $form;
     }
@@ -166,7 +166,7 @@ class CustomerController extends Controller
             'method' => 'PUT',
         ));
 
-        $form->add('submit', 'submit', array('label' => 'Update', 'attr' => array('class' => 'btn-success')));
+        $form->add('submit', 'submit', array('label' => 'Update'));
 
         return $form;
     }
@@ -243,7 +243,7 @@ class CustomerController extends Controller
         return $this->createFormBuilder()
                         ->setAction($this->generateUrl('customer_delete', array('id' => $id)))
                         ->setMethod('DELETE')
-                        ->add('submit', 'submit', array('label' => 'Delete', 'attr' => array('class' => 'btn-danger')))
+                        ->add('submit', 'submit', array('label' => 'Delete'))
                         ->getForm()
         ;
     }

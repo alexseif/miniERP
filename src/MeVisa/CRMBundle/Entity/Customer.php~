@@ -2,6 +2,7 @@
 
 namespace MeVisa\CRMBundle\Entity;
 
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -12,6 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Customer
 {
+
     /**
      * @var integer
      *
@@ -32,6 +34,7 @@ class Customer
      * @var string
      *
      * @ORM\Column(name="Email", type="string", length=255)
+     * @Assert\Email()
      */
     private $email;
 
@@ -49,6 +52,19 @@ class Customer
      */
     private $nationality;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="passport_number", type="string", length=255, nullable=true)
+     */
+    private $passportNumber;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="passport_expiry", type="string", length=255, nullable=true)
+     */
+    private $passportExpiry;
 
     /**
      * Get id
@@ -151,4 +167,5 @@ class Customer
     {
         return $this->nationality;
     }
+
 }

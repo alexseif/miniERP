@@ -4,7 +4,7 @@
     <!-- Page Heading -->
     <div class="row">
         <div class="col-md-12">
-{#            <h3 class="page-header">#}
+            {#            <h3 class="page-header">#}
             <h3 class="page-header">
                 Customers <small> {{ entities|length }} </small>
             </h3>
@@ -30,6 +30,8 @@
                                     <th>Email</th>
                                     <th>Phone</th>
                                     <th>Nationality</th>
+                                    <th>Passport #</th>
+                                    <th>Passport exp.</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
@@ -41,6 +43,8 @@
                                         <td>{{ entity.email }}</td>
                                         <td>{{ entity.phone }}</td>
                                         <td>{{ entity.nationality }}</td>
+                                        <td>{{ entity.passportNumber }}</td>
+                                        <td>{{ entity.passportExpiry }}</td>
                                         <td>
                                             <a class="btn btn-primary" href="{{ path('customer_show', { 'id': entity.id }) }}">show</a>
                                             <a class="btn btn-primary" href="{{ path('customer_edit', { 'id': entity.id }) }}">edit</a>

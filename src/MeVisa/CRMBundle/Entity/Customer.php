@@ -13,6 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Customer
 {
+
     /**
      * @var integer
      *
@@ -51,6 +52,19 @@ class Customer
      */
     private $nationality;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="passport_number", type="string", length=255, nullable=true)
+     */
+    private $passportNumber;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="passport_expiry", type="string", length=255, nullable=true)
+     */
+    private $passportExpiry;
 
     /**
      * Get id
@@ -152,5 +166,52 @@ class Customer
     public function getNationality()
     {
         return $this->nationality;
+    }
+
+
+    /**
+     * Set passportNumber
+     *
+     * @param string $passportNumber
+     * @return Customer
+     */
+    public function setPassportNumber($passportNumber)
+    {
+        $this->passportNumber = $passportNumber;
+
+        return $this;
+    }
+
+    /**
+     * Get passportNumber
+     *
+     * @return string 
+     */
+    public function getPassportNumber()
+    {
+        return $this->passportNumber;
+    }
+
+    /**
+     * Set passportExpiry
+     *
+     * @param string $passportExpiry
+     * @return Customer
+     */
+    public function setPassportExpiry($passportExpiry)
+    {
+        $this->passportExpiry = $passportExpiry;
+
+        return $this;
+    }
+
+    /**
+     * Get passportExpiry
+     *
+     * @return string 
+     */
+    public function getPassportExpiry()
+    {
+        return $this->passportExpiry;
     }
 }

@@ -17,13 +17,15 @@ class CustomerType extends AbstractType
     {
         $builder
                 ->add('name')
-                ->add('email', 'email')
+                ->add('email')
                 ->add('phone')
                 ->add('nationality', 'country', array(
                     'preferred_choices' => array('RU', 'UA'),
                     'data' => 'RU',
-                        )
-        );
+                ))
+                ->add('passportNumber')
+                ->add('passportExpiry')
+        ;
     }
 
     /**
