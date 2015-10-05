@@ -19,9 +19,9 @@
                             <li class="active"><a href="{{ path('customer') }}">Customers<span class="sr-only">(current)</span></a></li>
                             <li><a href="#">Link</a></li>
                             <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Dropdown <span class="caret"></span></a>
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Settings <span class="caret"></span></a>
                                 <ul class="dropdown-menu" role="menu">
-                                    <li><a href="#">Action</a></li>
+                                    <li><a href="{{ path('admin_currency') }}">Currency</a></li>
                                     <li><a href="#">Another action</a></li>
                                     <li><a href="#">Something else here</a></li>
                                     <li class="divider"></li>
@@ -49,16 +49,29 @@
         <div id="page-wrapper">
             <div class="container">
                 {% for flashMessage in app.session.flashbag.get('notice') %}
-                   <div class="flash_notice">
-                       {{ flashMessage }}
-                   </div>
-               {% endfor %}
- 
-               {% for flashMessage in app.session.flashbag.get('error') %}
-                   <div class="flash_error">
-                       {{ flashMessage }}
-                   </div>
-               {% endfor %}
+                    <div class="flash_notice">
+                        <div class="alert alert-dismissible alert-warning">
+                            <button type="button" class="close" data-dismiss="alert">×</button>
+                            {{ flashMessage }}
+                        </div>
+                    </div>
+                {% endfor %}
+                {% for flashMessage in app.session.flashbag.get('error') %}
+                    <div class="flash_error">
+                        <div class="alert alert-dismissible alert-danger">
+                            <button type="button" class="close" data-dismiss="alert">×</button>
+                            {{ flashMessage }}
+                        </div>
+                    </div>
+                {% endfor %}
+                {% for flashMessage in app.session.flashbag.get('success') %}
+                    <div class="flash_error">
+                        <div class="alert alert-dismissible alert-success">
+                            <button type="button" class="close" data-dismiss="alert">×</button>
+                            {{ flashMessage }}
+                        </div>
+                    </div>
+                {% endfor %}
                 {% block content %}
                 {% endblock %}
             </div>
