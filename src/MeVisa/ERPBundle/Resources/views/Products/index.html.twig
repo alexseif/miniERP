@@ -19,7 +19,7 @@
     <!-- /.row -->
     <!-- page content -->
     <div class="row">
-        <div class="col-lg-12">
+        <div class="col-md-12">
             <div class="panel panel-default">
                 <div class="panel-body">
                     <div class="table-responsive">
@@ -45,7 +45,13 @@
                                         <td>{% if entity.enabled %}Enabled{% else %}Disabled{% endif %}</td>
                                         <td>
                                             {% for pricing in entity.pricing %}
-                                                {{ pricing.age }} - {{ pricing.price|number_format(2, '.', ',') }} {{ pricing.priceCurrency }}
+                                                {% if pricing.age=='all' %}All
+                                                {% elseif pricing.age=='a' %}Adult
+                                                {% elseif pricing.age=='i' %}Infant
+                                                {% elseif pricing.age=='C' %}Child
+                                                {% endif %}
+                                                {#{{ pricing.age }}#}
+                                                - {{ pricing.price|number_format(2, '.', ',') }} {{ pricing.priceCurrency }}
                                             {% endfor %}
                                         </td>
                                         <td>
