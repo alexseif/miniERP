@@ -22,3 +22,7 @@ and open the template in the editor.
     background-color: #dff0d8;
     font-weight: bold;
 }
+
+#currency td:first-child{
+    text-align: right;
+}

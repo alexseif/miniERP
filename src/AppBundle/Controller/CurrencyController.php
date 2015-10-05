@@ -92,7 +92,7 @@ class CurrencyController extends Controller
             'method' => 'POST',
         ));
 
-        $form->add('submit', 'submit', array('label' => 'Set'), array('attr' => array('class', 'pull-right')));
+        $form->add('submit', 'submit', array('label' => 'Set', 'attr' => array('class' => 'btn-default pull-right')));
 
         return $form;
     }
