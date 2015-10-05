@@ -18,3 +18,7 @@ and open the template in the editor.
 .page-header {
     margin: 0px 0px 23px;
 }
+#currency tr:first-child td{
+    background-color: #dff0d8;
+    font-weight: bold;
+}
