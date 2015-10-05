@@ -1,15 +1,38 @@
-{% extends '::base.html.twig' %}
+{% extends ':default:admin.html.twig' %}
 
-{% block body -%}
-    <h1>ProductPrices creation</h1>
-
-    {{ form(form) }}
-
-        <ul class="record_actions">
-    <li>
-        <a href="{{ path('admin_pricing') }}">
-            Back to the list
-        </a>
-    </li>
-</ul>
+{% block content %}
+    <!-- Page Heading -->
+    <div class="row">
+        <div class="col-md-12">
+            <h3 class="page-header">
+                {{product.name}} <small>New Pricing </small>
+            </h3>
+        </div>
+    </div>
+    <!-- /.row -->
+    <div class="row">
+        <div class="col-lg-12 col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    {#                    {{ form(form) }}#}
+                    <div class="row">
+                        {{ form_start(form) }}
+                        <div class="hidden">{{ form_widget(form.product) }}</div>
+                        <div class="col-md-2">{{ form_row(form.age) }}</div>
+                        <div class="col-md-2">{{ form_row(form.cost) }}</div>
+                        <div class="col-md-1"><br/>{{ form_widget(form.costCurrency) }}</div>
+                        <div class="col-md-2">{{ form_row(form.price) }}</div>
+                        <div class="col-md-1"><br/>{{ form_widget(form.priceCurrency) }}</div>
+                        <div class="col-md-2"><br/>{{ form_end(form) }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /.row -->
+    <div class="row">
+        <div class="col-md-11"></div>
+        <div class="col-md-1"><a class="btn btn-warning" href="{{ path('admin_pricing', { 'product_id': product.id }) }}">Back</a></div>
+    </div>
+    <!-- /.row -->
 {% endblock %}

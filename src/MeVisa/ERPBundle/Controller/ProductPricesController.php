@@ -27,12 +27,17 @@ class ProductPricesController extends Controller
      */
     public function indexAction()
     {
-        $em = $this->getDoctrine()->getManager();
+        $request = Request::createFromGlobals();
+        $product_id = $request->query->get('product_id');
 
-        $entities = $em->getRepository('MeVisaERPBundle:ProductPrices')->findAll();
+        $em = $this->getDoctrine()->getManager();
+        $product = $em->getRepository('MeVisaERPBundle:Products')->find($product_id);
+        //TODO: validate product exists
+        $entities = $em->getRepository('MeVisaERPBundle:ProductPrices')->findBy(array('product' => $product_id));
 
         return array(
             'entities' => $entities,
+            'product' => $product
         );
     }
 
@@ -45,16 +50,27 @@ class ProductPricesController extends Controller
      */
     public function createAction(Request $request)
     {
+        $request = Request::createFromGlobals();
+        $product_id = $request->query->get('product_id');
+        $em = $this->getDoctrine()->getManager();
+        $product = $em->getRepository('MeVisaERPBundle:Products')->find($product_id);
+
         $entity = new ProductPrices();
+        $entity->setCreatedAt(new \DateTime());
+
+
+        $entity->setProduct($product);
+
         $form = $this->createCreateForm($entity);
         $form->handleRequest($request);
-
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($entity);
+//            var_dump($entity);
+//            die();
             $em->flush();
 
-            return $this->redirect($this->generateUrl('admin_pricing_show', array('id' => $entity->getId())));
+            return $this->redirect($this->generateUrl('admin_pricing', array('product_id' => $entity->getProduct()->getId())));
         }
 
         return array(
@@ -72,8 +88,9 @@ class ProductPricesController extends Controller
      */
     private function createCreateForm(ProductPrices $entity)
     {
+//var_dump($entity);die();
         $form = $this->createForm(new ProductPricesType(), $entity, array(
-            'action' => $this->generateUrl('admin_pricing_create'),
+            'action' => $this->generateUrl('admin_pricing_create', array('product_id' => $entity->getProduct()->getId())),
             'method' => 'POST',
         ));
 
@@ -91,12 +108,20 @@ class ProductPricesController extends Controller
      */
     public function newAction()
     {
+        $request = Request::createFromGlobals();
+        $product_id = $request->query->get('product_id');
+        $em = $this->getDoctrine()->getManager();
+
+        $product = $em->getRepository('MeVisaERPBundle:Products')->find($product_id);
+
         $entity = new ProductPrices();
+        $entity->setProduct($product);
         $form = $this->createCreateForm($entity);
 
         return array(
             'entity' => $entity,
             'form' => $form->createView(),
+            'product' => $product
         );
     }
 
@@ -137,6 +162,7 @@ class ProductPricesController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository('MeVisaERPBundle:ProductPrices')->find($id);
+
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find ProductPrices entity.');

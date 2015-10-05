@@ -8,6 +8,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class ProductPricesType extends AbstractType
 {
+
     /**
      * @param FormBuilderInterface $builder
      * @param array $options
@@ -15,16 +16,34 @@ class ProductPricesType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('age')
-            ->add('cost')
-            ->add('costCurrency')
-            ->add('price')
-            ->add('priceCurrency')
-            ->add('createdAt')
-            ->add('product')
+                ->add('age', 'choice', array(
+                    'choices' => array('all' => 'All',
+                        'i' => 'Infant',
+                        'c' => 'Child',
+                        'a' => 'Adult')
+                ))
+                ->add('cost')
+                ->add('costCurrency', 'choice', array(
+                    'choices' => array(
+                        'USD' => 'USD',
+                        'RUB' => 'RUB',),
+                    'attr' => array('class' => 'pull-right')
+                ))
+                ->add('price')
+                ->add('priceCurrency', 'choice', array(
+                    'choices' => array(
+                        'USD' => 'USD',
+                        'RUB' => 'RUB',)
+                ))
+                ->add('product', 'entity', array(
+                    'class' => 'MeVisaERPBundle:Products',
+                    'choice_label' => 'name',
+                ))
         ;
+//        'hidden', array(
+//    'data' => 'abcdef',
     }
-    
+
     /**
      * @param OptionsResolverInterface $resolver
      */
@@ -42,4 +61,5 @@ class ProductPricesType extends AbstractType
     {
         return 'mevisa_erpbundle_productprices';
     }
+
 }

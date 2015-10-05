@@ -1,51 +1,56 @@
-{% extends '::base.html.twig' %}
+{% extends ':default:admin.html.twig' %}
 
-{% block body -%}
-    <h1>ProductPrices list</h1>
-
-    <table class="records_list">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Age</th>
-                <th>Cost</th>
-                <th>Costcurrency</th>
-                <th>Price</th>
-                <th>Pricecurrency</th>
-                <th>Createdat</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for entity in entities %}
-            <tr>
-                <td><a href="{{ path('admin_pricing_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
-                <td>{{ entity.age }}</td>
-                <td>{{ entity.cost }}</td>
-                <td>{{ entity.costCurrency }}</td>
-                <td>{{ entity.price }}</td>
-                <td>{{ entity.priceCurrency }}</td>
-                <td>{% if entity.createdAt %}{{ entity.createdAt|date('Y-m-d H:i:s') }}{% endif %}</td>
-                <td>
-                <ul>
-                    <li>
-                        <a href="{{ path('admin_pricing_show', { 'id': entity.id }) }}">show</a>
-                    </li>
-                    <li>
-                        <a href="{{ path('admin_pricing_edit', { 'id': entity.id }) }}">edit</a>
-                    </li>
-                </ul>
-                </td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-
-        <ul>
-        <li>
-            <a href="{{ path('admin_pricing_new') }}">
-                Create a new entry
-            </a>
-        </li>
-    </ul>
-    {% endblock %}
+{% block content %}
+    <!-- Page Heading -->
+    <div class="row">
+        <div class="col-md-12">
+            {#            <h3 class="page-header">#}
+            <h3 class="page-header">
+                {{ product.name }} <small> Pricing  </small>
+            </h3>
+            <!-- breadcrumb -->
+            {#<ol class="breadcrumb">
+                <li class="active">
+                    <i class="fa fa-dashboard"></i> Dashboard
+                </li>
+            </ol>#}
+        </div>
+    </div>
+    <!-- /.row -->
+    <!-- page content -->
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover table-striped records_list">
+                            <thead>
+                                <tr>
+                                    <th>Age</th>
+                                    <th>Cost</th>
+                                    <th>Price</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for entity in entities %}
+                                    <tr>
+                                        <td>{{ entity.age }}</td>
+                                        <td>{{ entity.cost|number_format(2, '.', ',') }} {{ entity.costCurrency }}</td>
+                                        <td>{{ entity.price|number_format(2, '.', ',') }} {{ entity.priceCurrency }}</td>
+                                        <td>
+                                            <a class="btn btn-primary" href="{{ path('admin_pricing_edit', { 'id': entity.id }) }}">edit</a>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /.row -->
+    <a class="btn btn-primary" href="{{ path('admin_pricing_new', { 'product_id': product.id }) }}">Add Product Pricing</a>
+    <a class="btn btn-warning pull-right" href="{{ path('admin_products') }}">Back</a>
+{% endblock %}

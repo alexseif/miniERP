@@ -28,7 +28,8 @@
                                 <tr>
                                     <th>Name</th>
                                     <th>Required Documents</th>
-                                    <th>Enabled</th>
+                                    <th>Status</th>
+                                    <th>Pricing</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
@@ -41,10 +42,16 @@
                                                 {% filter upper %}{{ req }}{% endfilter %} ;
                                             {% endfor %}
                                         </td>
-                                        <td>{{ entity.enabled }}</td>
+                                        <td>{% if entity.enabled %}Enabled{% else %}Disabled{% endif %}</td>
+                                        <td>
+                                            {% for pricing in entity.pricing %}
+                                                {{ pricing.age }} - {{ pricing.price|number_format(2, '.', ',') }} {{ pricing.priceCurrency }}
+                                            {% endfor %}
+                                        </td>
                                         <td>
                                             <a class="btn btn-primary" href="{{ path('admin_products_show', { 'id': entity.id }) }}">show</a>
                                             <a class="btn btn-primary" href="{{ path('admin_products_edit', { 'id': entity.id }) }}">edit</a>
+                                            <a class="btn btn-primary" href="{{ path('admin_pricing', { 'product_id': entity.id }) }}">Pricing</a>
                                         </td>
                                     </tr>
                                 {% endfor %}
