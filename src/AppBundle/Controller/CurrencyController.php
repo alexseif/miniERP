@@ -66,7 +66,7 @@ class CurrencyController extends Controller
             $em->persist($entity);
             $em->flush();
 
-            $this->addFlash('success', 'Your changes were saved!');
+            $this->addFlash('success', 'Success: 1 USD is now ' . number_format($entity->getValue(), 2) . ' RUB');
 
             return $this->redirect($this->generateUrl('admin_currency'));
         }
@@ -92,52 +92,9 @@ class CurrencyController extends Controller
             'method' => 'POST',
         ));
 
-        $form->add('submit', 'submit', array('label' => 'Set', 'attr' => array('class' => 'btn-default pull-right')));
+        $form->add('submit', 'submit', array('label' => 'Set', 'attr' => array('class' => 'btn-success pull-right')));
 
         return $form;
-    }
-
-    /**
-     * Deletes a Currency entity.
-     *
-     * @Route("/{id}", name="admin_currency_delete")
-     * @Method("DELETE")
-     */
-    public function deleteAction(Request $request, $id)
-    {
-        $form = $this->createDeleteForm($id);
-        $form->handleRequest($request);
-
-        if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $entity = $em->getRepository('AppBundle:Currency')->find($id);
-
-            if (!$entity) {
-                throw $this->createNotFoundException('Unable to find Currency entity.');
-            }
-
-            $em->remove($entity);
-            $em->flush();
-        }
-
-        return $this->redirect($this->generateUrl('admin_currency'));
-    }
-
-    /**
-     * Creates a form to delete a Currency entity by id.
-     *
-     * @param mixed $id The entity id
-     *
-     * @return \Symfony\Component\Form\Form The form
-     */
-    private function createDeleteForm($id)
-    {
-        return $this->createFormBuilder()
-                        ->setAction($this->generateUrl('admin_currency_delete', array('id' => $id)))
-                        ->setMethod('DELETE')
-                        ->add('submit', 'submit', array('label' => 'Delete'))
-                        ->getForm()
-        ;
     }
 
 }
