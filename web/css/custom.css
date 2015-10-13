@@ -26,3 +26,8 @@ and open the template in the editor.
 #currency td:first-child{
     text-align: right;
 }
+.navbar-brand{padding-top: 17px;}
+.navbar-brand{
+    background: snow; 
+   
+}

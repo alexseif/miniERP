@@ -1,6 +1,7 @@
 {% extends ':default:admin.html.twig' %}
 
 {% block content %}
+{#    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.9/css/jquery.dataTables.min.css" />#}
     <!-- Page Heading -->
     <div class="row">
         <div class="col-md-12">
@@ -23,7 +24,7 @@
             <div class="panel panel-default">
                 <div class="panel-body">
                     <div class="table-responsive">
-                        <table class="table table-bordered table-hover table-striped records_list">
+                        <table class="table table-bordered table-hover table-striped records_list" id="customer-list">
                             <thead>
                                 <tr>
                                     <th>Name</th>
@@ -60,4 +61,13 @@
     </div>
     <!-- /.row -->
     <a class="btn btn-primary" href="{{ path('customer_new') }}">Create a new entry</a>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}    
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.9/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript">
+      {#  $(document).ready(function () {
+            $('#customer-list').DataTable();
+        });#}
+    </script>
 {% endblock %}
