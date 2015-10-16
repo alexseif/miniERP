@@ -1,0 +1,48 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+    <h1>OrderPayments</h1>
+
+    <table class="record_properties">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ entity.id }}</td>
+            </tr>
+            <tr>
+                <th>Method</th>
+                <td>{{ entity.method }}</td>
+            </tr>
+            <tr>
+                <th>Amount</th>
+                <td>{{ entity.amount }}</td>
+            </tr>
+            <tr>
+                <th>State</th>
+                <td>{{ entity.state }}</td>
+            </tr>
+            <tr>
+                <th>Detail</th>
+                <td>{{ entity.detail }}</td>
+            </tr>
+            <tr>
+                <th>Createdat</th>
+                <td>{{ entity.createdAt|date('Y-m-d H:i:s') }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+        <ul class="record_actions">
+    <li>
+        <a href="{{ path('orderpayments') }}">
+            Back to the list
+        </a>
+    </li>
+    <li>
+        <a href="{{ path('orderpayments_edit', { 'id': entity.id }) }}">
+            Edit
+        </a>
+    </li>
+    <li>{{ form(delete_form) }}</li>
+</ul>
+{% endblock %}

@@ -1,12 +1,12 @@
 <?php
 
-namespace MeVisa\CRMBundle\Form;
+namespace MeVisa\ERPBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class CustomerType extends AbstractType
+class OrderProductsType extends AbstractType
 {
 
     /**
@@ -16,15 +16,14 @@ class CustomerType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-                ->add('name')
-                ->add('email', 'email')
-                ->add('phone', 'number')
-                ->add('nationality', 'country', array(
-                    'preferred_choices' => array('RU', 'UA'),
-                    'data' => 'RU',
-                ))
-                ->add('passportNumber', 'text', array('label'=>'Passport#'))
-                ->add('passportExpiry', 'text', array('label'=>'Passport Exp'))
+                ->add('age', 'number')
+                ->add('quantity')
+                ->add('unitPrice', 'money', array('currency' => 'RUB', 'divisor' => 100))
+                ->add('total')
+                ->add('orderRef')
+//                ->add('product', 'choice', array('type' => new ProductsType()))
+                ->add('product', 'choice')
+
         ;
     }
 
@@ -34,7 +33,7 @@ class CustomerType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'MeVisa\CRMBundle\Entity\Customer'
+            'data_class' => 'MeVisa\ERPBundle\Entity\OrderProducts'
         ));
     }
 
@@ -43,7 +42,7 @@ class CustomerType extends AbstractType
      */
     public function getName()
     {
-        return 'mevisa_crmbundle_customer';
+        return 'mevisa_erpbundle_orderproducts';
     }
 
 }

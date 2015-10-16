@@ -1,0 +1,163 @@
+{% extends ':default:admin.html.twig' %}
+
+{% block content %}
+    <!-- /.row -->
+    <div class="row">
+        <div class="col-md-12">
+            {{ form_start(form) }}
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-md-3"><span class="panel-title">New Order</span></div>
+                        <div class="col-md-3">{{ form_widget(form.channel) }}</div>
+                        <div class="col-md-3">{{ form_widget(form.state) }}</div>
+                        <div class="col-md-1"></div>
+                        <div class="col-md-1"><span class="panel-title">{{ "now"|date("m/d/Y") }}</span></div>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <!-- Customer -->
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <div class="row">
+                                        <div class="col-md-12"><span class="panel-title">Customer</span></div>
+                                    </div>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            {{ form_row(form.customer.vars.prototype.name) }}
+                                        </div>
+                                        <div class="col-md-6">
+                                            {{ form_row(form.customer.vars.prototype.nationality) }}
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            {{ form_row(form.customer.vars.prototype.email) }}
+                                        </div>
+                                        <div class="col-md-6">
+                                            {{ form_row(form.customer.vars.prototype.passportNumber) }}
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            {{ form_row(form.customer.vars.prototype.phone) }}
+                                        </div>
+                                        <div class="col-md-6">
+                                            {{ form_row(form.customer.vars.prototype.passportExpiry) }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Order details -->
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <div class="row">
+                                        <div class="col-md-2"><span class="panel-title">Order details</span></div>
+                                    </div>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            {{ form_row(form.products.vars.prototype.product) }}
+                                        </div>
+                                        <div class="col-md-3">
+                                            {{ form_row(form.products.vars.prototype.age) }}
+                                        </div>
+                                        <div class="col-md-3">
+                                            {{ form_row(form.products.vars.prototype.quantity) }}
+                                        </div>
+                                        <div class="col-md-3">
+                                            {{ form_row(form.products.vars.prototype.unitPrice) }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel-footer">
+                                    <div class="row">
+                                        <div class="col-md-3">{{ form_row(form.productsTotal) }}</div>
+                                        <div class="col-md-5"></div>
+                                        <div class="col-md-4">{{ form_row(form.adjustmentTotal) }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Payment details -->
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <div class="row">
+                                        <div class="col-md-12"><span class="panel-title">Payment details</span></div>
+                                    </div>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            {{ form_widget(form.payments.vars.prototype.method) }}
+                                        </div>
+                                        <div class="col-md-2"></div>
+                                        <div class="col-md-4">
+                                            {{ form_row(form.payments.vars.prototype.amount) }}
+                                        </div>
+                                        <div class="col-md-3">
+                                            {{ form_row(form.payments.vars.prototype.state) }}
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12 ">
+                                            {{ form_row(form.payments.vars.prototype.detail) }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Comments -->
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <div class="row">
+                                        <div class="col-md-2"><span class="panel-title">Notes</span></div>
+                                        <div class="col-md-8"></div>
+                                        <div class="col-md-2">{{ form_widget(form.comments.vars.prototype.author) }}</div>
+                                    </div>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            {{ form_widget(form.comments.vars.prototype.comment) }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Comments -->
+                </div>
+                <!-- panel body -->
+                <div class="panel-footer">
+                    <div class="row">
+                        <div class="col-md-12">{{ form_row(form.total) }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{ form_end(form) }}
+    </div>
+</div>
+<!-- /.row -->
+<div class="row">
+    <div class="col-md-11"></div>
+    <div class="col-md-1"><a class="btn btn-warning" href="{{ path('orders') }}">Back</a></div>
+</div>
+<!-- /.row -->
+{% endblock %}
