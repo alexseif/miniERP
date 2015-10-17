@@ -29,17 +29,10 @@ class OrderProducts
     private $orderRef;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Products", inversedBy="OrderPayments")
-     * @ORM\JoinColumn(name="product_id", referencedColumnName="id")
-     * */
-    private $product;
-
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="age", type="integer")
+     * @ORM\ManyToOne(targetEntity="ProductPrices", inversedBy="OrderPayments")
+     * @ORM\JoinColumn(name="product_price_id", referencedColumnName="id")
      */
-    private $age;
+    private $product;
 
     /**
      * @var integer
@@ -118,28 +111,6 @@ class OrderProducts
         return $this->product;
     }
 
-    /**
-     * Set age
-     *
-     * @param integer $age
-     * @return orderProducts
-     */
-    public function setAge($age)
-    {
-        $this->age = $age;
-
-        return $this;
-    }
-
-    /**
-     * Get age
-     *
-     * @return integer 
-     */
-    public function getAge()
-    {
-        return $this->age;
-    }
 
     /**
      * Set quantity

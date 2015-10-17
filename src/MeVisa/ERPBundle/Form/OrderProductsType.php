@@ -16,14 +16,13 @@ class OrderProductsType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-                ->add('age', 'number')
-                ->add('quantity')
+                ->add('quantity', 'number')
                 ->add('unitPrice', 'money', array('currency' => 'RUB', 'divisor' => 100))
-                ->add('total')
-                ->add('orderRef')
+                ->add('total', 'money', array('currency' => 'RUB', 'divisor' => 100))
+//                ->add('orderRef')
 //                ->add('product', 'choice', array('type' => new ProductsType()))
-                ->add('product', 'choice')
-
+                ->add('product', 'choice', array('placeholder' => 'Product'))
+                ->add('PAX', 'choice', array('placeholder' => 'PAX'))
         ;
     }
 

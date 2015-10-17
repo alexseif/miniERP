@@ -12,4 +12,5 @@ use Doctrine\ORM\EntityRepository;
  */
 class OrderProductsRepository extends EntityRepository
 {
+    
 }

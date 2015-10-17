@@ -11,8 +11,7 @@
                         <div class="col-md-3"><span class="panel-title">New Order</span></div>
                         <div class="col-md-3">{{ form_widget(form.channel) }}</div>
                         <div class="col-md-3">{{ form_widget(form.state) }}</div>
-                        <div class="col-md-1"></div>
-                        <div class="col-md-1"><span class="panel-title">{{ "now"|date("m/d/Y") }}</span></div>
+                        <div class="col-md-2">{{ order.createdAt|date() }}</div>
                     </div>
                 </div>
                 <div class="panel-body">
@@ -60,23 +59,32 @@
                             <div class="panel panel-default">
                                 <div class="panel-heading">
                                     <div class="row">
-                                        <div class="col-md-2"><span class="panel-title">Order details</span></div>
+                                        <div class="col-md-10"><span class="panel-title">Order details</span></div>
+                                        <div class="col-md-2"><a href="#" class="btn btn-success">Add Product</a></div>
                                     </div>
                                 </div>
                                 <div class="panel-body">
-                                    <div class="row">
-                                        <div class="col-md-3">
-                                            {{ form_row(form.products.vars.prototype.product) }}
-                                        </div>
-                                        <div class="col-md-3">
-                                            {{ form_row(form.products.vars.prototype.age) }}
-                                        </div>
-                                        <div class="col-md-3">
-                                            {{ form_row(form.products.vars.prototype.quantity) }}
-                                        </div>
-                                        <div class="col-md-3">
-                                            {{ form_row(form.products.vars.prototype.unitPrice) }}
-                                        </div>
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered table-hover table-striped records_list">
+                                            <thead>
+                                                <tr>
+                                                    <th>Product</th>
+                                                    <th>PAX</th>
+                                                    <th>Quantity</th>
+                                                    <th>Unit Price</th>
+                                                    <th>Total</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>{{ form_widget(form.products.vars.prototype.product) }}</td>
+{#                                                    <td>{{ form_widget(form.products.vars.prototype.pax) }}</td>#}
+                                                    <td>{{ form_widget(form.products.vars.prototype.quantity) }}</td>
+                                                    <td>{{ form_widget(form.products.vars.prototype.unitPrice) }}</td>
+                                                    <td>{{ form_widget(form.products.vars.prototype.total) }}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
                                     </div>
                                 </div>
                                 <div class="panel-footer">
@@ -85,6 +93,21 @@
                                         <div class="col-md-5"></div>
                                         <div class="col-md-4">{{ form_row(form.adjustmentTotal) }}</div>
                                     </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Companions -->
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <div class="row">
+                                        <div class="col-md-12"><span class="panel-title">Companions</span></div>
+                                    </div>
+                                </div>
+                                <div class="panel-body">
+                                    Body
                                 </div>
                             </div>
                         </div>

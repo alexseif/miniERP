@@ -96,7 +96,7 @@ class OrdersController extends Controller
         $form = $this->createCreateForm($entity);
 
         return array(
-            'entity' => $entity,
+            'order' => $entity,
             'form' => $form->createView(),
         );
     }

@@ -30,32 +30,18 @@ class ProductPrices
     private $age;
 
     /**
-     * @var float
+     * @var integer
      *
-     * @ORM\Column(name="cost", type="float")
+     * @ORM\Column(name="cost", type="integer")
      */
     private $cost;
 
     /**
-     * @var string
+     * @var integer
      *
-     * @ORM\Column(name="costCurrency", type="string", length=4)
-     */
-    private $costCurrency;
-
-    /**
-     * @var float
-     *
-     * @ORM\Column(name="price", type="float")
+     * @ORM\Column(name="price", type="integer")
      */
     private $price;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="priceCurrency", type="string", length=4)
-     */
-    private $priceCurrency;
 
     /**
      * @var \DateTime
@@ -127,29 +113,6 @@ class ProductPrices
     }
 
     /**
-     * Set costCurrency
-     *
-     * @param string $costCurrency
-     * @return ProductPrices
-     */
-    public function setCostCurrency($costCurrency)
-    {
-        $this->costCurrency = $costCurrency;
-
-        return $this;
-    }
-
-    /**
-     * Get costCurrency
-     *
-     * @return string 
-     */
-    public function getCostCurrency()
-    {
-        return $this->costCurrency;
-    }
-
-    /**
      * Set price
      *
      * @param float $price
@@ -170,29 +133,6 @@ class ProductPrices
     public function getPrice()
     {
         return $this->price;
-    }
-
-    /**
-     * Set priceCurrency
-     *
-     * @param string $priceCurrency
-     * @return ProductPrices
-     */
-    public function setPriceCurrency($priceCurrency)
-    {
-        $this->priceCurrency = $priceCurrency;
-
-        return $this;
-    }
-
-    /**
-     * Get priceCurrency
-     *
-     * @return string 
-     */
-    public function getPriceCurrency()
-    {
-        return $this->priceCurrency;
     }
 
     /**
