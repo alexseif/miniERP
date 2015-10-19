@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 {% block body %}
     {% block head %}
-        <nav class="navbar navbar-inverse">
+        <nav class="navbar">
             <div class="container-fluid">
                 {% block menu%}
                     <div class="navbar-header">
@@ -18,8 +18,8 @@
 
                     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
                         <ul class="nav navbar-nav">
-                            <li><a href="{{ path('orders') }}">Orders</a></li>
-                            <li class="active"><a href="{{ path('customer') }}">Customers<span class="sr-only">(current)</span></a></li>
+                            <li class="active"><a href="{{ path('orders') }}">Orders<span class="sr-only">(current)</span></a></li>
+                            <li><a href="{{ path('customer') }}">CRM</a></li>
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Settings <span class="caret"></span></a>
                                 <ul class="dropdown-menu" role="menu">

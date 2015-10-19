@@ -53,9 +53,18 @@ class OrdersController extends Controller
 
         $customer = $em->getRepository('MeVisaCRMBundle:Customer')->find($order->getCustomer()->getId());
 
-        var_dump($customer);
-//        var_dump($order);
-        die();
+        // TODO: Check Order Product
+        // TODO: Calculate totals
+        // die();
+        // TODO: Check Order Companions
+        // TODO: Check Order Comments
+        // TODO: Check Order
+        // TODO: Save Order
+        // TODO: assign order ref
+        // TODO: Add Order Products
+        // TODO: Add Order Companions
+        // TODO: Add Order Comments
+
         if ($form->isValid()) {
 
             $customer = $em->getRepository('MeVisaCRMBundle:Customer')->find($order->getCustomer()->getId());
@@ -65,15 +74,12 @@ class OrdersController extends Controller
             }
             $order->setCustomer($customer);
 
-            // TODO: Check Order Product
-            // TODO: Check Order Companions
-            // TODO: Check Order Comments
-            // TODO: Check Order
-            // TODO: Save Order
-            // TODO: Add Order Products
-            // TODO: Add Order Companions
-            // TODO: Add Order Comments
+            if (!$order->getOrderProducts()) {
+                // TODO: Handle no proper products
+                // TODO: Go through every product and every product price
+            }
 
+            
 
             $em->persist($order);
             $em->flush();
@@ -119,8 +125,13 @@ class OrdersController extends Controller
 
         $form = $this->createCreateForm($order);
 
+        $em = $this->getDoctrine()->getManager();
+
+        $productPrices = $em->getRepository('MeVisaERPBundle:ProductPrices')->findAll();
+
         return array(
             'order' => $order,
+            'productPrices' => $productPrices,
             'form' => $form->createView(),
         );
     }

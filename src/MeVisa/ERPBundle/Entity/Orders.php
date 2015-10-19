@@ -103,22 +103,22 @@ class Orders
     /**
      * @ORM\OneToMany(targetEntity="OrderProducts", mappedBy="orderRef")
      * */
-    private $products;
+    private $orderProducts;
 
     /**
      * @ORM\OneToMany(targetEntity="OrderPayments", mappedBy="orderRef")
      * */
-    private $payments;
+    private $orderPayments;
 
     /**
      * @ORM\OneToMany(targetEntity="OrderCompanions", mappedBy="orderRef")
      * */
-    private $companions;
+    private $orderCompanions;
 
     /**
      * @ORM\OneToMany(targetEntity="OrderComments", mappedBy="orderRef")
      * */
-    private $comments;
+    private $orderComments;
 
     /**
      * Constructor
@@ -424,125 +424,135 @@ class Orders
     }
 
     /**
-     * Add products
+     * Add orderProducts
      *
-     * @param \MeVisa\ERPBundle\Entity\orderProducts $products
+     * @param \MeVisa\ERPBundle\Entity\OrderProducts $orderProducts
      * @return Orders
      */
-    public function addProduct(\MeVisa\ERPBundle\Entity\orderProducts $products)
+    public function addOrderProduct(\MeVisa\ERPBundle\Entity\OrderProducts $orderProducts)
     {
-        $this->products[] = $products;
+        $this->orderProducts[] = $orderProducts;
 
         return $this;
     }
 
     /**
-     * Remove products
+     * Remove orderProducts
      *
-     * @param \MeVisa\ERPBundle\Entity\orderProducts $products
+     * @param \MeVisa\ERPBundle\Entity\OrderProducts $orderProducts
      */
-    public function removeProduct(\MeVisa\ERPBundle\Entity\orderProducts $products)
+    public function removeOrderProduct(\MeVisa\ERPBundle\Entity\OrderProducts $orderProducts)
     {
-        $this->products->removeElement($products);
+        $this->orderProducts->removeElement($orderProducts);
     }
 
     /**
-     * Add payments
-     *
-     * @param \MeVisa\ERPBundle\Entity\orderPayments $payments
-     * @return Orders
-     */
-    public function addPayment(\MeVisa\ERPBundle\Entity\orderPayments $payments)
-    {
-        $this->payments[] = $payments;
-
-        return $this;
-    }
-
-    /**
-     * Remove payments
-     *
-     * @param \MeVisa\ERPBundle\Entity\orderPayments $payments
-     */
-    public function removePayment(\MeVisa\ERPBundle\Entity\orderPayments $payments)
-    {
-        $this->payments->removeElement($payments);
-    }
-
-    /**
-     * Get payments
+     * Get orderProducts
      *
      * @return \Doctrine\Common\Collections\Collection 
      */
-    public function getPayments()
+    public function getOrderProducts()
     {
-        return $this->payments;
+        return $this->orderProducts;
     }
 
     /**
-     * Add companions
+     * Add orderPayments
      *
-     * @param \MeVisa\ERPBundle\Entity\orderCompanions $companions
+     * @param \MeVisa\ERPBundle\Entity\OrderPayments $orderPayments
      * @return Orders
      */
-    public function addCompanion(\MeVisa\ERPBundle\Entity\orderCompanions $companions)
+    public function addOrderPayment(\MeVisa\ERPBundle\Entity\OrderPayments $orderPayments)
     {
-        $this->companions[] = $companions;
+        $this->orderPayments[] = $orderPayments;
 
         return $this;
     }
 
     /**
-     * Remove companions
+     * Remove orderPayments
      *
-     * @param \MeVisa\ERPBundle\Entity\orderCompanions $companions
+     * @param \MeVisa\ERPBundle\Entity\OrderPayments $orderPayments
      */
-    public function removeCompanion(\MeVisa\ERPBundle\Entity\orderCompanions $companions)
+    public function removeOrderPayment(\MeVisa\ERPBundle\Entity\OrderPayments $orderPayments)
     {
-        $this->companions->removeElement($companions);
+        $this->orderPayments->removeElement($orderPayments);
     }
 
     /**
-     * Get companions
+     * Get orderPayments
      *
      * @return \Doctrine\Common\Collections\Collection 
      */
-    public function getCompanions()
+    public function getOrderPayments()
     {
-        return $this->companions;
+        return $this->orderPayments;
     }
 
     /**
-     * Add comments
+     * Add orderCompanions
      *
-     * @param \MeVisa\ERPBundle\Entity\orderComments $comments
+     * @param \MeVisa\ERPBundle\Entity\OrderCompanions $orderCompanions
      * @return Orders
      */
-    public function addComment(\MeVisa\ERPBundle\Entity\orderComments $comments)
+    public function addOrderCompanion(\MeVisa\ERPBundle\Entity\OrderCompanions $orderCompanions)
     {
-        $this->comments[] = $comments;
+        $this->orderCompanions[] = $orderCompanions;
 
         return $this;
     }
 
     /**
-     * Remove comments
+     * Remove orderCompanions
      *
-     * @param \MeVisa\ERPBundle\Entity\orderComments $comments
+     * @param \MeVisa\ERPBundle\Entity\OrderCompanions $orderCompanions
      */
-    public function removeComment(\MeVisa\ERPBundle\Entity\orderComments $comments)
+    public function removeOrderCompanion(\MeVisa\ERPBundle\Entity\OrderCompanions $orderCompanions)
     {
-        $this->comments->removeElement($comments);
+        $this->orderCompanions->removeElement($orderCompanions);
     }
 
     /**
-     * Get comments
+     * Get orderCompanions
      *
      * @return \Doctrine\Common\Collections\Collection 
      */
-    public function getComments()
+    public function getOrderCompanions()
     {
-        return $this->comments;
+        return $this->orderCompanions;
+    }
+
+    /**
+     * Add orderComments
+     *
+     * @param \MeVisa\ERPBundle\Entity\OrderComments $orderComments
+     * @return Orders
+     */
+    public function addOrderComment(\MeVisa\ERPBundle\Entity\OrderComments $orderComments)
+    {
+        $this->orderComments[] = $orderComments;
+
+        return $this;
+    }
+
+    /**
+     * Remove orderComments
+     *
+     * @param \MeVisa\ERPBundle\Entity\OrderComments $orderComments
+     */
+    public function removeOrderComment(\MeVisa\ERPBundle\Entity\OrderComments $orderComments)
+    {
+        $this->orderComments->removeElement($orderComments);
+    }
+
+    /**
+     * Get orderComments
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getOrderComments()
+    {
+        return $this->orderComments;
     }
 
 }

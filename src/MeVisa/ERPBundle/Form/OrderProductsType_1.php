@@ -5,8 +5,6 @@ namespace MeVisa\ERPBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormEvents;
 
 class OrderProductsType extends AbstractType
 {
@@ -18,27 +16,16 @@ class OrderProductsType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-                ->add('quantity')
-                ->add('unitPrice', 'money', array('currency' => 'RUB', 'divisor' => 100, 'label' => 'Subtotal', 'disabled' => 'true'))
-                ->add('total', 'money', array('currency' => 'RUB', 'divisor' => 100, 'label' => 'Subtotal', 'disabled' => 'true'))
-                ->add('orderRef')
-                // TODO: Find enabled products
+                ->add('quantity', 'number')
+                ->add('unitPrice', 'money', array('currency' => 'RUB', 'divisor' => 100))
+                ->add('total', 'money', array('currency' => 'RUB', 'divisor' => 100))
+//                ->add('orderRef')
+//                ->add('product', 'choice', array('type' => new ProductsType()))
+//                ->add('PAX', 'choice', array('placeholder' => 'PAX'))
                 ->add('product', 'entity', array(
                     'class' => 'MeVisaERPBundle:Products',
                     'choice_label' => 'name',
-                    'placeholder' => 'Select Product',
-                    'attr' => array(
-                        'class' => 'product_id'
-                    )
-                ))
-                ->add('productPrice', 'entity', array(
-                    'class' => 'MeVisaERPBundle:ProductPrices',
-                    'choice_label' => 'age',
-                    'placeholder' => 'Select Price',
-                    'attr' => array(
-                        'class' => 'product_price_id'
-                    )
-                ))
+                    'placeholder' => 'Select Product'))
 
         ;
     }

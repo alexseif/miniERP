@@ -8,6 +8,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class OrderCompanionsType extends AbstractType
 {
+
     /**
      * @param FormBuilderInterface $builder
      * @param array $options
@@ -15,11 +16,14 @@ class OrderCompanionsType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('orderRef')
-            ->add('customer')
+                ->add('name')
+                ->add('age')
+                ->add('passportNumber')
+                ->add('passportExpiry')
+//                ->add('orderRef')
         ;
     }
-    
+
     /**
      * @param OptionsResolverInterface $resolver
      */
@@ -37,4 +41,5 @@ class OrderCompanionsType extends AbstractType
     {
         return 'mevisa_erpbundle_ordercompanions';
     }
+
 }

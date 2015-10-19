@@ -30,10 +30,32 @@ class OrderCompanions
     private $orderRef;
 
     /**
-     * @ORM\ManyToOne(targetEntity="MeVisa\CRMBundle\Entity\Customer", inversedBy="OrderCompanions")
-     * @ORM\JoinColumn(name="customer_id", referencedColumnName="id")
+     * @var string
+     *
+     * @ORM\Column(name="Name", type="string", length=255)
      */
-    private $customer;
+    private $name;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="age", type="integer")
+     */
+    private $age;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="passport_number", type="string", length=255, nullable=true)
+     */
+    private $passportNumber;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="passport_expiry", type="string", length=255, nullable=true)
+     */
+    private $passportExpiry;
 
     /**
      * Get id
@@ -69,26 +91,95 @@ class OrderCompanions
     }
 
     /**
-     * Set customer
+     * Set name
      *
-     * @param integer $customer
-     * @return orderCompanions
+     * @param string $name
+     * @return OrderCompanions
      */
-    public function setCustomer($customer)
+    public function setName($name)
     {
-        $this->customer = $customer;
+        $this->name = $name;
 
         return $this;
     }
 
     /**
-     * Get customer
+     * Get name
+     *
+     * @return string 
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * Set passportNumber
+     *
+     * @param string $passportNumber
+     * @return OrderCompanions
+     */
+    public function setPassportNumber($passportNumber)
+    {
+        $this->passportNumber = $passportNumber;
+
+        return $this;
+    }
+
+    /**
+     * Get passportNumber
+     *
+     * @return string 
+     */
+    public function getPassportNumber()
+    {
+        return $this->passportNumber;
+    }
+
+    /**
+     * Set passportExpiry
+     *
+     * @param string $passportExpiry
+     * @return OrderCompanions
+     */
+    public function setPassportExpiry($passportExpiry)
+    {
+        $this->passportExpiry = $passportExpiry;
+
+        return $this;
+    }
+
+    /**
+     * Get passportExpiry
+     *
+     * @return string 
+     */
+    public function getPassportExpiry()
+    {
+        return $this->passportExpiry;
+    }
+
+    /**
+     * Set age
+     *
+     * @param integer $age
+     * @return OrderCompanions
+     */
+    public function setAge($age)
+    {
+        $this->age = $age;
+
+        return $this;
+    }
+
+    /**
+     * Get age
      *
      * @return integer 
      */
-    public function getCustomer()
+    public function getAge()
     {
-        return $this->customer;
+        return $this->age;
     }
 
 }

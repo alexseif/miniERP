@@ -186,4 +186,27 @@ class OrderProducts
         return $this->total;
     }
 
+
+    /**
+     * Set productPrice
+     *
+     * @param \MeVisa\ERPBundle\Entity\ProductPrices $productPrice
+     * @return OrderProducts
+     */
+    public function setProductPrice(\MeVisa\ERPBundle\Entity\ProductPrices $productPrice = null)
+    {
+        $this->productPrice = $productPrice;
+
+        return $this;
+    }
+
+    /**
+     * Get productPrice
+     *
+     * @return \MeVisa\ERPBundle\Entity\ProductPrices 
+     */
+    public function getProductPrice()
+    {
+        return $this->productPrice;
+    }
 }

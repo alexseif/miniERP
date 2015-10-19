@@ -5,8 +5,6 @@ namespace MeVisa\ERPBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormEvents;
 
 class OrdersType extends AbstractType
 {
@@ -41,35 +39,20 @@ class OrdersType extends AbstractType
             )
         ));
 //        $builder->add('customers', 'choice', array('choices' => 'MeVisaCRMBundle:Customer', 'choice_label' => 'name', 'data_class' => 'MeVisa\CRMBundle\Entity\Customer'));
-//        $builder->add('customer', 'collection', array(
-//            'type' => new \MeVisa\CRMBundle\Form\CustomerType(),
-//            'allow_add' => 'true'));
+        $builder->add('customer', 'collection', array(
+            'type' => new \MeVisa\CRMBundle\Form\CustomerType(),
+            'allow_add' => 'true'));
 
-        $builder->add('products', 'collection', array(
+        $builder->add('orderProducts', 'collection', array(
             'type' => new OrderProductsType(),
             'allow_add' => true));
 
-        $builder->addEventListener(
-                FormEvents::PRE_SET_DATA, function(FormEvent $event) {
-            $form = $event->getForm();
-
-            // this would be your entity
-            $data = $event->getData();
-
-            $product = $data->getProduct();
-            // TODO: I think load product prices
-            $positions = null === $sport ? array() : $sport->getAvailablePositions();
-            $form->add('PAX', 'entity', array(
-                'class' => 'MeVisaERPBundle:ProductPrices',
-                'placeholder' => '',
-                'choices' => $productPrices,
-            ));
-        }
-        );
-
 //        TODO: Add Order Companions
-//        $builder->add('comments', 'collection', array('type' => new OrderCommentsType(), 'allow_add' => true));
-//        $builder->add('payments', 'collection', array('type' => new OrderPaymentsType(), 'allow_add' => true));
+        $builder->add('orderCompanions', 'collection', array(
+            'type' => new OrderCompanionsType(),
+            'allow_add' => true));
+        $builder->add('payments', 'collection', array('type' => new OrderPaymentsType(), 'allow_add' => true));
+        $builder->add('comments', 'collection', array('type' => new OrderCommentsType(), 'allow_add' => true));
     }
 
     /**

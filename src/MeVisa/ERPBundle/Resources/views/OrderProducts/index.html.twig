@@ -7,7 +7,6 @@
         <thead>
             <tr>
                 <th>Id</th>
-                <th>Age</th>
                 <th>Quantity</th>
                 <th>Unitprice</th>
                 <th>Total</th>
@@ -18,7 +17,6 @@
         {% for entity in entities %}
             <tr>
                 <td><a href="{{ path('orderproducts_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
-                <td>{{ entity.age }}</td>
                 <td>{{ entity.quantity }}</td>
                 <td>{{ entity.unitPrice }}</td>
                 <td>{{ entity.total }}</td>

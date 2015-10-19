@@ -33,33 +33,33 @@
                     {#{{ form_label(form.customers) }}#}
                     <div class='row'>
                         <div class="col-sm-6">
-                            {{ form_row(form.customer) }}
+{#                            {{ form_row(form.customer) }}#}
                         </div>
                     </div>
-                    {# <div class="row">
-                         <div class="col-sm-6">
-                             {{ form_row(form.customer.vars.prototype.name)}}
-                         </div>
-                         <div class="col-sm-6">
-                             {{ form_row(form.customer.vars.prototype.nationality) }}
-                         </div>
-                     </div>
-                     <div class="row">
-                         <div class="col-sm-6">
-                             {{ form_row(form.customer.vars.prototype.email) }}
-                         </div>
-                         <div class="col-sm-6">
-                             {{ form_row(form.customer.vars.prototype.passportNumber) }}
-                         </div>
-                     </div>
-                     <div class="row">
-                         <div class="col-sm-6">
-                             {{ form_row(form.customer.vars.prototype.phone) }}
-                         </div>
-                         <div class="col-sm-6">
-                             {{ form_row(form.customer.vars.prototype.passportExpiry) }}
-                         </div>
-                     </div>#}
+                    <div class="row">
+                        <div class="col-sm-6">
+                            {{ form_row(form.customer.vars.prototype.name)}}
+                        </div>
+                        <div class="col-sm-6">
+                            {{ form_row(form.customer.vars.prototype.nationality) }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            {{ form_row(form.customer.vars.prototype.email) }}
+                        </div>
+                        <div class="col-sm-6">
+                            {{ form_row(form.customer.vars.prototype.passportNumber) }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            {{ form_row(form.customer.vars.prototype.phone) }}
+                        </div>
+                        <div class="col-sm-6">
+                            {{ form_row(form.customer.vars.prototype.passportExpiry) }}
+                        </div>
+                    </div>
                 </div>
             </div>
             <!-- Order details -->
@@ -80,12 +80,11 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <td>{{ form_widget(form.products.vars.prototype.product) }}</td>
-                                <td></td>
-                                {# <td>{{ form_widget(form.products.vars.prototype.pax) }}</td>#}
-                                <td>{{ form_widget(form.products.vars.prototype.quantity) }}</td>
-                                <td>{{ form_widget(form.products.vars.prototype.unitPrice) }}</td>
-                                <td>{{ form_widget(form.products.vars.prototype.total) }}</td>
+                                <td>{{ form_widget(form.orderProducts.vars.prototype.product) }}</td>
+                                <td>{{ form_widget(form.orderProducts.vars.prototype.productPrice) }}</td>
+                                <td>{{ form_widget(form.orderProducts.vars.prototype.quantity) }}</td>
+                                <td>{{ form_widget(form.orderProducts.vars.prototype.unitPrice) }}</td>
+                                <td>{{ form_widget(form.orderProducts.vars.prototype.total) }}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -104,6 +103,68 @@
                     </div>
                 </div>
             </div>
+            <!-- Companions -->
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <span class="panel-title">Companions</span>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover records_list">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Age</th>
+                                <th>Passport #</th>
+                                <th>Passport Exp</th>
+                            </tr>
+                        </thead>
+                        <tbody class="companions" data-prototype="{{ '<td>' ~ form_widget(form.orderCompanions.vars.prototype.name) ~ '</td>' 
+~ '<td>' ~ form_widget(form.orderCompanions.vars.prototype.age) ~ '</td>'
+~ '<td>' ~ form_widget(form.orderCompanions.vars.prototype.passportNumber) ~ '</td>'
+~ '<td>' ~ form_widget(form.orderCompanions.vars.prototype.passportExpiry) ~ '</td>' }}">
+                        </tbody>
+                    </table>
+                </div>
+                <div class="panel-body">
+                    <a href="#" class="btn btn-block addCompanion" id="add-companion"><span class="glyphicon glyphicon-plus"></span></a>
+                </div>
+            </div>
+            <!-- Payment details -->
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <span class="panel-title">Payment details</span>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-sm-6 clearfix">
+                            <div class="pull-left">
+                                {{ form_row(form.payments.vars.prototype.method) }}
+                                {{ form_row(form.payments.vars.prototype.amount) }}
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            {{ form_row(form.payments.vars.prototype.detail) }}
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-footer">
+                    {{ form_row(form.payments.vars.prototype.state) }}
+                </div>
+            </div>
+            <!-- Comments -->
+            <div class="panel panel-default">
+                <div class="panel-heading clearfix">
+                    <span class="panel-title">Notes</span>
+                    <div class="pull-right">
+                        <span class="label label-default">Author</span>
+                        {#{{ form_widget(form.comments.vars.prototype.author) }}#}
+                    </div>
+                </div>
+                <div class="panel-body">
+                    {{ form_widget(form.comments.vars.prototype.comment) }}
+                </div>
+            </div>
+            <!-- Comments -->
         </div>
         <!-- panel body -->
         <div class="panel-footer">
@@ -121,8 +182,14 @@
 {% block javascripts %}
     {{ parent() }}
     <script type="text/javascript" src="/js/chosen.jquery.min.js"></script>
+    <script type="text/javascript" src="/js/orders.js"></script>
     <script type="text/javascript">
-        $('.chosen-input').chosen({no_results_text: "Add new", allow_single_deselect: true});
-        {# $('#mevisa_erpbundle_orders_customers').chosen().change(alert('test'));#}
+        var products = new Array();{% for price in productPrices %}
+                products[{{ price.product.id }}] =
+                [{
+                id:{{ price.id }},
+                        price:{{ price.price }},
+                        age: '{{ price.age }}'
+                }];{% endfor %}
     </script>
 {% endblock %}
