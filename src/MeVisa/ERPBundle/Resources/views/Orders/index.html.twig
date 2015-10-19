@@ -6,7 +6,7 @@
         <div class="col-md-12">
             {#            <h3 class="page-header">#}
             <h3 class="page-header">
-                Vendors <small> {{ entities|length }} </small>
+                Orders <small> {{ entities|length }} </small>
             </h3>
             <!-- breadcrumb -->
             {#<ol class="breadcrumb">
@@ -30,13 +30,10 @@
                                     <th>State</th>
                                     <th>Customer</th>
                                     <th>Channel</th>
-                                    <th>Productstotal</th>
-                                    <th>Adjustmenttotal</th>
+                                    <th>Subtotal</th>
+                                    <th>Adjustment</th>
                                     <th>Total</th>
-                                    <th>Createdat</th>
-                                    <th>Updatedat</th>
-                                    <th>Deletedat</th>
-                                    <th>Completedat</th>
+                                    <th>Created</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
@@ -51,9 +48,6 @@
                                         <td>{{ entity.adjustmentTotal }}</td>
                                         <td>{{ entity.total }}</td>
                                         <td>{% if entity.createdAt %}{{ entity.createdAt|date('Y-m-d H:i:s') }}{% endif %}</td>
-                                        <td>{% if entity.updatedAt %}{{ entity.updatedAt|date('Y-m-d H:i:s') }}{% endif %}</td>
-                                        <td>{% if entity.deletedAt %}{{ entity.deletedAt|date('Y-m-d H:i:s') }}{% endif %}</td>
-                                        <td>{% if entity.completedAt %}{{ entity.completedAt|date('Y-m-d H:i:s') }}{% endif %}</td>
                                         <td>
                                             <a class="btn btn-primary" href="{{ path('orders_show', { 'id': entity.id }) }}">show</a>
                                             <a class="btn btn-primary" href="{{ path('orders_edit', { 'id': entity.id }) }}">edit</a>

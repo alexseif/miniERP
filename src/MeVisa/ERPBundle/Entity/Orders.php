@@ -188,6 +188,11 @@ class Orders
         return $this->state;
     }
 
+    public function getCustomers()
+    {
+        
+    }
+
     /**
      * Set customer
      *

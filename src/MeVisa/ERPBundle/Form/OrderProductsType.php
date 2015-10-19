@@ -21,8 +21,12 @@ class OrderProductsType extends AbstractType
                 ->add('total', 'money', array('currency' => 'RUB', 'divisor' => 100))
 //                ->add('orderRef')
 //                ->add('product', 'choice', array('type' => new ProductsType()))
-                ->add('product', 'choice', array('placeholder' => 'Product'))
-                ->add('PAX', 'choice', array('placeholder' => 'PAX'))
+//                ->add('PAX', 'choice', array('placeholder' => 'PAX'))
+                ->add('product', 'entity', array(
+                    'class' => 'MeVisaERPBundle:Products',
+                    'choice_label' => 'name',
+                    'placeholder' => 'Select Product'))
+
         ;
     }
 

@@ -22,9 +22,10 @@ class CustomerType extends AbstractType
                 ->add('nationality', 'country', array(
                     'preferred_choices' => array('RU', 'UA'),
                     'data' => 'RU',
+                    'attr' => array('class' => 'chosen-input')
                 ))
-                ->add('passportNumber', 'text', array('label'=>'Passport#'))
-                ->add('passportExpiry', 'text', array('label'=>'Passport Exp'))
+                ->add('passportNumber', 'text', array('label' => 'Passport#'))
+                ->add('passportExpiry', 'text', array('label' => 'Passport Exp'))
         ;
     }
 

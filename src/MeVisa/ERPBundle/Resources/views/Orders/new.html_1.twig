@@ -1,23 +1,19 @@
 {% extends ':default:admin.html.twig' %}
-{% block stylesheets %}
-    {{ parent() }}
-    <link rel="stylesheet" type="text/css" href="/css/chosen.min.css" />
+
+{% block content %}
     <style type="text/css">
         .panel .form-group{ margin-bottom: 5px;}
         .panel-body{font-size: 11px;}
         .panel-body label{font-weight: 550}
         .panel .control-label{padding-left: 5px; padding-right: 5px;}
     </style>
-{% endblock %}
-{% block content %}
     {{ form_start(form) }}
-    {{ form_errors(form) }}
     <div class="panel panel-default">
         <div class="panel-heading clearfix">
             <span class="panel-title">New Order</span>
             <div class="pull-right">
-                <span class="label label-default">Channel {{ order.channel }}</span>
-                &nbsp;<span class="label label-default">State {{ order.state }}</span>
+                <span class="label label-default">Channel {{ order.channel}}</span>
+                &nbsp;<span class="label label-default">State {{ order.state}}</span>
                 &nbsp;<span class="label label-default"> {{ order.createdAt|date() }}</span>
                 {# {{ form_widget(form.channel) }} {{ form_widget(form.state) }}#}
             </div>
@@ -30,36 +26,30 @@
                     <span class="panel-title">Customer</span>
                 </div>
                 <div class="panel-body">
-                    {#{{ form_label(form.customers) }}#}
-                    <div class='row'>
+                    <div class="row">
                         <div class="col-sm-6">
-                            {{ form_row(form.customer) }}
+                            {{ form_row(form.customer.vars.prototype.name)}}
+                        </div>
+                        <div class="col-sm-6">
+                            {{ form_row(form.customer.vars.prototype.nationality) }}
                         </div>
                     </div>
-                    {# <div class="row">
-                         <div class="col-sm-6">
-                             {{ form_row(form.customer.vars.prototype.name)}}
-                         </div>
-                         <div class="col-sm-6">
-                             {{ form_row(form.customer.vars.prototype.nationality) }}
-                         </div>
-                     </div>
-                     <div class="row">
-                         <div class="col-sm-6">
-                             {{ form_row(form.customer.vars.prototype.email) }}
-                         </div>
-                         <div class="col-sm-6">
-                             {{ form_row(form.customer.vars.prototype.passportNumber) }}
-                         </div>
-                     </div>
-                     <div class="row">
-                         <div class="col-sm-6">
-                             {{ form_row(form.customer.vars.prototype.phone) }}
-                         </div>
-                         <div class="col-sm-6">
-                             {{ form_row(form.customer.vars.prototype.passportExpiry) }}
-                         </div>
-                     </div>#}
+                    <div class="row">
+                        <div class="col-sm-6">
+                            {{ form_row(form.customer.vars.prototype.email) }}
+                        </div>
+                        <div class="col-sm-6">
+                            {{ form_row(form.customer.vars.prototype.passportNumber) }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            {{ form_row(form.customer.vars.prototype.phone) }}
+                        </div>
+                        <div class="col-sm-6">
+                            {{ form_row(form.customer.vars.prototype.passportExpiry) }}
+                        </div>
+                    </div>
                 </div>
             </div>
             <!-- Order details -->
@@ -104,6 +94,53 @@
                     </div>
                 </div>
             </div>
+            <!-- Companions -->
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <span class="panel-title">Companions</span>
+                </div>
+                <div class="panel-body">
+                    Table
+                    <a href="#" class="btn btn-block"><span class="glyphicon glyphicon-plus"></span></a>
+                </div>
+            </div>
+            <!-- Payment details -->
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <span class="panel-title">Payment details</span>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-sm-6 clearfix">
+                            <div class="pull-left">
+                                {{ form_row(form.payments.vars.prototype.method) }}
+                                {{ form_row(form.payments.vars.prototype.amount) }}
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            {{ form_row(form.payments.vars.prototype.detail) }}
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-footer">
+                    {{ form_row(form.payments.vars.prototype.state) }}
+                </div>
+            </div>
+            <!-- Comments -->
+            <div class="panel panel-default">
+                <div class="panel-heading clearfix">
+                    <span class="panel-title">Notes</span>
+                    <div class="pull-right">
+                        <span class="label label-default">Author</span>
+                        {#{{ form_widget(form.comments.vars.prototype.author) }}#}
+                    </div>
+                </div>
+                <div class="panel-body">
+                    {{ form_widget(form.comments.vars.prototype.comment) }}
+                </div>
+            </div>
+            <!-- Comments -->
+            {#            </div>#}
         </div>
         <!-- panel body -->
         <div class="panel-footer">
@@ -117,12 +154,4 @@
     {{ form_end(form, {'render_rest': false}) }}
     <div class="pull-right"><a class="btn btn-warning" href="{{ path('orders') }}">Cancel</a></div>
     <!-- /.row -->
-{% endblock %}
-{% block javascripts %}
-    {{ parent() }}
-    <script type="text/javascript" src="/js/chosen.jquery.min.js"></script>
-    <script type="text/javascript">
-        $('.chosen-input').chosen({no_results_text: "Add new", allow_single_deselect: true});
-        {# $('#mevisa_erpbundle_orders_customers').chosen().change(alert('test'));#}
-    </script>
 {% endblock %}

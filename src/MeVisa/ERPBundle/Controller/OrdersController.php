@@ -8,7 +8,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use MeVisa\ERPBundle\Entity\Orders;
-use MeVisa\ERPBundle\Entity\OrderComments;
 use MeVisa\ERPBundle\Form\OrdersType;
 
 /**
@@ -46,20 +45,44 @@ class OrdersController extends Controller
      */
     public function createAction(Request $request)
     {
-        $entity = new Orders();
-        $form = $this->createCreateForm($entity);
+        $order = new Orders();
+        $form = $this->createCreateForm($order);
         $form->handleRequest($request);
 
+        $em = $this->getDoctrine()->getManager();
+
+        $customer = $em->getRepository('MeVisaCRMBundle:Customer')->find($order->getCustomer()->getId());
+
+        var_dump($customer);
+//        var_dump($order);
+        die();
         if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($entity);
+
+            $customer = $em->getRepository('MeVisaCRMBundle:Customer')->find($order->getCustomer()->getId());
+            if (!$customer) {
+                // TODO: Check new Customer
+                // TODO: add new customer
+            }
+            $order->setCustomer($customer);
+
+            // TODO: Check Order Product
+            // TODO: Check Order Companions
+            // TODO: Check Order Comments
+            // TODO: Check Order
+            // TODO: Save Order
+            // TODO: Add Order Products
+            // TODO: Add Order Companions
+            // TODO: Add Order Comments
+
+
+            $em->persist($order);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('orders_show', array('id' => $entity->getId())));
+            return $this->redirect($this->generateUrl('orders_show', array('id' => $order->getId())));
         }
 
         return array(
-            'entity' => $entity,
+            'entity' => $order,
             'form' => $form->createView(),
         );
     }
@@ -92,11 +115,12 @@ class OrdersController extends Controller
      */
     public function newAction()
     {
-        $entity = new Orders();
-        $form = $this->createCreateForm($entity);
+        $order = new Orders();
+
+        $form = $this->createCreateForm($order);
 
         return array(
-            'order' => $entity,
+            'order' => $order,
             'form' => $form->createView(),
         );
     }
