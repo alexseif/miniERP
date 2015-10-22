@@ -35,12 +35,6 @@ class OrderProducts
     private $product;
 
     /**
-     * @ORM\ManyToOne(targetEntity="ProductPrices", inversedBy="OrderPayments")
-     * @ORM\JoinColumn(name="product_price_id", referencedColumnName="id")
-     */
-    private $productPrice;
-
-    /**
      * @var integer
      *
      * @ORM\Column(name="quantity", type="integer")
@@ -184,29 +178,6 @@ class OrderProducts
     public function getTotal()
     {
         return $this->total;
-    }
-
-    /**
-     * Set productPrice
-     *
-     * @param \MeVisa\ERPBundle\Entity\ProductPrices $productPrice
-     * @return OrderProducts
-     */
-    public function setProductPrice(\MeVisa\ERPBundle\Entity\ProductPrices $productPrice = null)
-    {
-        $this->productPrice = $productPrice;
-
-        return $this;
-    }
-
-    /**
-     * Get productPrice
-     *
-     * @return \MeVisa\ERPBundle\Entity\ProductPrices 
-     */
-    public function getProductPrice()
-    {
-        return $this->productPrice;
     }
 
 }

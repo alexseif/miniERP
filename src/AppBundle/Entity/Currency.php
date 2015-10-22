@@ -38,9 +38,9 @@ class Currency
     private $cur2;
 
     /**
-     * @var float
+     * @var integer
      *
-     * @ORM\Column(name="value", type="float")
+     * @ORM\Column(name="value", type="integer")
      */
     private $value;
 
@@ -110,7 +110,7 @@ class Currency
     /**
      * Set value
      *
-     * @param float $value
+     * @param integer $value
      * @return Currency
      */
     public function setValue($value)
@@ -123,7 +123,7 @@ class Currency
     /**
      * Get value
      *
-     * @return float 
+     * @return integer 
      */
     public function getValue()
     {

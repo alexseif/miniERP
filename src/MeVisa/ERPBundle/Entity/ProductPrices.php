@@ -23,13 +23,6 @@ class ProductPrices
     private $id;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="age", type="string", length=255)
-     */
-    private $age;
-
-    /**
      * @var integer
      *
      * @ORM\Column(name="cost", type="integer")
@@ -67,32 +60,9 @@ class ProductPrices
     }
 
     /**
-     * Set age
-     *
-     * @param string $age
-     * @return ProductPrices
-     */
-    public function setAge($age)
-    {
-        $this->age = $age;
-
-        return $this;
-    }
-
-    /**
-     * Get age
-     *
-     * @return string 
-     */
-    public function getAge()
-    {
-        return $this->age;
-    }
-
-    /**
      * Set cost
      *
-     * @param float $cost
+     * @param integer $cost
      * @return ProductPrices
      */
     public function setCost($cost)
@@ -105,7 +75,7 @@ class ProductPrices
     /**
      * Get cost
      *
-     * @return float 
+     * @return integer 
      */
     public function getCost()
     {
@@ -115,7 +85,7 @@ class ProductPrices
     /**
      * Set price
      *
-     * @param float $price
+     * @param integer $price
      * @return ProductPrices
      */
     public function setPrice($price)
@@ -128,7 +98,7 @@ class ProductPrices
     /**
      * Get price
      *
-     * @return float 
+     * @return integer 
      */
     public function getPrice()
     {
