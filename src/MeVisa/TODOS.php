@@ -5,11 +5,6 @@
  */
 
 // TODO: Customer add age and rename to Customers
-// TODO: Orders
-// TODO: Order Products
-// TODO: Order Payments
-// TODO: Order Companions
-// TODO: Order Comments
 // TODO: Products.createdAt Products.updatedAt
 // TODO: ProductPrices.updatedAt
 // TODO: update floats to int and divide & multiply by 100

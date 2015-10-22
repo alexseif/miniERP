@@ -16,10 +16,21 @@ class OrderPaymentsType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-                ->add('method', 'choice', array('placeholder' => 'Method', 'label' => false))
+                ->add('method', 'choice', array(
+                    // TODO: get payment options properly
+                    'choices' => array('Online', 'Bank Transfer', 'Credit Card', 'Cash'),
+                    'placeholder' => 'Method',
+                    'label' => false
+                ))
                 ->add('amount', 'money', array('currency' => 'RUB', 'divisor' => 100))
-                ->add('state', 'choice', array('placeholder' => 'State', 'label' => false))
-                ->add('detail')
+                ->add('state', 'choice', array(
+                    // TODO: get payment options properly
+                    'choices' => array('Paid', 'Not Paid'),
+                    'placeholder' => 'State',
+                    'label' => false))
+                ->add('detail', 'textarea', array(
+                    'required' => false
+                ))
 //                ->add('createdAt')
 //                ->add('orderRef')
         ;

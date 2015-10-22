@@ -8,6 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use MeVisa\ERPBundle\Entity\Orders;
+use MeVisa\CRMBundle\Entity\Customer;
 use MeVisa\ERPBundle\Form\OrdersType;
 
 /**
@@ -51,41 +52,88 @@ class OrdersController extends Controller
 
         $em = $this->getDoctrine()->getManager();
 
-        $customer = $em->getRepository('MeVisaCRMBundle:Customer')->find($order->getCustomer()->getId());
-
-        // TODO: Check Order Product
-        // TODO: Calculate totals
-        // die();
-        // TODO: Check Order Companions
-        // TODO: Check Order Comments
-        // TODO: Check Order
-        // TODO: Save Order
-        // TODO: assign order ref
-        // TODO: Add Order Products
-        // TODO: Add Order Companions
-        // TODO: Add Order Comments
-
         if ($form->isValid()) {
+            echo "Form Valid <br/>";
 
-            $customer = $em->getRepository('MeVisaCRMBundle:Customer')->find($order->getCustomer()->getId());
-            if (!$customer) {
+            // TODO: Autogenerate order number
+            $order->setNumber('Test001');
+            // TODO: State machine
+            $order->setState('New Order');
+            // TODO: Order Channel
+            $order->setChannel('POS');
+
+            $customer = $order->getCustomer();
+            if (!$customer->getId()) {
+                echo "New Customer <br/>";
+                $em->persist($customer);
                 // TODO: Check new Customer
                 // TODO: add new customer
             }
-            $order->setCustomer($customer);
 
-            if (!$order->getOrderProducts()) {
-                // TODO: Handle no proper products
-                // TODO: Go through every product and every product price
+            // $customerCheck = $em->getRepository('MeVisaCRMBundle:Customer')->find($order->getCustomer()->getId());
+            $customerCheck = true;
+            if (!$customerCheck) {
+                echo "Still no Customer <br/>";
             }
 
-            
+            // TODO: Go through every product and every product price
+            $orderProducts = $order->getOrderProducts();
+//        $orderProductCheck = false;
+            $orderProductTotal = 0;
+            foreach ($orderProducts as $orderProduct) {
+                // TODO: Check Order Product
+                // TODO: Handle no proper products
+//            $product = $orderProduct->getProduct();
+                $productPrice = $orderProduct->getProductPrice();
+                // TODO: Calculate totals
+                $orderProduct->setTotal($productPrice->getPrice() * $orderProduct->getQuantity());
+                $orderProductTotal += $orderProduct->getTotal();
+            }
+            // TODO: Calculate order Product Total
+            $order->setProductsTotal($orderProductTotal);
 
-            $em->persist($order);
+            // TODO: Calculate Order Total
+            $order->setTotal($order->getProductsTotal() + $order->getAdjustmentTotal());
+
+            // FIXME: remove this faking order
+            $order->setCreatedAt(new \DateTime());
+            $order->setUpdatedAt(new \DateTime());
+            $order->setCreatedAt(new \DateTime());
+            $order->setCompletedAt(new \DateTime());
+
+            $orderCompanions = $order->getOrderCompanions();
+            // TODO: Check Order Companions
+            if ($orderCompanions) {
+                foreach ($orderCompanions as $companion) {
+//                var_dump($companion);
+                }
+            }
+
+            $orderComments = $order->getOrderComments();
+            // TODO: Check Order Comments
+            // TODO: if order comment is not empty add new orderComment
+            // TODO: Check Order
+            // TODO: Save Order
+            $em->merge($order);
             $em->flush();
 
+            // TODO: check if I need to assign the following
+            // TODO: assign order ref
+            // TODO: Add Order Products
+            // TODO: Add Order Companions
+            // TODO: Add Order Comments
+
+
+
             return $this->redirect($this->generateUrl('orders_show', array('id' => $order->getId())));
+        } else {
+            echo "Form not valid becuase:<br/>";
+            $formErrors = $form->getErrors();
+            var_dump($formErrors);
         }
+        var_dump($order);
+
+        die();
 
         return array(
             'entity' => $order,

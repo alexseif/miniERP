@@ -23,7 +23,7 @@ class OrderProducts
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Orders", inversedBy="OrderProducts")
+     * @ORM\ManyToOne(targetEntity="Orders", inversedBy="OrderProducts", cascade={"persist"})
      * @ORM\JoinColumn(name="order_id", referencedColumnName="id")
      * */
     private $orderRef;
@@ -186,7 +186,6 @@ class OrderProducts
         return $this->total;
     }
 
-
     /**
      * Set productPrice
      *
@@ -209,4 +208,5 @@ class OrderProducts
     {
         return $this->productPrice;
     }
+
 }

@@ -38,9 +38,9 @@ class Orders
     private $state;
 
     /**
-     * @var integer
      *
-     * @ORM\Column(name="customer", type="integer")
+     * @ORM\ManyToOne(targetEntity="MeVisa\CRMBundle\Entity\Customer", inversedBy="Orders", cascade={"persist"})
+     * @ORM\JoinColumn(name="customer_id", referencedColumnName="id")
      */
     private $customer;
 
@@ -125,10 +125,10 @@ class Orders
      */
     public function __construct()
     {
-        $this->products = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->payments = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->companions = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->comments = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->products = new ArrayCollection();
+        $this->payments = new ArrayCollection();
+        $this->companions = new ArrayCollection();
+        $this->comments = new ArrayCollection();
         $this->setCreatedAt(new \DateTime());
     }
 

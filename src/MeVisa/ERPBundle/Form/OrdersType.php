@@ -23,25 +23,26 @@ class OrdersType extends AbstractType
                 ->add('productsTotal', 'money', array('currency' => 'RUB', 'divisor' => 100, 'label' => 'Subtotal', 'disabled' => 'true'))
                 ->add('adjustmentTotal', 'money', array('currency' => 'RUB', 'divisor' => 100, 'label' => 'Adjustment'))
                 ->add('total', 'money', array('currency' => 'RUB', 'divisor' => 100, 'required' => false))
-                ->add('createdAt', 'date', array('disabled' => true))
-//            ->add('updatedAt')
-//            ->add('deletedAt')
-//            ->add('completedAt')
+//                ->add('createdAt', 'hidden')
+//                ->add('updatedAt', 'hidden', array('required' => false))
+//                ->add('deletedAt', 'hidden', array('required' => false))
+//                ->add('completedAt', 'hidden', array('required' => false))
         ;
-        $builder->add('customer', 'entity', array(
-            'class' => 'MeVisaCRMBundle:Customer',
-            'choice_label' => 'name',
-            'placeholder' => 'Select Customer',
-            'invalid_message' => 'Please select customer or add new',
-            'attr' => array(
-                'class' => 'chosen-input',
-                'data-placeholder' => 'Select customer'
-            )
-        ));
+//        $builder->add('customer', 'entity', array(
+//            'class' => 'MeVisaCRMBundle:Customer',
+//            'choice_label' => 'name',
+//            'placeholder' => 'Select Customer',
+//            'invalid_message' => 'Please select customer or add new',
+//            'attr' => array(
+//                'class' => 'chosen-input',
+//                'data-placeholder' => 'Select customer'
+//            )
+//        ));
 //        $builder->add('customers', 'choice', array('choices' => 'MeVisaCRMBundle:Customer', 'choice_label' => 'name', 'data_class' => 'MeVisa\CRMBundle\Entity\Customer'));
-        $builder->add('customer', 'collection', array(
-            'type' => new \MeVisa\CRMBundle\Form\CustomerType(),
-            'allow_add' => 'true'));
+//        $builder->add('customer', 'collection', array(
+//            'type' => new \MeVisa\CRMBundle\Form\CustomerType(),
+//            'allow_add' => 'true'));
+        $builder->add('customer', new \MeVisa\CRMBundle\Form\CustomerType());
 
         $builder->add('orderProducts', 'collection', array(
             'type' => new OrderProductsType(),
@@ -51,8 +52,16 @@ class OrdersType extends AbstractType
         $builder->add('orderCompanions', 'collection', array(
             'type' => new OrderCompanionsType(),
             'allow_add' => true));
-        $builder->add('payments', 'collection', array('type' => new OrderPaymentsType(), 'allow_add' => true));
-        $builder->add('comments', 'collection', array('type' => new OrderCommentsType(), 'allow_add' => true));
+
+        $builder->add('payments', 'collection', array(
+            'type' => new OrderPaymentsType(),
+            'allow_add' => true
+        ));
+
+        $builder->add('comments', 'collection', array(
+            'type' => new OrderCommentsType(),
+            'allow_add' => true
+        ));
     }
 
     /**

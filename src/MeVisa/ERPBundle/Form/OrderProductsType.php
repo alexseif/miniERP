@@ -21,7 +21,6 @@ class OrderProductsType extends AbstractType
                 ->add('quantity')
                 ->add('unitPrice', 'money', array('currency' => 'RUB', 'divisor' => 100, 'label' => 'Subtotal', 'disabled' => 'true'))
                 ->add('total', 'money', array('currency' => 'RUB', 'divisor' => 100, 'label' => 'Subtotal', 'disabled' => 'true'))
-                ->add('orderRef')
                 // TODO: Find enabled products
                 ->add('product', 'entity', array(
                     'class' => 'MeVisaERPBundle:Products',

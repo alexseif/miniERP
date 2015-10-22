@@ -18,14 +18,20 @@ class CustomerType extends AbstractType
         $builder
                 ->add('name')
                 ->add('email', 'email')
-                ->add('phone', 'number')
+                ->add('phone', 'text')
                 ->add('nationality', 'country', array(
                     'preferred_choices' => array('RU', 'UA'),
                     'data' => 'RU',
                     'attr' => array('class' => 'chosen-input')
                 ))
-                ->add('passportNumber', 'text', array('label' => 'Passport#'))
-                ->add('passportExpiry', 'text', array('label' => 'Passport Exp'))
+                ->add('passportNumber', 'text', array('label' => 'Passport #'))
+                ->add('passportExpiry', 'date', array(
+                    'label' => 'Expiry',
+                    'format' => 'dMMMyyyy',
+                    'years' => range(date('Y'), date('Y') + 12),
+                    'days' => array(1),
+                    'placeholder' => array('day' => false)
+                ))
         ;
     }
 

@@ -11,6 +11,7 @@
 {% endblock %}
 {% block content %}
     {{ form_start(form) }}
+    {{ form_row(form._token) }}
     {{ form_errors(form) }}
     <div class="panel panel-default">
         <div class="panel-heading clearfix">
@@ -30,34 +31,29 @@
                     <span class="panel-title">Customer</span>
                 </div>
                 <div class="panel-body">
-                    {#{{ form_label(form.customers) }}#}
-                    <div class='row'>
-                        <div class="col-sm-6">
-{#                            {{ form_row(form.customer) }}#}
+                    <div class="row">
+                        <div class="col-sm-4">
+                            {{ form_row(form.customer.name)}}
+                        </div>
+                        <div class="col-sm-4">
+                            {{ form_row(form.customer.email) }}
+                        </div>
+                        <div class="col-sm-4">
+                            {{ form_row(form.customer.phone) }}
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-sm-6">
-                            {{ form_row(form.customer.vars.prototype.name)}}
+                        <div class="col-sm-4">
+                            {{ form_row(form.customer.nationality) }}
                         </div>
-                        <div class="col-sm-6">
-                            {{ form_row(form.customer.vars.prototype.nationality) }}
+                        <div class="col-sm-4">
+                            {{ form_row(form.customer.passportNumber) }}
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-6">
-                            {{ form_row(form.customer.vars.prototype.email) }}
-                        </div>
-                        <div class="col-sm-6">
-                            {{ form_row(form.customer.vars.prototype.passportNumber) }}
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-6">
-                            {{ form_row(form.customer.vars.prototype.phone) }}
-                        </div>
-                        <div class="col-sm-6">
-                            {{ form_row(form.customer.vars.prototype.passportExpiry) }}
+                        <div class="col-sm-4">
+                            {# TODO: Expiry date initial this month #}
+                            {{ form_widget(form.customer.passportExpiry.day, {'attr': { 'style': 'display:none' } }) }}
+                            {{ form_row(form.customer.passportExpiry) }}
+                            {# {{ form_widget(form.customer.vars.prototype.passportExpiry.year) }}#}
                         </div>
                     </div>
                 </div>

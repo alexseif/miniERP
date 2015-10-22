@@ -16,7 +16,9 @@ class OrderCommentsType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-                ->add('comment')
+                ->add('comment', 'textarea', array(
+                    'required' => false
+                ))
                 ->add('author', 'choice', array('placeholder' => 'Author'))
         ;
     }
