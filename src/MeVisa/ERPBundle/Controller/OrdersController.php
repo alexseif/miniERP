@@ -8,7 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use MeVisa\ERPBundle\Entity\Orders;
-use MeVisa\CRMBundle\Entity\Customer;
+use MeVisa\CRMBundle\Entity\Customers;
 use MeVisa\ERPBundle\Form\OrdersType;
 
 /**

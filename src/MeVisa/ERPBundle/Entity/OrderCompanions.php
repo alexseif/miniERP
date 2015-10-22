@@ -32,28 +32,35 @@ class OrderCompanions
     /**
      * @var string
      *
-     * @ORM\Column(name="Name", type="string", length=255)
+     * @ORM\Column(name="name", type="string", length=255)
      */
     private $name;
 
     /**
-     * @var integer
+     * @var string
      *
-     * @ORM\Column(name="age", type="integer")
+     * @ORM\Column(name="nationality", type="string", length=255)
      */
-    private $age;
+    private $nationality;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="passport_number", type="string", length=255, nullable=true)
+     * @ORM\Column(name="pax", type="string", length=255)
+     */
+    private $pax;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="passport_number", type="string", length=255)
      */
     private $passportNumber;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="passport_expiry", type="string", length=255, nullable=true)
+     * @ORM\Column(name="passport_expiry", type="string", length=255)
      */
     private $passportExpiry;
 
@@ -159,27 +166,50 @@ class OrderCompanions
         return $this->passportExpiry;
     }
 
+
     /**
-     * Set age
+     * Set nationality
      *
-     * @param integer $age
+     * @param string $nationality
      * @return OrderCompanions
      */
-    public function setAge($age)
+    public function setNationality($nationality)
     {
-        $this->age = $age;
+        $this->nationality = $nationality;
 
         return $this;
     }
 
     /**
-     * Get age
+     * Get nationality
      *
-     * @return integer 
+     * @return string 
      */
-    public function getAge()
+    public function getNationality()
     {
-        return $this->age;
+        return $this->nationality;
     }
 
+    /**
+     * Set pax
+     *
+     * @param string $pax
+     * @return OrderCompanions
+     */
+    public function setPax($pax)
+    {
+        $this->pax = $pax;
+
+        return $this;
+    }
+
+    /**
+     * Get pax
+     *
+     * @return string 
+     */
+    public function getPax()
+    {
+        return $this->pax;
+    }
 }

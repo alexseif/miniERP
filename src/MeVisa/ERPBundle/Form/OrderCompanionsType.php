@@ -17,10 +17,25 @@ class OrderCompanionsType extends AbstractType
     {
         $builder
                 ->add('name')
-                ->add('age')
-                ->add('passportNumber')
-                ->add('passportExpiry')
-//                ->add('orderRef')
+                ->add('pax', 'choice', array(
+                    'choices' => array('all' => 'All',
+                        'i' => 'Infant',
+                        'c' => 'Child',
+                        'a' => 'Adult')
+                ))
+                ->add('nationality', 'country', array(
+                    'preferred_choices' => array('RU', 'UA'),
+                    'data' => 'RU',
+                    'attr' => array('class' => 'chosen-input')
+                ))
+                ->add('passportNumber', 'text', array('label' => 'Passport #'))
+                ->add('passportExpiry', 'date', array(
+                    'label' => 'Expiry',
+                    'format' => 'dMMMyyyy',
+                    'years' => range(date('Y'), date('Y') + 12),
+                    'days' => array(1),
+                    'placeholder' => array('day' => false)
+                ))->add('orderRef')
         ;
     }
 

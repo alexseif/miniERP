@@ -20,7 +20,6 @@
                 <span class="label label-default">Channel {{ order.channel }}</span>
                 &nbsp;<span class="label label-default">State {{ order.state }}</span>
                 &nbsp;<span class="label label-default"> {{ order.createdAt|date() }}</span>
-                {# {{ form_widget(form.channel) }} {{ form_widget(form.state) }}#}
             </div>
         </div>
         <div class="panel-body">
@@ -40,20 +39,6 @@
                         </div>
                         <div class="col-sm-4">
                             {{ form_row(form.customer.phone) }}
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-4">
-                            {{ form_row(form.customer.nationality) }}
-                        </div>
-                        <div class="col-sm-4">
-                            {{ form_row(form.customer.passportNumber) }}
-                        </div>
-                        <div class="col-sm-4">
-                            {# TODO: Expiry date initial this month #}
-                            {{ form_widget(form.customer.passportExpiry.day, {'attr': { 'style': 'display:none' } }) }}
-                            {{ form_row(form.customer.passportExpiry) }}
-                            {# {{ form_widget(form.customer.vars.prototype.passportExpiry.year) }}#}
                         </div>
                     </div>
                 </div>
@@ -109,15 +94,21 @@
                         <thead>
                             <tr>
                                 <th>Name</th>
-                                <th>Age</th>
+                                <th>PAX</th>
                                 <th>Passport #</th>
                                 <th>Passport Exp</th>
                             </tr>
                         </thead>
                         <tbody class="companions" data-prototype="{{ '<td>' ~ form_widget(form.orderCompanions.vars.prototype.name) ~ '</td>' 
-~ '<td>' ~ form_widget(form.orderCompanions.vars.prototype.age) ~ '</td>'
+~ '<td>' ~ form_widget(form.orderCompanions.vars.prototype.pax) ~ '</td>'
 ~ '<td>' ~ form_widget(form.orderCompanions.vars.prototype.passportNumber) ~ '</td>'
 ~ '<td>' ~ form_widget(form.orderCompanions.vars.prototype.passportExpiry) ~ '</td>' }}">
+                            {#                            
+                                                         TODO: Expiry date initial this month 
+                                                        {{ form_widget(form.customer.passportExpiry.day, {'attr': { 'style': 'display:none' } }) }}
+                                                        {{ form_row(form.customer.passportExpiry) }}
+                                                        // {{ form_widget(form.customer.vars.prototype.passportExpiry.year) }}
+                            #}
                         </tbody>
                     </table>
                 </div>

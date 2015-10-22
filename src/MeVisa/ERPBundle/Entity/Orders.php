@@ -39,7 +39,7 @@ class Orders
 
     /**
      *
-     * @ORM\ManyToOne(targetEntity="MeVisa\CRMBundle\Entity\Customer", inversedBy="Orders", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="MeVisa\CRMBundle\Entity\Customers", inversedBy="Orders", cascade={"persist"})
      * @ORM\JoinColumn(name="customer_id", referencedColumnName="id")
      */
     private $customer;
@@ -186,11 +186,6 @@ class Orders
     public function getState()
     {
         return $this->state;
-    }
-
-    public function getCustomers()
-    {
-        
     }
 
     /**

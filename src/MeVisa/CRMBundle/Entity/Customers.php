@@ -2,18 +2,16 @@
 
 namespace MeVisa\CRMBundle\Entity;
 
-use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Customer
+ * Customers
  *
  * @ORM\Table()
- * @ORM\Entity(repositoryClass="MeVisa\CRMBundle\Entity\CustomerRepository")
+ * @ORM\Entity(repositoryClass="MeVisa\CRMBundle\Entity\CustomersRepository")
  */
-class Customer
+class Customers
 {
-
     /**
      * @var integer
      *
@@ -26,45 +24,24 @@ class Customer
     /**
      * @var string
      *
-     * @ORM\Column(name="Name", type="string", length=255)
+     * @ORM\Column(name="name", type="string", length=255)
      */
     private $name;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="Email", type="string", length=255)
-     * @Assert\Email()
+     * @ORM\Column(name="email", type="string", length=255)
      */
     private $email;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="Phone", type="string", length=255)
+     * @ORM\Column(name="phone", type="string", length=25)
      */
     private $phone;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="Nationality", type="string", length=255)
-     */
-    private $nationality;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="passport_number", type="string", length=255, nullable=true)
-     */
-    private $passportNumber;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="passport_expiry", type="string", length=255, nullable=true)
-     */
-    private $passportExpiry;
 
     /**
      * Get id
@@ -80,7 +57,7 @@ class Customer
      * Set name
      *
      * @param string $name
-     * @return Customer
+     * @return Customers
      */
     public function setName($name)
     {
@@ -103,7 +80,7 @@ class Customer
      * Set email
      *
      * @param string $email
-     * @return Customer
+     * @return Customers
      */
     public function setEmail($email)
     {
@@ -126,7 +103,7 @@ class Customer
      * Set phone
      *
      * @param string $phone
-     * @return Customer
+     * @return Customers
      */
     public function setPhone($phone)
     {
@@ -144,28 +121,4 @@ class Customer
     {
         return $this->phone;
     }
-
-    /**
-     * Set nationality
-     *
-     * @param string $nationality
-     * @return Customer
-     */
-    public function setNationality($nationality)
-    {
-        $this->nationality = $nationality;
-
-        return $this;
-    }
-
-    /**
-     * Get nationality
-     *
-     * @return string 
-     */
-    public function getNationality()
-    {
-        return $this->nationality;
-    }
-
 }
