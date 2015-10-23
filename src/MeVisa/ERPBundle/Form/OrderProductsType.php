@@ -18,27 +18,33 @@ class OrderProductsType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-                ->add('quantity')
-                ->add('unitPrice', 'money', array('currency' => 'RUB', 'divisor' => 100, 'label' => 'Subtotal', 'disabled' => 'true'))
-                ->add('total', 'money', array('currency' => 'RUB', 'divisor' => 100, 'label' => 'Subtotal', 'disabled' => 'true'))
-                // TODO: Find enabled products
                 ->add('product', 'entity', array(
                     'class' => 'MeVisaERPBundle:Products',
                     'choice_label' => 'name',
-                    'placeholder' => 'Select Product',
+//                    'placeholder' => 'Select Product',
+                    'multiple' => true,
+                    'expanded' => true,
+                    'label' => false,
                     'attr' => array(
-                        'class' => 'product_id'
+                        'class' => 'product_id',
                     )
                 ))
-                ->add('productPrice', 'entity', array(
-                    'class' => 'MeVisaERPBundle:ProductPrices',
-                    'choice_label' => 'age',
-                    'placeholder' => 'Select Price',
-                    'attr' => array(
-                        'class' => 'product_price_id'
-                    )
+                ->add('quantity', 'integer', array(
+                    'label' => 'Comapanions'
                 ))
-
+                ->add('unitPrice', 'money', array(
+                    'currency' => 'RUB',
+                    'divisor' => 100,
+                    'label' => 'Unit Price',
+                    'disabled' => 'true'
+                ))
+                ->add('total', 'money', array(
+                    'currency' => 'RUB',
+                    'divisor' => 100,
+                    'label' => 'Subtotal',
+                    'disabled' => 'true'
+                ))
+        // TODO: Find enabled products
         ;
     }
 

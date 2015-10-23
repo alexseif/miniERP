@@ -8,9 +8,14 @@
         .panel-body label{font-weight: 550}
         .panel .control-label{padding-left: 5px; padding-right: 5px;}
     </style>
+    <style type="text/css">
+        .checkbox input[type="checkbox"]{margin-top: 0px;}
+        .list-group-item{padding-top: 2px;padding-bottom: 2px}
+        .badge{margin-top: 5px;}
+    </style>
 {% endblock %}
 {% block content %}
-    {{ form_start(form) }}
+    {{ form_start(form, {'attr':{'class':'form-group-sm'} }) }}
     {{ form_row(form._token) }}
     {{ form_errors(form) }}
     <div class="panel panel-default">
@@ -24,66 +29,101 @@
         </div>
         <div class="panel-body">
             {#            <div class="panel-group">#}
+            <div class="row">
+                <div class="col-sm-4">
+                    {{ form_widget(form.customer)}}
+                </div>
+                <div class="col-sm-4">
+                    <ul class="list-group">
+                        <li class="list-group-item">                                
+                            <span class="badge">2050 RUB</span>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox"/> UAE
+                                </label>
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <span class="badge">2050 RUB</span>
+                            <div class="checkbox">
+
+                                <label>
+                                    <input type="checkbox"/>UAE Urgent
+                                </label>
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <span class="badge">2050 RUB</span>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox"/>Singapore
+                                </label>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-sm-4">
+                    <ul class="list-group">
+                        <li class="list-group-item">
+                            <span class="badge">2050 RUB</span>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" />Marhaba Bronze
+                                </label>
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <span class="badge">2050 RUB</span>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox"/> Marhaba Gold 
+                                </label>
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <span class="badge">2050 RUB</span>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox"/>Marhaba Family
+                                </label>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                {#<div class="col-sm-4">
+                    {{ form_row(form.customer.email) }}
+                </div>
+                <div class="col-sm-4">
+                    {{ form_row(form.customer.phone) }}
+                </div>#}
+            </div>
+            <div class="row">
+                <div class="col-sm-3">
+                    {{ form_label(form.orderProducts.vars.prototype.quantity) }}
+                    {{ form_widget(form.orderProducts.vars.prototype.quantity) }}
+                </div>
+            </div>
+            <hr/>
             <!-- Customer -->
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <span class="panel-title">Customer</span>
-                </div>
-                <div class="panel-body">
-                    <div class="row">
-                        <div class="col-sm-4">
-                            {{ form_row(form.customer.name)}}
+            {#            <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <span class="panel-title">Customer</span>
+                            </div>
+                            <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-sm-4">
+                                        {{ form_row(form.customer.name)}}
+                                    </div>
+                                    <div class="col-sm-4">
+                                        {{ form_row(form.customer.email) }}
+                                    </div>
+                                    <div class="col-sm-4">
+                                        {{ form_row(form.customer.phone) }}
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="col-sm-4">
-                            {{ form_row(form.customer.email) }}
-                        </div>
-                        <div class="col-sm-4">
-                            {{ form_row(form.customer.phone) }}
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Order details -->
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <span class="panel-title">Products</span>
-                </div>
-                <div class="table-responsive">
-                    <table class="table table-bordered table-hover records_list">
-                        <thead>
-                            <tr>
-                                <th>Product</th>
-                                <th>PAX</th>
-                                <th>Quantity</th>
-                                <th>Unit Price</th>
-                                <th>Total</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>{{ form_widget(form.orderProducts.vars.prototype.product) }}</td>
-                                <td>{{ form_widget(form.orderProducts.vars.prototype.productPrice) }}</td>
-                                <td>{{ form_widget(form.orderProducts.vars.prototype.quantity) }}</td>
-                                <td>{{ form_widget(form.orderProducts.vars.prototype.unitPrice) }}</td>
-                                <td>{{ form_widget(form.orderProducts.vars.prototype.total) }}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="panel-body">
-                    <a href="#" class="btn btn-block"><span class="glyphicon glyphicon-plus"></span></a>
-                </div>
-                <div class="panel-footer ">
-                    <div class="row">
-                        <div class="col-sm-4">
-                            {# <span class="label label-primary" style="font-size: 14px;">RUB Subtotal</span>#}
-                            {{ form_row(form.productsTotal) }}
-                        </div>
-                        <div class="col-sm-2"></div>
-                        <div class="col-sm-6">{{ form_row(form.adjustmentTotal) }}</div>
-                    </div>
-                </div>
-            </div>
+              #}          <!-- Order details -->
             <!-- Companions -->
             <div class="panel panel-default">
                 <div class="panel-heading">
@@ -112,30 +152,36 @@
                         </tbody>
                     </table>
                 </div>
-                <div class="panel-body">
-                    <a href="#" class="btn btn-block addCompanion" id="add-companion"><span class="glyphicon glyphicon-plus"></span></a>
+                {#                <div class="panel-body">#}
+                {#                    <a href="#" class="btn btn-block addCompanion" id="add-companion"><span class="glyphicon glyphicon-plus"></span></a>#}
+                {#                </div>#}
+                <div class="panel-footer">
+                    <div class="row">
+                        <div class="col-sm-4">
+                            {# <span class="label label-primary" style="font-size: 14px;">RUB Subtotal</span>#}
+                            {{ form_row(form.productsTotal) }}
+                        </div>
+                        <div class="col-sm-2"></div>
+                        <div class="col-sm-6">{{ form_row(form.adjustmentTotal) }}</div>
+                    </div>
                 </div>
             </div>
             <!-- Payment details -->
+
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <span class="panel-title">Payment details</span>
                 </div>
                 <div class="panel-body">
                     <div class="row">
-                        <div class="col-sm-6 clearfix">
-                            <div class="pull-left">
-                                {{ form_row(form.payments.vars.prototype.method) }}
-                                {{ form_row(form.payments.vars.prototype.amount) }}
-                            </div>
+                        <div class="col-sm-3 col-sm-offset-1">
+                            {{ form_widget(form.payments.vars.prototype.method) }}
                         </div>
-                        <div class="col-sm-6">
+                        <div class="col-sm-8">
+                            {{ form_row(form.payments.vars.prototype.amount) }}
                             {{ form_row(form.payments.vars.prototype.detail) }}
                         </div>
                     </div>
-                </div>
-                <div class="panel-footer">
-                    {{ form_row(form.payments.vars.prototype.state) }}
                 </div>
             </div>
             <!-- Comments -->
@@ -176,7 +222,6 @@
                 [{
                 id:{{ price.id }},
                         price:{{ price.price }},
-                        age: '{{ price.age }}'
                 }];{% endfor %}
     </script>
 {% endblock %}

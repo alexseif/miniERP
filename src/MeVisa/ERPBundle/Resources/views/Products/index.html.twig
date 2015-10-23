@@ -44,15 +44,8 @@
                                         </td>
                                         <td>{% if entity.enabled %}Enabled{% else %}Disabled{% endif %}</td>
                                         <td>
-                                            {% for pricing in entity.pricing %}
-                                                {% if pricing.age=='all' %}All
-                                                {% elseif pricing.age=='a' %}Adult
-                                                {% elseif pricing.age=='i' %}Infant
-                                                {% elseif pricing.age=='C' %}Child
-                                                {% endif %}
-                                                {#{{ pricing.age }}#}
-                                                - {{ pricing.price|number_format(2, '.', ',') }} {{ pricing.priceCurrency }}
-                                            {% endfor %}
+{# TODO: Add Pricing#}
+{#                                                - {{ pricing.price|number_format(2, '.', ',') }} {{ pricing.priceCurrency }}#}
                                         </td>
                                         <td>
                                             <a class="btn btn-primary" href="{{ path('admin_products_show', { 'id': entity.id }) }}">show</a>
