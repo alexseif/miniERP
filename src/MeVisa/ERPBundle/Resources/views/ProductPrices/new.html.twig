@@ -18,12 +18,8 @@
                     {{ form_start(form) }}
                     <div class="row">
                         <div class="hidden">{{ form_widget(form.product) }}</div>
-                        <div class="col-md-2">{{ form_row(form.age) }}</div>
-                        <div class="col-md-2">{{ form_row(form.cost) }}</div>
-                        <div class="col-md-1"><br/>{{ form_widget(form.costCurrency) }}</div>
-                        <div class="col-md-2">{{ form_row(form.price) }}</div>
-                        <div class="col-md-1"><br/>{{ form_widget(form.priceCurrency) }}</div>
-                        <div class="col-md-4"></div>
+                        <div class="col-md-4">{{ form_row(form.cost) }}</div>
+                        <div class="col-md-4">{{ form_row(form.price) }}</div>
                     </div>
                     {{ form_end(form) }}
                 </div>

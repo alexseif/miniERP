@@ -18,11 +18,8 @@
                     <div class="row">
                         {{ form_start(edit_form) }}
                         <div class="hidden">{{ form_widget(edit_form.product) }}</div>
-                        <div class="col-md-2">{{ form_row(edit_form.age) }}</div>
-                        <div class="col-md-2">{{ form_row(edit_form.cost) }}</div>
-                        <div class="col-md-1"><br/>{{ form_widget(edit_form.costCurrency) }}</div>
-                        <div class="col-md-2">{{ form_row(edit_form.price) }}</div>
-                        <div class="col-md-1"><br/>{{ form_widget(edit_form.priceCurrency) }}</div>
+                        <div class="col-md-4">{{ form_row(edit_form.cost) }}</div>
+                        <div class="col-md-4">{{ form_row(edit_form.price) }}</div>
                         <div class="col-md-2"><br/>{{ form_end(edit_form) }}</div>
                     </div>
                 </div>
@@ -32,7 +29,7 @@
     <!-- /.row -->
     <div class="row">
         <div class="col-md-11">{{ form(delete_form) }}</div>
-        <div class="col-md-1"><a class="btn btn-warning" href="{{ path('admin_pricing', { 'product_id': entity.absproduct.id }) }}">Back</a></div>
+        <div class="col-md-1"><a class="btn btn-warning" href="{{ path('admin_pricing', { 'product_id': entity.product.id }) }}">Back</a></div>
     </div>
     <!-- /.row -->
 {% endblock %}
