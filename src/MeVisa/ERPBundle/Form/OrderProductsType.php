@@ -19,27 +19,21 @@ class OrderProductsType extends AbstractType {
                 ->add('product', 'entity', array(
                     'class' => 'MeVisa\ERPBundle\Entity\Products',
                     'choice_label' => 'name',
-//                    'placeholder' => 'Select Product',
-//                    'multiple' => true,
-//                    'expanded' => true,
-//                    'label' => false,
+                    'placeholder' => 'Select Product',
                     'attr' => array(
                         'class' => 'product_id',
                     )
                 ))
-                ->add('quantity', 'integer', array(
-                    'label' => 'Comapanions'
-                ))
+                ->add('quantity', 'number')
                 ->add('unitPrice', 'money', array(
                     'currency' => 'RUB',
                     'divisor' => 100,
-                    'label' => 'Unit Price',
+                    'label' => 'Price',
                     'disabled' => 'true'
                 ))
                 ->add('total', 'money', array(
                     'currency' => 'RUB',
                     'divisor' => 100,
-                    'label' => 'Subtotal',
                     'disabled' => 'true'
                 ))
         // TODO: Find enabled products

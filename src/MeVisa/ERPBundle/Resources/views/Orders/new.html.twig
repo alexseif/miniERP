@@ -15,8 +15,7 @@
     </style>
 {% endblock %}
 {% block content %}
-{#    {{ form_start(form, {'attr':{'class':'form-group-sm'} }) }}#}
-    {{ form_start(form}) }}
+    {{ form_start(form) }}
     {{ form_row(form._token) }}
     {{ form_errors(form) }}
     <div class="panel panel-default">
@@ -29,101 +28,55 @@
             </div>
         </div>
         <div class="panel-body">
-            <div class="row">
-                <div class="col-sm-4">
-                    {{ form_widget(form.customer)}}
-                </div>
-                <div class="col-sm-4">
-                    <ul class="list-group">
-                        <li class="list-group-item">                                
-                            <span class="badge">2050 RUB</span>
-                            <div class="checkbox">
-                                <label>
-                                    <input type="checkbox"/> UAE
-                                </label>
-                            </div>
-                        </li>
-                        <li class="list-group-item">
-                            <span class="badge">2050 RUB</span>
-                            <div class="checkbox">
-
-                                <label>
-                                    <input type="checkbox"/>UAE Urgent
-                                </label>
-                            </div>
-                        </li>
-                        <li class="list-group-item">
-                            <span class="badge">2050 RUB</span>
-                            <div class="checkbox">
-                                <label>
-                                    <input type="checkbox"/>Singapore
-                                </label>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-                <div class="col-sm-4">
-                    <ul class="list-group">
-                        <li class="list-group-item">
-                            <span class="badge">2050 RUB</span>
-                            <div class="checkbox">
-                                <label>
-                                    <input type="checkbox" />Marhaba Bronze
-                                </label>
-                            </div>
-                        </li>
-                        <li class="list-group-item">
-                            <span class="badge">2050 RUB</span>
-                            <div class="checkbox">
-                                <label>
-                                    <input type="checkbox"/> Marhaba Gold 
-                                </label>
-                            </div>
-                        </li>
-                        <li class="list-group-item">
-                            <span class="badge">2050 RUB</span>
-                            <div class="checkbox">
-                                <label>
-                                    <input type="checkbox"/>Marhaba Family
-                                </label>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-                {#<div class="col-sm-4">
-                    {{ form_row(form.customer.email) }}
-                </div>
-                <div class="col-sm-4">
-                    {{ form_row(form.customer.phone) }}
-                </div>#}
-            </div>
-            <div class="row">
-                <div class="col-sm-3">
-                    {{ form_label(form.orderProducts.vars.prototype.quantity) }}
-                    {{ form_widget(form.orderProducts.vars.prototype.quantity) }}
-                </div>
-            </div>
-            <hr/>
             <!-- Customer -->
-            {#            <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <span class="panel-title">Customer</span>
-                            </div>
-                            <div class="panel-body">
-                                <div class="row">
-                                    <div class="col-sm-4">
-                                        {{ form_row(form.customer.name)}}
-                                    </div>
-                                    <div class="col-sm-4">
-                                        {{ form_row(form.customer.email) }}
-                                    </div>
-                                    <div class="col-sm-4">
-                                        {{ form_row(form.customer.phone) }}
-                                    </div>
-                                </div>
-                            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <span class="panel-title">Customer</span>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-sm-4">
+                            {{ form_row(form.customer.name)}}
                         </div>
-              #}          <!-- Order details -->
+                        <div class="col-sm-4">
+                            {{ form_row(form.customer.email)}}
+                        </div>
+                        <div class="col-sm-4">
+                            {{ form_row(form.customer.phone)}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Customer -->
+            <!-- Order Products -->
+            <div class="panel panel-default">
+                <div class="panel-heading clearfix">
+                    <div class="row">
+                        <div class="col-sm-3">
+                            {{ form_label(form.orderProducts.vars.prototype.product) }}
+                        </div>
+                        <div class="col-sm-3">
+                            {{ form_label(form.orderProducts.vars.prototype.quantity) }}
+                        </div>
+                        <div class="col-sm-3">
+                            {{ form_label(form.orderProducts.vars.prototype.unitPrice) }}
+                        </div>
+                        <div class="col-sm-3">
+                            {{ form_label(form.orderProducts.vars.prototype.total) }}
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <ul class="list-unstyled orderProducts" data-prototype="{{'<div class="row">'
+~ '<div class="col-sm-3">'~ form_widget(form.orderProducts.vars.prototype.product) ~ '</div>'
+~ '<div class="col-sm-3">'~ form_widget(form.orderProducts.vars.prototype.quantity) ~ '</div>'
+~ '<div class="col-sm-3">'~ form_widget(form.orderProducts.vars.prototype.unitPrice) ~ '</div>'
+~ '<div class="col-sm-3">'~ form_widget(form.orderProducts.vars.prototype.total) ~ '</div>'
+~ '</div>'}}">
+                    </ul>
+                </div>
+            </div>
+            <!-- Order Products -->
             <!-- Companions -->
             <div class="panel panel-default">
                 <div class="panel-heading">
@@ -139,22 +92,25 @@
                                 <th>Passport Exp</th>
                             </tr>
                         </thead>
-                        <tbody class="companions" data-prototype="{{ '<td>' ~ form_widget(form.orderCompanions.vars.prototype.name) ~ '</td>' 
+                        <tbody class="companions" data-prototype="{{ 
+'<td>' ~ form_widget(form.orderCompanions.vars.prototype.name) ~ '</td>' 
 ~ '<td>' ~ form_widget(form.orderCompanions.vars.prototype.pax) ~ '</td>'
 ~ '<td>' ~ form_widget(form.orderCompanions.vars.prototype.passportNumber) ~ '</td>'
-~ '<td>' ~ form_widget(form.orderCompanions.vars.prototype.passportExpiry) ~ '</td>' }}">
+~ '<td>' 
+~ form_widget(form.orderCompanions.vars.prototype.passportExpiry.day, {'attr': { 'style': 'display:none' } }) 
+~ form_widget(form.orderCompanions.vars.prototype.passportExpiry) 
+~ '</td>' }}">
                             {#                            
-                                                         TODO: Expiry date initial this month 
-                                                        {{ form_widget(form.customer.passportExpiry.day, {'attr': { 'style': 'display:none' } }) }}
-                                                        {{ form_row(form.customer.passportExpiry) }}
-                                                        // {{ form_widget(form.customer.vars.prototype.passportExpiry.year) }}
+                            TODO: Expiry date initial this month 
+                            {{ form_row(form.customer.passportExpiry) }}
+                            // {{ form_widget(form.customer.vars.prototype.passportExpiry.year) }}
                             #}
                         </tbody>
                     </table>
                 </div>
-                {#                <div class="panel-body">#}
-                {#                    <a href="#" class="btn btn-block addCompanion" id="add-companion"><span class="glyphicon glyphicon-plus"></span></a>#}
-                {#                </div>#}
+                <div class="panel-body">
+                    <a href="#" class="btn btn-block addCompanion" id="add-companion"><span class="glyphicon glyphicon-plus"></span></a>
+                </div>
                 <div class="panel-footer">
                     <div class="row">
                         <div class="col-sm-4">
@@ -216,12 +172,4 @@
     {{ parent() }}
     <script type="text/javascript" src="/js/chosen.jquery.min.js"></script>
     <script type="text/javascript" src="/js/orders.js"></script>
-    <script type="text/javascript">
-        var products = new Array();{% for price in productPrices %}
-                products[{{ price.product.id }}] =
-                [{
-                id:{{ price.id }},
-                        price:{{ price.price }},
-                }];{% endfor %}
-    </script>
 {% endblock %}
