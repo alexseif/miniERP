@@ -37,6 +37,22 @@ function addProductForm($productHolder, $newProductLinkLi) {
     $productHolder.data('index', index + 1);
     var $newFormLi = $('<li></li>').append(newForm);
     $newProductLinkLi.before($newFormLi);
+
+    if (index >= 1) {
+        $qty = $('input[name="mevisa_erpbundle_orders[orderProducts][0][quantity]"]').val();
+        $('input[name="mevisa_erpbundle_orders[orderProducts][' + index + '][quantity]"]').val($qty);
+    }
+
+    $('input[name="mevisa_erpbundle_orders[orderProducts][0][quantity]"]').change(function (e) {
+        var companionIndex = $companionHolder.data('index');
+        if (companionIndex <= 0) {
+            $noComanions = $('input[name="mevisa_erpbundle_orders[orderProducts][0][quantity]"]').val();
+            for (i = 0; i < $noComanions; i++) {
+                $('.addCompanion').click();
+                $('input[name="mevisa_erpbundle_orders[orderCompanions][0][name]"]').val($('input[name="mevisa_erpbundle_orders[customer][name]"]').val());
+            }
+        }
+    });
 }
 
 
