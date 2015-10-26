@@ -33,7 +33,6 @@ class OrdersType extends AbstractType
             'type' => new OrderProductsType(),
             'allow_add' => true));
 
-//        TODO: Add Order Companions
         $builder->add('orderCompanions', 'collection', array(
             'type' => new OrderCompanionsType(),
             'allow_add' => true

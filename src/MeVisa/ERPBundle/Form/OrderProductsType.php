@@ -5,8 +5,6 @@ namespace MeVisa\ERPBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormEvents;
 
 class OrderProductsType extends AbstractType
 {
@@ -40,9 +38,7 @@ class OrderProductsType extends AbstractType
                     'currency' => 'RUB',
                     'divisor' => 100,
                     'disabled' => 'true'
-                ))
-        // TODO: Find enabled products
-        ;
+        ));
     }
 
     /**

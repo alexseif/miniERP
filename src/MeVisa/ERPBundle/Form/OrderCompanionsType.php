@@ -34,6 +34,7 @@ class OrderCompanionsType extends AbstractType
                     'format' => 'dMMMyyyy',
                     'years' => range(date('Y'), date('Y') + 12),
                     'days' => array(1),
+                    'data' => new \DateTime('now'),
                     'placeholder' => array('day' => false)
                 ))->add('orderRef')
         ;

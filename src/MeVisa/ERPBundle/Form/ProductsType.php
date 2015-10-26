@@ -28,6 +28,7 @@ class ProductsType extends AbstractType
                 ))
                 ->add('enabled', 'checkbox', array(
                     'required' => false,
+                     'attr'     => array('checked'   => 'checked'),
                 ))
                 ->add('vendor', 'entity', array(
                     'class' => 'MeVisaERPBundle:Vendors',

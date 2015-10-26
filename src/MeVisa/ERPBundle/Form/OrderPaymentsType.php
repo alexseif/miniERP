@@ -19,7 +19,6 @@ class OrderPaymentsType extends AbstractType
                 ->add('method', 'choice', array(
                     // TODO: get payment options properly
                     'choices' => array('Online', 'Bank Transfer', 'Credit Card', 'Cash'),
-//                    'placeholder' => 'Method',
                     'expanded' => true
                 ))
                 ->add('amount', 'money', array(
@@ -27,7 +26,7 @@ class OrderPaymentsType extends AbstractType
                     'divisor' => 100,
                 ))
                 ->add('state', 'choice', array(
-                    // TODO: get payment options properly
+                    // TODO: get payment state properly
                     'choices' => array('Paid', 'Not Paid'),
                     'placeholder' => 'State',
                 ))

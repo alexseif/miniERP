@@ -73,23 +73,20 @@ class OrdersController extends Controller
 //                echo "Still no Customer <br/>";
             }
 
-            // TODO: Go through every product and every product price
             $orderProducts = $order->getOrderProducts();
 //        $orderProductCheck = false;
             $orderProductTotal = 0;
             foreach ($orderProducts as $orderProduct) {
                 // TODO: Check Order Product
-                // TODO: Handle no proper products
+                // TODO: Handle no proper products or disabled
                 $product = $orderProduct->getProduct();
                 $productPrice = $product->getPricing();
-                // TODO: Calculate totals
+                
                 $orderProduct->setTotal($productPrice[0]->getPrice() * $orderProduct->getQuantity());
                 $orderProductTotal += $orderProduct->getTotal();
             }
-            // TODO: Calculate order Product Total
             $order->setProductsTotal($orderProductTotal);
 
-            // TODO: Calculate Order Total
             $order->setTotal($order->getProductsTotal() + $order->getAdjustmentTotal());
 
             // FIXME: remove this faking order
@@ -101,25 +98,18 @@ class OrdersController extends Controller
 
             $orderCompanions = $order->getOrderCompanions();
             // TODO: Check Order Companions
-            if ($orderCompanions) {
-                foreach ($orderCompanions as $companion) {
+//            if ($orderCompanions) {
+//                foreach ($orderCompanions as $companion) {
 //                    var_dump($companion);
-                }
-            }
+//                }
+//            }
 
             $orderComments = $order->getOrderComments();
             // TODO: Check Order Comments
             // TODO: if order comment is not empty add new orderComment
             // TODO: Check Order
-            // TODO: Save Order
             $em->merge($order);
             $em->flush();
-
-            // TODO: check if I need to assign the following
-            // TODO: assign order ref
-            // TODO: Add Order Products
-            // TODO: Add Order Companions
-            // TODO: Add Order Comments
 
             return $this->redirect($this->generateUrl('orders_show', array('id' => $order->getId())));
         } else {
@@ -127,8 +117,6 @@ class OrdersController extends Controller
             $formErrors = $form->getErrors();
             var_dump($formErrors);
         }
-        var_dump($order);
-        die();
 
         return array(
             'entity' => $order,
