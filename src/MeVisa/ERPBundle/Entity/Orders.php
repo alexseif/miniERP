@@ -550,4 +550,9 @@ class Orders
         return $this->orderComments;
     }
 
+    public function __toString()
+    {
+        return $this->number;
+    }
+
 }

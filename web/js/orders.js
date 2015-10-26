@@ -2,7 +2,7 @@ $('.chosen-input').chosen({no_results_text: "Add new", allow_single_deselect: tr
 
 var $productHolder;
 
-var $addProductLink = $('<a href="#" class="btn btn-link btn-block add_product_link"><span class="glyphicon glyphicon-plus" title="Add a Product"></span></a>');
+var $addProductLink = $('<a href="#" class="btn btn-default btn-block add_product_link" style="margin-top:5px;"><span class="glyphicon glyphicon-plus" title="Add another product"></span></a>');
 var $newProductLinkLi = $('<li></li>').append($addProductLink);
 
 var $companionHolder;
@@ -17,7 +17,7 @@ $(document).ready(function () {
         e.preventDefault();
         addProductForm($productHolder, $newProductLinkLi);
     });
-    
+
     $addProductLink.click();
 
     $companionHolder = $('tbody.companions');

@@ -42,11 +42,11 @@
                                     <tr>
                                         <td>{{ entity.number }}</td>
                                         <td>{{ entity.state }}</td>
-                                        <td>{{ entity.customer }}</td>
+                                        <td>{{ entity.customer.name }}</td>
                                         <td>{{ entity.channel }}</td>
-                                        <td>{{ entity.productsTotal }}</td>
-                                        <td>{{ entity.adjustmentTotal }}</td>
-                                        <td>{{ entity.total }}</td>
+                                        <td>{{ entity.productsTotal/100|number_format(2, '.', ',') }} RUB</td>
+                                        <td>{{ entity.adjustmentTotal/100|number_format(2, '.', ',') }} RUB</td>
+                                        <td>{{ entity.total/100|number_format(2, '.', ',') }} RUB</td>
                                         <td>{% if entity.createdAt %}{{ entity.createdAt|date('Y-m-d H:i:s') }}{% endif %}</td>
                                         <td>
                                             <a class="btn btn-primary" href="{{ path('orders_show', { 'id': entity.id }) }}">show</a>

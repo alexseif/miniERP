@@ -8,7 +8,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use MeVisa\ERPBundle\Entity\Orders;
-use MeVisa\CRMBundle\Entity\Customers;
 use MeVisa\ERPBundle\Form\OrdersType;
 
 /**
@@ -53,18 +52,16 @@ class OrdersController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         if ($form->isValid()) {
-            echo "Form Valid <br/>";
 
             // TODO: Autogenerate order number
             $order->setNumber('Test001');
             // TODO: State machine
-            $order->setState('New Order');
+            $order->setState('new');
             // TODO: Order Channel
             $order->setChannel('POS');
 
             $customer = $order->getCustomer();
             if (!$customer->getId()) {
-                echo "New Customer <br/>";
                 $em->persist($customer);
                 // TODO: Check new Customer
                 // TODO: add new customer
@@ -73,7 +70,7 @@ class OrdersController extends Controller
             // $customerCheck = $em->getRepository('MeVisaCRMBundle:Customer')->find($order->getCustomer()->getId());
             $customerCheck = true;
             if (!$customerCheck) {
-                echo "Still no Customer <br/>";
+//                echo "Still no Customer <br/>";
             }
 
             // TODO: Go through every product and every product price
@@ -83,10 +80,10 @@ class OrdersController extends Controller
             foreach ($orderProducts as $orderProduct) {
                 // TODO: Check Order Product
                 // TODO: Handle no proper products
-//            $product = $orderProduct->getProduct();
-                $productPrice = $orderProduct->getProductPrice();
+                $product = $orderProduct->getProduct();
+                $productPrice = $product->getPricing();
                 // TODO: Calculate totals
-                $orderProduct->setTotal($productPrice->getPrice() * $orderProduct->getQuantity());
+                $orderProduct->setTotal($productPrice[0]->getPrice() * $orderProduct->getQuantity());
                 $orderProductTotal += $orderProduct->getTotal();
             }
             // TODO: Calculate order Product Total
@@ -100,12 +97,13 @@ class OrdersController extends Controller
             $order->setUpdatedAt(new \DateTime());
             $order->setCreatedAt(new \DateTime());
             $order->setCompletedAt(new \DateTime());
+            $order->setDeletedAt(new \DateTime());
 
             $orderCompanions = $order->getOrderCompanions();
             // TODO: Check Order Companions
             if ($orderCompanions) {
                 foreach ($orderCompanions as $companion) {
-//                var_dump($companion);
+//                    var_dump($companion);
                 }
             }
 
@@ -123,8 +121,6 @@ class OrdersController extends Controller
             // TODO: Add Order Companions
             // TODO: Add Order Comments
 
-
-
             return $this->redirect($this->generateUrl('orders_show', array('id' => $order->getId())));
         } else {
             echo "Form not valid becuase:<br/>";
@@ -132,7 +128,6 @@ class OrdersController extends Controller
             var_dump($formErrors);
         }
         var_dump($order);
-
         die();
 
         return array(
@@ -173,13 +168,12 @@ class OrdersController extends Controller
 
         $form = $this->createCreateForm($order);
 
-        $em = $this->getDoctrine()->getManager();
-
-        $productPrices = $em->getRepository('MeVisaERPBundle:ProductPrices')->findAll();
+//        $em = $this->getDoctrine()->getManager();
+//        $productPrices = $em->getRepository('MeVisaERPBundle:ProductPrices')->findAll();
 
         return array(
             'order' => $order,
-            'productPrices' => $productPrices,
+//            'productPrices' => $productPrices,
             'form' => $form->createView(),
         );
     }

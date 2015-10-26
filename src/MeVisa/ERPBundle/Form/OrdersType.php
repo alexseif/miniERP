@@ -17,8 +17,8 @@ class OrdersType extends AbstractType
     {
         $builder
                 ->add('number', 'text', array('label' => 'Order#', 'disabled' => true))
-                ->add('state', 'choice', array('placeholder' => 'State'))
-                ->add('channel', 'choice', array('placeholder' => 'Channel', 'disabled' => true))
+//                ->add('state', 'choice', array('placeholder' => 'State'))
+//                ->add('channel', 'choice', array('placeholder' => 'Channel', 'disabled' => true))
                 ->add('productsTotal', 'money', array('currency' => 'RUB', 'divisor' => 100, 'label' => 'Subtotal', 'disabled' => 'true'))
                 ->add('adjustmentTotal', 'money', array('currency' => 'RUB', 'divisor' => 100, 'label' => 'Adjustment'))
                 ->add('total', 'money', array('currency' => 'RUB', 'divisor' => 100, 'required' => false))
@@ -36,7 +36,8 @@ class OrdersType extends AbstractType
 //        TODO: Add Order Companions
         $builder->add('orderCompanions', 'collection', array(
             'type' => new OrderCompanionsType(),
-            'allow_add' => true));
+            'allow_add' => true
+        ));
 
         $builder->add('payments', 'collection', array(
             'type' => new OrderPaymentsType(),

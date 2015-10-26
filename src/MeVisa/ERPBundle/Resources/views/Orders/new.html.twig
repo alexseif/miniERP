@@ -7,6 +7,7 @@
         .panel-body{font-size: 11px;}
         .panel-body label{font-weight: 550}
         .panel .control-label{padding-left: 5px; padding-right: 5px;}
+        .orderProducts li{margin-top: 5px;}
     </style>
     <style type="text/css">
         .checkbox input[type="checkbox"]{margin-top: 0px;}
@@ -55,23 +56,23 @@
                         <div class="col-sm-3">
                             {{ form_label(form.orderProducts.vars.prototype.product) }}
                         </div>
-                        <div class="col-sm-3">
+                        <div class="col-sm-2">
                             {{ form_label(form.orderProducts.vars.prototype.quantity) }}
                         </div>
                         <div class="col-sm-3">
                             {{ form_label(form.orderProducts.vars.prototype.unitPrice) }}
                         </div>
-                        <div class="col-sm-3">
+                        <div class="col-sm-4">
                             {{ form_label(form.orderProducts.vars.prototype.total) }}
                         </div>
                     </div>
                 </div>
                 <div class="panel-body">
                     <ul class="list-unstyled orderProducts" data-prototype="{{'<div class="row">'
-~ '<div class="col-sm-3">'~ form_widget(form.orderProducts.vars.prototype.product) ~ '</div>'
-~ '<div class="col-sm-3">'~ form_widget(form.orderProducts.vars.prototype.quantity) ~ '</div>'
-~ '<div class="col-sm-3">'~ form_widget(form.orderProducts.vars.prototype.unitPrice) ~ '</div>'
-~ '<div class="col-sm-3">'~ form_widget(form.orderProducts.vars.prototype.total) ~ '</div>'
+~ '<div class="col-sm-3">' ~ form_widget(form.orderProducts.vars.prototype.product) ~ '</div>'
+~ '<div class="col-sm-2">' ~ form_widget(form.orderProducts.vars.prototype.quantity) ~ '</div>'
+~ '<div class="col-sm-3">' ~ form_widget(form.orderProducts.vars.prototype.unitPrice) ~ '</div>'
+~ '<div class="col-sm-4">' ~ form_widget(form.orderProducts.vars.prototype.total) ~ '</div>'
 ~ '</div>'}}">
                     </ul>
                 </div>
