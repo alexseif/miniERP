@@ -31,6 +31,9 @@ function addProductForm($productHolder, $newProductLinkLi) {
     $('select[name="mevisa_erpbundle_orders[orderProducts][' + index + '][product]"]').change(function () {
         updatePricesAndTotals();
     });
+    $('input[name="mevisa_erpbundle_orders[orderProducts][' + index + '][quantity]"]').change(function () {
+        updatePricesAndTotals();
+    });
 
     if (index >= 1) {
         $qty = $('input[name="mevisa_erpbundle_orders[orderProducts][0][quantity]"]').val();
@@ -38,7 +41,6 @@ function addProductForm($productHolder, $newProductLinkLi) {
     }
 
     $('input[name="mevisa_erpbundle_orders[orderProducts][0][quantity]"]').change(function () {
-        updatePricesAndTotals();
         var companionIndex = $companionHolder.data('index');
         if (companionIndex <= 0) {
             $noComanions = $('input[name="mevisa_erpbundle_orders[orderProducts][0][quantity]"]').val();
@@ -48,6 +50,8 @@ function addProductForm($productHolder, $newProductLinkLi) {
             }
         }
     });
+
+    $('select[name="mevisa_erpbundle_orders[orderProducts][' + index + '][product]"]').focus();
 }
 
 

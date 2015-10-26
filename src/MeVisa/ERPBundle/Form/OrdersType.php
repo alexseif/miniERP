@@ -20,8 +20,16 @@ class OrdersType extends AbstractType
 //                ->add('state', 'choice', array('placeholder' => 'State'))
 //                ->add('channel', 'choice', array('placeholder' => 'Channel', 'disabled' => true))
                 ->add('productsTotal', 'money', array('currency' => 'RUB', 'divisor' => 100, 'label' => 'Subtotal', 'disabled' => 'true'))
-                ->add('adjustmentTotal', 'money', array('currency' => 'RUB', 'divisor' => 100, 'label' => 'Adjustment'))
-                ->add('total', 'money', array('currency' => 'RUB', 'divisor' => 100, 'required' => false))
+                ->add('adjustmentTotal', 'money', array(
+                    'currency' => 'RUB',
+                    'divisor' => 100,
+                    'label' => 'Adjustment',
+                    'data' => 0))
+                ->add('total', 'money', array(
+                    'currency' => 'RUB',
+                    'divisor' => 100,
+                    'required' => false,
+                    'disabled' => 'true'))
 //                ->add('createdAt', 'hidden')
 //                ->add('updatedAt', 'hidden', array('required' => false))
 //                ->add('deletedAt', 'hidden', array('required' => false))
