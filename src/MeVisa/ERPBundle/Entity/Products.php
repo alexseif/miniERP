@@ -9,7 +9,8 @@ use Doctrine\Common\Collections\ArrayCollection;
  * Products
  *
  * @ORM\Table()
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="MeVisa\ERPBundle\Entity\ProductsRepository")
+ * 
  */
 class Products
 {

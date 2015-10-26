@@ -22,6 +22,9 @@ class OrderProductsType extends AbstractType
                     'class' => 'MeVisa\ERPBundle\Entity\Products',
                     'choice_label' => 'name',
                     'placeholder' => 'Select Product',
+                    'query_builder' => function(\MeVisa\ERPBundle\Entity\ProductsRepository $pr) {
+                        return $pr->queryAllEnabledProducts();
+                    },
                     'attr' => array(
                         'class' => 'product_id',
                     )
