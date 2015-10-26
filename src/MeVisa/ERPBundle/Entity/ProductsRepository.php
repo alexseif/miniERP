@@ -17,4 +17,9 @@ class ProductsRepository extends EntityRepository
                         ->where('p.enabled = true');
     }
 
+    public function getAllEnabledProducts()
+    {
+        return $this->queryAllEnabledProducts()->getResults();
+    }
+
 }

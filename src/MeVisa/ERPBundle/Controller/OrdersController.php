@@ -166,14 +166,17 @@ class OrdersController extends Controller
     {
         $order = new Orders();
 
+        $order->setState('new');
+        $order->setChannel('pos');
+
         $form = $this->createCreateForm($order);
 
-//        $em = $this->getDoctrine()->getManager();
-//        $productPrices = $em->getRepository('MeVisaERPBundle:ProductPrices')->findAll();
+        $em = $this->getDoctrine()->getManager();
+        $productPrices = $em->getRepository('MeVisaERPBundle:ProductPrices')->findAll();
 
         return array(
             'order' => $order,
-//            'productPrices' => $productPrices,
+            'productPrices' => $productPrices,
             'form' => $form->createView(),
         );
     }
