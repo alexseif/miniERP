@@ -29,6 +29,12 @@ class OrderCompanionsType extends AbstractType
                     'attr' => array('class' => 'chosen-input')
                 ))
                 ->add('passportNumber', 'text', array('label' => 'Passport #'))
+                /*
+                 * Russian passport format: RRYYSSSSSS (10 digits)
+                  R - two digits that correspond to the code assigned to the appropriate region of the Russian Federation
+                  Y - year of issuance of the passport form. New Russian passport numbers were introduced in 1997.
+                  S - six digits of the serial number
+                 */
                 ->add('passportExpiry', 'date', array(
                     'label' => 'Expiry',
                     'format' => 'dMMMyyyy',
@@ -36,7 +42,8 @@ class OrderCompanionsType extends AbstractType
                     'days' => array(1),
                     'data' => new \DateTime('now'),
                     'placeholder' => array('day' => false)
-                ))->add('orderRef')
+                ))
+                ->add('orderRef')
         ;
     }
 

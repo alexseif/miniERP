@@ -23,8 +23,8 @@
         <div class="panel-heading clearfix">
             <span class="panel-title">New Order</span>
             <div class="pull-right">
-                <span class="label label-primary">{{ order.channel|upper }}</span>
-                &nbsp;<span class="label label-info">{{ order.state|upper }}</span>
+                <span class="label label-default">{{ order.channel|upper }}</span>
+                &nbsp;<span class="label label-info">{{ order.stateName|upper }}</span>
                 &nbsp;<span class="label label-default"> {{ order.createdAt|date() }}</span>
             </div>
         </div>
@@ -158,8 +158,16 @@
         <div class="panel-footer">
             <div class="row">
                 <div class="col-sm-4">{{ form_row(form.total) }}</div>
-                <div class="col-sm-6"></div>
-                <div class="col-sm-2">{{ form_row(form.submit) }}</div>
+                <div class="col-sm-8">
+                    <div class="btn-toolbar pull-right">
+                        {% for child in order.orderState.currentState.children %}
+                            <button class="btn-{{child.bootstrapClass}} btn btn-toolbar" name="mevisa_erpbundle_orders[{{child.key}}]" id="mevisa_erpbundle_orders_{{child.key}}" type="submit">{{child.name}}</button>
+                        {% endfor %}
+                        {# <button class="btn-warning btn" name="mevisa_erpbundle_orders[submit]" id="mevisa_erpbundle_orders_submit" type="submit">DOCUMENT</button>#}
+                        {# <button class="btn-primary btn" name="mevisa_erpbundle_orders[submit]" id="mevisa_erpbundle_orders_submit" type="submit">POST</button>#}
+                    </div>
+                </div>
+                {# <div class="col-sm-2">{{ form_row(form.submit) }}</div>#}
             </div>
         </div>
     </div>

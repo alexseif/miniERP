@@ -23,7 +23,7 @@ class OrderCompanions
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Orders", inversedBy="OrderCommpanions")
+     * @ORM\ManyToOne(targetEntity="Orders", inversedBy="OrderCommpanions", cascade={"persist"})
      * @ORM\JoinColumn(name="order_id", referencedColumnName="id")
      *
      */
@@ -58,9 +58,9 @@ class OrderCompanions
     private $passportNumber;
 
     /**
-     * @var string
+     * @var \DateTime
      *
-     * @ORM\Column(name="passport_expiry", type="string", length=255)
+     * @ORM\Column(name="passport_expiry", type="datetime")
      */
     private $passportExpiry;
 
@@ -166,7 +166,6 @@ class OrderCompanions
         return $this->passportExpiry;
     }
 
-
     /**
      * Set nationality
      *
@@ -212,4 +211,5 @@ class OrderCompanions
     {
         return $this->pax;
     }
+
 }

@@ -4,6 +4,8 @@
  *  The following content was designed & implemented under AlexSeif.com
  */
 
+// TODO: Order must have companions before save
+// TODO: Save product name in orderProducts
 // TODO: Products.createdAt Products.updatedAt
 // TODO: ProductPrices.updatedAt
 // TODO: Menu fix

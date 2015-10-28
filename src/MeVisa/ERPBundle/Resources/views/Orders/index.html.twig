@@ -7,7 +7,9 @@
             {#            <h3 class="page-header">#}
             <h3 class="page-header">
                 Orders <small> {{ entities|length }} </small>
+                <a class="btn btn-primary pull-right" href="{{ path('orders_new') }}">Add Order</a>
             </h3>
+
             <!-- breadcrumb -->
             {#<ol class="breadcrumb">
                 <li class="active">
@@ -21,46 +23,49 @@
     <div class="row">
         <div class="col-md-12">
             <div class="panel panel-default">
-                <div class="panel-body">
-                    <div class="table-responsive">
-                        <table class="table table-bordered table-hover table-striped records_list">
-                            <thead>
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover table-striped records_list">
+                        <thead>
+                            <tr>
+                                <th>Order #</th>
+                                <th>State</th>
+                                <th>Customer</th>
+                                <th>Channel</th>
+                                <th>Subtotal</th>
+                                <th>Adjustment</th>
+                                <th>Total</th>
+                                <th>Created</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for entity in entities %}
                                 <tr>
-                                    <th>Number</th>
-                                    <th>State</th>
-                                    <th>Customer</th>
-                                    <th>Channel</th>
-                                    <th>Subtotal</th>
-                                    <th>Adjustment</th>
-                                    <th>Total</th>
-                                    <th>Created</th>
-                                    <th>Actions</th>
+                                    <td><a class="btn btn-link" href="{{ path('orders_show', { 'id': entity.id }) }}">{{ entity.number }}</a></td>
+                                    <td>
+                                        <span class="label 
+                                              {% if entity.state == "backoffice" %}label-info                                                      
+                                              {% elseif entity.state == "post" %}label-primary
+                                              {% elseif entity.state == "document" %}label-warning
+                                              {% else %}label-default
+                                              {% endif %}
+                                              ">
+                                            {{ entity.state|upper }}
+                                        </span>
+                                    </td>
+                                    <td>{{ entity.customer.name }}</td>
+                                    <td>{{ entity.channel }}</td>
+                                    <td class="text-right"><span class="pull-left">RUB&nbsp;</span>{{ entity.productsTotal/100|number_format(2, '.', ',') }}</td>
+                                    <td class="text-right"><span class="pull-left">RUB&nbsp;</span>{{ entity.adjustmentTotal/100|number_format(2, '.', ',') }}</td>
+                                    <td class="text-right"><span class="pull-left">RUB&nbsp;</span>{{ entity.total/100|number_format(2, '.', ',') }}</td>
+                                    <td>{% if entity.createdAt %}{{ entity.createdAt|date('M-d H:i') }}{% endif %}</td>
+                                    <td><a class="btn btn-primary" href="{{ path('orders_show', { 'id': entity.id }) }}">Open</a></td>
                                 </tr>
-                            </thead>
-                            <tbody>
-                                {% for entity in entities %}
-                                    <tr>
-                                        <td>{{ entity.number }}</td>
-                                        <td>{{ entity.state }}</td>
-                                        <td>{{ entity.customer.name }}</td>
-                                        <td>{{ entity.channel }}</td>
-                                        <td>{{ entity.productsTotal/100|number_format(2, '.', ',') }} RUB</td>
-                                        <td>{{ entity.adjustmentTotal/100|number_format(2, '.', ',') }} RUB</td>
-                                        <td>{{ entity.total/100|number_format(2, '.', ',') }} RUB</td>
-                                        <td>{% if entity.createdAt %}{{ entity.createdAt|date('Y-m-d H:i:s') }}{% endif %}</td>
-                                        <td>
-                                            <a class="btn btn-primary" href="{{ path('orders_show', { 'id': entity.id }) }}">show</a>
-                                            <a class="btn btn-primary" href="{{ path('orders_edit', { 'id': entity.id }) }}">edit</a>
-                                        </td>
-                                    </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
+                            {% endfor %}
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
     </div>
     <!-- /.row -->
-    <a class="btn btn-primary" href="{{ path('orders_new') }}">Add Order</a>
 {% endblock %}

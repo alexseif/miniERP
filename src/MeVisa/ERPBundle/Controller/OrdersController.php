@@ -56,7 +56,7 @@ class OrdersController extends Controller
             // TODO: Autogenerate order number
             $order->setNumber('Test001');
             // TODO: State machine
-            $order->setState('new');
+            $order->setState('backoffice');
             // TODO: Order Channel
             $order->setChannel('POS');
 
@@ -70,27 +70,28 @@ class OrdersController extends Controller
             // $customerCheck = $em->getRepository('MeVisaCRMBundle:Customer')->find($order->getCustomer()->getId());
             $customerCheck = true;
             if (!$customerCheck) {
-//                echo "Still no Customer <br/>";
+//  echo "Still no Customer <br/>";
             }
 
             $orderProducts = $order->getOrderProducts();
-//        $orderProductCheck = false;
+// $orderProductCheck = false;
             $orderProductTotal = 0;
             foreach ($orderProducts as $orderProduct) {
                 // TODO: Check Order Product
                 // TODO: Handle no proper products or disabled
                 $product = $orderProduct->getProduct();
                 $productPrice = $product->getPricing();
-                
+                $orderProduct->setUnitPrice($productPrice[0]->getPrice());
                 $orderProduct->setTotal($productPrice[0]->getPrice() * $orderProduct->getQuantity());
                 $orderProductTotal += $orderProduct->getTotal();
+                $em->persist($orderProduct);
             }
             $order->setProductsTotal($orderProductTotal);
 
             $order->setTotal($order->getProductsTotal() + $order->getAdjustmentTotal());
 
             // FIXME: remove this faking order
-            $order->setCreatedAt(new \DateTime());
+            $order->setCreatedAt(new \DateTime("now"));
             $order->setUpdatedAt(new \DateTime());
             $order->setCreatedAt(new \DateTime());
             $order->setCompletedAt(new \DateTime());
@@ -98,17 +99,25 @@ class OrdersController extends Controller
 
             $orderCompanions = $order->getOrderCompanions();
             // TODO: Check Order Companions
-//            if ($orderCompanions) {
-//                foreach ($orderCompanions as $companion) {
-//                    var_dump($companion);
-//                }
-//            }
+            foreach ($orderCompanions as $companion) {
+                $companion->setPassportExpiry(new \DateTime());
+                $companion->setNationality("eg");
+                $em->persist($companion);
+            }
 
-            $orderComments = $order->getOrderComments();
+//            $orderComments = $order->getOrderComments();
+//            foreach ($orderComments as $comment) {
+//                $em->persist($comment);
+//            }
+//            $orderPayments = $order->getOrderPayments();
+//            foreach ($orderPayments as $payment) {
+//                $payment->setCreatedAt(new \DateTime());
+//                $em->persist($payment);
+//            }
             // TODO: Check Order Comments
             // TODO: if order comment is not empty add new orderComment
             // TODO: Check Order
-            $em->merge($order);
+            $em->persist($order);
             $em->flush();
 
             return $this->redirect($this->generateUrl('orders_show', array('id' => $order->getId())));
@@ -153,8 +162,8 @@ class OrdersController extends Controller
     public function newAction()
     {
         $order = new Orders();
-
-        $order->setState('new');
+        // Set initial state
+        $order->setState('backoffice');
         $order->setChannel('pos');
 
         $form = $this->createCreateForm($order);
@@ -180,16 +189,20 @@ class OrdersController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('MeVisaERPBundle:Orders')->find($id);
+        $order = $em->getRepository('MeVisaERPBundle:Orders')->find($id);
 
-        if (!$entity) {
+        if (!$order) {
             throw $this->createNotFoundException('Unable to find Orders entity.');
         }
+        $state = $order->getState();
+        $order->startOrderStateEnginge();
+        $order->setOrderState($state);
+//        var_dump($order->getOrderState());
 
         $deleteForm = $this->createDeleteForm($id);
 
         return array(
-            'entity' => $entity,
+            'order' => $order,
             'delete_form' => $deleteForm->createView(),
         );
     }

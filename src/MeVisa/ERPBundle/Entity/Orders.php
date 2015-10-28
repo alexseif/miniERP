@@ -4,6 +4,7 @@ namespace MeVisa\ERPBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use MeVisa\ERPBundle\Business\OrderState;
 
 /**
  * Orders
@@ -119,12 +120,15 @@ class Orders
      * @ORM\OneToMany(targetEntity="OrderComments", mappedBy="orderRef")
      * */
     private $orderComments;
+    private $orderState;
 
     /**
      * Constructor
      */
     public function __construct()
     {
+        $this->startOrderStateEnginge();
+
         $this->products = new ArrayCollection();
         $this->payments = new ArrayCollection();
         $this->companions = new ArrayCollection();
@@ -173,6 +177,7 @@ class Orders
      */
     public function setState($state)
     {
+        $this->setOrderState($state);
         $this->state = $state;
 
         return $this;
@@ -186,6 +191,26 @@ class Orders
     public function getState()
     {
         return $this->state;
+    }
+
+    public function startOrderStateEnginge()
+    {
+        $this->orderState = new OrderState();
+    }
+
+    public function setOrderState($key)
+    {
+        $this->orderState->setState($key);
+    }
+
+    public function getStateName()
+    {
+        return $this->orderState->getName($this->state);
+    }
+
+    public function getOrderState()
+    {
+        return $this->orderState;
     }
 
     /**
@@ -427,7 +452,7 @@ class Orders
     public function addOrderProduct(\MeVisa\ERPBundle\Entity\OrderProducts $orderProducts)
     {
         $this->orderProducts[] = $orderProducts;
-
+        $orderProducts->setOrderRef($this);
         return $this;
     }
 
@@ -460,6 +485,7 @@ class Orders
     public function addOrderPayment(\MeVisa\ERPBundle\Entity\OrderPayments $orderPayments)
     {
         $this->orderPayments[] = $orderPayments;
+        $orderPayments->setOrderRef($this);
 
         return $this;
     }
@@ -493,7 +519,7 @@ class Orders
     public function addOrderCompanion(\MeVisa\ERPBundle\Entity\OrderCompanions $orderCompanions)
     {
         $this->orderCompanions[] = $orderCompanions;
-
+        $orderCompanions->setOrderRef($this);
         return $this;
     }
 
@@ -526,6 +552,7 @@ class Orders
     public function addOrderComment(\MeVisa\ERPBundle\Entity\OrderComments $orderComments)
     {
         $this->orderComments[] = $orderComments;
+        $orderComments->setOrderRef($this);
 
         return $this;
     }
