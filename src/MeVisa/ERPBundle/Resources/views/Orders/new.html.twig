@@ -30,129 +30,20 @@
         </div>
         <div class="panel-body">
             <!-- Customer -->
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <span class="panel-title">Customer</span>
-                </div>
-                <div class="panel-body">
-                    <div class="row">
-                        <div class="col-sm-4">
-                            {{ form_row(form.customer.name)}}
-                        </div>
-                        <div class="col-sm-4">
-                            {{ form_row(form.customer.email)}}
-                        </div>
-                        <div class="col-sm-4">
-                            {{ form_row(form.customer.phone)}}
-                        </div>
-                    </div>
-                </div>
-            </div>
+            {% include 'MeVisaERPBundle:Orders:new_customer.html.twig' %}
             <!-- Customer -->
             <!-- Order Products -->
-            <div class="panel panel-default">
-                <div class="panel-heading clearfix">
-                    <div class="row">
-                        <div class="col-sm-3">
-                            {{ form_label(form.orderProducts.vars.prototype.product) }}
-                        </div>
-                        <div class="col-sm-2">
-                            {{ form_label(form.orderProducts.vars.prototype.quantity) }}
-                        </div>
-                        <div class="col-sm-3">
-                            {{ form_label(form.orderProducts.vars.prototype.unitPrice) }}
-                        </div>
-                        <div class="col-sm-4">
-                            {{ form_label(form.orderProducts.vars.prototype.total) }}
-                        </div>
-                    </div>
-                </div>
-                <div class="panel-body">
-                    <ul class="list-unstyled orderProducts" data-prototype="{{'<div class="row">'
-~ '<div class="col-sm-3">' ~ form_widget(form.orderProducts.vars.prototype.product) ~ '</div>'
-~ '<div class="col-sm-2">' ~ form_widget(form.orderProducts.vars.prototype.quantity) ~ '</div>'
-~ '<div class="col-sm-3">' ~ form_widget(form.orderProducts.vars.prototype.unitPrice) ~ '</div>'
-~ '<div class="col-sm-4">' ~ form_widget(form.orderProducts.vars.prototype.total) ~ '</div>'
-~ '</div>'}}">
-                    </ul>
-                </div>
-            </div>
+            {% include 'MeVisaERPBundle:Orders:new_order_products.html.twig' %}
             <!-- Order Products -->
-            <!-- Companions -->
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <span class="panel-title">Companions</span>
-                </div>
-                <div class="table-responsive">
-                    <table class="table table-bordered table-hover records_list">
-                        <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>PAX</th>
-                                <th>Passport #</th>
-                                <th>Passport Exp</th>
-                            </tr>
-                        </thead>
-                        <tbody class="companions" data-prototype="{{ 
-'<td>' ~ form_widget(form.orderCompanions.vars.prototype.name) ~ '</td>' 
-~ '<td>' ~ form_widget(form.orderCompanions.vars.prototype.pax) ~ '</td>'
-~ '<td>' ~ form_widget(form.orderCompanions.vars.prototype.passportNumber) ~ '</td>'
-~ '<td>' 
-~ form_widget(form.orderCompanions.vars.prototype.passportExpiry.day, {'attr': { 'style': 'display:none' } }) 
-~ form_widget(form.orderCompanions.vars.prototype.passportExpiry) 
-~ '</td>' }}">
-                            {#                            
-                            TODO: Expiry date initial this month 
-                            #}
-                        </tbody>
-                    </table>
-                </div>
-                <div class="panel-body">
-                    <a href="#" class="btn btn-block addCompanion" id="add-companion"><span class="glyphicon glyphicon-plus"></span></a>
-                </div>
-                <div class="panel-footer">
-                    <div class="row">
-                        <div class="col-sm-4">
-                            {# <span class="label label-primary" style="font-size: 14px;">RUB Subtotal</span>#}
-                            {{ form_row(form.productsTotal) }}
-                        </div>
-                        <div class="col-sm-2"></div>
-                        <div class="col-sm-6">{{ form_row(form.adjustmentTotal) }}</div>
-                    </div>
-                </div>
-            </div>
-            <!-- Payment details -->
-
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <span class="panel-title">Payment details</span>
-                </div>
-                <div class="panel-body">
-                    <div class="row">
-                        <div class="col-sm-3 col-sm-offset-1">
-                            {{ form_widget(form.payments.vars.prototype.method) }}
-                        </div>
-                        <div class="col-sm-8">
-                            {{ form_row(form.payments.vars.prototype.amount) }}
-                            {{ form_row(form.payments.vars.prototype.detail) }}
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Comments -->
-            <div class="panel panel-default">
-                <div class="panel-heading clearfix">
-                    <span class="panel-title">Notes</span>
-                    <div class="pull-right">
-                        <span class="label label-default">Author</span>
-                        {#{{ form_widget(form.comments.vars.prototype.author) }}#}
-                    </div>
-                </div>
-                <div class="panel-body">
-                    {{ form_widget(form.comments.vars.prototype.comment) }}
-                </div>
-            </div>
-            <!-- Comments -->
+            <!-- Order Companions -->
+            {% include 'MeVisaERPBundle:Orders:new_order_companions.html.twig' %}
+            <!-- Order Companions -->
+            <!-- Order Payments -->
+            {% include 'MeVisaERPBundle:Orders:new_order_payments.html.twig' %}
+            <!-- Order Payments -->
+            <!-- Order Comments -->
+            {% include 'MeVisaERPBundle:Orders:new_order_comments.html.twig' %}
+            <!-- Order Comments -->
         </div>
         <!-- panel body -->
         <div class="panel-footer">

@@ -1,0 +1,13 @@
+<div class="panel panel-default">
+    <div class="panel-heading clearfix">
+        <span class="panel-title">Notes</span>
+        <div class="pull-right">
+            <span class="label label-default">Author</span>
+            {#{{ form_widget(form.comments.vars.prototype.author) }}#}
+        </div>
+    </div>
+    <div class="panel-body">
+        <div class="orderComments" data-prototype="{{ 
+form_widget(form.comments.vars.prototype.comment)|e }}"></div>
+    </div>
+</div>

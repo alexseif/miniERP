@@ -21,12 +21,14 @@ function updatePricesAndTotals() {
 }
 
 function addProductForm($productHolder, $newProductLinkLi) {
-    var prototype = $productHolder.data('prototype');
-    var index = $productHolder.data('index');
-    var newForm = prototype.replace(/__name__/g, index);
-    $productHolder.data('index', index + 1);
-    var $newFormLi = $('<li></li>').append(newForm);
-    $newProductLinkLi.before($newFormLi);
+    addPrototypeForm('ul.orderProducts', '<li></li>');
+
+//    var prototype = $productHolder.data('prototype');
+//    var index = $productHolder.data('index');
+//    var newForm = prototype.replace(/__name__/g, index);
+//    $productHolder.data('index', index + 1);
+//    var $newFormLi = $('<li></li>').append(newForm);
+//    $newProductLinkLi.before($newFormLi);
 
     $('select[name="mevisa_erpbundle_orders[orderProducts][' + index + '][product]"]').change(function () {
         updatePricesAndTotals();
@@ -55,15 +57,6 @@ function addProductForm($productHolder, $newProductLinkLi) {
 }
 
 
-function addCompanionForm($companionHolder) {
-    var prototype = $companionHolder.data('prototype');
-    var index = $companionHolder.data('index');
-    var newForm = prototype.replace(/__name__/g, index);
-    $companionHolder.data('index', index + 1);
-    var $newFormTr = $('<tr></tr>').append(newForm);
-    $companionHolder.append($newFormTr);
-}
-
 var $productHolder;
 
 var $addProductLink = $('<a href="#" class="btn btn-default btn-block add_product_link" style="margin-top:5px;"><span class="glyphicon glyphicon-plus" title="Add another product"></span></a>');
@@ -89,11 +82,13 @@ $(document).ready(function () {
     $addProductLink.click();
 
     $companionHolder = $('tbody.companions');
+
     $companionHolder.data('index', $companionHolder.find(':input').length);
     $('.addCompanion').on('click', function (e) {
         e.preventDefault();
-        addCompanionForm($companionHolder);
+        addPrototypeForm('tbody.companions', '<tr></tr>');
     });
 
-
+    addPrototypeForm('div.orderPayments', '<div class="row"></div>');
+    addPrototypeForm('div.orderComments', '<div></div>');
 });
