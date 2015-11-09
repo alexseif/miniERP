@@ -8,12 +8,14 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 class DefaultController extends Controller
 {
+
     /**
-     * @Route("/")
+     * @Route("/", name="dashboard")
      * @Template()
      */
-    public function baseAction()
+    public function dashboardAction()
     {
-        return $this->render('default/admin.html.twig');
+        return array();
     }
+
 }
