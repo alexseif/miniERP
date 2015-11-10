@@ -1,6 +1,9 @@
 {% extends ':default:admin.html.twig' %}
 
 {% block content %}
+    <style type="text/css">
+        td{width:20%;}
+    </style>
     <div class="clearfix" style="margin-bottom: 20px;">
         <div class="btn-group pull-right">
             <a href="{{ path('orders_new') }}" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span> Order</a>
@@ -8,34 +11,143 @@
         </div>
     </div>
     {# TODO: Make panels colapsible  #}
+    {# TODO: Make widget out of panels #}
     <div class="row">
         <div class="col-sm-6">
             <div class="panel panel-default">
-                <div class="panel-heading">
-                    <span class="panel-title">Pending Orders <span class="badge">0</span></span>
+                <div class="panel-heading clearfix">
+                    <span class="panel-title">Backoffice Orders</span>
+                    <span class="badge pull-right">{{ backoffice|length }}</span>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover table-striped records_list">
+                        <tbody>
+                            {% for order in backoffice %}
+                                <tr>
+                                    <td><a class="btn btn-link" href="{{ path('orders_show', { 'id': order.id }) }}">{{ order.number }}</a></td>
+                                    <td>{{ order.customer.name }}</td>
+                                    <td class="text-right">
+                                        <span class="pull-left">RUB&nbsp;</span>
+                                        {{ order.total/100|number_format(2, '.', ',') }}
+                                    </td>
+                                    <td>{{ order.createdAt|date('M-d H:i') }}</td>
+                                    <td class="text-right">
+                                        <span class="label
+                                              {% if order.state == "backoffice" %}label-info                                                      
+                                              {% elseif order.state == "post" %}label-primary
+                                              {% elseif order.state == "document" %}label-warning
+                                              {% else %}label-default
+                                              {% endif %}
+                                              ">{{ order.state|upper }}</span>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
         <div class="col-sm-6">
             <div class="panel panel-default">
-                <div class="panel-heading">
-                    <span class="panel-title">Documents Required <span class="badge">0</span></span>
+                <div class="panel-heading clearfix">
+                    <span class="panel-title">Documents Required </span>
+                    <span class="badge pull-right">{{ document|length }}</span>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover table-striped records_list">
+                        <tbody>
+                            {% for order in document %}
+                                <tr>
+                                    <td><a class="btn btn-link" href="{{ path('orders_show', { 'id': order.id }) }}">{{ order.number }}</a></td>
+                                    <td>{{ order.customer.name }}</td>
+                                    <td class="text-right">
+                                        <span class="pull-left">RUB&nbsp;</span>
+                                        {{ order.total/100|number_format(2, '.', ',') }}
+                                    </td>
+                                    <td>{{ order.createdAt|date('M-d H:i') }}</td>
+                                    <td class="text-right">
+                                        <span class="label
+                                              {% if order.state == "backoffice" %}label-info                                                      
+                                              {% elseif order.state == "post" %}label-primary
+                                              {% elseif order.state == "document" %}label-warning
+                                              {% else %}label-default
+                                              {% endif %}
+                                              ">{{ order.state|upper }}</span>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
     </div>
     <div class="row">
-        <div class="col-sm-6">
+        <div class="col-sm-6">   
             <div class="panel panel-default">
-                <div class="panel-heading">
-                    <span class="panel-title">Completed Orders today <span class="badge">0</span></span>
+                <div class="panel-heading clearfix">
+                    <span class="panel-title">Post Orders</span>
+                    <span class="badge pull-right">{{ post|length }}</span>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover table-striped records_list">
+                        <tbody>
+                            {% for order in post %}
+                                <tr>
+                                    <td><a class="btn btn-link" href="{{ path('orders_show', { 'id': order.id }) }}">{{ order.number }}</a></td>
+                                    <td>{{ order.customer.name }}</td>
+                                    <td class="text-right">
+                                        <span class="pull-left">RUB&nbsp;</span>
+                                        {{ order.total/100|number_format(2, '.', ',') }}
+                                    </td>
+                                    <td>{{ order.createdAt|date('M-d H:i') }}</td>
+                                    <td class="text-right">
+                                        <span class="label
+                                              {% if order.state == "backoffice" %}label-info                                                      
+                                              {% elseif order.state == "post" %}label-primary
+                                              {% elseif order.state == "document" %}label-warning
+                                              {% else %}label-default
+                                              {% endif %}
+                                              ">{{ order.state|upper }}</span>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
         <div class="col-sm-6">
             <div class="panel panel-default">
-                <div class="panel-heading">
-                    <span class="panel-title">Post Orders <span class="badge">0</span></span>
+                <div class="panel-heading clearfix">
+                    <span class="panel-title">Completed today </span>
+                    <span class="badge pull-right">{{ completed|length }}</span>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover table-striped records_list">
+                        <tbody>
+                            {% for order in completed %}
+                                <tr>
+                                    <td><a class="btn btn-link" href="{{ path('orders_show', { 'id': order.id }) }}">{{ order.number }}</a></td>
+                                    <td>{{ order.customer.name }}</td>
+                                    <td class="text-right">
+                                        <span class="pull-left">RUB&nbsp;</span>
+                                        {{ order.total/100|number_format(2, '.', ',') }}
+                                    </td>
+                                    <td>{{ order.createdAt|date('M-d H:i') }}</td>
+                                    <td class="text-right">
+                                        <span class="label
+                                              {% if order.state == "backoffice" %}label-info                                                      
+                                              {% elseif order.state == "post" %}label-primary
+                                              {% elseif order.state == "document" %}label-warning
+                                              {% else %}label-default
+                                              {% endif %}
+                                              ">{{ order.state|upper }}</span>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>

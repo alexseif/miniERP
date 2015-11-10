@@ -35,6 +35,7 @@ class CustomersController extends Controller
             'entities' => $entities,
         );
     }
+
     /**
      * Creates a new Customers entity.
      *
@@ -49,6 +50,21 @@ class CustomersController extends Controller
         $form->handleRequest($request);
 
         if ($form->isValid()) {
+
+            $validator = $this->get('validator');
+            $errors = $validator->validate($entity);
+
+            if (count($errors) > 0) {
+                /*
+                 * Uses a __toString method on the $errors variable which is a
+                 * ConstraintViolationList object. This gives us a nice string
+                 * for debugging.
+                 */
+                $errorsString = (string) $errors;
+
+                return new Response($errorsString);
+            }
+
             $em = $this->getDoctrine()->getManager();
             $em->persist($entity);
             $em->flush();
@@ -58,7 +74,7 @@ class CustomersController extends Controller
 
         return array(
             'entity' => $entity,
-            'form'   => $form->createView(),
+            'form' => $form->createView(),
         );
     }
 
@@ -91,11 +107,11 @@ class CustomersController extends Controller
     public function newAction()
     {
         $entity = new Customers();
-        $form   = $this->createCreateForm($entity);
+        $form = $this->createCreateForm($entity);
 
         return array(
             'entity' => $entity,
-            'form'   => $form->createView(),
+            'form' => $form->createView(),
         );
     }
 
@@ -119,7 +135,7 @@ class CustomersController extends Controller
         $deleteForm = $this->createDeleteForm($id);
 
         return array(
-            'entity'      => $entity,
+            'entity' => $entity,
             'delete_form' => $deleteForm->createView(),
         );
     }
@@ -145,19 +161,19 @@ class CustomersController extends Controller
         $deleteForm = $this->createDeleteForm($id);
 
         return array(
-            'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
+            'entity' => $entity,
+            'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         );
     }
 
     /**
-    * Creates a form to edit a Customers entity.
-    *
-    * @param Customers $entity The entity
-    *
-    * @return \Symfony\Component\Form\Form The form
-    */
+     * Creates a form to edit a Customers entity.
+     *
+     * @param Customers $entity The entity
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
     private function createEditForm(Customers $entity)
     {
         $form = $this->createForm(new CustomersType(), $entity, array(
@@ -169,6 +185,7 @@ class CustomersController extends Controller
 
         return $form;
     }
+
     /**
      * Edits an existing Customers entity.
      *
@@ -197,11 +214,12 @@ class CustomersController extends Controller
         }
 
         return array(
-            'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
+            'entity' => $entity,
+            'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         );
     }
+
     /**
      * Deletes a Customers entity.
      *
@@ -238,10 +256,11 @@ class CustomersController extends Controller
     private function createDeleteForm($id)
     {
         return $this->createFormBuilder()
-            ->setAction($this->generateUrl('customers_delete', array('id' => $id)))
-            ->setMethod('DELETE')
-            ->add('submit', 'submit', array('label' => 'Delete'))
-            ->getForm()
+                        ->setAction($this->generateUrl('customers_delete', array('id' => $id)))
+                        ->setMethod('DELETE')
+                        ->add('submit', 'submit', array('label' => 'Delete'))
+                        ->getForm()
         ;
     }
+
 }

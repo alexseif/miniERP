@@ -3,6 +3,7 @@
 namespace MeVisa\CRMBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Customers
@@ -12,6 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Customers
 {
+
     /**
      * @var integer
      *
@@ -25,6 +27,8 @@ class Customers
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255)
+     * @Assert\NotBlank()
+     * @Assert\Regex("/^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$/u")
      */
     private $name;
 
@@ -41,7 +45,6 @@ class Customers
      * @ORM\Column(name="phone", type="string", length=25)
      */
     private $phone;
-
 
     /**
      * Get id
@@ -121,4 +124,5 @@ class Customers
     {
         return $this->phone;
     }
+
 }
