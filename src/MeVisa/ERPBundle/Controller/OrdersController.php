@@ -124,7 +124,6 @@ class OrdersController extends Controller
         } else {
             echo "Form not valid becuase:<br/>";
             $formErrors = $form->getErrors();
-            var_dump($formErrors);
         }
 
         return array(

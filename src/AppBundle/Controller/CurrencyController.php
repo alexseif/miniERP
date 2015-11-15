@@ -60,7 +60,6 @@ class CurrencyController extends Controller
         $entity->setCreatedAt(new \DateTime());
 
         if ($form->isValid()) {
-            var_dump($entity);
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($entity);
