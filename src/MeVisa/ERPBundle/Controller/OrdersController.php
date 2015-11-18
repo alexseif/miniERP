@@ -9,6 +9,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use MeVisa\ERPBundle\Entity\Orders;
 use MeVisa\ERPBundle\Form\OrdersType;
+use MeVisa\ERPBundle\Entity\OrderDocuments;
 
 /**
  * Orders controller.
@@ -117,6 +118,9 @@ class OrdersController extends Controller
             // TODO: Check Order Comments
             // TODO: if order comment is not empty add new orderComment
             // TODO: Check Order
+            
+            //TODO: Upload OrderDocuments then presist
+            
             $em->persist($order);
             $em->flush();
 
