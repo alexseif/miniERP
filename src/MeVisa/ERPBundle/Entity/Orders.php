@@ -120,6 +120,11 @@ class Orders
      * @ORM\OneToMany(targetEntity="OrderComments", mappedBy="orderRef")
      * */
     private $orderComments;
+
+    /**
+     * @ORM\OneToMany(targetEntity="OrderDocuments", mappedBy="orderRef")
+     * */
+    private $orderDocuments;
     private $orderState;
 
     /**

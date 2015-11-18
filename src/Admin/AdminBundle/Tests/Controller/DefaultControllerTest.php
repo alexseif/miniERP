@@ -1,6 +1,6 @@
 <?php
 
-namespace MeVisa\AdminBundle\Tests\Controller;
+namespace Admin\AdminBundle\Tests\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 

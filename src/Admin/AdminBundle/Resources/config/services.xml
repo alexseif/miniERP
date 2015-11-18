@@ -6,7 +6,7 @@
 
     <!--
     <services>
-        <service id="me_visa_admin.example" class="MeVisa\AdminBundle\Example">
+        <service id="admin_admin.example" class="Admin\AdminBundle\Example">
             <argument type="service" id="service_id" />
             <argument>plain_value</argument>
             <argument>%parameter_name%</argument>
