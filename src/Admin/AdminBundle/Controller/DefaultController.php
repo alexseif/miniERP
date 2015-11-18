@@ -8,6 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 class DefaultController extends Controller
 {
+
     /**
      * @Route("/", name="dashboard")
      * @Template()
@@ -28,4 +29,5 @@ class DefaultController extends Controller
             "completed" => $completed,
         );
     }
+
 }
