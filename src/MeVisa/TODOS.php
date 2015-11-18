@@ -4,6 +4,9 @@
  *  The following content was designed & implemented under AlexSeif.com
  */
 
+
+// TODO: IMPORTANT https://packagist.org/packages/ircmaxell/password-compat
+
 // TODO: Order must have companions before save
 // TODO: Save product name in orderProducts
 // TODO: Products.createdAt Products.updatedAt
