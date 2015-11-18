@@ -19,9 +19,11 @@ class AppKernel extends Kernel
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
             new AppBundle\AppBundle(),
             new MeVisa\CRMBundle\MeVisaCRMBundle(),
-            new MeVisa\AdminBundle\MeVisaAdminBundle(),
             new MeVisa\ERPBundle\MeVisaERPBundle(),
             new Vich\UploaderBundle\VichUploaderBundle(),
+            new Admin\AdminBundle\AdminAdminBundle(),
+            new Admin\SecurityBundle\AdminSecurityBundle(),
+            new FOS\UserBundle\FOSUserBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

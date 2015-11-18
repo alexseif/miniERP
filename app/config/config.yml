@@ -91,3 +91,8 @@ vich_uploader:
             upload_destination: %kernel.root_dir%/../web/images/orders
             delete_on_update:   true
             delete_on_remove:   true
+            
+fos_user:
+    db_driver: orm 
+    firewall_name: main
+    user_class: Admin\AdminBundle\Entity\User
