@@ -20,6 +20,18 @@ class OrdersController extends Controller
 {
 
     /**
+     * Display sample ivoice
+     *
+     * @Route("/invoiceSample", name="invoice_sample")
+     * @Method("GET")
+     * @Template()
+     */
+    public function invoiceSampleAction()
+    {
+        return array();
+    }
+
+    /**
      * Lists all Orders entities.
      *
      * @Route("/", name="orders")
@@ -118,9 +130,8 @@ class OrdersController extends Controller
             // TODO: Check Order Comments
             // TODO: if order comment is not empty add new orderComment
             // TODO: Check Order
-            
             //TODO: Upload OrderDocuments then presist
-            
+
             $em->persist($order);
             $em->flush();
 
