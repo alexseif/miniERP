@@ -10,12 +10,23 @@
         @media print {
             .page {page-break-after: always;}
             .agreement{font-size: xx-small; font-family: serif;}
+            .do-not-print{display: none;}
         }
     </style>
-    <div class="page invoice" >
+    <div class="btn-group pull-right do-not-print" role="group">
+        <button type="button" class="btn btn-primary btn-lg" onclick="window.print();
+                return false;">
+            <span class="glyphicon glyphicon-print" aria-hidden="true"></span> 
+        </button>
+        <button type="button" class="btn btn-primary btn-lg">
+            <span class="glyphicon glyphicon glyphicon-download" aria-hidden="true"></span> 
+        </button>
+    </div>
+    <div class="page invoice">
         <div class="row">
             <div class="col-sm-12">
-                <div class="page-header">
+                <div class="page-header clear-fix">
+                    <img src="/images/sm_new_mevisa.png" alt="MeVisa" class="pull-right print-img">
                     <h3>ООО "ВИЗА"</h3>
                     <h4>Адрес:<small> Москва ул. Маросейка 7/8 офис 206 ком.3, тел.+7(499)7145474,+7(812)7152061,+7(495)9736558,</small></h4>
                 </div>

@@ -1,0 +1,17 @@
+{% extends ':default:admin.html.twig' %}
+
+{% block content %}
+    <h1>Company creation</h1>
+
+    {{ form(form) }}
+
+    <ul class="record_actions">
+        <li>
+            <a href="{{ path('company') }}">
+                Back to the list
+            </a>
+        </li>
+    </ul>
+    <script src="//tinymce.cachefly.net/4.3/tinymce.min.js"></script>
+    <script>tinymce.init({selector: 'textarea'});</script>
+{% endblock %}
