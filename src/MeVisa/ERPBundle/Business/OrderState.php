@@ -49,7 +49,7 @@ class OrderState
             // FIXME: State not found
         }
         if ($this->currentState)
-            if (!array_key_exists($key, $this->currentState->getChildren)) {
+            if (!array_key_exists($key, $this->currentState->getChildren())) {
                 // FIXME: Illegal transition
             }
         $this->currentState = $this->states[$key];

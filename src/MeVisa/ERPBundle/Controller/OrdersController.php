@@ -9,6 +9,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use MeVisa\ERPBundle\Entity\Orders;
 use MeVisa\ERPBundle\Form\OrdersType;
+use MeVisa\ERPBundle\Form\OrdersStatusType;
 use MeVisa\ERPBundle\Entity\OrderDocuments;
 
 /**
@@ -211,13 +212,14 @@ class OrdersController extends Controller
         $state = $order->getState();
         $order->startOrderStateEnginge();
         $order->setOrderState($state);
-//        var_dump($order->getOrderState());
 
         $deleteForm = $this->createDeleteForm($id);
+        $statusForm = $this->createStatusForm($order);
 
         return array(
             'order' => $order,
             'delete_form' => $deleteForm->createView(),
+            'status_form' => $statusForm->createView(),
         );
     }
 
@@ -232,17 +234,25 @@ class OrdersController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('MeVisaERPBundle:Orders')->find($id);
 
-        if (!$entity) {
+        $order = $em->getRepository('MeVisaERPBundle:Orders')->find($id);
+
+        $state = $order->getState();
+        $order->startOrderStateEnginge();
+        $order->setState($state);
+
+        if (!$order) {
             throw $this->createNotFoundException('Unable to find Orders entity.');
         }
 
-        $editForm = $this->createEditForm($entity);
+        $editForm = $this->createEditForm($order);
         $deleteForm = $this->createDeleteForm($id);
 
+        $productPrices = $em->getRepository('MeVisaERPBundle:ProductPrices')->findAll();
+
         return array(
-            'entity' => $entity,
+            'order' => $order,
+            'productPrices' => $productPrices,
             'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         );
@@ -278,24 +288,35 @@ class OrdersController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('MeVisaERPBundle:Orders')->find($id);
+        $order = $em->getRepository('MeVisaERPBundle:Orders')->find($id);
 
-        if (!$entity) {
+        if (!$order) {
             throw $this->createNotFoundException('Unable to find Orders entity.');
         }
 
+        $state = $order->getState();
+        $order->startOrderStateEnginge();
+        $order->setState($state);
+
         $deleteForm = $this->createDeleteForm($id);
-        $editForm = $this->createEditForm($entity);
+        $editForm = $this->createEditForm($order);
+
         $editForm->handleRequest($request);
 
         if ($editForm->isValid()) {
             $em->flush();
 
-            return $this->redirect($this->generateUrl('orders_edit', array('id' => $id)));
+            return $this->redirect($this->generateUrl('orders_show', array('id' => $id)));
+        } else {
+            echo "Form not valid becuase:<br/>";
+            $formErrors = $editForm->getErrors();
         }
 
+        $productPrices = $em->getRepository('MeVisaERPBundle:ProductPrices')->findAll();
+
         return array(
-            'entity' => $entity,
+            'order' => $order,
+            'productPrices' => $productPrices,
             'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         );
@@ -342,6 +363,87 @@ class OrdersController extends Controller
                         ->add('submit', 'submit', array('label' => 'Delete'))
                         ->getForm()
         ;
+    }
+
+    /**
+     * Creates a form to update a Orders Status entity.
+     *
+     * @param Orders $entity The entity
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
+    private function createStatusForm(Orders $entity)
+    {
+        $form = $this->createFormBuilder()
+                ->setAction($this->generateUrl('orders_status_update', array('id' => $entity->getId())))
+                ->setMethod('PUT');
+        $children = $entity->getOrderState()->getCurrentState()->getChildren();
+        if (is_array($children))
+            foreach ($children as $key => $child) {
+                $form->add($child->getKey(), 'submit', array(
+                    'label' => $child->getName(),
+                    'attr' => array(
+                        'id' => 'state_' . $key,
+                        'class' => 'ml-5 btn-group btn-' . $child->getBootstrapClass(),
+                        'value' => $child->getKey(),
+                )));
+            }
+
+        return $form->getForm();
+    }
+
+    /**
+     * Edits an existing Orders entity.
+     *
+     * @Route("/{id}/status", name="orders_status_update")
+     * @Method("PUT")
+     * @Template("MeVisaERPBundle:Orders:show.html.twig")
+     */
+    public function updateStateAction(Request $request, $id)
+    {
+
+        $em = $this->getDoctrine()->getManager();
+
+        $order = $em->getRepository('MeVisaERPBundle:Orders')->find($id);
+
+        if (!$order) {
+            throw $this->createNotFoundException('Unable to find Orders entity.');
+        }
+
+        $state = $order->getState();
+        $order->startOrderStateEnginge();
+        $order->setState($state);
+
+        $deleteForm = $this->createDeleteForm($id);
+        $statusForm = $this->createStatusForm($order);
+
+        $statusForm->handleRequest($request);
+
+        if ($statusForm->isValid()) {
+
+            $iterator = $statusForm->getIterator();
+            foreach ($iterator as $key => $value) {
+                if ($value->isClicked()) {
+                    $order->setState($key);
+                }
+            }
+
+            $em->flush();
+
+            return $this->redirect($this->generateUrl('orders_show', array('id' => $id)));
+        } else {
+            echo "Form not valid becuase:<br/>";
+            $formErrors = $statusForm->getErrors();
+        }
+
+        $productPrices = $em->getRepository('MeVisaERPBundle:ProductPrices')->findAll();
+
+        return array(
+            'order' => $order,
+            'productPrices' => $productPrices,
+            'status_form' => $statusForm->createView(),
+            'delete_form' => $deleteForm->createView(),
+        );
     }
 
 }

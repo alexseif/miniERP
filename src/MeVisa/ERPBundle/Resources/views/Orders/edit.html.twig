@@ -1,28 +1,82 @@
 {% extends ':default:admin.html.twig' %}
-
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" type="text/css" href="/css/chosen.min.css" />
+    <style type="text/css">
+        .panel .form-group{ margin-bottom: 5px;}
+        .panel-body{font-size: 11px;}
+        .panel-body label{font-weight: 550}
+        .panel .control-label{padding-left: 5px; padding-right: 5px;}
+        .orderProducts li{margin-top: 5px;}
+    </style>
+    <style type="text/css">
+        .checkbox input[type="checkbox"]{margin-top: 0px;}
+        .list-group-item{padding-top: 2px;padding-bottom: 2px}
+        .badge{margin-top: 5px;}
+    </style>
+{% endblock %}
 {% block content %}
-    <!-- Page Heading -->
-    <div class="row">
-        <div class="col-md-12">
-            <h3 class="page-header">
-                Order <small> {{ entity.number }} </small>
-            </h3>
-        </div>
+    {{ form_start(edit_form) }}
+    {{ form_row(edit_form._token) }}
+    <div class="well">
+        {{ form_errors(edit_form) }}
+        {{ form_errors(status_form) }}
     </div>
-    <!-- /.row -->
-    <div class="row">
-        <div class="col-md-12">
-            <div class="panel panel-default">
-                <div class="panel-body">
-                    {{ form(edit_form) }}
+    <div class="panel panel-default">
+        <div class="panel-heading clearfix">
+            <span class="panel-title">New Order</span>
+            <div class="pull-right">
+                <span class="label label-default">{{ order.channel|upper }}</span>
+                &nbsp;<span class="label label-info">{{ order.stateName|upper }}</span>
+                &nbsp;<span class="label label-default"> {{ order.createdAt|date() }}</span>
+            </div>
+        </div>
+        <div class="panel-body">
+            <!-- Customer -->
+            {% include 'MeVisaERPBundle:Orders:edit_customer.html.twig' %}
+            <!-- Customer -->
+            <!-- Order Products -->
+            {% include 'MeVisaERPBundle:Orders:edit_order_products.html.twig' %}
+            <!-- Order Products -->
+            <!-- Order Companions -->
+            {% include 'MeVisaERPBundle:Orders:edit_order_companions.html.twig' %}
+            <!-- Order Companions -->
+            <!-- Order Payments -->
+            {% include 'MeVisaERPBundle:Orders:edit_order_payments.html.twig' %}
+            <!-- Order Payments -->
+            <!-- Order Comments -->
+            {% include 'MeVisaERPBundle:Orders:edit_order_comments.html.twig' %}
+            <!-- Order Comments -->
+        </div>
+        <!-- panel body -->
+        <div class="panel-footer">
+            <div class="row">
+                <div class="col-sm-4">{{ form_row(edit_form.total) }}</div>
+                <div class="col-sm-8">
+                    <div class="btn-toolbar pull-right">
+                        {% for child in order.orderState.currentState.children %}
+                            <button class="btn-{{child.bootstrapClass}} btn btn-toolbar" name="mevisa_erpbundle_orders[{{child.key}}]" id="mevisa_erpbundle_orders_{{child.key}}" type="submit">{{child.name}}</button>
+                        {% endfor %}
+                        {# <button class="btn-warning btn" name="mevisa_erpbundle_orders[submit]" id="mevisa_erpbundle_orders_submit" type="submit">DOCUMENT</button>#}
+                        {# <button class="btn-primary btn" name="mevisa_erpbundle_orders[submit]" id="mevisa_erpbundle_orders_submit" type="submit">POST</button>#}
+                    </div>
                 </div>
+                {# <div class="col-sm-2">{{ form_row(edit_form.submit) }}</div>#}
             </div>
         </div>
     </div>
+    {{ form_end(edit_form, {'render_rest': false}) }}
+    <div class="pull-right"><a class="btn btn-warning" href="{{ path('orders') }}">Cancel</a></div>
     <!-- /.row -->
-    <div class="row">
-        <div class="col-md-11">{{ form(delete_form) }}</div>
-        <div class="col-md-1"><a class="btn btn-warning" href="{{ path('orders') }}">Back</a></div>
-    </div>
-    <!-- /.row -->
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="/js/chosen.jquery.min.js"></script>
+    <script type="text/javascript" src="/js/orders.js"></script>
+    <script type="text/javascript">
+        var productPrices = new Array();
+        {% for price in productPrices %}
+            productPrices[{{ price.product.id }}] = {{price.price/100}};
+        {% endfor %}
+    </script>
 {% endblock %}

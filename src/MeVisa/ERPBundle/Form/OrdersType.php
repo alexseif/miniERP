@@ -46,12 +46,12 @@ class OrdersType extends AbstractType
             'allow_add' => true
         ));
 
-        $builder->add('payments', 'collection', array(
+        $builder->add('orderPayments', 'collection', array(
             'type' => new OrderPaymentsType(),
             'allow_add' => true
         ));
 
-        $builder->add('comments', 'collection', array(
+        $builder->add('orderComments', 'collection', array(
             'type' => new OrderCommentsType(),
             'allow_add' => true
         ));

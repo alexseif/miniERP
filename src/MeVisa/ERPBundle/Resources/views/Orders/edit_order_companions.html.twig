@@ -1,0 +1,42 @@
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <span class="panel-title">Companions</span>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover records_list">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>PAX</th>
+                    <th>Passport #</th>
+                    <th>Passport Exp</th>
+                </tr>
+            </thead>
+            <tbody class="companions" data-prototype="{{ 
+'<td>' ~ form_widget(edit_form.orderCompanions.vars.prototype.name) ~ '</td>' 
+~ '<td>' ~ form_widget(edit_form.orderCompanions.vars.prototype.pax) ~ '</td>'
+~ '<td>' ~ form_widget(edit_form.orderCompanions.vars.prototype.passportNumber) ~ '</td>'
+~ '<td>' 
+~ form_widget(edit_form.orderCompanions.vars.prototype.passportExpiry.day, {'attr': { 'style': 'display:none' } }) 
+~ form_widget(edit_form.orderCompanions.vars.prototype.passportExpiry) 
+~ '</td>' }}">
+                {#                            
+                TODO: Expiry date initial this month 
+                #}
+            </tbody>
+        </table>
+    </div>
+    <div class="panel-body">
+        <a href="#" class="btn btn-block addCompanion" id="add-companion"><span class="glyphicon glyphicon-plus"></span></a>
+    </div>
+    <div class="panel-footer">
+        <div class="row">
+            <div class="col-sm-4">
+                {# <span class="label label-primary" style="font-size: 14px;">RUB Subtotal</span>#}
+                {{ form_row(edit_form.productsTotal) }}
+            </div>
+            <div class="col-sm-2"></div>
+            <div class="col-sm-6">{{ form_row(edit_form.adjustmentTotal) }}</div>
+        </div>
+    </div>
+</div>

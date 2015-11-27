@@ -3,6 +3,11 @@
 {% block content %}
     <div class="row">
         <div class="col-md-12">
+            {{ form_errors(status_form) }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <span class="panel-title">Order</span>
@@ -115,25 +120,19 @@
                 </div>
                 <div class="panel-footer">
                     <div class="row">
-                        {#                            <div class="col-sm-4">{{ form_row(form.total) }}</div>#}
-                        {#                        <div class="col-sm-6">#}
-                        {#                            <button class="btn-success btn" name="mevisa_erpbundle_orders[submit]" id="mevisa_erpbundle_orders_submit" type="submit">PAID</button>#}
-                        {#                            <button class="btn-warning btn" name="mevisa_erpbundle_orders[submit]" id="mevisa_erpbundle_orders_submit" type="submit">DOCUMENT</button>#}
-                        {#                        </div>#}
                         <div class="col-sm-12">
-                            {# TODO: add form #}
-                            <div class="btn-toolbar pull-right">
-                                {% for child in order.orderState.currentState.children %}
-                                    <button class="btn-{{child.bootstrapClass}} btn btn-toolbar" name="mevisa_erpbundle_orders[{{child.key}}]" id="mevisa_erpbundle_orders_{{child.key}}" type="submit">{{child.name}}</button>
+                            <a class="btn btn-default" href="{{ path('orders') }}">Cancel</a>
+                            <div class="btn-toolbar pull-right" role="toolbar">
+                                {{ form_start(status_form) }}
+                                {% for btn in status_form %}
+                                    {{ form_widget(btn) }}
                                 {% endfor %}
-                                {#                            <button class="btn-success btn pull-right" name="mevisa_erpbundle_orders[submit]" id="mevisa_erpbundle_orders_submit" type="submit">POST</button>#}
+                                {{ form_end(status_form) }}
                             </div>
                         </div>
-                        {#                <div class="col-sm-2">{{ form_row(form.submit) }}</div>#}
                     </div>
                 </div>
             </div>
-            <div class="pull-right"><a class="btn btn-warning" href="{{ path('orders') }}">Cancel</a></div>
         </div>
     </div>
 {% endblock %}

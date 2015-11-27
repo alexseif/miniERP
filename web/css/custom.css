@@ -7,28 +7,10 @@ and open the template in the editor.
     Created on : Sep 27, 2015, 10:25:48 PM
     Author     : alexseif
 */
-.firstCol25 th{
-    width: 25%;
-}
-
-.panel{
-    border-radius: 5px;
-}
-
-.page-header {
-    margin: 0px 0px 23px;
-}
-#currency tr:first-child td{
-    background-color: #dff0d8;
-    font-weight: bold;
-}
-
-#currency td:first-child{
-    text-align: right;
-}
-/*.navbar-brand{padding-top: 17px;}*/
-/*.navbar-brand{background: snow;}*/
-.navbar-brand:hover{
-    background-color: #eee;
-    text-decoration: none;
-}
+.ml-5{margin-right: 5px;}
+.firstCol25 th{width: 25%;}
+.panel{border-radius: 5px;}
+.page-header {margin: 0px 0px 23px;}
+#currency tr:first-child td{background-color: #dff0d8;font-weight: bold;}
+#currency td:first-child{text-align: right;}
+.navbar-brand:hover{background-color: #eee;text-decoration: none;}
