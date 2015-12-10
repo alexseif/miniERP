@@ -9,8 +9,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use MeVisa\ERPBundle\Entity\Orders;
 use MeVisa\ERPBundle\Form\OrdersType;
-use MeVisa\ERPBundle\Form\OrdersStatusType;
-use MeVisa\ERPBundle\Entity\OrderDocuments;
 
 /**
  * Orders controller.

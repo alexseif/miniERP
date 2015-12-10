@@ -14,7 +14,6 @@ use MeVisa\ERPBundle\Business\OrderState;
  */
 class Orders
 {
-
     /**
      * @var integer
      *
@@ -134,10 +133,10 @@ class Orders
     {
         $this->startOrderStateEnginge();
 
-        $this->products = new ArrayCollection();
-        $this->payments = new ArrayCollection();
+        $this->products   = new ArrayCollection();
+        $this->payments   = new ArrayCollection();
         $this->companions = new ArrayCollection();
-        $this->comments = new ArrayCollection();
+        $this->comments   = new ArrayCollection();
         $this->setCreatedAt(new \DateTime());
     }
 
@@ -582,9 +581,42 @@ class Orders
         return $this->orderComments;
     }
 
+    /**
+     * Add orderDocuments
+     *
+     * @param \MeVisa\ERPBundle\Entity\OrderDocuments $orderDocuments
+     * @return Orders
+     */
+    public function addOrderDocument(\MeVisa\ERPBundle\Entity\OrderDocuments $orderDocuments)
+    {
+        $this->orderDocuments[] = $orderDocuments;
+        $orderDocuments->setOrderRef($this);
+
+        return $this;
+    }
+
+    /**
+     * Remove orderDocuments
+     *
+     * @param \MeVisa\ERPBundle\Entity\OrderDocuments $orderDocuments
+     */
+    public function removeOrderDocument(\MeVisa\ERPBundle\Entity\OrderDocuments $orderDocuments)
+    {
+        $this->orderDocuments->removeElement($orderDocuments);
+    }
+
+    /**
+     * Get orderDocuments
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getOrderDocuments()
+    {
+        return $this->orderDocuments;
+    }
+
     public function __toString()
     {
         return $this->number;
     }
-
 }

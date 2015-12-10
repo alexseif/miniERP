@@ -4,14 +4,14 @@ namespace MeVisa\ERPBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\File\File;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
  * @ORM\Entity
  */
 class OrderDocuments
 {
-
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -20,7 +20,7 @@ class OrderDocuments
     public $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Orders", inversedBy="OrderComments", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="Orders", inversedBy="OrderDocuments", cascade={"persist"})
      * @ORM\JoinColumn(name="order_id", referencedColumnName="id")
      * */
     private $orderRef;
@@ -37,33 +37,10 @@ class OrderDocuments
     public $path;
 
     /**
+     * @Vich\UploadableField(mapping="order_image", fileNameProperty="name")
      * @Assert\File(maxSize="6000000")
      */
     private $file;
-
-    public function getAbsolutePath()
-    {
-        return null === $this->path ? null : $this->getUploadRootDir() . '/' . $this->path;
-    }
-
-    public function getWebPath()
-    {
-        return null === $this->path ? null : $this->getUploadDir() . '/' . $this->path;
-    }
-
-    protected function getUploadRootDir()
-    {
-        // the absolute directory path where uploaded
-        // documents should be saved
-        return __DIR__ . '/../../../../web/' . $this->getUploadDir();
-    }
-
-    protected function getUploadDir()
-    {
-        // get rid of the __DIR__ so it doesn't screw up
-        // when displaying uploaded doc/image in the view.
-        return 'uploads/documents';
-    }
 
     /**
      * Get id
@@ -99,29 +76,6 @@ class OrderDocuments
     }
 
     /**
-     * Set path
-     *
-     * @param string $path
-     * @return OrderDocuments
-     */
-    public function setPath($path)
-    {
-        $this->path = $path;
-
-        return $this;
-    }
-
-    /**
-     * Get path
-     *
-     * @return string 
-     */
-    public function getPath()
-    {
-        return $this->path;
-    }
-
-    /**
      * Set orderRef
      *
      * @param \MeVisa\ERPBundle\Entity\Orders $orderRef
@@ -147,9 +101,9 @@ class OrderDocuments
     /**
      * Sets file.
      *
-     * @param UploadedFile $file
+     * @param File|\Symfony\Component\HttpFoundation\File\UploadedFile $file
      */
-    public function setFile(UploadedFile $file = null)
+    public function setFile(File $file = null)
     {
         $this->file = $file;
     }
@@ -163,27 +117,4 @@ class OrderDocuments
     {
         return $this->file;
     }
-
-    public function upload()
-    {
-        // the file property can be empty if the field is not required
-        if (null === $this->getFile()) {
-            return;
-        }
-
-        // use the original file name here but you should
-        // sanitize it at least to avoid any security issues
-        // move takes the target directory and then the
-        // target filename to move to
-        $this->getFile()->move(
-                $this->getUploadRootDir(), $this->getFile()->getClientOriginalName()
-        );
-
-        // set the path property to the filename where you've saved the file
-        $this->path = $this->getFile()->getClientOriginalName();
-
-        // clean up the file property as you won't need it anymore
-        $this->file = null;
-    }
-
 }
