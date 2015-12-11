@@ -12,7 +12,6 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class OrderProducts
 {
-
     /**
      * @var integer
      *
@@ -23,7 +22,7 @@ class OrderProducts
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Orders", inversedBy="OrderProducts", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="Orders", inversedBy="orderProducts")
      * @ORM\JoinColumn(name="order_id", referencedColumnName="id")
      * 
      * */
@@ -180,5 +179,4 @@ class OrderProducts
     {
         return $this->total;
     }
-
 }

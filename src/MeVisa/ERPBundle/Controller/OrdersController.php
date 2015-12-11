@@ -82,11 +82,12 @@ class OrdersController extends Controller
             // $customerCheck = $em->getRepository('MeVisaCRMBundle:Customer')->find($order->getCustomer()->getId());
             $customerCheck = true;
             if (!$customerCheck) {
-//  echo "Still no Customer <br/>";
+                //  echo "Still no Customer <br/>";
             }
 
-            $orderProducts     = $order->getOrderProducts();
-// $orderProductCheck = false;
+            $orderProducts = $order->getOrderProducts();
+
+            // $orderProductCheck = false;
             $orderProductTotal = 0;
             foreach ($orderProducts as $orderProduct) {
                 // TODO: Check Order Product
@@ -96,7 +97,8 @@ class OrdersController extends Controller
                 $orderProduct->setUnitPrice($productPrice[0]->getPrice());
                 $orderProduct->setTotal($productPrice[0]->getPrice() * $orderProduct->getQuantity());
                 $orderProductTotal += $orderProduct->getTotal();
-                $em->persist($orderProduct);
+                $order->addOrderProduct($orderProduct);
+                // $em->merge($orderProduct);
             }
             $order->setProductsTotal($orderProductTotal);
 
@@ -114,7 +116,7 @@ class OrdersController extends Controller
             foreach ($orderCompanions as $companion) {
                 $companion->setPassportExpiry(new \DateTime());
                 $companion->setNationality("eg");
-                $em->persist($companion);
+                $order->addOrderCompanion($companion);
             }
 
             $orderComments = $order->getOrderComments();
@@ -123,7 +125,7 @@ class OrdersController extends Controller
                     $order->removeOrderComment($comment);
                 } else {
                     $comment->setCreatedAt(new \DateTime());
-                    $em->persist($comment);
+                    $order->addOrderComment($comment);
                 }
             }
 
@@ -131,7 +133,7 @@ class OrdersController extends Controller
             foreach ($orderPayments as $payment) {
                 $payment->setCreatedAt(new \DateTime());
                 $payment->setState("paid");
-                $em->persist($payment);
+                $order->addOrderPayment($payment);
             }
             // TODO: Check Order Comments
             // TODO: if order comment is not empty add new orderComment
@@ -139,7 +141,7 @@ class OrdersController extends Controller
             //TODO: Upload OrderDocuments then presist
             $orderDocuments = $order->getOrderDocuments();
             foreach ($orderDocuments as $document) {
-                $em->persist($document);
+                $order->addOrderDocument($document);
             }
 
             $em->persist($order);

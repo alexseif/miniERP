@@ -21,7 +21,7 @@ class OrderDocuments
     public $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Orders", inversedBy="OrderDocuments", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="Orders", inversedBy="OrderDocuments")
      * @ORM\JoinColumn(name="order_id", referencedColumnName="id")
      * */
     private $orderRef;
