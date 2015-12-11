@@ -12,7 +12,6 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class OrderComments
 {
-
     /**
      * @var integer
      *
@@ -151,4 +150,8 @@ class OrderComments
         return $this->createdAt;
     }
 
+    public function __toString()
+    {
+        return $this->orderRef;
+    }
 }

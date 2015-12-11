@@ -12,7 +12,6 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class OrderPayments
 {
-
     /**
      * @var integer
      *
@@ -52,7 +51,7 @@ class OrderPayments
     /**
      * @var string
      *
-     * @ORM\Column(name="detail", type="text")
+     * @ORM\Column(name="detail", type="text", nullable=true)
      */
     private $detail;
 
@@ -211,4 +210,8 @@ class OrderPayments
         return $this->createdAt;
     }
 
+    public function __toString()
+    {
+        return $this->orderRef;
+    }
 }

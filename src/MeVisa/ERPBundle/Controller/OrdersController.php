@@ -117,23 +117,30 @@ class OrdersController extends Controller
                 $em->persist($companion);
             }
 
-//            $orderComments = $order->getOrderComments();
-//            foreach ($orderComments as $comment) {
-//                $em->persist($comment);
-//            }
-//            $orderPayments = $order->getOrderPayments();
-//            foreach ($orderPayments as $payment) {
-//                $payment->setCreatedAt(new \DateTime());
-//                $em->persist($payment);
-//            }
+            $orderComments = $order->getOrderComments();
+            foreach ($orderComments as $comment) {
+                if ("" == $comment->getComment()) {
+                    $order->removeOrderComment($comment);
+                } else {
+                    $comment->setCreatedAt(new \DateTime());
+                    $em->persist($comment);
+                }
+            }
+
+            $orderPayments = $order->getOrderPayments();
+            foreach ($orderPayments as $payment) {
+                $payment->setCreatedAt(new \DateTime());
+                $payment->setState("paid");
+                $em->persist($payment);
+            }
             // TODO: Check Order Comments
             // TODO: if order comment is not empty add new orderComment
             // TODO: Check Order
             //TODO: Upload OrderDocuments then presist
-//            $orderDocuments = $order->getOrderDocuments();
-//            foreach ($orderDocuments as $orderDocument) {
-//                $em->presist($orderDocument);
-//            }
+            $orderDocuments = $order->getOrderDocuments();
+            foreach ($orderDocuments as $document) {
+                $em->persist($document);
+            }
 
             $em->persist($order);
             $em->flush();
