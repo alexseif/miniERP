@@ -133,10 +133,11 @@ class Orders
     {
         $this->startOrderStateEnginge();
 
-        $this->products   = new ArrayCollection();
-        $this->payments   = new ArrayCollection();
-        $this->companions = new ArrayCollection();
-        $this->comments   = new ArrayCollection();
+        $this->orderProducts = new ArrayCollection();
+        $this->orderPayments = new ArrayCollection();
+        $this->orderCompanions = new ArrayCollection();
+        $this->orderComments = new ArrayCollection();
+        $this->orderDocuments   = new ArrayCollection();
         $this->setCreatedAt(new \DateTime());
     }
 
