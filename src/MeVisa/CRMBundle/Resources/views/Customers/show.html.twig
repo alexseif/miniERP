@@ -1,46 +1,35 @@
 {% extends ':default:admin.html.twig' %}
 
 {% block content %}
-    <!-- Page Heading -->
-    <div class="row">
-        <div class="col-md-12">
-            <h3 class="page-header">
-                Customers <small> {{ entity.name }} </small>
-            </h3>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <span class="panel-title">Customer</span>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover table-striped records_list firstCol25">
+                <tbody>
+                    <tr>
+                        <th>Name</th>
+                        <td>{{ entity.name }}</td>
+                    </tr>
+                    <tr>
+                        <th>Email</th>
+                        <td>{{ entity.email }}</td>
+                    </tr>
+                    <tr>
+                        <th>Phone</th>
+                        <td>{{ entity.phone }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="panel-footer">
+            {# TODO: the following links #}
+            {#<a class="btn btn-primary" href="{{ path('customers_edit', { 'id': entity.id }) }}">Edit</a>#}
+            {#{{ form(delete_form) }}#}
+            <a class="btn btn-warning" href="{{ path('customers') }}">Back</a>
+            {# TODO: the following link #}
+            <a class="btn btn-default" href="#">Orders</a>
         </div>
     </div>
-    <!-- /.row -->
-    <div class="row">
-        <div class="col-md-12">
-            <div class="panel panel-default">
-                <div class="panel-body">
-                    <div class="table-responsive">
-                        <table class="table table-bordered table-hover table-striped records_list firstCol25">
-        <tbody>
-            <tr>
-                <th>Name</th>
-                <td>{{ entity.name }}</td>
-            </tr>
-            <tr>
-                <th>Email</th>
-                <td>{{ entity.email }}</td>
-            </tr>
-            <tr>
-                <th>Phone</th>
-                <td>{{ entity.phone }}</td>
-            </tr>
-        </tbody>
-    </table>
-                    </div>
-                    <a class="btn btn-primary" href="{{ path('customers_edit', { 'id': entity.id }) }}">Edit</a>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- /.row -->
-    <div class="row">
-        <div class="col-md-11">{{ form(delete_form) }}</div>
-        <div class="col-md-1"><a class="btn btn-warning" href="{{ path('customers') }}">Back</a></div>
-    </div>
-    <!-- /.row -->
 {% endblock %}
