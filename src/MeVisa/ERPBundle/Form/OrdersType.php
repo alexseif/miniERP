@@ -16,8 +16,8 @@ class OrdersType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('number', 'text',
-                array('label' => 'Order#', 'disabled' => true))
+//            ->add('number', 'text',
+//                array('label' => 'Order#', 'disabled' => true))
 //                ->add('state', 'choice', array('placeholder' => 'State'))
 //                ->add('channel', 'choice', array('placeholder' => 'Channel', 'disabled' => true))
             ->add('productsTotal', 'money',
@@ -45,29 +45,36 @@ class OrdersType extends AbstractType
         $builder->add('orderProducts', 'collection',
             array(
             'type' => new OrderProductsType(),
-            'allow_add' => true));
+            'allow_add' => true,
+            'label' => false,
+        ));
 
         $builder->add('orderCompanions', 'collection',
             array(
             'type' => new OrderCompanionsType(),
-            'allow_add' => true
+            'allow_add' => true,
+            'label' => false
         ));
 
         $builder->add('orderPayments', 'collection',
             array(
             'type' => new OrderPaymentsType(),
-            'allow_add' => true
+            'allow_add' => true,
+            'label' => false
         ));
 
         $builder->add('orderComments', 'collection',
             array(
             'type' => new OrderCommentsType(),
-            'allow_add' => true
+            'allow_add' => true,
+            'label' => false
         ));
         $builder->add('orderDocuments', 'collection',
             array(
             'type' => new OrderDocumentsType(),
-            'allow_add' => true
+            'allow_add' => true,
+            'label' => false,
+            'attr' => array('class' => 'orderDocuments')
         ));
     }
 

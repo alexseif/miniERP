@@ -16,10 +16,12 @@ class OrderCommentsType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-                ->add('comment', 'textarea', array(
-                    'required' => false
-                ))
-                ->add('author', 'choice', array('placeholder' => 'Author'))
+            ->add('comment', 'textarea',
+                array(
+                'required' => false
+            ))
+        // TODO: remove auther and put from logged in user
+            ->add('author', 'choice', array('placeholder' => 'Author'))
         ;
     }
 
@@ -40,5 +42,4 @@ class OrderCommentsType extends AbstractType
     {
         return 'mevisa_erpbundle_ordercomments';
     }
-
 }

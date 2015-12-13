@@ -175,7 +175,13 @@ class OrdersController extends Controller
             'method' => 'POST',
         ));
 
-        $form->add('submit', 'submit', array('label' => 'Create'));
+        foreach ($entity->getOrderState()->getCurrentState()->getChildren() as $state) {
+            $form->add($state->getKey(), 'submit',
+                array('attr' => array('class' => 'btn-toolbar btn-'.$state->getBootstrapClass())
+            ));
+        }
+
+//        $form->add('submit', 'submit', array('label' => 'Create'));
 
         return $form;
     }
