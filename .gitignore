@@ -11,3 +11,8 @@
 /web/bundles/
 /nbproject/
 /web/orders/*
+docs
+docs.old/
+errordocs/
+logs/
+stat/
