@@ -11,7 +11,6 @@ use AppBundle\Utils\State;
  */
 class OrderState
 {
-
     protected $states;
     protected $currentState;
 
@@ -23,7 +22,7 @@ class OrderState
         $this->addState('not_paid', 'Not Paid', 'danger');
         $this->addState('paid', 'Paid', 'success');
         $this->addState('document', 'Document', 'warning');
-        $this->addState('post', 'Post');
+        $this->addState('post', 'Post', 'success');
         $this->addState('approved', 'Approved', 'success');
         $this->addState('rejected', 'Rejected', 'danger');
 
@@ -49,7 +48,7 @@ class OrderState
             // FIXME: State not found
         }
         if ($this->currentState)
-            if (!array_key_exists($key, $this->currentState->getChildren)) {
+                if (!array_key_exists($key, $this->currentState->getChildren())) {
                 // FIXME: Illegal transition
             }
         $this->currentState = $this->states[$key];
@@ -85,5 +84,4 @@ class OrderState
         //TODO: check duplication and check state exists
         $this->states[$parent]->addChild($this->getState($child));
     }
-
 }

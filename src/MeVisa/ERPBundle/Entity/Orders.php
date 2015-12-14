@@ -14,7 +14,6 @@ use MeVisa\ERPBundle\Business\OrderState;
  */
 class Orders
 {
-
     /**
      * @var integer
      *
@@ -102,27 +101,27 @@ class Orders
     private $completedAt;
 
     /**
-     * @ORM\OneToMany(targetEntity="OrderProducts", mappedBy="orderRef")
+     * @ORM\OneToMany(targetEntity="OrderProducts", mappedBy="orderRef", cascade={"persist"})
      * */
     private $orderProducts;
 
     /**
-     * @ORM\OneToMany(targetEntity="OrderPayments", mappedBy="orderRef")
+     * @ORM\OneToMany(targetEntity="OrderPayments", mappedBy="orderRef", cascade={"persist"})
      * */
     private $orderPayments;
 
     /**
-     * @ORM\OneToMany(targetEntity="OrderCompanions", mappedBy="orderRef")
+     * @ORM\OneToMany(targetEntity="OrderCompanions", mappedBy="orderRef", cascade={"persist"})
      * */
     private $orderCompanions;
 
     /**
-     * @ORM\OneToMany(targetEntity="OrderComments", mappedBy="orderRef")
+     * @ORM\OneToMany(targetEntity="OrderComments", mappedBy="orderRef", cascade={"persist"})
      * */
     private $orderComments;
 
     /**
-     * @ORM\OneToMany(targetEntity="OrderDocuments", mappedBy="orderRef")
+     * @ORM\OneToMany(targetEntity="OrderDocuments", mappedBy="orderRef", cascade={"persist"})
      * */
     private $orderDocuments;
     private $orderState;
@@ -134,10 +133,11 @@ class Orders
     {
         $this->startOrderStateEnginge();
 
-        $this->products = new ArrayCollection();
-        $this->payments = new ArrayCollection();
-        $this->companions = new ArrayCollection();
-        $this->comments = new ArrayCollection();
+        $this->orderProducts   = new ArrayCollection();
+        $this->orderPayments   = new ArrayCollection();
+        $this->orderCompanions = new ArrayCollection();
+        $this->orderComments   = new ArrayCollection();
+        $this->orderDocuments  = new ArrayCollection();
         $this->setCreatedAt(new \DateTime());
     }
 
@@ -582,9 +582,42 @@ class Orders
         return $this->orderComments;
     }
 
+    /**
+     * Add orderDocuments
+     *
+     * @param \MeVisa\ERPBundle\Entity\OrderDocuments $orderDocuments
+     * @return Orders
+     */
+    public function addOrderDocument(\MeVisa\ERPBundle\Entity\OrderDocuments $orderDocuments)
+    {
+        $this->orderDocuments[] = $orderDocuments;
+        $orderDocuments->setOrderRef($this);
+
+        return $this;
+    }
+
+    /**
+     * Remove orderDocuments
+     *
+     * @param \MeVisa\ERPBundle\Entity\OrderDocuments $orderDocuments
+     */
+    public function removeOrderDocument(\MeVisa\ERPBundle\Entity\OrderDocuments $orderDocuments)
+    {
+        $this->orderDocuments->removeElement($orderDocuments);
+    }
+
+    /**
+     * Get orderDocuments
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getOrderDocuments()
+    {
+        return $this->orderDocuments;
+    }
+
     public function __toString()
     {
         return $this->number;
     }
-
 }

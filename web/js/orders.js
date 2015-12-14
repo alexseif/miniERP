@@ -91,4 +91,5 @@ $(document).ready(function () {
 
     addPrototypeForm('div.orderPayments', '<div class="row"></div>');
     addPrototypeForm('div.orderComments', '<div></div>');
+    addPrototypeForm('div.orderDocuments', '<div></div>');
 });

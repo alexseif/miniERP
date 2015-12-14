@@ -12,7 +12,6 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class OrderComments
 {
-
     /**
      * @var integer
      *
@@ -23,7 +22,7 @@ class OrderComments
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Orders", inversedBy="OrderComments", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="Orders", inversedBy="OrderComments")
      * @ORM\JoinColumn(name="order_id", referencedColumnName="id")
      * */
     private $orderRef;
@@ -151,4 +150,8 @@ class OrderComments
         return $this->createdAt;
     }
 
+    public function __toString()
+    {
+        return $this->orderRef;
+    }
 }

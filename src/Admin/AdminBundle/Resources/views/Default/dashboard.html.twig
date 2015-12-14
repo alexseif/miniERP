@@ -4,12 +4,7 @@
     <style type="text/css">
         td{width:20%;}
     </style>
-    <div class="clearfix" style="margin-bottom: 20px;">
-        <div class="btn-group pull-right">
-            <a href="{{ path('orders_new') }}" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span> Order</a>
-            <a href="{{ path('customers_new') }}" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span> Customer</a>
-        </div>
-    </div>
+    {% include 'AdminAdminBundle:Default:quickActions.html.twig' %}
     {# TODO: Make panels colapsible  #}
     {# TODO: Make widget out of panels #}
     <div class="row">

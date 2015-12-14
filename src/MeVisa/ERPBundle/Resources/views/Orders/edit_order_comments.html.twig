@@ -3,10 +3,10 @@
         <span class="panel-title">Notes</span>
         <div class="pull-right">
             <span class="label label-default">Author</span>
-            {#{{ form_widget(form.comments.vars.prototype.author) }}#}
+            {#{{ form_widget(edit_form.comments.vars.prototype.author) }}#}
         </div>
     </div>
     <div class="panel-body">
-        <div class="orderComments" data-prototype="{{ form_widget(form.orderComments.vars.prototype.comment)|e }}"></div>
+        <div class="orderComments" data-prototype="{{ form_widget(edit_form.orderComments.vars.prototype.comment)|e }}"></div>
     </div>
 </div>

@@ -23,7 +23,7 @@ class OrderCompanions
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Orders", inversedBy="OrderCommpanions", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="Orders", inversedBy="OrderCommpanions")
      * @ORM\JoinColumn(name="order_id", referencedColumnName="id")
      *
      */
