@@ -1,0 +1,16 @@
+{% extends ':default:admin.html.twig' %}
+
+{% block content %}
+    <pre>{{request}}</pre>
+    <h1>WC creation</h1>
+
+    {{ form(form) }}
+
+    <ul class="record_actions">
+        <li>
+            <a href="{{ path('wc') }}">
+                Back to the list
+            </a>
+        </li>
+    </ul>
+{% endblock %}
