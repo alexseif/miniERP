@@ -5,12 +5,12 @@ namespace MeVisa\ERPBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * WC
+ * WCLogger
  *
  * @ORM\Table()
- * @ORM\Entity(repositoryClass="MeVisa\ERPBundle\Entity\WCRepository")
+ * @ORM\Entity(repositoryClass="MeVisa\ERPBundle\Entity\WCLoggerRepository")
  */
-class WC
+class WCLogger
 {
 
     /**
@@ -25,16 +25,16 @@ class WC
     /**
      * @var string
      *
-     * @ORM\Column(name="get", type="text", nullable=true)
+     * @ORM\Column(name="header", type="text")
      */
-    private $get;
+    private $header;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="post", type="text", nullable=true)
+     * @ORM\Column(name="content", type="text")
      */
-    private $post;
+    private $content;
 
     /**
      * @var \DateTime
@@ -43,10 +43,7 @@ class WC
      */
     private $createdAt;
 
-    /**
-     * Constructor
-     */
-    public function __construct()
+    function __construct()
     {
         $this->setCreatedAt(new \DateTime());
     }
@@ -62,56 +59,56 @@ class WC
     }
 
     /**
-     * Set get
+     * Set header
      *
-     * @param string $get
-     * @return WC
+     * @param string $header
+     * @return WCLogger
      */
-    public function setGet($get)
+    public function setHeader($header)
     {
-        $this->get = $get;
+        $this->header = $header;
 
         return $this;
     }
 
     /**
-     * Get get
+     * Get header
      *
      * @return string 
      */
-    public function getGet()
+    public function getHeader()
     {
-        return $this->get;
+        return $this->header;
     }
 
     /**
-     * Set post
+     * Set content
      *
-     * @param string $post
-     * @return WC
+     * @param string $content
+     * @return WCLogger
      */
-    public function setPost($post)
+    public function setContent($content)
     {
-        $this->post = $post;
+        $this->content = $content;
 
         return $this;
     }
 
     /**
-     * Get post
+     * Get content
      *
      * @return string 
      */
-    public function getPost()
+    public function getContent()
     {
-        return $this->post;
+        return $this->content;
     }
 
     /**
      * Set createdAt
      *
      * @param \DateTime $createdAt
-     * @return WC
+     * @return WCLogger
      */
     public function setCreatedAt($createdAt)
     {

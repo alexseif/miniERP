@@ -4,6 +4,7 @@ namespace MeVisa\ERPBundle\API;
 
 use WC_API_Client;
 use WC_API_Client_Exception;
+
 /**
  * Description of WooCommerceWrapper
  *

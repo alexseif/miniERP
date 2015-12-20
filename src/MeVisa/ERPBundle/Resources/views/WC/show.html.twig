@@ -12,12 +12,12 @@
                     <td>{{ entity.id }}</td>
                 </tr>
                 <tr>
-                    <th>Get</th>
-                    <td>{{ entity.get }}</td>
+                    <th>Header</th>
+                    <td>{{ entity.header }}</td>
                 </tr>
                 <tr>
-                    <th>Post</th>
-                    <td>{{ entity.post }}</td>
+                    <th>Content</th>
+                    <td>{{ entity.content }}</td>
                 </tr>
                 <tr>
                     <th>Createdat</th>
@@ -32,11 +32,5 @@
                 Back to the list
             </a>
         </li>
-        <li>
-            <a href="{{ path('wc_edit', { 'id': entity.id }) }}">
-                Edit
-            </a>
-        </li>
-        <li>{{ form(delete_form) }}</li>
     </ul>
 {% endblock %}
