@@ -45,6 +45,7 @@ class WCController extends Controller
     public function newAction(Request $request)
     {
         // TODO: Verify request
+        // Secret kfxLneHxN7
         $validRequest = true;
 
         // $request = Request::createFromGlobals();
@@ -241,6 +242,9 @@ class WCController extends Controller
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find WCLogger entity.');
         }
+
+        $entity->setHeader(json_decode($entity->getHeader()));
+        $entity->setContent(json_decode($entity->getContent()));
 
         return array(
             'entity' => $entity,

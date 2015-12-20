@@ -14,6 +14,7 @@ use MeVisa\ERPBundle\Business\OrderState;
  */
 class Orders
 {
+
     /**
      * @var integer
      *
@@ -22,6 +23,13 @@ class Orders
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="wc_id", type="integer", nullable=true)
+     */
+    private $wcId;
 
     /**
      * @var string
@@ -133,11 +141,11 @@ class Orders
     {
         $this->startOrderStateEnginge();
 
-        $this->orderProducts   = new ArrayCollection();
-        $this->orderPayments   = new ArrayCollection();
+        $this->orderProducts = new ArrayCollection();
+        $this->orderPayments = new ArrayCollection();
         $this->orderCompanions = new ArrayCollection();
-        $this->orderComments   = new ArrayCollection();
-        $this->orderDocuments  = new ArrayCollection();
+        $this->orderComments = new ArrayCollection();
+        $this->orderDocuments = new ArrayCollection();
         $this->setCreatedAt(new \DateTime());
     }
 
@@ -620,4 +628,5 @@ class Orders
     {
         return $this->number;
     }
+
 }

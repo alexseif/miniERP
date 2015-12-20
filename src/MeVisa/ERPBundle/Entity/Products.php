@@ -25,6 +25,13 @@ class Products
     private $id;
 
     /**
+     * @var integer
+     *
+     * @ORM\Column(name="wc_id", type="integer", nullable=true)
+     */
+    private $wcId;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255)
