@@ -40,7 +40,7 @@ class WCController extends Controller
      * Displays a form to create a new WC entity.
      *
      * @Route("/new", name="wc_new")
-     * @Method("GET")
+     * @Method({"GET", "POST"})
      */
     public function newAction(Request $request)
     {
