@@ -30,6 +30,10 @@ security:
                 csrf_provider: security.csrf.token_manager # Use form.csrf_provider instead for Symfony <2.4
             logout:       true
             anonymous:    true
+            remember_me:
+                key:   '%secret%'
+                lifetime: 86400 # 1 day in seconds
+                path:     /admin
 
     access_control:
         - { path: ^/admin/wc/new, role: IS_AUTHENTICATED_ANONYMOUSLY }
