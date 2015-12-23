@@ -49,12 +49,6 @@ class WCController extends Controller
         $content = trim($request->getContent());
         $header = $request->headers->all();
 
-        $signature = $this->generateSignature($secret, $request->getContent());
-
-        if ($request->headers->get('x-wc-webhook-signature') != $signature) {
-            throw new HttpException(422, "Signature mismatch");
-        }
-
         $wcLogger = new WCLogger();
 
         $wcLogger->setHeader(json_encode($header));
@@ -64,10 +58,23 @@ class WCController extends Controller
         $em->persist($wcLogger);
         $em->flush();
 
+        $signature = $this->generateSignature($secret, $request->getContent());
+        if ($request->headers->get('x-wc-webhook-signature') != $signature) {
+            $wcLogger->setResult('Signature mismatch');
+            $em->persist($wcLogger);
+            $em->flush();
+            throw new HttpException(422, "Signature mismatch");
+        }
+
+
+
         if (
                 ('order' != $request->headers->get('x-wc-webhook-resource')) ||
                 ('created' != $request->headers->get('x-wc-webhook-event'))
         ) {
+            $wcLogger->setResult('Unacceptable reource or event');
+            $em->persist($wcLogger);
+            $em->flush();
             throw new HttpException(422, "Unacceptable reource or event");
         }
 
@@ -76,6 +83,9 @@ class WCController extends Controller
 
         $order = $em->getRepository('MeVisaERPBundle:Orders')->findOneBy(array('wcId' => $wcOrder['order_number']));
         if ($order) {
+            $wcLogger->setResult('Order exists');
+            $em->persist($wcLogger);
+            $em->flush();
             throw new HttpException(409, "Order exists");
         }
         $order = new \MeVisa\ERPBundle\Entity\Orders();
@@ -108,7 +118,7 @@ class WCController extends Controller
                 $order->addOrderComment($orderComment);
             }
         }
-        
+
 
         //TODO: Align Product
         foreach ($wcOrder['line_items'] as $lineItem) {
@@ -165,7 +175,12 @@ class WCController extends Controller
         $order->setCreatedAt(new \DateTime($wcOrder['created_at']));
 
         $em->persist($order);
+
+        $wcLogger->setResult('OK');
+        $em->persist($wcLogger);
+
         $em->flush();
+
 
         return new Response();
     }

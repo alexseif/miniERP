@@ -37,6 +37,13 @@ class WCLogger
     private $content;
 
     /**
+     * @var string
+     * 
+     * @ORM\Column(name="result", type="string", length=255, nullable=true)
+     */
+    private $result;
+
+    /**
      * @var \DateTime
      *
      * @ORM\Column(name="createdAt", type="datetime")
@@ -102,6 +109,16 @@ class WCLogger
     public function getContent()
     {
         return $this->content;
+    }
+
+    function getResult()
+    {
+        return $this->result;
+    }
+
+    function setResult($result)
+    {
+        $this->result = $result;
     }
 
     /**
