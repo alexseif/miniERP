@@ -90,21 +90,21 @@ class Orders
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="updatedAt", type="datetime")
+     * @ORM\Column(name="updatedAt", type="datetime", nullable=true)
      */
     private $updatedAt;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="deletedAt", type="datetime")
+     * @ORM\Column(name="deletedAt", type="datetime", nullable=true)
      */
     private $deletedAt;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="completedAt", type="datetime")
+     * @ORM\Column(name="completedAt", type="datetime", nullable=true)
      */
     private $completedAt;
 
@@ -454,6 +454,16 @@ class Orders
     public function getCompletedAt()
     {
         return $this->completedAt;
+    }
+
+    function getWcId()
+    {
+        return $this->wcId;
+    }
+
+    function setWcId($wcId)
+    {
+        $this->wcId = $wcId;
     }
 
     /**

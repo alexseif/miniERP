@@ -22,7 +22,7 @@ class OrderDocuments
 
     /**
      * @ORM\ManyToOne(targetEntity="Orders", inversedBy="OrderDocuments")
-     * @ORM\JoinColumn(name="order_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="order_id", referencedColumnName="id", onDelete="CASCADE")
      * */
     private $orderRef;
 

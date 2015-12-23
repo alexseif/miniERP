@@ -17,7 +17,7 @@ class OrdersRepository extends EntityRepository
     {
         return $this->createQueryBuilder('o')
                         ->where("o.state = ?1")
-                ->setParameter('1', $state)
+                        ->setParameter('1', $state)
                         ->getQuery()
                         ->getResult();
     }

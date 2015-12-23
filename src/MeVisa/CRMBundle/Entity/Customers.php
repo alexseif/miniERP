@@ -24,13 +24,6 @@ class Customers
     private $id;
 
     /**
-     * @var integer
-     *
-     * @ORM\Column(name="wc_id", type="integer", nullable=true)
-     */
-    private $wcId;
-
-    /**
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255)
@@ -52,6 +45,12 @@ class Customers
      * @ORM\Column(name="phone", type="string", length=25)
      */
     private $phone;
+
+    /**
+     *
+     * @ORM\OneToMany(targetEntity="MeVisa\ERPBundle\Entity\Orders", mappedBy="customer", cascade={"persist"})
+     */
+    private $orders;
 
     /**
      * Get id
@@ -130,6 +129,47 @@ class Customers
     public function getPhone()
     {
         return $this->phone;
+    }
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->orders = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add orders
+     *
+     * @param \MeVisa\ERPBundle\Entity\Orders $orders
+     * @return Customers
+     */
+    public function addOrder(\MeVisa\ERPBundle\Entity\Orders $orders)
+    {
+        $this->orders[] = $orders;
+
+        return $this;
+    }
+
+    /**
+     * Remove orders
+     *
+     * @param \MeVisa\ERPBundle\Entity\Orders $orders
+     */
+    public function removeOrder(\MeVisa\ERPBundle\Entity\Orders $orders)
+    {
+        $this->orders->removeElement($orders);
+    }
+
+    /**
+     * Get orders
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getOrders()
+    {
+        return $this->orders;
     }
 
 }

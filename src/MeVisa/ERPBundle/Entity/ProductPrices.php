@@ -49,6 +49,11 @@ class ProductPrices
      * */
     private $product;
 
+    function __construct()
+    {
+        $this->setCreatedAt(new \DateTime());
+    }
+
     /**
      * Get id
      *

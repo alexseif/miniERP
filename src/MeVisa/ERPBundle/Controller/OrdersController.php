@@ -58,7 +58,7 @@ class OrdersController extends Controller
     public function createAction(Request $request)
     {
         $order = new Orders();
-        $form  = $this->createCreateForm($order);
+        $form = $this->createCreateForm($order);
         $form->handleRequest($request);
 
         $em = $this->getDoctrine()->getManager();
@@ -92,7 +92,7 @@ class OrdersController extends Controller
             foreach ($orderProducts as $orderProduct) {
                 // TODO: Check Order Product
                 // TODO: Handle no proper products or disabled
-                $product      = $orderProduct->getProduct();
+                $product = $orderProduct->getProduct();
                 $productPrice = $product->getPricing();
                 $orderProduct->setUnitPrice($productPrice[0]->getPrice());
                 $orderProduct->setTotal($productPrice[0]->getPrice() * $orderProduct->getQuantity());
@@ -147,8 +147,7 @@ class OrdersController extends Controller
             $em->persist($order);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('orders_show',
-                        array('id' => $order->getId())));
+            return $this->redirect($this->generateUrl('orders_show', array('id' => $order->getId())));
         } else {
             echo "Form not valid becuase:<br/>";
             var_dump($form->getErrors());
@@ -169,15 +168,13 @@ class OrdersController extends Controller
      */
     private function createCreateForm(Orders $entity)
     {
-        $form = $this->createForm(new OrdersType(), $entity,
-            array(
+        $form = $this->createForm(new OrdersType(), $entity, array(
             'action' => $this->generateUrl('orders_create'),
             'method' => 'POST',
         ));
 
         foreach ($entity->getOrderState()->getCurrentState()->getChildren() as $state) {
-            $form->add($state->getKey(), 'submit',
-                array('attr' => array('class' => 'btn-toolbar btn-'.$state->getBootstrapClass())
+            $form->add($state->getKey(), 'submit', array('attr' => array('class' => 'btn-toolbar btn-' . $state->getBootstrapClass())
             ));
         }
 
@@ -202,7 +199,7 @@ class OrdersController extends Controller
 
         $form = $this->createCreateForm($order);
 
-        $em            = $this->getDoctrine()->getManager();
+        $em = $this->getDoctrine()->getManager();
         $productPrices = $em->getRepository('MeVisaERPBundle:ProductPrices')->findAll();
 
         return array(
@@ -264,7 +261,7 @@ class OrdersController extends Controller
             throw $this->createNotFoundException('Unable to find Orders entity.');
         }
 
-        $editForm   = $this->createEditForm($order);
+        $editForm = $this->createEditForm($order);
         $deleteForm = $this->createDeleteForm($id);
 
         $productPrices = $em->getRepository('MeVisaERPBundle:ProductPrices')->findAll();
@@ -286,10 +283,8 @@ class OrdersController extends Controller
      */
     private function createEditForm(Orders $entity)
     {
-        $form = $this->createForm(new OrdersType(), $entity,
-            array(
-            'action' => $this->generateUrl('orders_update',
-                array('id' => $entity->getId())),
+        $form = $this->createForm(new OrdersType(), $entity, array(
+            'action' => $this->generateUrl('orders_update', array('id' => $entity->getId())),
             'method' => 'PUT',
         ));
 
@@ -320,15 +315,14 @@ class OrdersController extends Controller
         $order->setState($state);
 
         $deleteForm = $this->createDeleteForm($id);
-        $editForm   = $this->createEditForm($order);
+        $editForm = $this->createEditForm($order);
 
         $editForm->handleRequest($request);
 
         if ($editForm->isValid()) {
             $em->flush();
 
-            return $this->redirect($this->generateUrl('orders_show',
-                        array('id' => $id)));
+            return $this->redirect($this->generateUrl('orders_show', array('id' => $id)));
         } else {
             echo "Form not valid becuase:<br/>";
             $formErrors = $editForm->getErrors();
@@ -356,7 +350,7 @@ class OrdersController extends Controller
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-            $em     = $this->getDoctrine()->getManager();
+            $em = $this->getDoctrine()->getManager();
             $entity = $em->getRepository('MeVisaERPBundle:Orders')->find($id);
 
             if (!$entity) {
@@ -380,11 +374,10 @@ class OrdersController extends Controller
     private function createDeleteForm($id)
     {
         return $this->createFormBuilder()
-                ->setAction($this->generateUrl('orders_delete',
-                        array('id' => $id)))
-                ->setMethod('DELETE')
-                ->add('submit', 'submit', array('label' => 'Delete'))
-                ->getForm()
+                        ->setAction($this->generateUrl('orders_delete', array('id' => $id)))
+                        ->setMethod('DELETE')
+                        ->add('submit', 'submit', array('label' => 'Delete'))
+                        ->getForm()
         ;
     }
 
@@ -397,19 +390,17 @@ class OrdersController extends Controller
      */
     private function createStatusForm(Orders $entity)
     {
-        $form     = $this->createFormBuilder()
-            ->setAction($this->generateUrl('orders_status_update',
-                    array('id' => $entity->getId())))
-            ->setMethod('PUT');
+        $form = $this->createFormBuilder()
+                ->setAction($this->generateUrl('orders_status_update', array('id' => $entity->getId())))
+                ->setMethod('PUT');
         $children = $entity->getOrderState()->getCurrentState()->getChildren();
         if (is_array($children))
-                foreach ($children as $key => $child) {
-                $form->add($child->getKey(), 'submit',
-                    array(
+            foreach ($children as $key => $child) {
+                $form->add($child->getKey(), 'submit', array(
                     'label' => $child->getName(),
                     'attr' => array(
-                        'id' => 'state_'.$key,
-                        'class' => 'ml-5 btn-group btn-'.$child->getBootstrapClass(),
+                        'id' => 'state_' . $key,
+                        'class' => 'ml-5 btn-group btn-' . $child->getBootstrapClass(),
                         'value' => $child->getKey(),
                 )));
             }
@@ -455,8 +446,7 @@ class OrdersController extends Controller
 
             $em->flush();
 
-            return $this->redirect($this->generateUrl('orders_show',
-                        array('id' => $id)));
+            return $this->redirect($this->generateUrl('orders_show', array('id' => $id)));
         } else {
             echo "Form not valid becuase:<br/>";
             $formErrors = $statusForm->getErrors();
@@ -471,4 +461,5 @@ class OrdersController extends Controller
             'delete_form' => $deleteForm->createView(),
         );
     }
+
 }

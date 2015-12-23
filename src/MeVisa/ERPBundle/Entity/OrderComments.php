@@ -12,6 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class OrderComments
 {
+
     /**
      * @var integer
      *
@@ -23,7 +24,7 @@ class OrderComments
 
     /**
      * @ORM\ManyToOne(targetEntity="Orders", inversedBy="OrderComments")
-     * @ORM\JoinColumn(name="order_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="order_id", referencedColumnName="id", onDelete="CASCADE")
      * */
     private $orderRef;
 
@@ -47,6 +48,11 @@ class OrderComments
      * @ORM\Column(name="createdAt", type="datetime")
      */
     private $createdAt;
+
+    public function __construct()
+    {
+        $this->setCreatedAt(new \DateTime());
+    }
 
     /**
      * Get id
@@ -154,4 +160,5 @@ class OrderComments
     {
         return $this->orderRef;
     }
+
 }

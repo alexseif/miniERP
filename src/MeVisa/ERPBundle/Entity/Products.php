@@ -59,7 +59,8 @@ class Products
     protected $vendor;
 
     /**
-     * @ORM\OneToMany(targetEntity="ProductPrices", mappedBy="product")
+     * @ORM\OneToMany(targetEntity="ProductPrices", mappedBy="product", cascade={"persist"})
+     * 
      * */
     private $pricing;
 
@@ -168,6 +169,16 @@ class Products
     public function getVendor()
     {
         return $this->vendor;
+    }
+
+    function getWcId()
+    {
+        return $this->wcId;
+    }
+
+    function setWcId($wcId)
+    {
+        $this->wcId = $wcId;
     }
 
     /**
