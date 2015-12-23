@@ -1,6 +1,13 @@
 {% extends ':default:admin.html.twig' %}
-
+{% macro nested_array(array, depth =0) %}
+    {% import _self as macros %}
+    {% for key, val in array %}
+        {{ key }}: {% if val is iterable %}{{ macros.nested_array(val, depth+1) }}{% else %}{{ val }}{% endif %}<br/>
+    {% endfor %}
+{% endmacro %}
 {% block content %}
+
+    {% import _self as macros %}
     <div class="panel panel-default">
         <div class="panel-heading">
             <span class="panel-title">WC</span>
@@ -13,11 +20,11 @@
                 </tr>
                 <tr>
                     <th>Header</th>
-                    <td>{{ dump(entity.header) }}</td>
+                    <td>{{ macros.nested_array(entity.header) }}</td>
                 </tr>
                 <tr>
                     <th>Content</th>
-                    <td>{{ dump(entity.content) }}</td>
+                    <td>{{ macros.nested_array(entity.content) }}</td>
                 </tr>
                 <tr>
                     <th>Createdat</th>
