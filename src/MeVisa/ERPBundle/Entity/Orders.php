@@ -48,7 +48,7 @@ class Orders
     /**
      *
      * @ORM\ManyToOne(targetEntity="MeVisa\CRMBundle\Entity\Customers", inversedBy="Orders", cascade={"persist"})
-     * @ORM\JoinColumn(name="customer_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="customer_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $customer;
 

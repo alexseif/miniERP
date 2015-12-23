@@ -97,17 +97,18 @@ class WCController extends Controller
         $customer->setPhone($wcOrder['billing_address']['phone']);
 
         $customerExists = $em->getRepository('MeVisaCRMBundle:Customers')->findOneBy(array('name' => $customer->getName()));
-var_dump($customerExists);die();
+
         //FIXME: not Working
         if (!$customerExists) {
             $em->persist($customer);
+            $order->setCustomer($customer);
         } else {
+            $order->setCustomer($customerExists);
             $orderCommentText = '';
             //Emails do not match
             if ($customer->getEmail() != $customerExists->getEmail()) {
                 $orderCommentText .= 'Email do not match, new email: ' . $customer->getEmail();
             }
-
             //Phones do not match
             if ($customer->getPhone() != $customerExists->getPhone()) {
                 $orderCommentText .='Phone do not match, new phone: ' . $customer->getPhone();
@@ -118,7 +119,7 @@ var_dump($customerExists);die();
                 $order->addOrderComment($orderComment);
             }
         }
-        $order->setCustomer($customer);
+        
 
         //TODO: Align Product
         foreach ($wcOrder['line_items'] as $lineItem) {
