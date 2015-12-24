@@ -5,33 +5,29 @@
         <div class="panel-heading">
             <span class="panel-title">WC list</span>
         </div>
-        <table class="table table-bordered table-hover table-striped records_list">
-            <thead>
-                <tr>
-                    <th>Id</th>
-                    <th>Header</th>
-                    <th>Content</th>
-                    <th>Createdat</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for entity in entities %}
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover table-striped records_list">
+                <thead>
                     <tr>
-                        <td><a href="{{ path('wc_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
-                        <td>{{ entity.header }}</td>
-                        <td>{{ entity.content }}</td>
-                        <td>{% if entity.createdAt %}{{ entity.createdAt|date('Y-m-d H:i:s') }}{% endif %}</td>
-                        <td>
-                            <ul>
-                                <li>
-                                    <a href="{{ path('wc_show', { 'id': entity.id }) }}">show</a>
-                                </li>
-                            </ul>
-                        </td>
+                        <th>Id</th>
+                        <th>Header</th>
+                        <th>Content</th>
+                        <th>Createdat</th>
+                        <th>Actions</th>
                     </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    {% for entity in entities %}
+                        <tr>
+                            <td><a href="{{ path('wc_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+                            <td>{{ entity.header }}</td>
+                            <td>{{ entity.content }}</td>
+                            <td>{% if entity.createdAt %}{{ entity.createdAt|date('Y-m-d H:i:s') }}{% endif %}</td>
+                            <td><a href="{{ path('wc_show', { 'id': entity.id }) }}">show</a></td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
 {% endblock %}
