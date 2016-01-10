@@ -20,16 +20,4 @@ class DefaultController extends Controller
         ));
     }
 
-    /**
-     * @Route("/info", name="info")
-     */
-    public function infoAction(Request $request)
-    {
-        ob_start();
-        phpinfo();
-        $phpinfo = ob_get_clean();
-
-        return $this->render('AppBundle:Default:phpinfo.html.twig', array('phpinfo' => $phpinfo));
-    }
-
 }
