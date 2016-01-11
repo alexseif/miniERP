@@ -66,7 +66,7 @@ class OrdersController extends Controller
         if ($form->isValid()) {
 
             // TODO: Autogenerate order number
-            $order->setNumber('Test001');
+            $order->setNumber('POS');
             // TODO: State machine
             $order->setState('backoffice');
             // TODO: Order Channel
