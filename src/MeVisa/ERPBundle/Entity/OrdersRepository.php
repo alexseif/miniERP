@@ -13,11 +13,12 @@ use Doctrine\ORM\EntityRepository;
 class OrdersRepository extends EntityRepository
 {
 
-    public function findAllByState($state)
+    public function findAllByState($state, $maxResults=5)
     {
         return $this->createQueryBuilder('o')
                         ->where("o.state = ?1")
                         ->setParameter('1', $state)
+                        ->setMaxResults($maxResults)
                         ->getQuery()
                         ->getResult();
     }
