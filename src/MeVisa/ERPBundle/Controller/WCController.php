@@ -75,8 +75,6 @@ class WCController extends Controller
             throw new HttpException(422, "Signature mismatch");
         }
 
-
-
         if (
                 ('order' != $request->headers->get('x-wc-webhook-resource')) ||
                 ('created' != $request->headers->get('x-wc-webhook-event'))
@@ -129,7 +127,6 @@ class WCController extends Controller
             }
         }
 
-
         //TODO: Align Product
         foreach ($wcOrder['line_items'] as $lineItem) {
             $product = $em->getRepository('MeVisaERPBundle:Products')->findOneBy(array('wcId' => $lineItem['product_id']));
@@ -155,6 +152,13 @@ class WCController extends Controller
 
             //TODO: Fix this
             //$lineItem['meta'] holds the companions
+            // actually doesn't hold companions
+            //TODO: Add companions no to order and save from meta
+            //TODO: Add arrival & departure dates to order and save from meta
+            //TODO: Add documents links 
+//            foreach ($lineItem['meta'] as $meta) {
+//                
+//            }
         }
 
         $orderPayment = new \MeVisa\ERPBundle\Entity\OrderPayments();
@@ -193,7 +197,6 @@ class WCController extends Controller
         $em->persist($wcLogger);
 
         $em->flush();
-
 
         return new Response();
     }
