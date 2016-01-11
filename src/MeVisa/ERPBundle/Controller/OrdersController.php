@@ -462,4 +462,32 @@ class OrdersController extends Controller
         );
     }
 
+    /**
+     * Finds and displays a Orders entity.
+     *
+     * @Route("/invoice/{id}", name="order_show_invoice")
+     * @Method("GET")
+     * @Template()
+     */
+    public function invoiceAction($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $order = $em->getRepository('MeVisaERPBundle:Orders')->find($id);
+
+        if (!$order) {
+            throw $this->createNotFoundException('Unable to find Orders entity.');
+        }
+        $state = $order->getState();
+        $order->startOrderStateEnginge();
+        $order->setOrderState($state);
+
+        $deleteForm = $this->createDeleteForm($id);
+        $statusForm = $this->createStatusForm($order);
+
+        return array(
+            'order' => $order,
+        );
+    }
+
 }
