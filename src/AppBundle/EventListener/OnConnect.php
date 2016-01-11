@@ -1,7 +1,5 @@
 <?php
 
-//file src/AppBundle/EventListener/OnConnect.php
-
 namespace AppBundle\EventListener;
 
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
