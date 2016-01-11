@@ -7,3 +7,7 @@ services:
 #    currency:
 #        class: %currency.class%
 #        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]
+    onconnect.listener:
+        class: src\AppBundle\EventListener\OnConnect
+        tags:
+             - { name: doctrine.event_listener, event: postConnect }
