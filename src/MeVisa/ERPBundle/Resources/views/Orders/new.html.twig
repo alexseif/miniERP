@@ -60,15 +60,16 @@
                          {% endfor %}#}
                         {# <button class="btn-warning btn" name="mevisa_erpbundle_orders[submit]" id="mevisa_erpbundle_orders_submit" type="submit">DOCUMENT</button>#}
                         {# <button class="btn-primary btn" name="mevisa_erpbundle_orders[submit]" id="mevisa_erpbundle_orders_submit" type="submit">POST</button>#}
-                        {{ form_widget(form.not_paid) }}
+                        {#{{ form_widget(form.not_paid) }}
                         {{ form_widget(form.document) }}
-                        {{ form_widget(form.post) }}
+                        {{ form_widget(form.post) }}#}
                     </div>
                 </div>
-                {#                <div class="col-sm-2">{{ form_row(form.submit) }}</div>#}
+                <div class="col-sm-2">{{ form_row(form.submit) }}</div>
             </div>
         </div>
     </div>
+{#    {{ form_end(form) }}#}
     {{ form_end(form, {'render_rest': false}) }}
 {% endblock %}
 {% block javascripts %}

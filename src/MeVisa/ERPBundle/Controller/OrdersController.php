@@ -58,6 +58,8 @@ class OrdersController extends Controller
     public function createAction(Request $request)
     {
         $order = new Orders();
+        $order->setState('backoffice');
+
         $form = $this->createCreateForm($order);
         $form->handleRequest($request);
 
@@ -156,8 +158,9 @@ class OrdersController extends Controller
 
             return $this->redirect($this->generateUrl('orders_show', array('id' => $order->getId())));
         } else {
-            echo "Form not valid becuase:<br/>";
-            var_dump($form->getErrors());
+            return array(
+                "errors" => $form->getErrors()
+            );
         }
 
         return array(
@@ -180,12 +183,7 @@ class OrdersController extends Controller
             'method' => 'POST',
         ));
 
-        foreach ($entity->getOrderState()->getCurrentState()->getChildren() as $state) {
-            $form->add($state->getKey(), 'submit', array('attr' => array('class' => 'btn-toolbar btn-' . $state->getBootstrapClass())
-            ));
-        }
-
-//        $form->add('submit', 'submit', array('label' => 'Create'));
+        $form->add('submit', 'submit', array('label' => 'Create'));
 
         return $form;
     }
@@ -205,6 +203,11 @@ class OrdersController extends Controller
         $order->setChannel('pos');
 
         $form = $this->createCreateForm($order);
+
+//        foreach ($order->getOrderState()->getCurrentState()->getChildren() as $state) {
+//            $form->add($state->getKey(), 'submit', array('attr' => array('class' => 'btn-toolbar btn-' . $state->getBootstrapClass())
+//            ));
+//        }
 
         $em = $this->getDoctrine()->getManager();
         $productPrices = $em->getRepository('MeVisaERPBundle:ProductPrices')->findAll();
@@ -270,6 +273,7 @@ class OrdersController extends Controller
 
         $editForm = $this->createEditForm($order);
         $deleteForm = $this->createDeleteForm($id);
+        $statusForm = $this->createStatusForm($order);
 
         $productPrices = $em->getRepository('MeVisaERPBundle:ProductPrices')->findAll();
 
@@ -278,6 +282,7 @@ class OrdersController extends Controller
             'productPrices' => $productPrices,
             'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
+            'status_form' => $statusForm->createView(),
         );
     }
 

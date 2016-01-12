@@ -87,8 +87,8 @@ vich_uploader:
     db_driver: orm
     mappings:
         order_image:
-            uri_prefix:         /orders
-            upload_destination: %kernel.root_dir%/../web/orders
+            uri_prefix:         /uploads
+            upload_destination: %kernel.root_dir%/../web/uploads
             delete_on_update:   true
             delete_on_remove:   true
             

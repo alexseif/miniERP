@@ -74,7 +74,7 @@ class OrdersType extends AbstractType
             'type' => new OrderDocumentsType(),
             'allow_add' => true,
             'label' => false,
-            'attr' => array('class' => 'orderDocuments')
+            'attr' => array('class' => 'orderDocuments',"multiple" => "multiple")
         ));
     }
 

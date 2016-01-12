@@ -16,9 +16,11 @@ class OrderDocumentsType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('file', 'vich_file',
-                array(
-                'label' => false
+                ->add('file', 'vich_file', array(
+                    'label' => false,
+                    "attr" => array(
+                        "multiple" => "multiple",
+                    )
         ));
     }
 
@@ -39,4 +41,5 @@ class OrderDocumentsType extends AbstractType
     {
         return 'mevisa_erpbundle_orderdocuments';
     }
+
 }
