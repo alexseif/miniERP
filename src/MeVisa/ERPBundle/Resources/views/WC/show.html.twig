@@ -25,13 +25,16 @@
                     <td>{{ macros.nested_array(entity.content) }}</td>
                 </tr>
                 <tr>
+                    <th>Result</th>
+                    <td>{{ entity.result }}</td>
+                </tr>
+                <tr>
                     <th>Createdat</th>
                     <td>{{ entity.createdAt|date('Y-m-d H:i:s') }}</td>
                 </tr>
             </tbody>
         </table>
     </div>
-    <pre>{{ dump(entity) }}</pre>
     <ul class="record_actions">
         <li>
             <a href="{{ path('wc') }}">

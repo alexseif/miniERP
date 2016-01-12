@@ -12,6 +12,7 @@
                         <th>Id</th>
                         <th>Header</th>
                         <th>Content</th>
+                        <th>Result</th>
                         <th>Createdat</th>
                         <th>Actions</th>
                     </tr>
@@ -22,6 +23,7 @@
                             <td><a href="{{ path('wc_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
                             <td>{{ entity.header[:24] }}</td>
                             <td>{{ entity.content[:24] }}</td>
+                            <td>{{ entity.result }}</td>
                             <td>{% if entity.createdAt %}{{ entity.createdAt|date('Y-m-d H:i:s') }}{% endif %}</td>
                             <td><a href="{{ path('wc_show', { 'id': entity.id }) }}">show</a></td>
                         </tr>
