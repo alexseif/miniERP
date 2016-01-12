@@ -65,8 +65,14 @@ class OrdersController extends Controller
 
         if ($form->isValid()) {
 
-            // TODO: Autogenerate order number
-            $order->setNumber('POS');
+            $orderNo = $em->getRepository('MeVisaERPBundle:Orders')->queryLastPOSNumber();
+            if ($orderNo) {
+                $number = ltrim($orderNo->getNumber(), 'POS');
+                $order->setNumber('POS' . ($number + 1));
+            } else {
+                $order->setNumber('POS1');
+            }
+
             // TODO: State machine
             $order->setState('backoffice');
             // TODO: Order Channel
@@ -106,10 +112,10 @@ class OrdersController extends Controller
 
             // FIXME: remove this faking order
             $order->setCreatedAt(new \DateTime("now"));
-            $order->setUpdatedAt(new \DateTime());
-            $order->setCreatedAt(new \DateTime());
-            $order->setCompletedAt(new \DateTime());
-            $order->setDeletedAt(new \DateTime());
+//            $order->setUpdatedAt(new \DateTime());
+//            $order->setCreatedAt(new \DateTime());
+//            $order->setCompletedAt(new \DateTime());
+//            $order->setDeletedAt(new \DateTime());
 
             $orderCompanions = $order->getOrderCompanions();
             // TODO: Check Order Companions
@@ -119,6 +125,8 @@ class OrdersController extends Controller
                 $order->addOrderCompanion($companion);
             }
 
+            // TODO: Check Order Comments
+            // TODO: if order comment is not empty add new orderComment
             $orderComments = $order->getOrderComments();
             foreach ($orderComments as $comment) {
                 if ("" == $comment->getComment()) {
@@ -135,10 +143,9 @@ class OrdersController extends Controller
                 $payment->setState("paid");
                 $order->addOrderPayment($payment);
             }
-            // TODO: Check Order Comments
-            // TODO: if order comment is not empty add new orderComment
+
             // TODO: Check Order
-            //TODO: Upload OrderDocuments then presist
+            // TODO: Upload OrderDocuments then presist
             $orderDocuments = $order->getOrderDocuments();
             foreach ($orderDocuments as $document) {
                 $order->addOrderDocument($document);

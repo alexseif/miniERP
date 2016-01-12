@@ -175,9 +175,9 @@ class WCController extends Controller
         $order->setWcId($wcOrder['order_number']);
         $order->setChannel("MeVisa.ru");
 
-        $order->setAdjustmentTotal($wcOrder['total_discount']*100);
-        $order->setProductsTotal($wcOrder['subtotal']*100);
-        $order->setTotal($wcOrder['total']*100);
+        $order->setAdjustmentTotal($wcOrder['total_discount'] * 100);
+        $order->setProductsTotal($wcOrder['subtotal'] * 100);
+        $order->setTotal($wcOrder['total'] * 100);
         $order->setState($wcOrder['status']);
         $order->setCreatedAt(new \DateTime($wcOrder['created_at']));
 

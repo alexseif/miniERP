@@ -13,7 +13,7 @@ use Doctrine\ORM\EntityRepository;
 class OrdersRepository extends EntityRepository
 {
 
-    public function findAllByState($state, $maxResults=5)
+    public function findAllByState($state, $maxResults = 5)
     {
         return $this->createQueryBuilder('o')
                         ->where("o.state = ?1")
@@ -21,6 +21,16 @@ class OrdersRepository extends EntityRepository
                         ->setMaxResults($maxResults)
                         ->getQuery()
                         ->getResult();
+    }
+
+    public function queryLastPOSNumber()
+    {
+        return $this->createQueryBuilder("o")
+                        ->where("o.number LIKE 'POS%'")
+                        ->orderBy("o.id", "DESC")
+                        ->setMaxResults(1)
+                        ->getQuery()
+                        ->getOneOrNullResult();
     }
 
 }

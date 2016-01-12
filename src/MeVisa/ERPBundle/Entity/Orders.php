@@ -34,7 +34,7 @@ class Orders
     /**
      * @var string
      *
-     * @ORM\Column(name="number", type="string", length=255)
+     * @ORM\Column(name="number", type="string", length=20)
      */
     private $number;
 
@@ -161,7 +161,7 @@ class Orders
     public function __construct()
     {
         $this->startOrderStateEnginge();
-
+ 
         $this->orderProducts = new ArrayCollection();
         $this->orderPayments = new ArrayCollection();
         $this->orderCompanions = new ArrayCollection();
