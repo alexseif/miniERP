@@ -20,21 +20,18 @@ class OrdersType extends AbstractType
 //                array('label' => 'Order#', 'disabled' => true))
 //                ->add('state', 'choice', array('placeholder' => 'State'))
 //                ->add('channel', 'choice', array('placeholder' => 'Channel', 'disabled' => true))
-            ->add('productsTotal', 'money',
-                array('currency' => 'RUB', 'divisor' => 100, 'label' => 'Subtotal',
-                'disabled' => 'true'))
-            ->add('adjustmentTotal', 'money',
-                array(
-                'currency' => 'RUB',
-                'divisor' => 100,
-                'label' => 'Adjustment',
-                'data' => 0))
-            ->add('total', 'money',
-                array(
-                'currency' => 'RUB',
-                'divisor' => 100,
-                'required' => false,
-                'disabled' => 'true'))
+                ->add('productsTotal', 'money', array('currency' => 'RUB', 'divisor' => 100, 'label' => 'Subtotal',
+                    'disabled' => 'true'))
+                ->add('adjustmentTotal', 'money', array(
+                    'currency' => 'RUB',
+                    'divisor' => 100,
+                    'label' => 'Adjustment',
+                    'data' => 0))
+                ->add('total', 'money', array(
+                    'currency' => 'RUB',
+                    'divisor' => 100,
+                    'required' => false,
+                    'disabled' => 'true'))
 //                ->add('createdAt', 'hidden')
 //                ->add('updatedAt', 'hidden', array('required' => false))
 //                ->add('deletedAt', 'hidden', array('required' => false))
@@ -42,39 +39,34 @@ class OrdersType extends AbstractType
         ;
         $builder->add('customer', new \MeVisa\CRMBundle\Form\CustomersType());
 
-        $builder->add('orderProducts', 'collection',
-            array(
+        $builder->add('orderProducts', 'collection', array(
             'type' => new OrderProductsType(),
             'allow_add' => true,
             'label' => false,
         ));
 
-        $builder->add('orderCompanions', 'collection',
-            array(
+        $builder->add('orderCompanions', 'collection', array(
             'type' => new OrderCompanionsType(),
             'allow_add' => true,
             'label' => false
         ));
 
-        $builder->add('orderPayments', 'collection',
-            array(
+        $builder->add('orderPayments', 'collection', array(
             'type' => new OrderPaymentsType(),
             'allow_add' => true,
             'label' => false
         ));
 
-        $builder->add('orderComments', 'collection',
-            array(
+        $builder->add('orderComments', 'collection', array(
             'type' => new OrderCommentsType(),
             'allow_add' => true,
             'label' => false
         ));
-        $builder->add('orderDocuments', 'collection',
-            array(
+        $builder->add('orderDocuments', 'collection', array(
             'type' => new OrderDocumentsType(),
             'allow_add' => true,
             'label' => false,
-            'attr' => array('class' => 'orderDocuments',"multiple" => "multiple")
+            'attr' => array('class' => 'orderDocuments', "multiple" => "multiple")
         ));
     }
 
@@ -95,4 +87,5 @@ class OrdersType extends AbstractType
     {
         return 'mevisa_erpbundle_orders';
     }
+
 }

@@ -38,6 +38,8 @@ twig:
     strict_variables: "%kernel.debug%"
     form:
         resources: ['bootstrap_3_horizontal_layout.html.twig']
+    form_themes:
+        - 'VichUploaderBundle:Form:fields.html.twig'
     globals:
 
 # Assetic Configuration
@@ -86,7 +88,7 @@ swiftmailer:
 vich_uploader:
     db_driver: orm
     mappings:
-        order_image:
+        order_documents:
             uri_prefix:         /uploads
             upload_destination: %kernel.root_dir%/../web/uploads
             delete_on_update:   true

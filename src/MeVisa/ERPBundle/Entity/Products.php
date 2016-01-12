@@ -64,6 +64,11 @@ class Products
      * */
     private $pricing;
 
+    /**
+     * @ORM\OneToMany(targetEntity="OrderProducts", mappedBy="product")
+     */
+    private $orderProducts;
+
     public function __construct()
     {
         $this->pricing = new ArrayCollection();

@@ -18,6 +18,9 @@ class OrderDocumentsType extends AbstractType
         $builder
                 ->add('file', 'vich_file', array(
                     'label' => false,
+                    'required' => false,
+                    'allow_delete' => true,
+                    'download_link' => true,
                     "attr" => array(
                         "multiple" => "multiple",
                     )

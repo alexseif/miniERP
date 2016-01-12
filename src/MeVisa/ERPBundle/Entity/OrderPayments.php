@@ -22,7 +22,7 @@ class OrderPayments
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Orders", inversedBy="OrderPayments")
+     * @ORM\ManyToOne(targetEntity="Orders", inversedBy="orderPayments")
      * @ORM\JoinColumn(name="order_id", referencedColumnName="id", onDelete="CASCADE")
      * */
     private $orderRef;

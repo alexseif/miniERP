@@ -16,4 +16,4 @@ docs.old/
 errordocs/
 logs/
 stat/
-uploads/*
+web/uploads/*

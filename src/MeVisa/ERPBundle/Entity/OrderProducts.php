@@ -29,7 +29,7 @@ class OrderProducts
     private $orderRef;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Products", inversedBy="OrderPayments")
+     * @ORM\ManyToOne(targetEntity="Products", inversedBy="orderProducts")
      * @ORM\JoinColumn(name="product_id", referencedColumnName="id")
      */
     private $product;

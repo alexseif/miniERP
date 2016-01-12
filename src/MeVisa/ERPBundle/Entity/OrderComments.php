@@ -23,7 +23,7 @@ class OrderComments
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Orders", inversedBy="OrderComments")
+     * @ORM\ManyToOne(targetEntity="Orders", inversedBy="orderComments")
      * @ORM\JoinColumn(name="order_id", referencedColumnName="id", onDelete="CASCADE")
      * */
     private $orderRef;

@@ -23,7 +23,7 @@ class OrderCompanions
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Orders", inversedBy="OrderCommpanions")
+     * @ORM\ManyToOne(targetEntity="Orders", inversedBy="orderCompanions")
      * @ORM\JoinColumn(name="order_id", referencedColumnName="id", onDelete="CASCADE")
      *
      */
