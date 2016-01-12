@@ -81,6 +81,27 @@ class Orders
     private $total;
 
     /**
+     * @var integer
+     *
+     * @ORM\Column(name="companions", type="integer", nullable=true)
+     */
+    private $companions;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="arrival", type="date", nullable=true)
+     */
+    private $arrival;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="departure", type="date", nullable=true)
+     */
+    private $departure;
+
+    /**
      * @var \DateTime
      *
      * @ORM\Column(name="createdAt", type="datetime")
@@ -622,6 +643,36 @@ class Orders
     public function removeOrderDocument(\MeVisa\ERPBundle\Entity\OrderDocuments $orderDocuments)
     {
         $this->orderDocuments->removeElement($orderDocuments);
+    }
+
+    function getCompanions()
+    {
+        return $this->companions;
+    }
+
+    function getArrival()
+    {
+        return $this->arrival;
+    }
+
+    function getDeparture()
+    {
+        return $this->departure;
+    }
+
+    function setCompanions($companions)
+    {
+        $this->companions = $companions;
+    }
+
+    function setArrival(\DateTime $arrival)
+    {
+        $this->arrival = $arrival;
+    }
+
+    function setDeparture(\DateTime $departure)
+    {
+        $this->departure = $departure;
     }
 
     /**
