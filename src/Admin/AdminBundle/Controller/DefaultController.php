@@ -5,6 +5,7 @@ namespace Admin\AdminBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\HttpFoundation\Request;
 
 class DefaultController extends Controller
 {
@@ -29,6 +30,21 @@ class DefaultController extends Controller
             "document" => $document,
             "post" => $post,
             "completed" => $completed,
+        );
+    }
+
+    /**
+     * @Route("/search", name="search")
+     * @Template()
+     */
+    public function searchAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $results = $em->getRepository('MeVisaERPBundle:Orders')->searchQuery($request->get('search'));
+
+        return array(
+            "results" => $results
         );
     }
 

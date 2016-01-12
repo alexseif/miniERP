@@ -33,4 +33,18 @@ class OrdersRepository extends EntityRepository
                         ->getOneOrNullResult();
     }
 
+    public function searchQuery($text)
+    {
+
+        return $this->createQueryBuilder("o")
+                        ->leftJoin("o.customer", 'c')
+//                        ->("c.id = o.customer")
+                        ->where("c.name LIKE ?1")
+                        ->setParameter("1", "%".$text)
+                        ->orWhere("c.name LIKE ?2")
+                        ->setParameter("2", $text."%")
+                        ->getQuery()
+                        ->getResult();
+    }
+
 }
