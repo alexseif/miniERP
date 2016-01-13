@@ -2,7 +2,8 @@
 
 {% block content %}
     <style type="text/css">
-        td{width:20%;}
+        {# td{width:20%;} #}
+        .dashboard{max-height: 250px; }
     </style>
     {% include 'AdminAdminBundle:Default:quickActions.html.twig' %}
     {# TODO: Make panels colapsible  #}
@@ -14,7 +15,7 @@
                     <span class="panel-title">Pending Orders</span>
                     <span class="badge pull-right">{{ pending|length }}</span>
                 </div>
-                <div class="table-responsive">
+                <div class="table-responsive dashboard">
                     <table class="table table-bordered table-hover table-striped records_list">
                         <tbody>
                             {% for order in pending %}
