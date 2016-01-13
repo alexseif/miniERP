@@ -16,31 +16,30 @@ class OrderProductsType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('product', 'entity',
-                array(
-                'class' => 'MeVisa\ERPBundle\Entity\Products',
-                'choice_label' => 'name',
-                'placeholder' => 'Select Product',
-                'query_builder' => function(\MeVisa\ERPBundle\Entity\ProductsRepository $pr) {
-                    return $pr->queryAllEnabledProducts();
-                },
-                'attr' => array(
-                    'class' => 'product_id',
-                )
-            ))
-            ->add('quantity', 'number')
-            ->add('unitPrice', 'money',
-                array(
-                'currency' => 'RUB',
-                'divisor' => 100,
-                'label' => 'Price',
-                'disabled' => 'true'
-            ))
-            ->add('total', 'money',
-                array(
-                'currency' => 'RUB',
-                'divisor' => 100,
-                'disabled' => 'true'
+                ->add('product', 'entity', array(
+                    'class' => 'MeVisa\ERPBundle\Entity\Products',
+                    'choice_label' => 'name',
+                    'placeholder' => 'Select Product',
+                    'query_builder' => function(\MeVisa\ERPBundle\Entity\ProductsRepository $pr) {
+                        return $pr->queryAllEnabledProducts();
+                    },
+                    'attr' => array(
+                        'class' => 'product_id',
+                    )
+                ))
+                ->add('quantity', 'integer', array(
+                    'attr' => array('min' => 1)
+                ))
+                ->add('unitPrice', 'money', array(
+                    'currency' => 'RUB',
+                    'divisor' => 100,
+                    'label' => 'Price',
+                    'disabled' => 'true'
+                ))
+                ->add('total', 'money', array(
+                    'currency' => 'RUB',
+                    'divisor' => 100,
+                    'disabled' => 'true'
         ));
     }
 
@@ -61,4 +60,5 @@ class OrderProductsType extends AbstractType
     {
         return 'mevisa_erpbundle_orderproducts';
     }
+
 }

@@ -4,7 +4,7 @@
 function addPrototypeForm(selector, wrapper, placement) {
     placement = placement || 'append';
     componentHolder = $(selector);
-    componentHolder.data('index', componentHolder.find(':input').length);
+//    componentHolder.data('index', componentHolder.find(':input').length);
 
     prototype = componentHolder.data('prototype');
     index = componentHolder.data('index');
@@ -12,7 +12,10 @@ function addPrototypeForm(selector, wrapper, placement) {
     newForm = prototype.replace(/__name__/g, index);
     componentHolder.data('index', index + 1);
 
-    newFormWrapper = $(wrapper).append(newForm);
+    newWrapper = $(wrapper);
+    newWrapper.data('step', index);
+
+    newFormWrapper = newWrapper.append(newForm);
 
     switch (placement) {
         case 'after':

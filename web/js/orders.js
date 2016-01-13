@@ -21,7 +21,6 @@ function updatePricesAndTotals() {
 
 function addProductForm() {
     addPrototypeForm('ul.orderProducts', '<li></li>');
-
 //    var prototype = $productHolder.data('prototype');
 //    var index = $productHolder.data('index');
 //    var newForm = prototype.replace(/__name__/g, index);
@@ -51,14 +50,16 @@ function addProductForm() {
             }
         }
     });
+    $('.remove_product_link').show();
 
     $('select[name="mevisa_erpbundle_orders[orderProducts][' + index + '][product]"]').focus();
-}
 
+}
 
 var $productHolder;
 
-var $addProductLink = $('<a href="#" class="btn btn-default btn-block add_product_link" style="margin-top:5px;"><span class="glyphicon glyphicon-plus" title="Add another product"></span></a>');
+var $addProductLink = $('<a href="#" class="btn btn-default  add_product_link pull-left"><span class="glyphicon glyphicon-plus" title="Add another product"></span></a>');
+var $removeProductLink = $('<a href="#" class="btn remove_product_link text-danger pull-right"><span class="glyphicon glyphicon-minus-sign" title="Remove this product"></span></a>');
 //var $newProductLinkLi = $('<li></li>').append($addProductLink);
 
 var $companionHolder;
@@ -69,13 +70,25 @@ $(document).ready(function () {
     });
 
     $productHolder = $('ul.orderProducts');
-    $productHolder.after($addProductLink);
+    $productHolder.after($addProductLink, $removeProductLink);
 
-    $productHolder.data('index', $productHolder.find(':input').length);
+    $productHolder.data('index', 0);
 
     $addProductLink.on('click', function (e) {
         e.preventDefault();
         addProductForm();
+    });
+
+    $removeProductLink.on('click', function (e) {
+        e.preventDefault();
+        index = $('ul.orderProducts').data('index');
+        if (index > 1) {
+            $('ul.orderProducts li:last').remove();
+            $('ul.orderProducts').data('index', index - 1);
+            updatePricesAndTotals();
+        } else {
+            $(this).hide();
+        }
     });
 
     $addProductLink.click();
