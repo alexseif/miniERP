@@ -41,10 +41,10 @@
                                     </td>
                                     <td>{{ result.customer.name }}</td>
                                     <td>{{ result.channel }}</td>
-                                    <td class="text-right"><span class="pull-left">RUB&nbsp;</span>{{ result.productsTotal/100|number_format(2, '.', ',') }}</td>
-                                    <td class="text-right"><span class="pull-left">RUB&nbsp;</span>{{ result.adjustmentTotal/100|number_format(2, '.', ',') }}</td>
-                                    <td class="text-right"><span class="pull-left">RUB&nbsp;</span>{{ result.total/100|number_format(2, '.', ',') }}</td>
-                                    <td>{% if result.createdAt %}{{ result.createdAt|date('M-d H:i') }}{% endif %}</td>
+                                    <td class="text-right">{{ (result.productsTotal/100)|localizedcurrency('RUB') }}</td>
+                                    <td class="text-right">{{ (result.adjustmentTotal/100)|localizedcurrency('RUB') }}</td>
+                                    <td class="text-right">{{ (result.total/100)|localizedcurrency('RUB') }}</td>
+                                    <td>{% if result.createdAt %}{{ result.createdAt|locaizeddate }}{% endif %}</td>
                                     <td><a class="btn btn-primary" href="{{ path('orders_show', { 'id': result.id }) }}">Open</a></td>
                                 </tr>
                             {% endfor %}

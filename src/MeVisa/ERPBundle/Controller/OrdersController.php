@@ -210,6 +210,7 @@ class OrdersController extends Controller
 //        }
 
         $em = $this->getDoctrine()->getManager();
+        //FIXME: Select with invalid product_prices produces errors
         $productPrices = $em->getRepository('MeVisaERPBundle:ProductPrices')->findAll();
 
         return array(

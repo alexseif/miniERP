@@ -4,6 +4,10 @@ parameters:
 #    currency.class: AppBundle\Service\CurrencyService
 
 services:
+    twig.extension.intl:
+        class: Twig_Extensions_Extension_Intl
+        tags:
+            - { name: twig.extension }
 #    currency:
 #        class: %currency.class%
 #        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]

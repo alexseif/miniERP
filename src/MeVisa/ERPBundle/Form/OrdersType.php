@@ -32,6 +32,9 @@ class OrdersType extends AbstractType
                     'divisor' => 100,
                     'required' => false,
                     'disabled' => 'true'))
+                ->add('people', 'integer')
+                ->add('departure', 'date')
+                ->add('arrival', 'date')
 //                ->add('createdAt', 'hidden')
 //                ->add('updatedAt', 'hidden', array('required' => false))
 //                ->add('deletedAt', 'hidden', array('required' => false))

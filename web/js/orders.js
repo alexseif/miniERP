@@ -1,6 +1,5 @@
 $('.chosen-input').chosen({no_results_text: "Add new", allow_single_deselect: true});
 
-
 function updatePricesAndTotals() {
     var index = $productHolder.data('index');
     var subtotal = 0;
@@ -20,7 +19,7 @@ function updatePricesAndTotals() {
     $('input[name="mevisa_erpbundle_orders[total]"]').val(total);
 }
 
-function addProductForm($productHolder, $newProductLinkLi) {
+function addProductForm() {
     addPrototypeForm('ul.orderProducts', '<li></li>');
 
 //    var prototype = $productHolder.data('prototype');
@@ -45,8 +44,8 @@ function addProductForm($productHolder, $newProductLinkLi) {
     $('input[name="mevisa_erpbundle_orders[orderProducts][0][quantity]"]').change(function () {
         var companionIndex = $companionHolder.data('index');
         if (companionIndex <= 0) {
-            $noComanions = $('input[name="mevisa_erpbundle_orders[orderProducts][0][quantity]"]').val();
-            for (i = 0; i < $noComanions; i++) {
+            $noCompanions = $('input[name="mevisa_erpbundle_orders[orderProducts][0][quantity]"]').val();
+            for (i = 0; i < $noCompanions; i++) {
                 $('.addCompanion').click();
                 $('input[name="mevisa_erpbundle_orders[orderCompanions][0][name]"]').val($('input[name="mevisa_erpbundle_orders[customer][name]"]').val());
             }
@@ -60,7 +59,7 @@ function addProductForm($productHolder, $newProductLinkLi) {
 var $productHolder;
 
 var $addProductLink = $('<a href="#" class="btn btn-default btn-block add_product_link" style="margin-top:5px;"><span class="glyphicon glyphicon-plus" title="Add another product"></span></a>');
-var $newProductLinkLi = $('<li></li>').append($addProductLink);
+//var $newProductLinkLi = $('<li></li>').append($addProductLink);
 
 var $companionHolder;
 
@@ -70,13 +69,13 @@ $(document).ready(function () {
     });
 
     $productHolder = $('ul.orderProducts');
-    $productHolder.append($newProductLinkLi);
+    $productHolder.after($addProductLink);
 
     $productHolder.data('index', $productHolder.find(':input').length);
 
     $addProductLink.on('click', function (e) {
         e.preventDefault();
-        addProductForm($productHolder, $newProductLinkLi);
+        addProductForm();
     });
 
     $addProductLink.click();

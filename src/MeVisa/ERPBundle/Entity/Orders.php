@@ -83,9 +83,9 @@ class Orders
     /**
      * @var integer
      *
-     * @ORM\Column(name="companions", type="integer", nullable=true)
+     * @ORM\Column(name="people", type="integer", nullable=true)
      */
-    private $companions;
+    private $people;
 
     /**
      * @var \DateTime
@@ -645,9 +645,9 @@ class Orders
         $this->orderDocuments->removeElement($orderDocuments);
     }
 
-    function getCompanions()
+    function getPeople()
     {
-        return $this->companions;
+        return $this->people;
     }
 
     function getArrival()
@@ -660,9 +660,9 @@ class Orders
         return $this->departure;
     }
 
-    function setCompanions($companions)
+    function setPeople($people)
     {
-        $this->companions = $companions;
+        $this->people = $people;
     }
 
     function setArrival(\DateTime $arrival)

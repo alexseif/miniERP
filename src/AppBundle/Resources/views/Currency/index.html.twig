@@ -35,7 +35,7 @@
                                 <tbody>
                                     {% for entity in entities %}
                                         <tr>
-                                            <td>{{ entity.value|number_format(2, '.', ',') }} RUB</td>
+                                            <td>{{ entity.value|localizedcurrency('RUB') }} </td>
                                             <td>{% if entity.createdAt %}{{ entity.createdAt|date('H:i d/m/Y') }}{% endif %}
                                                 {#                                                {{ form(delete_form) }}#}
                                             </td>

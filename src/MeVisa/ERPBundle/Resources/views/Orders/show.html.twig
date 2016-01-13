@@ -14,34 +14,49 @@
                     <div class="pull-right">
                         &nbsp;<span class="label label-default">{{ order.channel|upper }}</span>
                         &nbsp;<span class="label label-{{order.orderState.currentState.bootstrapClass}}">{{ order.stateName|upper }}</span>
-                        &nbsp;<span class="label label-default"> {{ order.createdAt|date() }}</span>
+                        &nbsp;<span class="label label-default"> {{ order.createdAt|localizeddate }}</span>
                     </div>
                 </div>
                 <div class="panel-body">
                     <div class="row">
                         <div class="col-sm-6">
-                            <div class="panel panel-default">
-                                <ul class="list-group">
-                                    <li class="list-group-item"><label class="col-sm-2">Name</label> {{order.customer.name}}</li>
-                                    <li class="list-group-item"><label class="col-sm-2">Email</label> {{order.customer.email}}</li>
-                                    <li class="list-group-item"><label class="col-sm-2">Phone</label> {{order.customer.phone}}</li>
-                                </ul>
-                            </div>
+                            <ul class="list-group">
+                                <li class="list-group-item"><label class="col-sm-2">Name</label> {{order.customer.name}}</li>
+                                <li class="list-group-item"><label class="col-sm-2">Email</label> {{order.customer.email}}</li>
+                                <li class="list-group-item"><label class="col-sm-2">Phone</label> {{order.customer.phone}}</li>
+                            </ul>
                         </div>
                         <div class="col-sm-6">
                             <ul class="list-group" style="text-align: right;"> 
                                 <li class="list-group-item"><label class="col-sm-3">Order#</label>{{ order.number }}</li>
-                                <li class="list-group-item"><label class="col-sm-3">Adjustment</label>RUB {{ (order.adjustmentTotal/100)|number_format }}</li>
-                                <li class="list-group-item"><label class="col-sm-3">Total</label>RUB {{ (order.total/100)|number_format }}</li>
+                                <li class="list-group-item"><label class="col-sm-3">Adjustment</label>{{ (order.adjustmentTotal/100)|localizedcurrency('RUB') }}</li>
+                                <li class="list-group-item"><label class="col-sm-3">Total</label> {{ (order.total/100)|localizedcurrency('RUB') }}</li>
                             </ul>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <span class="panel-title">Products</span>
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <tbody>
+                                            <tr>
+                                                <th rowspan="2">People</th>
+                                                <td rowspan="2">{{ order.people }}</td>
+                                                <th>Departure</th>
+                                                <td>{{ order.departure|localizeddate('full', 'none') }}</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Arrival</th>
+                                                <td>{{ order.arrival|localizeddate('full', 'none') }}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
                                 </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="panel panel-default">
                                 <div class="table-responsive">
                                     <table class="table table-bordered table-hover table-striped records_list">
                                         <thead>
@@ -57,8 +72,39 @@
                                                 <tr>
                                                     <td>{{ product.product.name }}</td>
                                                     <td>{{ product.quantity }}</td>
-                                                    <td>{{ (product.unitPrice/100)|number_format }}</td>
-                                                    <td>{{ (product.total/100)|number_format }}</td>
+                                                    <td>{{ (product.unitPrice/100)|localizedcurrency('RUB') }}</td>
+                                                    <td>{{ (product.total/100)|localizedcurrency('RUB') }}</td>
+                                                </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <span class="panel-title">Companions</span>
+                                </div>
+                                <div class="table-responsive">
+                                    <table class="table table-bordered table-hover table-striped records_list">
+                                        <thead>
+                                            <tr>
+                                                <th>Name</th>
+                                                <th>Nationality</th>
+                                                <th>Passport #</th>
+                                                <th>Passport Expiry</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for companion in order.orderCompanions %}
+                                                <tr>
+                                                    <td>{{companion.name}}</td>
+                                                    <td>{{companion.nationality}}</td>
+                                                    <td>{{companion.passportNumber}}</td>
+                                                    <td>{{companion.passportExpiry|date()}}</td>
                                                 </tr>
                                             {% endfor %}
                                         </tbody>
@@ -99,7 +145,7 @@
                                                 {%for payment in order.orderPayments%}
                                                     <tr>
                                                         <td>{{ payment.method }}</td>
-                                                        <td>RUB {{ (payment.amount/100)|number_format }}</td>
+                                                        <td>{{ (payment.amount/100)|localizedcurrency('RUB') }}</td>
                                                         <td>
                                                             {% if(payment.state=="not_paid") %}
                                                                 <span class="label label-danger">NOT PAID</span>
@@ -108,7 +154,7 @@
                                                             {% endif %}
                                                         </td>
                                                         <td>{{ payment.detail }}</td>
-                                                        <td>{{ payment.createdAt|date() }}</td>
+                                                        <td>{{ payment.createdAt|localizeddate }}</td>
                                                     </tr>
                                                 {% endfor %}
                                             </tbody>
@@ -119,37 +165,6 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-sm-6">
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <span class="panel-title">Companions</span>
-                                </div>
-                                <div class="table-responsive">
-                                    <table class="table table-bordered table-hover table-striped records_list">
-                                        <thead>
-                                            <tr>
-                                                <th>Name</th>
-                                                <th>PAX</th>
-                                                <th>Nationality</th>
-                                                <th>Passport Number</th>
-                                                <th>Passport Expiry</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {% for companion in order.orderCompanions %}
-                                                <tr>
-                                                    <td>{{companion.name}}</td>
-                                                    <td>{{companion.pax}}</td>
-                                                    <td>{{companion.nationality}}</td>
-                                                    <td>{{companion.passportNumber}}</td>
-                                                    <td>{{companion.passportExpiry|date()}}</td>
-                                                </tr>
-                                            {% endfor %}
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
                         <div class="col-sm-6">
                             <div class="panel panel-default">
                                 <div class="panel-heading">
@@ -168,9 +183,8 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-12">
+                        <div class="col-sm-6">
+                            {# TODO: add availability to add another note #}
                             <div class="panel panel-default">
                                 <div class="panel-heading">
                                     <span class="panel-title">Notes</span>

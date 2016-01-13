@@ -17,13 +17,6 @@ class OrderCompanionsType extends AbstractType
     {
         $builder
             ->add('name')
-            ->add('pax', 'choice',
-                array(
-                'choices' => array('all' => 'All',
-                    'i' => 'Infant',
-                    'c' => 'Child',
-                    'a' => 'Adult')
-            ))
             ->add('nationality', 'country',
                 array(
                 'preferred_choices' => array('RU', 'UA'),

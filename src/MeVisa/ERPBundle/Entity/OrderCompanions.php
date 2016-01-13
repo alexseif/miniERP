@@ -46,13 +46,6 @@ class OrderCompanions
     /**
      * @var string
      *
-     * @ORM\Column(name="pax", type="string", length=255)
-     */
-    private $pax;
-
-    /**
-     * @var string
-     *
      * @ORM\Column(name="passport_number", type="string", length=255)
      */
     private $passportNumber;
@@ -187,29 +180,6 @@ class OrderCompanions
     public function getNationality()
     {
         return $this->nationality;
-    }
-
-    /**
-     * Set pax
-     *
-     * @param string $pax
-     * @return OrderCompanions
-     */
-    public function setPax($pax)
-    {
-        $this->pax = $pax;
-
-        return $this;
-    }
-
-    /**
-     * Get pax
-     *
-     * @return string 
-     */
-    public function getPax()
-    {
-        return $this->pax;
     }
 
 }

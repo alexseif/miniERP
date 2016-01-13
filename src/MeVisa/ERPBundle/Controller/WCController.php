@@ -144,7 +144,7 @@ class WCController extends Controller
 
             $order->addOrderProduct($orderProduct);
 
-            $order->setCompanions($lineItem['meta'][0]['value']);
+            $order->setPeople($lineItem['meta'][0]['value']);
 
             $order->setDeparture(\DateTime::createFromFormat("d/m/Y", $lineItem['meta'][4]['value']));
             $order->setArrival(\DateTime::createFromFormat("d/m/Y", $lineItem['meta'][5]['value']));

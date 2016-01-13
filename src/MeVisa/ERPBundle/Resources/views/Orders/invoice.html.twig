@@ -60,15 +60,15 @@
                                 <td>1</td>
                                 <td>{{ product.product.name }}</td>
                                 <td>{{ product.quantity }}</td>
-                                <td>RUB {{ (product.unitPrice/100)|number_format }}</td>
-                                <td>RUB {{ (product.total/100)|number_format }}</td>
+                                <td>{{ (product.unitPrice/100)|localizedcurrency('RUB') }}</td>
+                                <td>{{ (product.total/100)|localizedcurrency('RUB') }}</td>
                             </tr>
                         {% endfor %}
                     </tbody>
                     <tfoot>
                         <tr>
                             <th colspan="4" class="text-right">Всего к оплате</th>
-                            <th>RRUB {{ (order.total/100)|number_format }}</th>
+                            <th>{{ (order.total/100)|localizedcurrency('RUB') }}</th>
                         </tr>
                     </tfoot>
                 </table>

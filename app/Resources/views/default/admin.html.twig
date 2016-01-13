@@ -41,7 +41,7 @@
                             <button type="submit" class="btn btn-default">Submit</button>
                         </form>
                         <ul class="nav navbar-nav navbar-right">
-                            {# <li><a>1 USD = 00.00 RUB</a></li>#}
+                            {# <li><a>{{ 1|localizedcurrency('USD') }} = {{ 00.00|localizedcurrency('RUB')}}</a></li>#}
                             <li><a href="#">Hi {{ app.user.username }}</a></li>
                         </ul>
                     </div>

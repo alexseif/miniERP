@@ -29,9 +29,9 @@
             </div>
         </div>
         <div class="panel-body">
-            <!-- Customer -->
-            {% include 'MeVisaERPBundle:Orders:new_customer.html.twig' %}
-            <!-- Customer -->
+            <!-- Order Details -->
+            {% include 'MeVisaERPBundle:Orders:new_order_details.html.twig' %}
+            <!-- Order Details -->
             <!-- Order Products -->
             {% include 'MeVisaERPBundle:Orders:new_order_products.html.twig' %}
             <!-- Order Products -->
@@ -69,7 +69,6 @@
             </div>
         </div>
     </div>
-    {#    {{ form_end(form) }}#}
     {{ form_end(form, {'render_rest': false}) }}
 {% endblock %}
 {% block javascripts %}

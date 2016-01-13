@@ -1,0 +1,42 @@
+<div class="row">
+    <div class="col-sm-6">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <span class="panel-title">Customer</span>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-sm-12">
+                        {{ form_row(form.customer.name)}}
+                    </div>
+                    <div class="col-sm-12">
+                        {{ form_row(form.customer.email)}}
+                    </div>
+                    <div class="col-sm-12">
+                        {{ form_row(form.customer.phone)}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <span class="panel-title">Order Details</span>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-sm-12">
+                        {{ form_row(form.people)}}
+                    </div>
+                    <div class="col-sm-12">
+                        {{ form_row(form.departure)}}
+                    </div>
+                    <div class="col-sm-12">
+                        {{ form_row(form.arrival)}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

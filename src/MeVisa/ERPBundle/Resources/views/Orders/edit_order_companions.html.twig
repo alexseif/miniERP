@@ -7,14 +7,12 @@
             <thead>
                 <tr>
                     <th>Name</th>
-                    <th>PAX</th>
                     <th>Passport #</th>
                     <th>Passport Exp</th>
                 </tr>
             </thead>
             <tbody class="companions" data-prototype="{{ 
 '<td>' ~ form_widget(edit_form.orderCompanions.vars.prototype.name) ~ '</td>' 
-~ '<td>' ~ form_widget(edit_form.orderCompanions.vars.prototype.pax) ~ '</td>'
 ~ '<td>' ~ form_widget(edit_form.orderCompanions.vars.prototype.passportNumber) ~ '</td>'
 ~ '<td>' 
 ~ form_widget(edit_form.orderCompanions.vars.prototype.passportExpiry.day, {'attr': { 'style': 'display:none' } }) 

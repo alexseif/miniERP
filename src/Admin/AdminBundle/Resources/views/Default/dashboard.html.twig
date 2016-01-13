@@ -22,10 +22,9 @@
                                     <td><a class="btn btn-link" href="{{ path('orders_show', { 'id': order.id }) }}">{{ order.number }}</a></td>
                                     <td>{{ order.customer.name }}</td>
                                     <td class="text-right">
-                                        <span class="pull-left">RUB&nbsp;</span>
-                                        {{ order.total/100|number_format(2, '.', ',') }}
+                                        {{ (order.total/100)|localizedcurrency('RUB') }}
                                     </td>
-                                    <td>{{ order.createdAt|date('M-d H:i') }}</td>
+                                    <td>{{ order.createdAt|localizeddate }}</td>
                                     <td class="text-right">
                                         <span class="label
                                               {% if order.state == "backoffice" %}label-info                                                      
@@ -58,10 +57,9 @@
                                     <td><a class="btn btn-link" href="{{ path('orders_show', { 'id': order.id }) }}">{{ order.number }}</a></td>
                                     <td>{{ order.customer.name }}</td>
                                     <td class="text-right">
-                                        <span class="pull-left">RUB&nbsp;</span>
-                                        {{ order.total/100|number_format(2, '.', ',') }}
+                                        {{ (order.total/100)|localizedcurrency('RUB') }}
                                     </td>
-                                    <td>{{ order.createdAt|date('M-d H:i') }}</td>
+                                    <td>{{ order.createdAt|localizeddate }}</td>
                                     <td class="text-right">
                                         <span class="label
                                               {% if order.state == "backoffice" %}label-info                                                      
@@ -92,10 +90,9 @@
                                     <td><a class="btn btn-link" href="{{ path('orders_show', { 'id': order.id }) }}">{{ order.number }}</a></td>
                                     <td>{{ order.customer.name }}</td>
                                     <td class="text-right">
-                                        <span class="pull-left">RUB&nbsp;</span>
-                                        {{ order.total/100|number_format(2, '.', ',') }}
+                                        {{ (order.total/100)|localizedcurrency('RUB') }}
                                     </td>
-                                    <td>{{ order.createdAt|date('M-d H:i') }}</td>
+                                    <td>{{ order.createdAt|localizeddate }}</td>
                                     <td class="text-right">
                                         <span class="label
                                               {% if order.state == "backoffice" %}label-info                                                      
@@ -128,10 +125,9 @@
                                     <td><a class="btn btn-link" href="{{ path('orders_show', { 'id': order.id }) }}">{{ order.number }}</a></td>
                                     <td>{{ order.customer.name }}</td>
                                     <td class="text-right">
-                                        <span class="pull-left">RUB&nbsp;</span>
-                                        {{ order.total/100|number_format(2, '.', ',') }}
+                                        {{ (order.total/100)|localizedcurrency('RUB') }}
                                     </td>
-                                    <td>{{ order.createdAt|date('M-d H:i') }}</td>
+                                    <td>{{ order.createdAt|localizeddate }}</td>
                                     <td class="text-right">
                                         <span class="label
                                               {% if order.state == "backoffice" %}label-info                                                      
@@ -162,10 +158,9 @@
                                     <td><a class="btn btn-link" href="{{ path('orders_show', { 'id': order.id }) }}">{{ order.number }}</a></td>
                                     <td>{{ order.customer.name }}</td>
                                     <td class="text-right">
-                                        <span class="pull-left">RUB&nbsp;</span>
-                                        {{ order.total/100|number_format(2, '.', ',') }}
+                                        {{ (order.total/100)|localizedcurrency('RUB') }}
                                     </td>
-                                    <td>{{ order.createdAt|date('M-d H:i') }}</td>
+                                    <td>{{ order.createdAt|localizeddate }}</td>
                                     <td class="text-right">
                                         <span class="label
                                               {% if order.state == "backoffice" %}label-info                                                      

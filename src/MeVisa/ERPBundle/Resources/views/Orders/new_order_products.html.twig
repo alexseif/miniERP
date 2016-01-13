@@ -24,4 +24,14 @@
  ~ '</div>'}}">
         </ul> 
     </div>
+    <div class="panel-footer">
+        <div class="row">
+            <div class="col-sm-4">
+                {# <span class="label label-primary" style="font-size: 14px;">RUB Subtotal</span>#}
+                {{ form_row(form.productsTotal) }}
+            </div>
+            <div class="col-sm-2"></div>
+            <div class="col-sm-6">{{ form_row(form.adjustmentTotal) }}</div>
+        </div>
+    </div>
 </div>
