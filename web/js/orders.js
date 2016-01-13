@@ -59,7 +59,7 @@ function addProductForm() {
 var $productHolder;
 
 var $addProductLink = $('<a href="#" class="btn btn-default  add_product_link pull-left"><span class="glyphicon glyphicon-plus" title="Add another product"></span></a>');
-var $removeProductLink = $('<a href="#" class="btn remove_product_link text-danger pull-right"><span class="glyphicon glyphicon-minus-sign" title="Remove this product"></span></a>');
+var $removeProductLink = $('<a href="#" class="btn remove_product_link text-danger pull-right" tabindex="-100"><span class="glyphicon glyphicon-minus-sign" title="Remove this product"></span></a>');
 //var $newProductLinkLi = $('<li></li>').append($addProductLink);
 
 var $companionHolder;
@@ -95,13 +95,19 @@ $(document).ready(function () {
 
     $companionHolder = $('tbody.companions');
 
-    $companionHolder.data('index', $companionHolder.find(':input').length);
+    $companionHolder.data('index', 0);
     $('.addCompanion').on('click', function (e) {
         e.preventDefault();
         addPrototypeForm('tbody.companions', '<tr></tr>');
+        $('.removeCompanion').on('click', function (e) {
+            e.preventDefault();
+            $(this).parent().parent().remove();
+        });
     });
 
     addPrototypeForm('div.orderPayments', '<div class="row"></div>');
     addPrototypeForm('div.orderComments', '<div></div>');
     addPrototypeForm('div.orderDocuments', '<div></div>');
+
+    $('#mevisa_erpbundle_orders_customer_name').focus();
 });
