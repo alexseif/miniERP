@@ -5,13 +5,22 @@
             <div id="welcome">
                 <img src="/images/sm_new_mevisa.png"/>
             </div>
-            <div id="status">
-                <p>
-                    Your application is in progress
-                </p>
-            </div>
             <div id="next">
-                <a href="{{ path('dashboard') }}">Start here</a>
+                <div>
+                    {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+                        <div id="status">
+                            <p>
+                                {{ 'layout.logged_in_as'|trans({'%username%': app.user.username}, 'FOSUserBundle') }} 
+                            </p>
+                        </div>
+                        <a href="{{ path('dashboard') }}">Начало здесь</a> 
+                        <a href="{{ path('fos_user_security_logout') }}">
+                            {{ 'layout.logout'|trans({}, 'FOSUserBundle') }}
+                        </a>
+                    {% else %}
+                        <a href="{{ path('fos_user_security_login') }}">{{ 'layout.login'|trans({}, 'FOSUserBundle') }}</a>
+                    {% endif %}
+                </div>
             </div>
         </div>
     </div>

@@ -1,43 +1,35 @@
-{% extends 'base.html.twig' %}
-
+{% extends ':default:admin.html.twig' %}
 
 {% block title %}Mevisa Authentication{% endblock %}
 
 {% block body %}
+    <style type="text/css">
+        input, label {display: block;margin-bottom: 10px;}
+        input[type="text"], input[type="password"]{width: 100%;}
+        input[type="checkbox"]{float: left;margin-right: 10px;}
+    </style>
     <div id="page-wrapper">
         <div class="container">
-            {% for flashMessage in app.session.flashbag.get('notice') %}
-                <div class="flash_notice">
-                    <div class="alert alert-dismissible alert-warning">
-                        <button type="button" class="close" data-dismiss="alert">×</button>
-                        {{ flashMessage }}
+            {% for type, messages in app.session.flashBag.all %}
+                {% for message in messages %}
+                    <div class="{{ type }}">
+                        {{ message|trans({}, 'FOSUserBundle') }}
                     </div>
-                </div>
+                {% endfor %}
             {% endfor %}
-            {% for flashMessage in app.session.flashbag.get('error') %}
-                <div class="flash_error">
-                    <div class="alert alert-dismissible alert-danger">
-                        <button type="button" class="close" data-dismiss="alert">×</button>
-                        {{ flashMessage }}
-                    </div>
-                </div>
-            {% endfor %}
-            {% for flashMessage in app.session.flashbag.get('success') %}
-                <div class="flash_error">
-                    <div class="alert alert-dismissible alert-success">
-                        <button type="button" class="close" data-dismiss="alert">×</button>
-                        {{ flashMessage }}
-                    </div>
-                </div>
-            {% endfor %}
-
-            <div class="row">
-                <div class="col-sm-4 col-sm-offset-4">
-                    <div class="panel">
-                        <div class="panel-body">
-                            {% block fos_user_content %}
-                            {% endblock %}
+            <div class="row" style="padding-top: 100px;">
+                <div class="col-sm-8 col-sm-offset-2">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <img src="/images/sm_new_mevisa.png" alt="MeVisa">
                         </div>
+                        <div class="panel-body">
+                            <div class="form-horizontal">
+                                {% block fos_user_content %}
+                                {% endblock %}
+                            </div>
+                        </div>
+                        <div class="panel-footer"><span class="clearfix"><a href="{{ path('dashboard') }}" class="pull-right btn btn-default">Dashboard</a></span></div>
                     </div>
                 </div>
             </div>
