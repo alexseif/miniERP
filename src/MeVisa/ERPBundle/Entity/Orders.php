@@ -2,8 +2,10 @@
 
 namespace MeVisa\ERPBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\Validator\Constraints as Assert;
 use MeVisa\ERPBundle\Business\OrderState;
 
 /**
@@ -11,6 +13,7 @@ use MeVisa\ERPBundle\Business\OrderState;
  *
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="MeVisa\ERPBundle\Entity\OrdersRepository")
+ * @ORM\HasLifecycleCallbacks
  */
 class Orders
 {
@@ -150,9 +153,16 @@ class Orders
     private $orderComments;
 
     /**
+     * @var File
+     * 
      * @ORM\OneToMany(targetEntity="OrderDocuments", mappedBy="orderRef", cascade={"persist"})
      * */
     private $orderDocuments;
+
+    /**
+     * @var ArrayCollection
+     */
+    private $uploadedFiles;
     private $orderState;
 
     /**
@@ -167,6 +177,7 @@ class Orders
         $this->orderCompanions = new ArrayCollection();
         $this->orderComments = new ArrayCollection();
         $this->orderDocuments = new ArrayCollection();
+        $this->uploadedFiles = new ArrayCollection();
         $this->setCreatedAt(new \DateTime());
     }
 
@@ -685,9 +696,40 @@ class Orders
         return $this->orderDocuments;
     }
 
+    /**
+     * @return ArrayCollection
+     */
+    public function getUploadedFiles()
+    {
+        return $this->uploadedFiles;
+    }
+
+    /**
+     * @param ArrayCollection $uploadedFiles
+     */
+    public function setUploadedFiles($uploadedFiles)
+    {
+        $this->uploadedFiles = $uploadedFiles;
+    }
+
     public function __toString()
     {
         return $this->number;
+    }
+
+    /**
+     * @ORM\PreFlush()
+     */
+    public function upload()
+    {
+        foreach ($this->uploadedFiles as $uploadedFile) {
+            if ($uploadedFile) {
+                $file = new OrderDocuments($uploadedFile);
+                $this->getOrderDocuments()->add($file);
+                $file->setOrderRef($this);
+                unset($uploadedFile);
+            }
+        }
     }
 
 }

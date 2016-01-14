@@ -20,7 +20,9 @@ class OrdersType extends AbstractType
 //                array('label' => 'Order#', 'disabled' => true))
                 ->add('state', 'choice', array(
                     'placeholder' => 'State',
-                    'choices' => array('pending', 'backoffice'),
+                    'choices' => array(
+                        'pending' => 'Pending',
+                        'backoffice' => 'Back Office'),
                 ))
 
 //                ->add('channel', 'choice', array('placeholder' => 'Channel', 'disabled' => true))
@@ -71,12 +73,13 @@ class OrdersType extends AbstractType
             'allow_add' => true,
             'label' => false
         ));
-        $builder->add('orderDocuments', 'collection', array(
-            'type' => new OrderDocumentsType(),
-            'allow_add' => true,
-            'label' => false,
-            'attr' => array('class' => 'orderDocuments', "multiple" => "multiple")
-        ));
+
+        $builder->add('uploadedFiles', 'file', array(
+            'multiple' => true,
+            'data_class' => null,
+            'required' => false,
+                )
+        );
     }
 
     /**

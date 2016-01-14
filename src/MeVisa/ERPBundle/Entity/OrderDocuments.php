@@ -4,13 +4,11 @@ namespace MeVisa\ERPBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
  * @ORM\Entity
- * @Vich\Uploadable
+ * @ORM\HasLifecycleCallbacks
  */
 class OrderDocuments
 {
@@ -20,7 +18,26 @@ class OrderDocuments
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $id;
+    public $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="name", type="string", length=255)
+     */
+    private $name;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="path", type="string", length=255)
+     */
+    private $path;
+
+    /**
+     * @var UploadedFile
+     */
+    private $file;
 
     /**
      * @ORM\ManyToOne(targetEntity="Orders", inversedBy="orderDocuments")
@@ -29,30 +46,15 @@ class OrderDocuments
     private $orderRef;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true))
-     * @Assert\NotBlank
+     * @param UploadedFile $uploadedFile
      */
-    private $name;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $path;
-
-    /**
-     * @Vich\UploadableField(mapping="order_documents", fileNameProperty="name")
-     * @Assert\File(maxSize="6000000")
-     *
-     * @var File
-     */
-    private $file;
-
-    /**
-     * @ORM\Column(type="datetime")
-     *
-     * @var \DateTime
-     */
-    private $updatedAt;
+    function __construct(UploadedFile $uploadedFile)
+    {
+        $path = sha1(uniqid(mt_rand(), true)) . '.' . $uploadedFile->guessExtension();
+        $this->setPath($path);
+        $this->setName($uploadedFile->getClientOriginalName());
+        $uploadedFile->move($this->getUploadRootDir(), $path);
+    }
 
     /**
      * Get id
@@ -88,6 +90,45 @@ class OrderDocuments
     }
 
     /**
+     * Set path
+     *
+     * @param string $path
+     * @return OrderDocuments
+     */
+    public function setPath($path)
+    {
+        $this->path = $path;
+
+        return $this;
+    }
+
+    /**
+     * Get path
+     *
+     * @return string 
+     */
+    public function getPath()
+    {
+        return $this->path;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getFile()
+    {
+        return $this->file;
+    }
+
+    /**
+     * @param mixed $file
+     */
+    public function setFile($file)
+    {
+        $this->file = $file;
+    }
+
+    /**
      * Set orderRef
      *
      * @param \MeVisa\ERPBundle\Entity\Orders $orderRef
@@ -110,28 +151,37 @@ class OrderDocuments
         return $this->orderRef;
     }
 
-    /**
-     * Sets file.
-     *
-     * @param File|\Symfony\Component\HttpFoundation\File\UploadedFile $file
-     */
-    public function setFile(File $file = null)
+    public function getWebPath()
     {
-        $this->file = $file;
-
-        if ($this->file instanceof UploadedFile) {
-            $this->updatedAt = new \DateTime('now');
-        }
+        return null === $this->path ? null : $this->getUploadDir() . '/' . $this->path;
     }
 
     /**
-     * Get file.
-     *
-     * @return UploadedFile
+     * @return string
      */
-    public function getFile()
+    protected function getUploadRootDir()
     {
-        return $this->file;
+        // the absolute directory path where uploaded
+        // documents should be saved
+        return __DIR__ . '/../../../../web/' . $this->getUploadDir();
+    }
+
+    /**
+     * @return string
+     */
+    protected function getUploadDir()
+    {
+        return 'uploads/documents';
+    }
+
+    /**
+     * @ORM\PostRemove()
+     */
+    public function removeFile()
+    {
+        if ($file = $this->getUploadRootDir() . '/' . $this->path) {
+            unlink($file);
+        }
     }
 
 }

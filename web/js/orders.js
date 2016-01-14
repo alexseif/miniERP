@@ -109,10 +109,10 @@ $(document).ready(function () {
 
     $('div.orderPayments').data('index', 0);
     $('div.orderComments').data('index', 0);
-    $('div.orderDocuments').data('index', 0);
+//    $('div.orderDocuments').data('index', 0);
     addPrototypeForm('div.orderPayments', '<div></div>');
     addPrototypeForm('div.orderComments', '<div></div>');
-    addPrototypeForm('div.orderDocuments', '<div></div>');
+//    addPrototypeForm('div.orderDocuments', '<div></div>');
 
     $('#mevisa_erpbundle_orders_customer_name').focus();
 

@@ -8,6 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use MeVisa\ERPBundle\Entity\Orders;
+use MeVisa\ERPBundle\Entity\OrderDocuments;
 use MeVisa\ERPBundle\Form\OrdersType;
 
 /**
@@ -206,6 +207,9 @@ class OrdersController extends Controller
 
         $form = $this->createCreateForm($order);
 
+//        $form
+//                ->add('name')
+//                ->add('file');
 //        foreach ($order->getOrderState()->getCurrentState()->getChildren() as $state) {
 //            $form->add($state->getKey(), 'submit', array('attr' => array('class' => 'btn-toolbar btn-' . $state->getBootstrapClass())
 //            ));
@@ -503,6 +507,29 @@ class OrdersController extends Controller
         return array(
             'order' => $order,
         );
+    }
+
+    /**
+     * @Route("/{id}/uploads", )
+     * @Template()
+     */
+    public function uploadAction(Request $request, $id)
+    {
+        $form = $this->createForm(new \MeVisa\ERPBundle\Form\OrderDocumentsType());
+//        $form->getForm();
+
+        $form->handleRequest($request);
+
+        if ($form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+
+            $em->persist($document);
+            $em->flush();
+
+            return $this->redirect($this->generateUrl('orders_show', array('id' => $id)));
+        }
+
+        return array('form' => $form->createView());
     }
 
 }

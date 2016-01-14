@@ -17,9 +17,7 @@ class OrderDocumentsType extends AbstractType
     {
         $builder
                 ->add('file', 'file', array(
-                    'label' => false,
-                    'required' => false,
-                    "multiple" => "multiple",
+                    'multiple' => true,
         ));
     }
 

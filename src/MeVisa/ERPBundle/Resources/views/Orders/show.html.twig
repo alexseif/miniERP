@@ -170,16 +170,14 @@
                                 <div class="panel-heading">
                                     <span class="panel-title">Documents</span>
                                 </div>
-                                <div class="table-responsive">
-                                    <table class="table table-bordered table-hover table-striped records_list">
-                                        <tbody>
-                                            {%for document in order.orderDocuments%}
-                                                <tr>
-                                                    <td><a href="/uploads/{{ document.name }}" target="_blank">{{ document.name }}</a></td>
-                                                </tr>
-                                            {% endfor %}
-                                        </tbody>
-                                    </table>
+                                <div class="panel-body">
+                                    <div class="row">
+                                        {%for document in order.orderDocuments%}
+                                            <div class="col-sm-6">
+                                                <a href="{{ app.request.scheme ~ '://' ~ app.request.host ~ '/' ~ document.getWebPath }}" target="_blank">{{ document.id }}</a>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
                                 </div>
                             </div>
                         </div>
