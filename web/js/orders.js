@@ -74,7 +74,11 @@ $(document).ready(function () {
     $productHolder = $('ul.orderProducts');
 //    $productHolder.after($addProductLink, $removeProductLink);
 
-    $productHolder.data('index', 0);
+
+    $productHolder.data('index', $('ul.orderProducts li').length);
+    $('div.orderPayments').data('index', 0);
+    $('div.orderComments').data('index', 0);
+
 
     $addProductLink.on('click', function (e) {
         e.preventDefault();
@@ -93,11 +97,14 @@ $(document).ready(function () {
         }
     });
 
-    $addProductLink.click();
+    if ($productHolder.data('index') <= 0) {
+        $addProductLink.click();
 
+    }
     $companionHolder = $('tbody.companions');
 
-    $companionHolder.data('index', 0);
+    $companionHolder.data('index', $('tbody.companions tr').length);
+
     $('.addCompanion').on('click', function (e) {
         e.preventDefault();
         addPrototypeForm('tbody.companions', '<tr></tr>');
@@ -107,12 +114,8 @@ $(document).ready(function () {
         });
     });
 
-    $('div.orderPayments').data('index', 0);
-    $('div.orderComments').data('index', 0);
-//    $('div.orderDocuments').data('index', 0);
     addPrototypeForm('div.orderPayments', '<div></div>');
     addPrototypeForm('div.orderComments', '<div></div>');
-//    addPrototypeForm('div.orderDocuments', '<div></div>');
 
     $('#mevisa_erpbundle_orders_customer_name').focus();
 

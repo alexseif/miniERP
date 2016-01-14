@@ -190,8 +190,8 @@
                                 <div class="panel-body">
                                     {%for comment in order.orderComments%}
                                         {{ comment.author }}
-                                        {{ product.comment }}
-                                        {{ product.createdAt }}
+                                        {{ comment.comment }}
+                                        {{ comment.createdAt|date() }}
                                     {% endfor %}
                                 </div>
                             </div>

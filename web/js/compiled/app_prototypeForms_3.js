@@ -3,28 +3,32 @@
  */
 function addPrototypeForm(selector, wrapper, placement) {
     placement = placement || 'append';
-    componentHolder = $(selector);
-    componentHolder.data('index', componentHolder.find(':input').length);
+    if (componentHolder = $(selector)) {
 
-    prototype = componentHolder.data('prototype');
-    index = componentHolder.data('index');
+        componentHolder.data('index', componentHolder.find(':input').length);
 
-    newForm = prototype.replace(/__name__/g, index);
-    componentHolder.data('index', index + 1);
+        prototype = componentHolder.data('prototype');
+        index = componentHolder.data('index');
 
-    newFormWrapper = $(wrapper).append(newForm);
+        newForm = prototype.replace(/__name__/g, index);
+        componentHolder.data('index', index + 1);
 
-    switch (placement) {
-        case 'after':
-            componentHolder.after(newFormWrapper);
+        newFormWrapper = $(wrapper).append(newForm);
 
-            break;
-        case 'before':
-            componentHolder.before(newFormWrapper);
-            break;
-        case 'append':
-        default:
-            componentHolder.append(newFormWrapper);
-            break;
+        switch (placement) {
+            case 'after':
+                componentHolder.after(newFormWrapper);
+
+                break;
+            case 'before':
+                componentHolder.before(newFormWrapper);
+                break;
+            case 'append':
+            default:
+                componentHolder.append(newFormWrapper);
+                break;
+        }
+    } else {
+        console.log('selector: ' + selector + ' not found');
     }
 }

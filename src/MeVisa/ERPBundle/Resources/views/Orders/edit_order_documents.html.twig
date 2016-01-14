@@ -1,0 +1,17 @@
+<div class="panel panel-default">
+    <div class="panel-heading clearfix">
+        <span class="panel-title">Order Documents</span>
+    </div>
+    <div class="panel-body">
+        {# TODO: https://github.com/harijoe/symfony-vagrant-up/tree/POC-html5-input-dropzone#}
+        {{ form_widget(edit_form.uploadedFiles)}}
+{# FIXME: Delete links for files#}
+        <div class="row">
+            {%for document in order.orderDocuments%}
+                <div class="col-sm-6">
+                    <a href="{{ app.request.scheme ~ '://' ~ app.request.host ~ '/' ~ document.getWebPath }}" target="_blank">{{ document.id }}</a>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>

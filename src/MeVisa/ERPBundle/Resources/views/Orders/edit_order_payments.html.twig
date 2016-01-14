@@ -3,14 +3,8 @@
         <span class="panel-title">Payment details</span>
     </div>
     <div class="panel-body">
-        <div class="orderPayments" data-prototype="{{
-            '<div class="col-sm-3 col-sm-offset-1">'
-                ~ form_widget(edit_form.orderPayments.vars.prototype.method) 
-                ~ '</div>'
-                ~ '<div class="col-sm-8">'
-                ~  form_row(edit_form.orderPayments.vars.prototype.amount) 
-                ~  form_row(edit_form.orderPayments.vars.prototype.detail) 
-        ~ '</div>'
-             }}"></div>
+        {% for payment in edit_form.orderPayments %}
+            {{form_widget(payment) }}
+        {% endfor %}
     </div>
 </div>

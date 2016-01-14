@@ -18,13 +18,20 @@ class OrderPaymentsType extends AbstractType
         $builder
                 ->add('state', 'choice', array(
                     // TODO: get payment state properly
-                    'choices' => array('Paid', 'Not Paid'),
+                    'choices' => array(
+                        "paid" => 'Paid',
+                        "notpaid" => 'Not Paid'),
                     'expanded' => true,
                     'attr' => array('class' => 'align-inline')
                 ))
                 ->add('method', 'choice', array(
                     // TODO: get payment options properly
-                    'choices' => array('Online', 'Bank Transfer', 'Credit Card', 'Cash'),
+                    'choices' => array(
+                        'online' => 'Online',
+                        'banktransfer' => 'Bank Transfer',
+                        'creditcard' => 'Credit Card',
+                        'cash' => 'Cash'
+                    ),
 //                'expanded' => true
                 ))
                 ->add('amount', 'money', array(

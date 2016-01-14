@@ -133,6 +133,7 @@ class OrdersController extends Controller
                 if ("" == $comment->getComment()) {
                     $order->removeOrderComment($comment);
                 } else {
+                    $comment->setAuthor($this->getUser());
                     $comment->setCreatedAt(new \DateTime());
                     $order->addOrderComment($comment);
                 }
@@ -307,7 +308,12 @@ class OrdersController extends Controller
             'method' => 'PUT',
         ));
 
-        $form->add('submit', 'submit', array('label' => 'Update'));
+        $form->add('update', 'submit', array(
+            'label' => null,
+            'attr' => array(
+                'class' => 'btn-success pull-right'
+        )));
+
 
         return $form;
     }
@@ -339,6 +345,20 @@ class OrdersController extends Controller
         $editForm->handleRequest($request);
 
         if ($editForm->isValid()) {
+
+
+            // TODO: Check Order Comments
+            // TODO: if order comment is not empty add new orderComment
+            $orderComments = $order->getOrderComments();
+            foreach ($orderComments as $comment) {
+                if ("" == $comment->getComment()) {
+                    $order->removeOrderComment($comment);
+                } else {
+                    $comment->setAuthor($this->getUser());
+                    $comment->setCreatedAt(new \DateTime());
+                    $order->addOrderComment($comment);
+                }
+            }
             $em->flush();
 
             return $this->redirect($this->generateUrl('orders_show', array('id' => $id)));

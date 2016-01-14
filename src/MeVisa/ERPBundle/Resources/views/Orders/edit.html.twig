@@ -8,9 +8,6 @@
         .panel-body label{font-weight: 550}
         .panel .control-label{padding-left: 5px; padding-right: 5px;}
         .orderProducts li{margin-top: 5px;}
-    </style>
-    <style type="text/css">
-        .checkbox input[type="checkbox"]{margin-top: 0px;}
         .list-group-item{padding-top: 2px;padding-bottom: 2px}
         .badge{margin-top: 5px;}
     </style>
@@ -18,13 +15,10 @@
 {% block content %}
     {{ form_start(edit_form) }}
     {{ form_row(edit_form._token) }}
-    <div class="well">
-        {{ form_errors(edit_form) }}
-        {{ form_errors(status_form) }}
-    </div>
+    {{ form_errors(edit_form) }}
     <div class="panel panel-default">
         <div class="panel-heading clearfix">
-            <span class="panel-title">New Order</span>
+            <span class="panel-title">Order # {{ order.number }}</span>
             <div class="pull-right">
                 <span class="label label-default">{{ order.channel|upper }}</span>
                 &nbsp;<span class="label label-info">{{ order.stateName|upper }}</span>
@@ -32,9 +26,18 @@
             </div>
         </div>
         <div class="panel-body">
-            <!-- Customer -->
-            {% include 'MeVisaERPBundle:Orders:edit_customer.html.twig' %}
-            <!-- Customer -->
+            <div class="row">
+                <div class="col-sm-6">
+                    <!-- Order Customer-->
+                    {% include 'MeVisaERPBundle:Orders:edit_order_customer.html.twig' %}
+                    <!-- Order Customer-->
+                </div>
+                <div class="col-sm-6">
+                    <!-- Order Details -->
+                    {% include 'MeVisaERPBundle:Orders:edit_order_details.html.twig' %}
+                    <!-- Order Details -->
+                </div>
+            </div>
             <!-- Order Products -->
             {% include 'MeVisaERPBundle:Orders:edit_order_products.html.twig' %}
             <!-- Order Products -->
@@ -44,30 +47,34 @@
             <!-- Order Payments -->
             {% include 'MeVisaERPBundle:Orders:edit_order_payments.html.twig' %}
             <!-- Order Payments -->
-            <!-- Order Comments -->
-            {% include 'MeVisaERPBundle:Orders:edit_order_comments.html.twig' %}
-            <!-- Order Comments -->
+            <div class="row">
+                <div class="col-sm-6">
+                    <!-- Order Documents -->
+                    {% include 'MeVisaERPBundle:Orders:edit_order_documents.html.twig' %}
+                    <!-- Order Documents -->
+                </div>
+                <div class="col-sm-6">
+                    <!-- Order Comments -->
+                    {% include 'MeVisaERPBundle:Orders:edit_order_comments.html.twig' %}
+                    <!-- Order Comments -->
+                </div>
+            </div>
         </div>
         <!-- panel body -->
         <div class="panel-footer">
             <div class="row">
+                {#FIXME: return to order show #}
+                <div class="col-sm-2"><a class="btn btn-warning" href="{{ path('dashboard') }}">Cancel</a></div>
                 <div class="col-sm-4">{{ form_row(edit_form.total) }}</div>
-                <div class="col-sm-8">
-                    <div class="btn-toolbar pull-right">
-                        {% for child in order.orderState.currentState.children %}
-                            <button class="btn-{{child.bootstrapClass}} btn btn-toolbar" name="mevisa_erpbundle_orders[{{child.key}}]" id="mevisa_erpbundle_orders_{{child.key}}" type="submit">{{child.name}}</button>
-                        {% endfor %}
-                        {# <button class="btn-warning btn" name="mevisa_erpbundle_orders[submit]" id="mevisa_erpbundle_orders_submit" type="submit">DOCUMENT</button>#}
-                        {# <button class="btn-primary btn" name="mevisa_erpbundle_orders[submit]" id="mevisa_erpbundle_orders_submit" type="submit">POST</button>#}
-                    </div>
+                <div class="col-sm-4">
+
+                    {{ form_row(edit_form.state) }}
                 </div>
-                {# <div class="col-sm-2">{{ form_row(edit_form.submit) }}</div>#}
+                <div class="col-sm-2">{{ form_widget(edit_form.update) }}</div>
             </div>
         </div>
     </div>
     {{ form_end(edit_form, {'render_rest': false}) }}
-    <div class="pull-right"><a class="btn btn-warning" href="{{ path('orders') }}">Cancel</a></div>
-    <!-- /.row -->
 {% endblock %}
 {% block javascripts %}
     {{ parent() }}
