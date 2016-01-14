@@ -14,7 +14,7 @@
                     <div class="pull-right">
                         &nbsp;<span class="label label-default">{{ order.channel|upper }}</span>
                         &nbsp;<span class="label label-{{order.orderState.currentState.bootstrapClass}}">{{ order.stateName|upper }}</span>
-                        &nbsp;<span class="label label-default"> {{ order.createdAt|localizeddate("medium", "medium", null, 'EUROPE/RUSSIA') }}</span>
+                        &nbsp;<span class="label label-default"> {{ order.createdAt|localizeddate("medium", "medium", null, 'EUROPE/MOSCOW') }}</span>
                     </div>
                 </div>
                 <div class="panel-body">
@@ -44,11 +44,11 @@
                                                 <th rowspan="2">People</th>
                                                 <td rowspan="2">{{ order.people }}</td>
                                                 <th>Departure</th>
-                                                <td>{{ order.departure|localizeddate("full", "none", null, 'EUROPE/RUSSIA') }}</td>
+                                                <td>{{ order.departure|localizeddate("full", "none", null, 'EUROPE/MOSCOW') }}</td>
                                             </tr>
                                             <tr>
                                                 <th>Arrival</th>
-                                                <td>{{ order.arrival|localizeddate("medium", "none", null, 'EUROPE/RUSSIA') }}</td>
+                                                <td>{{ order.arrival|localizeddate("medium", "none", null, 'EUROPE/MOSCOW') }}</td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -154,7 +154,7 @@
                                                             {% endif %}
                                                         </td>
                                                         <td>{{ payment.detail }}</td>
-                                                        <td>{{ payment.createdAt|localizeddate("medium", "medium", null, 'EUROPE/RUSSIA') }}</td>
+                                                        <td>{{ payment.createdAt|localizeddate("medium", "medium", null, 'EUROPE/MOSCOW') }}</td>
                                                     </tr>
                                                 {% endfor %}
                                             </tbody>
