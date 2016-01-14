@@ -18,7 +18,11 @@ class OrdersType extends AbstractType
         $builder
 //            ->add('number', 'text',
 //                array('label' => 'Order#', 'disabled' => true))
-                ->add('state', 'choice', array('placeholder' => 'State'))
+                ->add('state', 'choice', array(
+                    'placeholder' => 'State',
+                    'choices' => array('pending', 'backoffice'),
+                ))
+
 //                ->add('channel', 'choice', array('placeholder' => 'Channel', 'disabled' => true))
                 ->add('productsTotal', 'money', array('currency' => 'RUB', 'divisor' => 100, 'label' => 'Subtotal',
                     'disabled' => 'true'))

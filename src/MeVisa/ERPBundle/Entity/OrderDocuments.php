@@ -42,7 +42,7 @@ class OrderDocuments
     /**
      * @Vich\UploadableField(mapping="order_documents", fileNameProperty="name")
      * @Assert\File(maxSize="6000000")
-     * 
+     *
      * @var File
      */
     private $file;
@@ -118,7 +118,7 @@ class OrderDocuments
     public function setFile(File $file = null)
     {
         $this->file = $file;
-        
+
         if ($this->file instanceof UploadedFile) {
             $this->updatedAt = new \DateTime('now');
         }

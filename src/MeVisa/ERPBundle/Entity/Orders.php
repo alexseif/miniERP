@@ -161,7 +161,7 @@ class Orders
     public function __construct()
     {
         $this->startOrderStateEnginge();
- 
+
         $this->orderProducts = new ArrayCollection();
         $this->orderPayments = new ArrayCollection();
         $this->orderCompanions = new ArrayCollection();

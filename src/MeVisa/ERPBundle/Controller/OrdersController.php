@@ -76,7 +76,7 @@ class OrdersController extends Controller
             }
 
             // TODO: State machine
-            $order->setState('backoffice');
+//            $order->setState('backoffice');
             // TODO: Order Channel
             $order->setChannel('POS');
 
@@ -217,7 +217,6 @@ class OrdersController extends Controller
 
         return array(
             'order' => $order,
-            'orderDocument' => new \MeVisa\ERPBundle\Entity\OrderDocuments(),
             'productPrices' => $productPrices,
             'form' => $form->createView(),
         );
