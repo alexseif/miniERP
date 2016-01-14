@@ -52,7 +52,8 @@ class WCController extends Controller
         $secret = 'kfxLneHxN7';
         $content = trim($request->getContent());
         $header = $request->headers->all();
-
+        $timezone = new \DateTimeZone('GMT');
+        
         $wcLogger = new WCLogger();
 
         $wcLogger->setHeader(json_encode($header));
@@ -146,8 +147,8 @@ class WCController extends Controller
 
             $order->setPeople($lineItem['meta'][0]['value']);
 
-            $order->setDeparture(\DateTime::createFromFormat("d/m/Y", $lineItem['meta'][4]['value']));
-            $order->setArrival(\DateTime::createFromFormat("d/m/Y", $lineItem['meta'][5]['value']));
+            $order->setDeparture(\DateTime::createFromFormat("d/m/Y", $lineItem['meta'][4]['value'], $timezone));
+            $order->setArrival(\DateTime::createFromFormat("d/m/Y", $lineItem['meta'][5]['value']), $timezone);
             //FIXME: Add documents links 
         }
 
@@ -155,7 +156,7 @@ class WCController extends Controller
         // method_id method_title
         $orderPayment->setMethod($wcOrder['payment_details']['method_id']);
         $orderPayment->setAmount($wcOrder['total'] * 100);
-        $orderPayment->setCreatedAt(new \DateTime($wcOrder['created_at']));
+        $orderPayment->setCreatedAt(new \DateTime($wcOrder['created_at'], $timezone));
         if ("true" == $wcOrder['payment_details']['paid']) {
             $orderPayment->setState("paid");
         } else {
@@ -167,7 +168,7 @@ class WCController extends Controller
             $orderComment = new \MeVisa\ERPBundle\Entity\OrderComments();
             $orderComment->setComment($wcOrder['note']);
             $orderComment->setAuthor("Customer: " . $customer->getName());
-            $orderComment->setCreatedAt(new \DateTime($wcOrder['created_at']));
+            $orderComment->setCreatedAt(new \DateTime($wcOrder['created_at'], $timezone));
             $order->addOrderComment($orderComment);
         }
 
@@ -179,7 +180,7 @@ class WCController extends Controller
         $order->setProductsTotal($wcOrder['subtotal'] * 100);
         $order->setTotal($wcOrder['total'] * 100);
         $order->setState($wcOrder['status']);
-        $order->setCreatedAt(new \DateTime($wcOrder['created_at']));
+        $order->setCreatedAt(new \DateTime($wcOrder['created_at'], $timezone));
 
         $em->persist($order);
 

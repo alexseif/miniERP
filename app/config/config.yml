@@ -36,6 +36,8 @@ framework:
 twig:
     debug:            "%kernel.debug%"
     strict_variables: "%kernel.debug%"
+    date:
+        timezone: Europe/Moscow
     form:
         resources: ['bootstrap_3_horizontal_layout.html.twig']
     globals:
