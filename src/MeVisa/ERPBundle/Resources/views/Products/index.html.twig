@@ -1,66 +1,45 @@
 {% extends ':default:admin.html.twig' %}
 
 {% block content %}
-    <!-- Page Heading -->
-    <div class="row">
-        <div class="col-md-12">
-            {#            <h3 class="page-header">#}
-            <h3 class="page-header">
-                Products <small> {{ entities|length }} </small>
-            </h3>
-            <!-- breadcrumb -->
-            {#<ol class="breadcrumb">
-                <li class="active">
-                    <i class="fa fa-dashboard"></i> Dashboard
-                </li>
-            </ol>#}
-        </div>
-    </div>
-    <!-- /.row -->
     <!-- page content -->
-    <div class="row">
-        <div class="col-md-12">
-            <div class="panel panel-default">
-                <div class="panel-body">
-                    <div class="table-responsive">
-                        <table class="table table-bordered table-hover table-striped records_list">
-                            <thead>
-                                <tr>
-                                    <th>Name</th>
-                                    <th>Required Documents</th>
-                                    <th>Status</th>
-                                    <th>Pricing</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for entity in entities %}
-                                    <tr>
-                                        <td>{{ entity.name }}</td>
-                                        <td> 
-                                            {% for req in entity.requiredDocuments %}
-                                                {% filter upper %}{{ req }}{% endfilter %} ;
-                                            {% endfor %}
-                                        </td>
-                                        <td>{% if entity.enabled %}Enabled{% else %}Disabled{% endif %}</td>
-                                        <td>
-{# TODO: Add Pricing#}
-{#                                                - {{ pricing.price|number_format(2, '.', ',') }} {{ pricing.priceCurrency }}#}
-                                        </td>
-                                        <td>
-                                            <a class="btn btn-primary" href="{{ path('admin_products_show', { 'id': entity.id }) }}">show</a>
-                                            <a class="btn btn-primary" href="{{ path('admin_products_edit', { 'id': entity.id }) }}">edit</a>
-                                            <a class="btn btn-primary" href="{{ path('admin_pricing', { 'product_id': entity.id }) }}">Pricing</a>
-                                        </td>
-                                    </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+    <div class="panel panel-default">
+        <div class="panel-heading ">
+            <div class="clearfix">
+                <span class="panel-title"> Products <small> {{ entities|length }} </small></span>
+                <a class="btn btn-primary btn-sm pull-right" href="{{ path('admin_products_new') }}">Add Product</a>
             </div>
         </div>
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover table-striped records_list">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Required Documents</th>
+                        <th>Status</th>
+                        <th>Pricing</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for entity in entities %}
+                        <tr>
+                            <td>{{ entity.name }}</td>
+                            <td> 
+                                {% for req in entity.requiredDocuments %}
+                                    {% filter upper %}{{ req }}{% endfilter %} ;
+                                {% endfor %}
+                            </td>
+                            <td>{% if entity.enabled %}Enabled{% else %}Disabled{% endif %}</td>
+                            <td class="text-right">{{ (entity.pricing[0].price/100)|localizedcurrency('RUB') }}</td>
+                            <td>
+                                <a class="btn btn-primary btn-sm" href="{{ path('admin_products_show', { 'id': entity.id }) }}">show</a>
+                                <a class="btn btn-primary btn-sm" href="{{ path('admin_products_edit', { 'id': entity.id }) }}">edit</a>
+                                <a class="btn btn-primary btn-sm" href="{{ path('admin_pricing', { 'product_id': entity.id }) }}">Pricing</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
-    <!-- /.row -->
-    <a class="btn btn-primary" href="{{ path('admin_products_new') }}">Add Product</a>
 {% endblock %}

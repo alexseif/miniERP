@@ -1,8 +1,8 @@
 <div class="panel panel-default">
-    <div class="panel-heading clearfix">
+    <div class="panel-heading">
         <span class="panel-title">Notes</span>
         <div class="pull-right">
-            <span class="label label-default">Author</span>
+            <span class="badge">{{ app.user.username }}</span>
             {#{{ form_widget(form.comments.vars.prototype.author) }}#}
         </div>
     </div>

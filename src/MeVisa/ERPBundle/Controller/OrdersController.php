@@ -112,10 +112,8 @@ class OrdersController extends Controller
 
             $order->setTotal($order->getProductsTotal() + $order->getAdjustmentTotal());
 
-            // FIXME: remove this faking order
             $order->setCreatedAt(new \DateTime("now"));
 //            $order->setUpdatedAt(new \DateTime());
-//            $order->setCreatedAt(new \DateTime());
 //            $order->setCompletedAt(new \DateTime());
 //            $order->setDeletedAt(new \DateTime());
 
@@ -219,6 +217,7 @@ class OrdersController extends Controller
 
         return array(
             'order' => $order,
+            'orderDocument' => new \MeVisa\ERPBundle\Entity\OrderDocuments(),
             'productPrices' => $productPrices,
             'form' => $form->createView(),
         );
