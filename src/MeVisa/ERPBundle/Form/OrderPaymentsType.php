@@ -16,27 +16,24 @@ class OrderPaymentsType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('method', 'choice',
-                array(
-                // TODO: get payment options properly
-                'choices' => array('Online', 'Bank Transfer', 'Credit Card', 'Cash'),
-                'expanded' => true
-            ))
-            ->add('amount', 'money',
-                array(
-                'currency' => 'RUB',
-                'divisor' => 100,
-            ))
-            ->add('state', 'choice',
-                array(
-                // TODO: get payment state properly
-                'choices' => array('Paid', 'Not Paid'),
-                'placeholder' => 'State',
-            ))
-            ->add('detail', 'textarea',
-                array(
-                'required' => false
-            ))
+                ->add('state', 'choice', array(
+                    // TODO: get payment state properly
+                    'choices' => array('Paid', 'Not Paid'),
+                    'expanded' => true,
+                    'attr' => array('class' => 'align-inline')
+                ))
+                ->add('method', 'choice', array(
+                    // TODO: get payment options properly
+                    'choices' => array('Online', 'Bank Transfer', 'Credit Card', 'Cash'),
+//                'expanded' => true
+                ))
+                ->add('amount', 'money', array(
+                    'currency' => 'RUB',
+                    'divisor' => 100,
+                ))
+                ->add('detail', 'textarea', array(
+                    'required' => false
+                ))
 //                ->add('createdAt')
 //                ->add('orderRef')
         ;
@@ -59,4 +56,5 @@ class OrderPaymentsType extends AbstractType
     {
         return 'mevisa_erpbundle_orderpayments';
     }
+
 }

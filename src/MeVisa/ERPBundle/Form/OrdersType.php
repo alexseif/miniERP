@@ -18,7 +18,7 @@ class OrdersType extends AbstractType
         $builder
 //            ->add('number', 'text',
 //                array('label' => 'Order#', 'disabled' => true))
-//                ->add('state', 'choice', array('placeholder' => 'State'))
+                ->add('state', 'choice', array('placeholder' => 'State'))
 //                ->add('channel', 'choice', array('placeholder' => 'Channel', 'disabled' => true))
                 ->add('productsTotal', 'money', array('currency' => 'RUB', 'divisor' => 100, 'label' => 'Subtotal',
                     'disabled' => 'true'))
@@ -32,7 +32,9 @@ class OrdersType extends AbstractType
                     'divisor' => 100,
                     'required' => false,
                     'disabled' => 'true'))
-                ->add('people', 'integer')
+                ->add('people', 'integer', array(
+                    'attr' => array('min' => 1)
+                ))
                 ->add('departure', 'date')
                 ->add('arrival', 'date')
 //                ->add('createdAt', 'hidden')

@@ -58,8 +58,10 @@ function addProductForm() {
 
 var $productHolder;
 
-var $addProductLink = $('<a href="#" class="btn btn-default  add_product_link pull-left"><span class="glyphicon glyphicon-plus" title="Add another product"></span></a>');
-var $removeProductLink = $('<a href="#" class="btn remove_product_link text-danger pull-right" tabindex="-100"><span class="glyphicon glyphicon-minus-sign" title="Remove this product"></span></a>');
+//var $addProductLink = $('<a href="#" class="btn btn-primary  add_product_link pull-left"><span class="glyphicon glyphicon-plus-sign" title="Add another product"></span></a>');
+var $addProductLink = $('.add_product_link');
+//var $removeProductLink = $('<a href="#" class="btn btn-danger btn-sm remove_product_link pull-right" tabindex="-100"><span class="glyphicon glyphicon glyphicon-trash" title="Remove this product"></span></a>');
+var $removeProductLink = $('.remove_product_link');
 //var $newProductLinkLi = $('<li></li>').append($addProductLink);
 
 var $companionHolder;
@@ -70,7 +72,7 @@ $(document).ready(function () {
     });
 
     $productHolder = $('ul.orderProducts');
-    $productHolder.after($addProductLink, $removeProductLink);
+//    $productHolder.after($addProductLink, $removeProductLink);
 
     $productHolder.data('index', 0);
 
@@ -105,9 +107,14 @@ $(document).ready(function () {
         });
     });
 
-    addPrototypeForm('div.orderPayments', '<div class="row"></div>');
+    $('div.orderPayments').data('index', 0);
+    $('div.orderComments').data('index', 0);
+    $('div.orderDocuments').data('index', 0);
+    addPrototypeForm('div.orderPayments', '<div></div>');
     addPrototypeForm('div.orderComments', '<div></div>');
     addPrototypeForm('div.orderDocuments', '<div></div>');
 
     $('#mevisa_erpbundle_orders_customer_name').focus();
+
+    $('.align-inline .radio').addClass('radio-inline');
 });

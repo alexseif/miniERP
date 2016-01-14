@@ -1,7 +1,7 @@
 <div class="panel panel-default">
-    <div class="panel-heading clearfix">
+    <div class="panel-heading">
         <div class="row">
-            <div class="col-sm-3">
+            <div class="col-sm-4">
                 {{ form_label(form.orderProducts.vars.prototype.product) }}
             </div>
             <div class="col-sm-2">
@@ -10,8 +10,9 @@
             <div class="col-sm-3">
                 {{ form_label(form.orderProducts.vars.prototype.unitPrice) }}
             </div>
-            <div class="col-sm-4">
+            <div class="col-sm-3">
                 {{ form_label(form.orderProducts.vars.prototype.total) }}
+                <a href="#" class="btn add_product_link pull-right"><span class="glyphicon glyphicon-plus-sign" title="Add another product"></span></a>
             </div>
         </div>
     </div>
@@ -22,16 +23,13 @@
  ~ '<div class="col-sm-3">' ~ form_widget(form.orderProducts.vars.prototype.unitPrice) ~ '</div>'
  ~ '<div class="col-sm-3">' ~ form_widget(form.orderProducts.vars.prototype.total) ~ '</div>'
  ~ '</div>'}}">
-        </ul> 
+        </ul>
+        <a href="#" class="btn text-danger remove_product_link pull-right" tabindex="-100"><span class="glyphicon glyphicon-minus-sign" title="Remove this product"></span></a>
     </div>
     <div class="panel-footer">
         <div class="row">
-            <div class="col-sm-4">
-                {# <span class="label label-primary" style="font-size: 14px;">RUB Subtotal</span>#}
-                {{ form_row(form.productsTotal) }}
-            </div>
-            <div class="col-sm-2"></div>
             <div class="col-sm-6">{{ form_row(form.adjustmentTotal) }}</div>
+            <div class="col-sm-4 col-sm-offset-2">{{ form_row(form.productsTotal) }}</div>
         </div>
     </div>
 </div>
