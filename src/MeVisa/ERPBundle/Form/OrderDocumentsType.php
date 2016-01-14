@@ -16,14 +16,10 @@ class OrderDocumentsType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-                ->add('file', 'vich_file', array(
+                ->add('file', 'file', array(
                     'label' => false,
                     'required' => false,
-                    'allow_delete' => true,
-                    'download_link' => true,
-                    "attr" => array(
-                        "multiple" => "multiple",
-                    )
+                    "multiple" => "multiple",
         ));
     }
 
