@@ -29,7 +29,9 @@
                                 {% endblock %}
                             </div>
                         </div>
-                        <div class="panel-footer"><span class="clearfix"><a href="{{ path('dashboard') }}" class="pull-right btn btn-default">Dashboard</a></span></div>
+                        {% if app.user %}
+                            <div class="panel-footer"><span class="clearfix"><a href="{{ path('dashboard') }}" class="pull-right btn btn-default">Dashboard</a></span></div>
+                        {% endif %}
                     </div>
                 </div>
             </div>
