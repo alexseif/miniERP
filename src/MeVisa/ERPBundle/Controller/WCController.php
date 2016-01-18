@@ -45,11 +45,12 @@ class WCController extends Controller
      */
     public function newAction(Request $request)
     {
+        $this->applyTest();
         $secret = 'kfxLneHxN7';
         $content = trim($request->getContent());
         $header = $request->headers->all();
         $timezone = new \DateTimeZone('GMT');
-        
+
         $wcLogger = new WCLogger();
 
         $wcLogger->setHeader(json_encode($header));
@@ -64,7 +65,7 @@ class WCController extends Controller
             $wcLogger->setResult('Signature mismatch');
             $em->persist($wcLogger);
             $em->flush();
-            throw new HttpException(422, "Signature mismatch");
+            return new Response('Signature mismatch');
         }
 
         if (
@@ -74,7 +75,7 @@ class WCController extends Controller
             $wcLogger->setResult('Unacceptable resource or event');
             $em->persist($wcLogger);
             $em->flush();
-            throw new HttpException(422, "Unacceptable resource or event");
+            return new Response('Unacceptable resource or event');
         }
 
         $wcOrder = json_decode($content, true);
@@ -85,7 +86,7 @@ class WCController extends Controller
             $wcLogger->setResult('Order exists');
             $em->persist($wcLogger);
             $em->flush();
-            throw new HttpException(409, "Order exists");
+            return new Response('Order exists');
         }
 
         $order = new \MeVisa\ERPBundle\Entity\Orders();
