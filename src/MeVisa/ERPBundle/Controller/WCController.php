@@ -45,10 +45,6 @@ class WCController extends Controller
      */
     public function newAction(Request $request)
     {
-        if ("dev" == $this->container->get('kernel')->getEnvironment()) {
-            $request = $this->applyTest();
-        }
-
         $secret = 'kfxLneHxN7';
         $content = trim($request->getContent());
         $header = $request->headers->all();
