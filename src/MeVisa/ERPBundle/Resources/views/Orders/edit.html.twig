@@ -13,6 +13,7 @@
     </style>
 {% endblock %}
 {% block content %}
+    {{ dump(order) }}
     {{ form_start(edit_form) }}
     {{ form_row(edit_form._token) }}
     {{ form_errors(edit_form) }}

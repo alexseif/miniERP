@@ -16,18 +16,17 @@ class OrdersType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-//            ->add('number', 'text',
-//                array('label' => 'Order#', 'disabled' => true))
                 ->add('state', 'choice', array(
                     'placeholder' => 'State',
                     'choices' => array(
                         'pending' => 'Pending',
                         'backoffice' => 'Back Office'),
                 ))
-
-//                ->add('channel', 'choice', array('placeholder' => 'Channel', 'disabled' => true))
-                ->add('productsTotal', 'money', array('currency' => 'RUB', 'divisor' => 100, 'label' => 'Subtotal',
-                    'disabled' => 'true'))
+                ->add('productsTotal', 'money', array(
+                    'currency' => 'RUB',
+                    'divisor' => 100,
+                    'label' => 'Subtotal',
+                    'read_only' => true))
                 ->add('adjustmentTotal', 'money', array(
                     'currency' => 'RUB',
                     'divisor' => 100,
@@ -37,8 +36,9 @@ class OrdersType extends AbstractType
                     'currency' => 'RUB',
                     'divisor' => 100,
                     'required' => false,
-                    'disabled' => 'true'))
+                    'read_only' => true))
                 ->add('people', 'integer', array(
+                    'data' => 1,
                     'attr' => array('min' => 1)
                 ))
                 ->add('departure', 'date')

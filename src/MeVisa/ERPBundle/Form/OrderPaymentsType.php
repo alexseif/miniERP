@@ -20,7 +20,7 @@ class OrderPaymentsType extends AbstractType
                     // TODO: get payment state properly
                     'choices' => array(
                         "paid" => 'Paid',
-                        "notpaid" => 'Not Paid'),
+                        "not_paid" => 'Not Paid'),
                     'expanded' => true,
                     'attr' => array('class' => 'align-inline')
                 ))
@@ -32,11 +32,12 @@ class OrderPaymentsType extends AbstractType
                         'creditcard' => 'Credit Card',
                         'cash' => 'Cash'
                     ),
-//                'expanded' => true
+                    'required' => false
                 ))
                 ->add('amount', 'money', array(
                     'currency' => 'RUB',
                     'divisor' => 100,
+                    'required' => false
                 ))
                 ->add('detail', 'textarea', array(
                     'required' => false

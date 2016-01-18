@@ -30,14 +30,14 @@ class OrderPayments
     /**
      * @var string
      *
-     * @ORM\Column(name="method", type="string", length=255)
+     * @ORM\Column(name="method", type="string", length=255, nullable=true)
      */
     private $method;
 
     /**
      * @var integer
      *
-     * @ORM\Column(name="amount", type="integer")
+     * @ORM\Column(name="amount", type="integer", nullable=true)
      */
     private $amount;
 

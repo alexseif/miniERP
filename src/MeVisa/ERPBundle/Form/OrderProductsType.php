@@ -34,12 +34,12 @@ class OrderProductsType extends AbstractType
                     'currency' => 'RUB',
                     'divisor' => 100,
                     'label' => 'Price',
-                    'disabled' => 'true'
+                    'read_only' => true
                 ))
                 ->add('total', 'money', array(
                     'currency' => 'RUB',
                     'divisor' => 100,
-                    'disabled' => 'true'
+                    'read_only' => true
         ));
     }
 

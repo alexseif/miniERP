@@ -8,7 +8,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use MeVisa\ERPBundle\Entity\Orders;
-use MeVisa\ERPBundle\Entity\OrderDocuments;
 use MeVisa\ERPBundle\Form\OrdersType;
 
 /**
@@ -97,32 +96,27 @@ class OrdersController extends Controller
             $orderProducts = $order->getOrderProducts();
 
             // $orderProductCheck = false;
-            $orderProductTotal = 0;
+//            $orderProductTotal = 0;
             foreach ($orderProducts as $orderProduct) {
                 // TODO: Check Order Product
                 // TODO: Handle no proper products or disabled
-                $product = $orderProduct->getProduct();
-                $productPrice = $product->getPricing();
-                $orderProduct->setUnitPrice($productPrice[0]->getPrice());
-                $orderProduct->setTotal($productPrice[0]->getPrice() * $orderProduct->getQuantity());
-                $orderProductTotal += $orderProduct->getTotal();
+//                $product = $orderProduct->getProduct();
+//                $productPrice = $product->getPricing();
+//                $orderProduct->setUnitPrice($productPrice[0]->getPrice());
+//                $orderProduct->setTotal($productPrice[0]->getPrice() * $orderProduct->getQuantity());
+//                $orderProductTotal += $orderProduct->getTotal();
                 $order->addOrderProduct($orderProduct);
                 // $em->merge($orderProduct);
             }
-            $order->setProductsTotal($orderProductTotal);
+//            $order->setProductsTotal($orderProductTotal);
 
-            $order->setTotal($order->getProductsTotal() + $order->getAdjustmentTotal());
+//            $order->setTotal($order->getProductsTotal() + $order->getAdjustmentTotal());
 
             $order->setCreatedAt(new \DateTime("now"));
-//            $order->setUpdatedAt(new \DateTime());
-//            $order->setCompletedAt(new \DateTime());
-//            $order->setDeletedAt(new \DateTime());
 
             $orderCompanions = $order->getOrderCompanions();
             // TODO: Check Order Companions
             foreach ($orderCompanions as $companion) {
-                $companion->setPassportExpiry(new \DateTime());
-                $companion->setNationality("eg");
                 $order->addOrderCompanion($companion);
             }
 
@@ -346,9 +340,17 @@ class OrdersController extends Controller
 
         if ($editForm->isValid()) {
 
+            $orderCompanions = $order->getOrderCompanions();
+            // TODO: Check Order Companions
+            foreach ($orderCompanions as $companion) {
+                $order->addOrderCompanion($companion);
+            }
 
-            // TODO: Check Order Comments
-            // TODO: if order comment is not empty add new orderComment
+            $orderProducts = $order->getOrderProducts();
+            foreach ($orderProducts as $orderProduct) {
+                $order->addOrderProduct($orderProduct);
+            }
+            
             $orderComments = $order->getOrderComments();
             foreach ($orderComments as $comment) {
                 if ("" == $comment->getComment()) {
@@ -359,11 +361,19 @@ class OrdersController extends Controller
                     $order->addOrderComment($comment);
                 }
             }
+            $orderDocuments = $order->getOrderDocuments();
+            foreach ($orderDocuments as $document) {
+                $order->addOrderDocument($document);
+            }
+            
+            $order->setUpdatedAt(new \DateTime());
+
             $em->flush();
 
             return $this->redirect($this->generateUrl('orders_show', array('id' => $id)));
         } else {
             echo "Form not valid becuase:<br/>";
+            die();
             $formErrors = $editForm->getErrors();
         }
 
@@ -433,7 +443,7 @@ class OrdersController extends Controller
                 ->setAction($this->generateUrl('orders_status_update', array('id' => $entity->getId())))
                 ->setMethod('PUT');
         $children = $entity->getOrderState()->getCurrentState()->getChildren();
-        if (is_array($children))
+        if (is_array($children)) {
             foreach ($children as $key => $child) {
                 $form->add($child->getKey(), 'submit', array(
                     'label' => $child->getName(),
@@ -443,6 +453,7 @@ class OrdersController extends Controller
                         'value' => $child->getKey(),
                 )));
             }
+        }
 
         return $form->getForm();
     }
