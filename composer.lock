@@ -4,9 +4,56 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "1168d2e7099de0f1393c799e9813b6e7",
-    "content-hash": "813dc3bde31d24c7ddff8b2835c3e14e",
+    "hash": "41b1fd6aea866e1626de53906be7b945",
+    "content-hash": "b79fc32c65dc71a3b5697007e50920f1",
     "packages": [
+        {
+            "name": "automattic/woocommerce",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/woothemes/wc-api-php.git",
+                "reference": "4c9097781eb3ff1667468113bdfdad7434228dd1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/woothemes/wc-api-php/zipball/4c9097781eb3ff1667468113bdfdad7434228dd1",
+                "reference": "4c9097781eb3ff1667468113bdfdad7434228dd1",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "ext-json": "*",
+                "php": ">= 5.4.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Automattic\\WooCommerce\\": [
+                        "src/WooCommerce"
+                    ]
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Claudio Sanches",
+                    "email": "claudio.sanches@automattic.com"
+                }
+            ],
+            "description": "A PHP wrapper for the WooCommerce REST API",
+            "keywords": [
+                "api",
+                "woocommerce"
+            ],
+            "time": "2016-01-11 17:13:33"
+        },
         {
             "name": "doctrine/annotations",
             "version": "v1.2.7",
@@ -1759,47 +1806,6 @@
                 "templating"
             ],
             "time": "2015-10-13 07:07:02"
-        },
-        {
-            "name": "woothemes/woocommerce-api",
-            "version": "2.0.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/kloon/WooCommerce-REST-API-Client-Library.git",
-                "reference": "66fb772d21822dde0a07ea083953a5873a390e07"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/kloon/WooCommerce-REST-API-Client-Library/zipball/66fb772d21822dde0a07ea083953a5873a390e07",
-                "reference": "66fb772d21822dde0a07ea083953a5873a390e07",
-                "shasum": ""
-            },
-            "require": {
-                "ext-curl": "*",
-                "ext-json": "*",
-                "php": ">= 5.2.0"
-            },
-            "type": "library",
-            "autoload": {
-                "classmap": [
-                    "lib/woocommerce-api"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "GPL v3"
-            ],
-            "authors": [
-                {
-                    "name": "Max Rice",
-                    "email": "max@maxrice.com"
-                },
-                {
-                    "name": "Gerhard Potgieter"
-                }
-            ],
-            "description": "A client library for the WooCommerce REST API",
-            "time": "2015-07-13 21:19:17"
         }
     ],
     "packages-dev": [
