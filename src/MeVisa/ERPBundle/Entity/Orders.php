@@ -222,6 +222,9 @@ class Orders
      */
     public function setState($state)
     {
+        if('completed' == $state){
+            $state = 'backoffice';
+        }
         $this->setOrderState($state);
         $this->state = $state;
 
@@ -722,12 +725,14 @@ class Orders
      */
     public function upload()
     {
-        foreach ($this->uploadedFiles as $uploadedFile) {
-            if ($uploadedFile) {
-                $file = new OrderDocuments($uploadedFile);
-                $this->getOrderDocuments()->add($file);
-                $file->setOrderRef($this);
-                unset($uploadedFile);
+        if ($this->uploadedFiles) {
+            foreach ($this->uploadedFiles as $uploadedFile) {
+                if ($uploadedFile) {
+                    $file = new OrderDocuments($uploadedFile);
+                    $this->getOrderDocuments()->add($file);
+                    $file->setOrderRef($this);
+                    unset($uploadedFile);
+                }
             }
         }
     }

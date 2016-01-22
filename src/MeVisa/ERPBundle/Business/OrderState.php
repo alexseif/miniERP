@@ -49,6 +49,7 @@ class OrderState
 
     public function setState($key)
     {
+        
         if (!array_key_exists($key, $this->states)) {
             // FIXME: State not found
         }

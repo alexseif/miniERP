@@ -24,7 +24,6 @@ class AppKernel extends Kernel
             new Admin\SecurityBundle\AdminSecurityBundle(),
             new FOS\UserBundle\FOSUserBundle(),
             new Sonata\IntlBundle\SonataIntlBundle(),
-//            new WooCommerceBundle\WooCommerceBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

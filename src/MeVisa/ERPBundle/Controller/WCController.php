@@ -9,8 +9,14 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use MeVisa\ERPBundle\Entity\WCLogger;
+use MeVisa\ERPBundle\Entity\Orders;
+use MeVisa\ERPBundle\Entity\OrderProducts;
+use MeVisa\ERPBundle\Entity\OrderPayments;
+use MeVisa\ERPBundle\Entity\OrderComments;
+use MeVisa\ERPBundle\Entity\Products;
+use MeVisa\ERPBundle\Entity\ProductPrices;
+use MeVisa\CRMBundle\Entity\Customers;
 use WooCommerceBundle\RESTAPI\RESTAPI;
-use MeVisa\ERPBundle\Business\WooCommerceAPI;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
 /**
@@ -52,7 +58,6 @@ class WCController extends Controller
         $secret = 'kfxLneHxN7';
         $content = trim($request->getContent());
         $header = $request->headers->all();
-        $timezone = new \DateTimeZone('GMT');
 
         $wcLogger = new WCLogger();
 
@@ -93,8 +98,7 @@ class WCController extends Controller
         }
 
         //TODO: test the following lines
-        $wcAPI = new WooCommerceAPI();
-        $wcAPI->newOrder($wcOrder);
+        $this->newOrder($wcOrder);
 
 
         $wcLogger->setResult('OK');
@@ -115,10 +119,31 @@ class WCController extends Controller
     public function apiAction()
     {
         $client = new RESTAPI();
-//TODO: make a function that tests the webhook is available periodically
-//TODO: make a function that keeps checking on orders      
+        //TODO: make a function that tests the webhook is active periodically, if not create a new one
+        //TODO: make a function that keeps checking on orders
+        $em = $this->getDoctrine()->getManager();
+        $wcOrders = $client->getCompletedOrders();
+        foreach ($wcOrders['orders'] as $wcOrder) {
+            $order = $em->getRepository('MeVisaERPBundle:Orders')->findOneBy(array('wcId' => $wcOrder['order_number']));
+            if ($order) {
+                $order = $this->updateOrder($em, $wcOrder, $order);
+            } else {
+                $order = $this->newOrder($em, $wcOrder);
+            }
+            $em->persist($order);
+        }
+        $em->flush();
+
+// TODO: parse links
+//        $links = explode(',', $order->response->headers['Link']);
+//        foreach ($links as $link) {
+//            $linkPart = explode(';', $link);
+//            if (count($linkPart) < 2)
+//                continue;
+//            $links[] = $linkPart;
+//        }
         return array(
-            'entities' => $client->getOrdersCount(),
+            'wcOrders' => $wcOrders,
         );
     }
 
@@ -149,6 +174,185 @@ class WCController extends Controller
     function generateSignature($webhook_key, $params)
     {
         return base64_encode(hash_hmac('sha256', $params, $webhook_key, true));
+    }
+
+    public function newOrder($em, $wcOrder)
+    {
+        $timezone = new \DateTimeZone('UTC');
+
+        $order = new Orders();
+
+        $customer = new Customers();
+        $customer->setName($wcOrder['billing_address']['first_name'] . ' ' . $wcOrder['billing_address']['last_name']);
+        $customer->setEmail($wcOrder['billing_address']['email']);
+        $customer->setPhone($wcOrder['billing_address']['phone']);
+
+        $customerExists = $em->getRepository('MeVisaCRMBundle:Customers')->findOneBy(array('name' => $customer->getName()));
+
+        if (!$customerExists) {
+            $em->persist($customer);
+            $order->setCustomer($customer);
+        } else {
+            $order->setCustomer($customerExists);
+            $orderCommentText = '';
+// Emails do not match
+            if ($customer->getEmail() != $customerExists->getEmail()) {
+                $orderCommentText .= 'Email do not match, new email: ' . $customer->getEmail();
+            }
+// Phones do not match
+            if ($customer->getPhone() != $customerExists->getPhone()) {
+                $orderCommentText .='Phone do not match, new phone: ' . $customer->getPhone();
+            }
+            if ('' != $orderCommentText) {
+                $orderComment = new OrderComments();
+                $orderComment->setComment($orderCommentText);
+                $order->addOrderComment($orderComment);
+            }
+        }
+
+        foreach ($wcOrder['line_items'] as $lineItem) {
+            $product = $em->getRepository('MeVisaERPBundle:Products')->findOneBy(array('wcId' => $lineItem['product_id']));
+            if (!$product) {
+                $product = new Products();
+                $product->setEnabled(true);
+                $product->setName($lineItem['name']);
+                $product->setWcId($lineItem['product_id']);
+                $product->setRequiredDocuments(array());
+                $productPrice = new ProductPrices();
+                $productPrice->setCost(0);
+                $productPrice->setPrice($lineItem['price'] * 100);
+                $product->addPricing($productPrice);
+                $em->persist($product);
+            }
+
+            $orderProduct = new OrderProducts();
+            $orderProduct->setProduct($product);
+            $orderProduct->setQuantity($lineItem['quantity']);
+            $orderProduct->setUnitPrice($lineItem['price'] * 100);
+            $orderProduct->setTotal($lineItem['total'] * 100);
+
+            $order->addOrderProduct($orderProduct);
+
+            $order->setPeople($lineItem['meta'][0]['value']);
+
+            $order->setDeparture(\DateTime::createFromFormat("d/m/Y", $lineItem['meta'][4]['value'], $timezone));
+            $order->setArrival(\DateTime::createFromFormat("d/m/Y", $lineItem['meta'][5]['value']), $timezone);
+//FIXME: Add documents links 
+        }
+
+        $orderPayment = new OrderPayments();
+// method_id method_title
+        $orderPayment->setMethod($wcOrder['payment_details']['method_id']);
+        $orderPayment->setAmount($wcOrder['total'] * 100);
+        $orderPayment->setCreatedAt(new \DateTime($wcOrder['created_at'], $timezone));
+        if ("true" == $wcOrder['payment_details']['paid']) {
+            $orderPayment->setState("paid");
+        } else {
+            $orderPayment->setState("not_paid");
+        }
+        $order->addOrderPayment($orderPayment);
+
+        if ("" != $wcOrder['note']) {
+            $orderComment = new OrderComments();
+            $orderComment->setComment($wcOrder['note']);
+            $orderComment->setAuthor("Customer: " . $customer->getName());
+            $orderComment->setCreatedAt(new \DateTime($wcOrder['created_at'], $timezone));
+            $order->addOrderComment($orderComment);
+        }
+
+        $order->setNumber($wcOrder['order_number']);
+        $order->setWcId($wcOrder['order_number']);
+        $order->setChannel("MeVisa.ru");
+
+        $order->setAdjustmentTotal($wcOrder['total_discount'] * 100);
+        $order->setProductsTotal($wcOrder['subtotal'] * 100);
+        $order->setTotal($wcOrder['total'] * 100);
+        $order->setState($wcOrder['status']);
+        $order->setCreatedAt(new \DateTime($wcOrder['created_at'], $timezone));
+        return $order;
+    }
+
+    public function updateOrder($em, $wcOrder, $order)
+    {
+        $timezone = new \DateTimeZone('UTC');
+        $order->startOrderStateEnginge();
+
+        $orderProducts = $order->getOrderProducts();
+        foreach ($orderProducts as $orderProduct) {
+            $order->removeOrderProduct($orderProduct);
+            $em->remove($orderProduct);
+        }
+        $orderPayments = $order->getOrderPayments();
+        foreach ($orderPayments as $orderPayment) {
+            $order->removeOrderPayment($orderPayment);
+            $em->remove($orderPayment);
+        }
+
+        $order->getCustomer()->setName($wcOrder['billing_address']['first_name'] . ' ' . $wcOrder['billing_address']['last_name']);
+        $order->getCustomer()->setEmail($wcOrder['billing_address']['email']);
+        $order->getCustomer()->setPhone($wcOrder['billing_address']['phone']);
+
+        foreach ($wcOrder['line_items'] as $lineItem) {
+            $product = $em->getRepository('MeVisaERPBundle:Products')->findOneBy(array('wcId' => $lineItem['product_id']));
+            if (!$product) {
+                $product = new Products();
+                $product->setEnabled(true);
+                $product->setName($lineItem['name']);
+                $product->setWcId($lineItem['product_id']);
+                $product->setRequiredDocuments(array());
+                $productPrice = new ProductPrices();
+                $productPrice->setCost(0);
+                $productPrice->setPrice($lineItem['price'] * 100);
+                $product->addPricing($productPrice);
+                $em->persist($product);
+            }
+
+            $orderProduct = new OrderProducts();
+            $orderProduct->setProduct($product);
+            $orderProduct->setQuantity($lineItem['quantity']);
+            $orderProduct->setUnitPrice($lineItem['price'] * 100);
+            $orderProduct->setTotal($lineItem['total'] * 100);
+
+            $order->addOrderProduct($orderProduct);
+
+            $order->setPeople($lineItem['meta'][0]['value']);
+
+            $order->setDeparture(\DateTime::createFromFormat("d/m/Y", $lineItem['meta'][4]['value'], $timezone));
+            $order->setArrival(\DateTime::createFromFormat("d/m/Y", $lineItem['meta'][5]['value']), $timezone);
+//FIXME: Add documents links 
+        }
+
+        $orderPayment = new OrderPayments();
+// method_id method_title
+        $orderPayment->setMethod($wcOrder['payment_details']['method_id']);
+        $orderPayment->setAmount($wcOrder['total'] * 100);
+        $orderPayment->setCreatedAt(new \DateTime($wcOrder['created_at'], $timezone));
+        if ("true" == $wcOrder['payment_details']['paid']) {
+            $orderPayment->setState("paid");
+        } else {
+            $orderPayment->setState("not_paid");
+        }
+        $order->addOrderPayment($orderPayment);
+
+        if ("" != $wcOrder['note']) {
+            $orderComment = new OrderComments();
+            $orderComment->setComment($wcOrder['note']);
+            $orderComment->setAuthor("Customer: " . $customer->getName());
+            $orderComment->setCreatedAt(new \DateTime($wcOrder['created_at'], $timezone));
+            $order->addOrderComment($orderComment);
+        }
+
+        $order->setNumber($wcOrder['order_number']);
+        $order->setWcId($wcOrder['order_number']);
+        $order->setChannel("MeVisa.ru");
+
+        $order->setAdjustmentTotal($wcOrder['total_discount'] * 100);
+        $order->setProductsTotal($wcOrder['subtotal'] * 100);
+        $order->setTotal($wcOrder['total'] * 100);
+        $order->setState($wcOrder['status']);
+
+        $order->setCreatedAt(new \DateTime($wcOrder['created_at'], $timezone));
+        return $order;
     }
 
     function applyTest()

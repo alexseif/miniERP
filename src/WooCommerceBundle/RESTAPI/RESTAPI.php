@@ -2,7 +2,7 @@
 
 namespace WooCommerceBundle\RESTAPI;
 
-use Automattic\WooCommerce\Client;
+//use Automattic\WooCommerce\Client;
 
 /**
  * Description of RESTAPI
@@ -26,43 +26,82 @@ class RESTAPI
         $this->customerSecret = 'cs_7ef7dd81ca0ad15699efc8089f369e8f';
         $this->options = array(
             'ssl_verify' => false,
-            'version' => 'v2'
+            'version' => 'v2',
+            'debug' => true,
+            'return_as_array' => true
         );
-        $this->client = new Client($this->storeUrl, $this->customerKey, $this->customerSecret, $this->options);
+        $this->client = new \WC_API_Client($this->storeUrl, $this->customerKey, $this->customerSecret, $this->options);
     }
 
     public function getIndex()
     {
-        return $this->client->get('');
+        return $this->client->index->get();
     }
 
     public function getOrdersCount()
     {
-        return $this->client->get('orders/count');
+        return $this->client->orders->get_count();
     }
+
     public function getOrders()
     {
-        return $this->client->get('orders');
+        return $this->client->orders->get();
+    }
+
+    public function getCompletedOrders()
+    {
+        $parameters = array(
+            "status" => "completed",
+        );
+        $orders = $this->client->orders->get();
+        return $orders;
     }
 
     public function getOrdersStatuses()
     {
-        return $this->client->get('orders/statuses');
+        return $this->client->orders->get_statuses();
     }
 
     public function getOrder($orderId)
     {
-        return $this->client->get('orders/' . $orderId);
+        return $this->client->orders->get($orderId);
     }
 
     public function getOrderNotes($orderId)
     {
-        return $this->client->get('orders/' . $orderId . '/notes');
+        return $this->client->order_notes->get($orderId);
     }
 
     public function getWebhooks()
     {
-        return $this->client->get('webhooks');
+        return $this->client->webhooks->get();
+    }
+
+    public function getWebhook($webhookId)
+    {
+        return $this->client->webhooks->get($webhookId);
+    }
+
+    public function createWebhook()
+    {
+        $data = array(
+            'name' => 'ERP Webhook',
+            'secret' => 'kfxLneHxN7',
+            'topic' => 'order.created',
+            'delivery_url' => 'http://visallc.nichost.ru/admin/wc/new'
+        );
+        $result = $this->client->webhooks->create($data);
+        return $result;
+    }
+
+    public function activateWebhook($webhookId)
+    {
+        //FIXME: not working
+        $data = array('status' => "activate");
+        $result = $this->client->webhooks->update($webhookId, $data);
+        return array(
+            'result' => $result,
+        );
     }
 
 }
