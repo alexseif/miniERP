@@ -1,6 +1,6 @@
 <?php
 
-namespace WooCommerceBundle\RESTAPI;
+namespace MeVisa\ERPBundle\WCAPI;
 
 //use Automattic\WooCommerce\Client;
 

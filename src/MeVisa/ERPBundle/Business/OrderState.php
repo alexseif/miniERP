@@ -42,14 +42,19 @@ class OrderState
         $this->addChild('post', 'approved');
         $this->addChild('post', 'rejected');
 
+        //WooCommerce Status
         //Pending
         $this->addState('pending', 'Pending');
         $this->addChild('pending', 'backoffice');
+
+        //Processing
+        $this->addState('processing', 'Processing');
+        $this->addChild('processing', 'backoffice');
     }
 
     public function setState($key)
     {
-        
+
         if (!array_key_exists($key, $this->states)) {
             // FIXME: State not found
         }

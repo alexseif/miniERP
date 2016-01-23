@@ -16,7 +16,7 @@ use MeVisa\ERPBundle\Entity\OrderComments;
 use MeVisa\ERPBundle\Entity\Products;
 use MeVisa\ERPBundle\Entity\ProductPrices;
 use MeVisa\CRMBundle\Entity\Customers;
-use WooCommerceBundle\RESTAPI\RESTAPI;
+use MeVisa\ERPBundle\WCAPI\RESTAPI;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
 /**
@@ -52,59 +52,63 @@ class WCController extends Controller
      *
      * @Route("/new", name="wc_new")
      * @Method({"GET", "POST"})
+     * @Template()
      */
     public function newAction(Request $request)
     {
-        $secret = 'kfxLneHxN7';
-        $content = trim($request->getContent());
-        $header = $request->headers->all();
+//        $request = $this->applyTest();
+//        $secret = 'kfxLneHxN7';
+//        $content = trim($request->getContent());
+//        $header = $request->headers->all();
+//
+//        $wcLogger = new WCLogger();
+//
+//        $wcLogger->setHeader(json_encode($header));
+//        $wcLogger->setContent($request->getContent());
+//
+//        $em = $this->getDoctrine()->getManager();
+//        $em->persist($wcLogger);
+//        $em->flush();
+//
+//        $signature = $this->generateSignature($secret, $request->getContent());
+//        if ($request->headers->get('x-wc-webhook-signature') != $signature) {
+//            $wcLogger->setResult('Signature mismatch');
+//            $em->persist($wcLogger);
+//            $em->flush();
+//            return new Response('Signature mismatch');
+//        }
+//
+//        if (
+//                ('order' != $request->headers->get('x-wc-webhook-resource')) ||
+//                ('created' != $request->headers->get('x-wc-webhook-event'))
+//        ) {
+//            $wcLogger->setResult('Unacceptable resource or event');
+//            $em->persist($wcLogger);
+//            $em->flush();
+//            return new Response('Unacceptable resource or event');
+//        }
+//
+//        $wcOrder = json_decode($content, true);
+//        $wcOrder = $wcOrder['order'];
+//
+//        $order = $em->getRepository('MeVisaERPBundle:Orders')->findOneBy(array('wcId' => $wcOrder['order_number']));
+//        if ($order) {
+//            $wcLogger->setResult('Order exists');
+//            $em->persist($wcLogger);
+//            $em->flush();
+//            return new Response('Order exists');
+//        }
+//
+//        //TODO: test the following lines
+//        $this->newOrder($em, $wcOrder);
+//
+//
+//        $wcLogger->setResult('OK');
+//        $em->persist($wcLogger);
+//
+//        $em->flush();
 
-        $wcLogger = new WCLogger();
-
-        $wcLogger->setHeader(json_encode($header));
-        $wcLogger->setContent($request->getContent());
-
-        $em = $this->getDoctrine()->getManager();
-        $em->persist($wcLogger);
-        $em->flush();
-
-        $signature = $this->generateSignature($secret, $request->getContent());
-        if ($request->headers->get('x-wc-webhook-signature') != $signature) {
-            $wcLogger->setResult('Signature mismatch');
-            $em->persist($wcLogger);
-            $em->flush();
-            return new Response('Signature mismatch');
-        }
-
-        if (
-                ('order' != $request->headers->get('x-wc-webhook-resource')) ||
-                ('created' != $request->headers->get('x-wc-webhook-event'))
-        ) {
-            $wcLogger->setResult('Unacceptable resource or event');
-            $em->persist($wcLogger);
-            $em->flush();
-            return new Response('Unacceptable resource or event');
-        }
-
-        $wcOrder = json_decode($content, true);
-        $wcOrder = $wcOrder['order'];
-
-        $order = $em->getRepository('MeVisaERPBundle:Orders')->findOneBy(array('wcId' => $wcOrder['order_number']));
-        if ($order) {
-            $wcLogger->setResult('Order exists');
-            $em->persist($wcLogger);
-            $em->flush();
-            return new Response('Order exists');
-        }
-
-        //TODO: test the following lines
-        $this->newOrder($em, $wcOrder);
-
-
-        $wcLogger->setResult('OK');
-        $em->persist($wcLogger);
-
-        $em->flush();
+        $this->apiAction();
 
         return new Response();
     }
@@ -114,7 +118,6 @@ class WCController extends Controller
      *
      * @Route("/api", name="wc_api")
      * @Method("GET")
-     * @Template()
      */
     public function apiAction()
     {

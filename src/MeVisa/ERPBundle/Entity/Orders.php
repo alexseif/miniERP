@@ -222,7 +222,7 @@ class Orders
      */
     public function setState($state)
     {
-        if('completed' == $state){
+        if ('completed' == $state) {
             $state = 'backoffice';
         }
         $this->setOrderState($state);
