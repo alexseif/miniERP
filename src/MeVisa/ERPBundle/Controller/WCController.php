@@ -98,7 +98,7 @@ class WCController extends Controller
         }
 
         //TODO: test the following lines
-        $this->newOrder($wcOrder);
+        $this->newOrder($em, $wcOrder);
 
 
         $wcLogger->setResult('OK');
