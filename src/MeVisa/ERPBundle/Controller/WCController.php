@@ -107,7 +107,7 @@ class WCController extends Controller
 //
 //        $em->flush();
 
-        return $this->apiAction();
+        $this->apiAction();
 
         return new Response();
     }
