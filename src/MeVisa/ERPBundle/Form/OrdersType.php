@@ -38,7 +38,6 @@ class OrdersType extends AbstractType
                     'required' => false,
                     'read_only' => true))
                 ->add('people', 'integer', array(
-                    'data' => 1,
                     'attr' => array('min' => 1)
                 ))
                 ->add('departure', 'date')
