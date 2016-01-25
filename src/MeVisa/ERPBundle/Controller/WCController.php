@@ -56,7 +56,6 @@ class WCController extends Controller
      */
     public function newAction(Request $request)
     {
-//        $request = $this->applyTest();
 //        $secret = 'kfxLneHxN7';
 //        $content = trim($request->getContent());
 //        $header = $request->headers->all();
@@ -113,12 +112,6 @@ class WCController extends Controller
         return new Response();
     }
 
-    /**
-     * Lists all WCLogger entities.
-     *
-     * @Route("/api", name="wc_api")
-     * @Method("GET")
-     */
     public function apiAction()
     {
         $client = new RESTAPI();

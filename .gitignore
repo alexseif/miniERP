@@ -17,3 +17,4 @@ errordocs/
 logs/
 stat/
 web/uploads/*
+web/invoices/*

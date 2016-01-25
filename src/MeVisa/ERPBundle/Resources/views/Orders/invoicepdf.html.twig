@@ -1,156 +1,167 @@
-{% extends ':default:admin.html.twig' %}
-{% block content %}
-    <style type="text/css">
-        .border-right{border-right:  1px solid #ccc;}
-        .numbered-list OL{ counter-reset: item;}
-        .numbered-list LI { display: block; }
-        .numbered-list LI:before { content: counters(item, ".") " "; counter-increment: item; }
-        .numbered-list OL{padding-left: 0px;}
-        .numbered-list OL OL{padding-left: 20px;}
-        @media print {
-            .page {page-break-after: always;}
-            .agreement{font-size: xx-small; font-family: serif;}
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>MeVisa Invoice</title>
+        <link rel="stylesheet" type="text/css" href="http://mevisa/css/bootstrap.min.css" />
+        <link rel="stylesheet" type="text/css" href="http://mevisa/css/custom.css" />
+        <style type="text/css">
+            body{font-size: 10pt;font-family: serif;}
+            table, tr, td, th, tbody, thead, tfoot {page-break-inside: avoid !important;}
+            h1{font-size: 15pt;}
+            .page {overflow: hidden;page-break-after: always;}
             .do-not-print{display: none;}
-        }
-    </style>
-    <div class="btn-group pull-right do-not-print" role="group">
-        <button type="button" class="btn btn-primary btn-lg" onclick="window.print();
-                return false;">
-            <span class="glyphicon glyphicon-print" aria-hidden="true"></span> 
-        </button>
-        <button type="button" class="btn btn-primary btn-lg">
-            <span class="glyphicon glyphicon glyphicon-download" aria-hidden="true"></span> 
-        </button>
-    </div>
-    <div class="page invoice">
-        <div class="row">
-            <div class="col-sm-12">
-                <div class="page-header clear-fix">
-                    <img src="/images/sm_new_mevisa.png" alt="MeVisa" class="pull-right print-img">
-                    <h3>ООО "ВИЗА"</h3>
-                    <h4>Адрес:<small> Москва ул. Маросейка 7/8 офис 206 ком.3, тел.+7(499)7145474,+7(812)7152061,+7(495)9736558,</small></h4>
+            .border-right{border-right:  1px solid #ddd;}
+            .numbered-list OL{ counter-reset: item;}
+            .numbered-list LI { display: block; }
+            .numbered-list LI:before { content: counters(item, ".") " "; counter-increment: item; }
+            .numbered-list OL{padding-left: 0px;}
+            .numbered-list OL OL{padding-left: 20px;}
+            .agreement, .sign{font-size: x-small;}
+            .agreement{text-align: justify;}
+            .sign{text-align: left;}
+            .tb{border: 1px solid #ddd;}
+            .lb{border-left: 1px solid #ddd;}
+            .srb{width: 100%;max-width: 100%;margin-bottom: 0px;}
+            .srb td{padding-left:  8px;line-height: 1.42857143;vertical-align: top;max-width: 50%;}
+            .srb td:first-child{border-right: 1px solid #ddd;}
+        </style>    
+    </head>
+    <body>
+        <div class="page invoice">
+            <div class="row page-header">
+                <div class="col-xs-12">
+                    <table style="width: 100%;">
+                        <tr>
+                            <th>ООО "ВИЗА"</th>
+                            <td class="text-right"><img src="http://mevisa/images/sm_new_mevisa.png" alt="MeVisa"/></td>
+                        </tr>
+                    </table>
+                    Адрес:<small> Москва ул. Маросейка 7/8 офис 206 ком.3, тел.+7(499)7145474,+7(812)7152061,+7(495)9736558</small>
                 </div>
-                <h4 class="text-center">Образец заполнения платежного поручения</h4>
-                <br/>
-                <div class="row">
-                    <div class="col-sm-5">
-                        <div class="panel panel-default">
-                            <div class="panel-body">
-                                <div class="row">
-                                    <div class="col-sm-6">
-                                        <div class="border-right">
-                                            <label>ИНН:</label> 7701375794
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <label>КПП:</label> 770101001
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12">
+                    {# FIXME: invoice no #}
+                    <h1 class="text-center">Счет № 8211  от {{ "now" | format_date(null, 'ru', 'Europe/Moscow', constant('IntlDateFormatter::LONG')) }}</h1>
                 </div>
-                <div class="panel panel-default">
-                    <div class="panel-body">
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <div class="border-right">
-                                    <label>Получатель</label>
-                                    <p>ООО "ВИЗА"<br/>
-                                        Счет №: 40702810738000007699
-                                    </p>
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <label>Банк получателя</label>
-                                <p>ОАО "Сбербанк России" г.Москва<br/>
+            </div>
+            <div class="row">
+                <div class="col-xs-6 col-xs-offset-3">
+                    <table class="table tb">
+                        <tbody>
+                            <tr>
+                                <th style="width: 25%;">ИНН:</th>
+                                <td style="width: 25%;">7701375794</td>
+                                <th class="lb">КПП:</th>
+                                <td>770101001</td>
+                            </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-10 col-xs-offset-1">
+                    <table class="table tb">
+                        <thead>
+                            <tr>
+                                <th style="width: 50%;">Получатель</th>
+                                <th class="lb">Банк получателя</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    ООО "ВИЗА"<br/>
+                                    Счет №: 40702810738000007699
+                                </td>
+                                <td class="lb">
+                                    ОАО "Сбербанк России" г.Москва<br/>
                                     БИК: 044525225<br/>
                                     Счет №: 30101810400000000225
-                                </p>
-                            </div>
-                        </div>
-                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
-                <div class="row">
-                    <div class="col-sm-12">
-                        <h4 class="text-center">Счет № 8211  от 12 Август 2015</h4>
-                    </div>
-                </div>
-                <br/>
-                <div class="row">
-                    <div class="col-sm-2"><label>Заказчик:</label></div>
-                    <div class="col-sm-10">ИП Лобова Глькай Гаптехаевна</div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-2"><label>Плательщик:</label></div>
-                    <div class="col-sm-10">ИП Лобова Глькай Гаптехаевна</div>
-                </div>
-                <br/>
-                <table class="table table-bordered">
-                    <thead>
+            </div>
+            <div class="row">
+                <div class="col-xs-2"><label>Заказчик:</label></div>
+                <div class="col-xs-10">{{order.customer.name}}</div>
+            </div>
+            <div class="row">
+                <div class="col-xs-2"><label>Плательщик:</label></div>
+                <div class="col-xs-10">{{order.customer.name}}</div>
+            </div>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>№</th>
+                        <th>Наименование товара</th>
+                        <th>Коли-чество</th>
+                        <th>Цена</th>
+                        <th>Сумма</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {%for product in order.orderProducts %}
                         <tr>
-                            <th>№</th>
-                            <th>Наименование товара</th>
-                            <th>Коли-чество</th>
-                            <th>Цена</th>
-                            <th>Сумма</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
+                            {# FIXME: row number #}
                             <td>1</td>
-                            <td>Tours in the UAE visa 19.08 .2015 on 08/28/2015 1 person (s): Shepel Yulia Andreevna hotels there</td>
-                            <td>1</td>
-                            <td>RUB 6993.00</td>
-                            <td>RUB 6993.00</td>
+                            <td>{{ product.product.name }}</td>
+                            <td>{{ product.quantity }}</td>
+                            <td>{{ (product.unitPrice/100)|localizedcurrency('RUB') }}</td>
+                            <td>{{ (product.total/100)|localizedcurrency('RUB') }}</td>
                         </tr>
-                    </tbody>
-                    <tfoot>
+                    {% endfor %}
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th colspan="4" class="text-right">Всего к оплате</th>
+                        <th>{{ (order.total/100)|localizedcurrency('RUB') }}</th>
+                    </tr>
+                </tfoot>
+            </table>
+            {# TODO: load values#}
+            <div class="row">
+                <div class="col-xs-12">
+                    <table class="srb">
                         <tr>
-                            <th colspan="4" class="text-right">Всего к оплате</th>
-                            <th>RUB 6993.00</th>
+                            <td>
+                                <p>Руководитель предприятия</p>
+                                <p>( Вазири Тарек Махмуд Мохамед )</p>
+                                <br/>
+                                <p>_____________________________</p>
+                            </td>
+                            <td>
+                                <p>Главный бухгалтер</p>
+                                <p>( Вазири Тарек Махмуд Мохамед )</p>
+                                <br/>
+                                <p>_____________________________</p>
+                            </td>
                         </tr>
-                    </tfoot>
-                </table>
-                <br/><br/>
-                {# TODO: at the end of each page#}
-                <div class="row">
-                    <div class="col-sm-6">
-                        <div class="border-right">
-                            <p>Руководитель предприятия</p>
-                            <p>( Вазири Тарек Махмуд Мохамед )</p>
-                            <br/>
-                            <p>_____________________________</p>
-                        </div>
-                    </div>
-                    <div class="col-sm-6">
-                        <p>Главный бухгалтер</p>
-                        <p>( Вазири Тарек Махмуд Мохамед )</p>
-                        <br/>
-                        <p>_____________________________</p>
-                    </div>
+                    </table>
                 </div>
             </div>
         </div>
-        <br/>
-        <hr/>
-    </div>
-    <br/>
+    </page>
     {# TODO: page break #}
     <div class="page agreement">
+        <div class="row page-header" style="margin-bottom: 10px;">
+            <div class="col-xs-12">
+                <table style="width: 100%;">
+                    <tr>
+                        <td>г.  Москва</td>
+                        <td class="text-center"><h1 class="text-center" style="margin: 0px;"><small>ДОГОВОР ОБ ОКАЗАНИИ ВИЗОВЫХ УСЛУГ №7945</small></h1></td>
+                        <td class="text-right">{{ "now" | format_date(null, 'ru', 'Europe/Moscow', constant('IntlDateFormatter::LONG')) }}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <p>Настоящий Договор на оказание услуг составлен между <b>ООО "ВИЗА"</b>, именуемым в дальнейшем <b>«Исполнитель»</b>, в лице Генерального директора <b>Вазири Тарек Махмуд Мохамед</b>, действующего на основании Устава, с одной стороны, и <b>Оловянникова Мария Александровна</b>, именуемый(ая) в дальнейшем <b>«Заказчик»</b>, с другой стороны, именуемые в дальнейшем стороны.</p>
         <div class="row">
-            <div class="col-sm-12">
-                <div class="page-header">
-                    {#                    <h4 class="text-center">ДОГОВОР ОБ ОКАЗАНИИ ВИЗОВЫХ УСЛУГ №7945</h4>#}
-                    <div class="row">
-                        <div class="col-sm-2">г.  Москва</div>
-                        <div class="col-sm-8 text-center">ДОГОВОР ОБ ОКАЗАНИИ ВИЗОВЫХ УСЛУГ №7945</div>
-                        <div class="col-sm-2 text-right">15 Июнь 2015</div>
-                    </div>
-                </div>
-                <p>Настоящий Договор на оказание услуг составлен между <b>ООО "ВИЗА"</b>, именуемым в дальнейшем <b>«Исполнитель»</b>, в лице Генерального директора <b>Вазири Тарек Махмуд Мохамед</b>, действующего на основании Устава, с одной стороны, и <b>Оловянникова Мария Александровна</b>, именуемый(ая) в дальнейшем <b>«Заказчик»</b>, с другой стороны, именуемые в дальнейшем стороны.</p>
+            <div class="col-xs-12">
                 <div class="numbered-list">
-                    <ol type="1">
+                    <ol type="1" style="margin-bottom: 0px;">
                         <li><b>Предмет договора</b>
                             <ol>
                                 <li><b>Заказчик</b> поручает <b>Исполнителю</b> оказать содействие в оформлении выездных документов (визы) в следующую страну: Срочная <b>Виза в Сингапур</b>.</li>
@@ -167,7 +178,7 @@
                         </li>
                         <li><b>Оплата услуг</b>
                             <ol>
-                                <li>3Общая сумма оплаты услуг <b>Исполнителя</b>, включая консульский сбор, составляет  <b>12000 рублей</b>.</li>
+                                <li>3Общая сумма оплаты услуг <b>Исполнителя</b>, включая консульский сбор, составляет  <b>{{ (order.total/100) }} рублей</b>.</li>
                                 <li>Оплата услуг <b>Исполнителя</b> и консульских сборов по настоящему Договору производится в рублях.</li>
                                 <li>В случае оплаты по безналичному расчету, оплата производится на основании выставленного счета в течение <b>3 (Трех)</b> банковских дней; фактом платежа является поступление денег на расчетный счет <b>Исполнителя</b>.</li>
                                 <li><b>Исполнитель</b> начинает выполнение заказа при оплате <b>Заказчиком 100%</b> стоимости заказа.</li>
@@ -205,91 +216,34 @@
                                 <li>В случае отказа зарубежного консульского учреждения в выдаче визы <b>Заказчику Исполнитель</b> не возвращает оплаченную сумму включая консульский сбор.</li>
                             </ol>
                         </li>
-                        <li><b>Подписи сторон:</b></li>
+                        <li><b>Подписи сторон:</b>
+                            {% include 'MeVisaERPBundle:Orders:sign.html.twig' %}
+                        </li>
                     </ol>
                 </div>
-                <br/>
-                <div class="panel panel-default">
-                    <div class="panel-body">
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <div class="border-right">
-                                    <p>
-                                        <b><label>Исполнитель:</label> ООО "ВИЗА"</b><br/>
-                                        105082 Москва Рубцовская наб.дом3 стр 3, пом I, комн 25<br/>
-                                        Место нахождения: ул. Маросейка 7/8 офис 206 ком.3<br/>
-                                        ИНН 7701375794<br/>
-                                        КПП 770101001<br/>
-                                        Р/с 40702810738000007699 в ОАО "Сбербанк России" г.Москва<br/>
-                                        К/с 30101810400000000225 <br/>
-                                        <label>Контактный телефон:</label> +7(499)7145474,+7(812)7152061,+7(495)9736558, 
-                                    </p>
-                                    <br/>
-                                    <p>_____________________________ <b>/Вазири Тарек Махмуд Мохамед/ М.П.</b></p>
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <p>
-                                    <label>Заказчик:</label><br/>
-                                    <label>ФИО:</label> Оловнникова Мария Александровна<br/>
-                                    <label>Контактный телефон:</label> 89154978449<br/>
-                                    <label>Адрес:</label><br/>
-                                    <label>паспорт 71 5812518</label> выдан  18.08.2011 ФМС 77208<br/>
-                                </p>
-                                <br/>
-                                <br/>
-                                <br/>
-                                <p>_____________________________  <b>/Оловнникова Мария Александровна /</b></p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
-    {# TODO: Page break #}
-    <div class="page agreement">
+    <div class="page agreement2">
+        <div class="row page-header" style="margin-bottom: 10px;">
+            <div class="col-xs-12">
+                <table style="width: 100%;">
+                    <tr>
+                        <td style="width:10%;"></td>
+                        <td class="text-center"><h1 class="text-center" style="margin: 0px;"><small>Штрафы, налагаемые Иммиграционными властями:</small></h1></td>
+                        <td class="text-right">{{ "now" | format_date(null, 'ru', 'Europe/Moscow', constant('IntlDateFormatter::LONG')) }}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
         <div class="row">
-            <div class="col-sm-12">
-                <h3 class="text-center">Штрафы, налагаемые Иммиграционными властями:</h3>
-                <br/>
+            <div class="col-xs-12">
                 <p>Денежное взыскание в размере 1810 долларов США (6600 дирхем ОАЭ) взимается, если Заказчик не покинет страну до истечения срока действия визы.Если Заказчик выехал из страны в положенные сроки, но по какой- либо причине оказался не отмеченным в государственной системе контроля за миграцией населения, Заказчик обязуется предоставить необходимые данные о его выезде (дата вылета и номер рейса, сканированные страницы паспорта клиента с печатью о выезде) в течение недели с момента окончания действующей визы. Кроме этого взыскания в размере 1810 долларов США (6600 дирхам ОАЭ), на любого Заказчика налагается штраф в размере 55 долларов США (200 дирхам ОАЭ) за нахождения в стране после истечения срока действия визы за первые сутки и по 28 долларов США (100 дирхам ОАЭ) за каждый последующие.</p>
-                <div class="panel panel-default">
-                    <div class="panel-body">
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <div class="border-right">
-                                    <p>
-                                        <b><label>Исполнитель:</label> ООО "ВИЗА"</b><br/>
-                                        105082 Москва Рубцовская наб.дом3 стр 3, пом I, комн 25<br/>
-                                        Место нахождения: ул. Маросейка 7/8 офис 206 ком.3<br/>
-                                        ИНН 7701375794<br/>
-                                        КПП 770101001<br/>
-                                        Р/с 40702810738000007699 в ОАО "Сбербанк России" г.Москва<br/>
-                                        К/с 30101810400000000225 <br/>
-                                        <label>Контактный телефон:</label> +7(499)7145474,+7(812)7152061,+7(495)9736558, 
-                                    </p>
-                                    <br/>
-                                    <p>_____________________________ <b>/Вазири Тарек Махмуд Мохамед/ М.П.</b></p>
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <p>
-                                    <label>Заказчик:</label><br/>
-                                    <label>ФИО:</label> Оловнникова Мария Александровна<br/>
-                                    <label>Контактный телефон:</label> 89154978449<br/>
-                                    <label>Адрес:</label><br/>
-                                    <label>паспорт 71 5812518</label> выдан  18.08.2011 ФМС 77208<br/>
-                                </p>
-                                <br/>
-                                <br/>
-                                <br/>
-                                <p>_____________________________  <b>/Оловнникова Мария Александровна /</b></p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
+        {% include 'MeVisaERPBundle:Orders:sign.html.twig' %}
     </div>
-{% endblock %}
+    {#            <script type="text/javascript" src="http://mevisa/js/jquery-2.1.4.min.js"></script>#}
+    {#            <script type="text/javascript" src="http://mevisa/js/bootstrap.min.js"></script>#}
+</body>
+</html>

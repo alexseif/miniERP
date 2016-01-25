@@ -153,6 +153,11 @@ class Orders
     private $orderComments;
 
     /**
+     * @ORM\OneToMany(targetEntity="Invoices", mappedBy="orderRef", cascade={"persist"})
+     * */
+    private $invoices;
+
+    /**
      * @var File
      * 
      * @ORM\OneToMany(targetEntity="OrderDocuments", mappedBy="orderRef", cascade={"persist"})
@@ -737,4 +742,37 @@ class Orders
         }
     }
 
+
+    /**
+     * Add invoices
+     *
+     * @param \MeVisa\ERPBundle\Entity\Invoices $invoices
+     * @return Orders
+     */
+    public function addInvoice(\MeVisa\ERPBundle\Entity\Invoices $invoices)
+    {
+        $this->invoices[] = $invoices;
+
+        return $this;
+    }
+
+    /**
+     * Remove invoices
+     *
+     * @param \MeVisa\ERPBundle\Entity\Invoices $invoices
+     */
+    public function removeInvoice(\MeVisa\ERPBundle\Entity\Invoices $invoices)
+    {
+        $this->invoices->removeElement($invoices);
+    }
+
+    /**
+     * Get invoices
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getInvoices()
+    {
+        return $this->invoices;
+    }
 }

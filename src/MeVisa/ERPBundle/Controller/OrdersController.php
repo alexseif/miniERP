@@ -9,6 +9,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use MeVisa\ERPBundle\Entity\Orders;
 use MeVisa\ERPBundle\Form\OrdersType;
+use Knp\Snappy\Pdf;
 
 /**
  * Orders controller.
@@ -17,18 +18,6 @@ use MeVisa\ERPBundle\Form\OrdersType;
  */
 class OrdersController extends Controller
 {
-
-    /**
-     * Display sample ivoice
-     *
-     * @Route("/invoiceSample", name="invoice_sample")
-     * @Method("GET")
-     * @Template()
-     */
-    public function invoiceSampleAction()
-    {
-        return array();
-    }
 
     /**
      * Lists all Orders entities.
@@ -109,7 +98,6 @@ class OrdersController extends Controller
                 // $em->merge($orderProduct);
             }
 //            $order->setProductsTotal($orderProductTotal);
-
 //            $order->setTotal($order->getProductsTotal() + $order->getAdjustmentTotal());
 
             $order->setCreatedAt(new \DateTime("now"));
@@ -202,9 +190,6 @@ class OrdersController extends Controller
 
         $form = $this->createCreateForm($order);
 
-//        $form
-//                ->add('name')
-//                ->add('file');
 //        foreach ($order->getOrderState()->getCurrentState()->getChildren() as $state) {
 //            $form->add($state->getKey(), 'submit', array('attr' => array('class' => 'btn-toolbar btn-' . $state->getBootstrapClass())
 //            ));
@@ -350,7 +335,7 @@ class OrdersController extends Controller
             foreach ($orderProducts as $orderProduct) {
                 $order->addOrderProduct($orderProduct);
             }
-            
+
             $orderComments = $order->getOrderComments();
             foreach ($orderComments as $comment) {
                 if ("" == $comment->getComment()) {
@@ -365,7 +350,7 @@ class OrdersController extends Controller
             foreach ($orderDocuments as $document) {
                 $order->addOrderDocument($document);
             }
-            
+
             $order->setUpdatedAt(new \DateTime());
 
             $em->flush();
@@ -534,6 +519,48 @@ class OrdersController extends Controller
 
         $deleteForm = $this->createDeleteForm($id);
         $statusForm = $this->createStatusForm($order);
+
+        $myProjectDirectory = __DIR__ . '/../../../../';
+//        $myProjectDirectory = '/srv/www/mevisa/';
+
+
+
+        $snappy = new Pdf($myProjectDirectory . 'vendor/h4cc/wkhtmltopdf-i386/bin/wkhtmltopdf-i386');
+
+        $snappy->setOption('title', 'MeVisa Invoice');
+        $snappy->setOption('encoding', 'UTF');
+
+        $snappy->generateFromHtml($this->renderView(
+                        'MeVisaERPBundle:Orders:invoicepdf.html.twig', array(
+                    'order' => $order,
+                        )
+                ), $myProjectDirectory . 'web/invoices/file.pdf', array(), true);
+
+//        $this->get('knp_snappy.pdf')->generateFromHtml(
+//                $this->renderView(
+//                        'MeVisaERPBundle:Orders:invoice.html.twig', array(
+//                    'order' => $order,
+//                        )
+//                ), '/web/test/file.pdf'
+//        );
+
+        return array(
+            'order' => $order,
+        );
+    }
+
+    /**
+     * Finds and displays a Orders entity.
+     *
+     * @Route("/invoice/{id}/pdf", name="order_show_pdf")
+     * @Method("GET")
+     * @Template()
+     */
+    public function invoicepdfAction($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $order = $em->getRepository('MeVisaERPBundle:Orders')->find($id);
 
         return array(
             'order' => $order,
