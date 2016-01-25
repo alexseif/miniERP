@@ -21,6 +21,16 @@ class OrdersRepository extends EntityRepository
                         ->getQuery()
                         ->getResult();
     }
+    public function findAllPending()
+    {
+        return $this->createQueryBuilder('o')
+                        ->where("o.state = ?1")
+                        ->orWhere("o.state = ?2")
+                        ->setParameter('1', 'pending')
+                        ->setParameter('2', 'processing')
+                        ->getQuery()
+                        ->getResult();
+    }
 
     public function queryLastPOSNumber()
     {

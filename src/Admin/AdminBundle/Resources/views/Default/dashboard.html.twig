@@ -3,179 +3,40 @@
 {% block content %}
     <style type="text/css">
         .dashboard{max-height: 250px; }
+        .dashboard a{padding-top: 0px;padding-bottom: 0px;}
     </style>
     {% include 'AdminAdminBundle:Default:quickActions.html.twig' %}
     {# TODO: Make panels colapsible  #}
     {# TODO: Make widget out of panels #}
     <div class="row">
         <div class="col-sm-12">
-            <div class="panel panel-default">
-                <div class="panel-heading clearfix">
-                    <span class="panel-title">Pending Orders</span>
-                    <span class="badge pull-right">{{ pending|length }}</span>
-                </div>
-                <div class="table-responsive dashboard">
-                    <table class="table table-bordered table-hover table-striped records_list">
-                        <tbody>
-                            {% for order in pending %}
-                                <tr>
-                                    <td><a class="btn btn-link" href="{{ path('orders_show', { 'id': order.id }) }}">{{ order.number }}</a></td>
-                                    <td>{{ order.customer.name }}</td>
-                                    <td class="text-right">
-                                        {{ (order.total/100)|localizedcurrency('RUB') }}
-                                    </td>
-                                    <td>{{ order.createdAt|localizeddate }}</td>
-                                    <td class="text-right">
-                                        <span class="label
-                                              {% if order.state == "backoffice" %}label-info                                                      
-                                              {% elseif order.state == "post" %}label-primary
-                                              {% elseif order.state == "document" %}label-warning
-                                              {% else %}label-default
-                                              {% endif %}
-                                              ">{{ order.state|upper }}</span>
-                                    </td>
-                                </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+            {% set orders = backoffice %}
+            {% set panelTitle = 'Backoffice Orders' %}
+            {% include 'AdminAdminBundle:Default:dashboardPanel.html.twig' %}
         </div>
     </div>
     <div class="row">
         <div class="col-sm-6">
-            <div class="panel panel-default">
-                <div class="panel-heading clearfix">
-                    <span class="panel-title">Backoffice Orders</span>
-                    <span class="badge pull-right">{{ backoffice|length }}</span>
-                </div>
-                <div class="table-responsive">
-                    <table class="table table-bordered table-hover table-striped records_list">
-                        <tbody>
-                            {% for order in backoffice %}
-                                <tr>
-                                    <td><a class="btn btn-link" href="{{ path('orders_show', { 'id': order.id }) }}">{{ order.number }}</a></td>
-                                    <td>{{ order.customer.name }}</td>
-                                    <td class="text-right">
-                                        {{ (order.total/100)|localizedcurrency('RUB') }}
-                                    </td>
-                                    <td>{{ order.createdAt|localizeddate }}</td>
-                                    <td class="text-right">
-                                        <span class="label
-                                              {% if order.state == "backoffice" %}label-info                                                      
-                                              {% elseif order.state == "post" %}label-primary
-                                              {% elseif order.state == "document" %}label-warning
-                                              {% else %}label-default
-                                              {% endif %}
-                                              ">{{ order.state|upper }}</span>
-                                    </td>
-                                </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+            {% set orders = pending %}
+            {% set panelTitle = 'Pending Orders' %}
+            {% include 'AdminAdminBundle:Default:dashboardPanel.html.twig' %}
         </div>
         <div class="col-sm-6">
-            <div class="panel panel-default">
-                <div class="panel-heading clearfix">
-                    <span class="panel-title">Documents Required </span>
-                    <span class="badge pull-right">{{ document|length }}</span>
-                </div>
-                <div class="table-responsive">
-                    <table class="table table-bordered table-hover table-striped records_list">
-                        <tbody>
-                            {% for order in document %}
-                                <tr>
-                                    <td><a class="btn btn-link" href="{{ path('orders_show', { 'id': order.id }) }}">{{ order.number }}</a></td>
-                                    <td>{{ order.customer.name }}</td>
-                                    <td class="text-right">
-                                        {{ (order.total/100)|localizedcurrency('RUB') }}
-                                    </td>
-                                    <td>{{ order.createdAt|localizeddate }}</td>
-                                    <td class="text-right">
-                                        <span class="label
-                                              {% if order.state == "backoffice" %}label-info                                                      
-                                              {% elseif order.state == "post" %}label-primary
-                                              {% elseif order.state == "document" %}label-warning
-                                              {% else %}label-default
-                                              {% endif %}
-                                              ">{{ order.state|upper }}</span>
-                                    </td>
-                                </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+            {% set orders = document %}
+            {% set panelTitle = 'Document Required Orders' %}
+            {% include 'AdminAdminBundle:Default:dashboardPanel.html.twig' %}
         </div>
     </div>
     <div class="row">
         <div class="col-sm-6">   
-            <div class="panel panel-default">
-                <div class="panel-heading clearfix">
-                    <span class="panel-title">Post Orders</span>
-                    <span class="badge pull-right">{{ post|length }}</span>
-                </div>
-                <div class="table-responsive">
-                    <table class="table table-bordered table-hover table-striped records_list">
-                        <tbody>
-                            {% for order in post %}
-                                <tr>
-                                    <td><a class="btn btn-link" href="{{ path('orders_show', { 'id': order.id }) }}">{{ order.number }}</a></td>
-                                    <td>{{ order.customer.name }}</td>
-                                    <td class="text-right">
-                                        {{ (order.total/100)|localizedcurrency('RUB') }}
-                                    </td>
-                                    <td>{{ order.createdAt|localizeddate }}</td>
-                                    <td class="text-right">
-                                        <span class="label
-                                              {% if order.state == "backoffice" %}label-info                                                      
-                                              {% elseif order.state == "post" %}label-primary
-                                              {% elseif order.state == "document" %}label-warning
-                                              {% else %}label-default
-                                              {% endif %}
-                                              ">{{ order.state|upper }}</span>
-                                    </td>
-                                </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+            {% set orders = post %}
+            {% set panelTitle = 'Post Orders' %}
+            {% include 'AdminAdminBundle:Default:dashboardPanel.html.twig' %}
         </div>
         <div class="col-sm-6">
-            <div class="panel panel-default">
-                <div class="panel-heading clearfix">
-                    <span class="panel-title">Completed today </span>
-                    <span class="badge pull-right">{{ completed|length }}</span>
-                </div>
-                <div class="table-responsive">
-                    <table class="table table-bordered table-hover table-striped records_list">
-                        <tbody>
-                            {% for order in completed %}
-                                <tr>
-                                    <td><a class="btn btn-link" href="{{ path('orders_show', { 'id': order.id }) }}">{{ order.number }}</a></td>
-                                    <td>{{ order.customer.name }}</td>
-                                    <td class="text-right">
-                                        {{ (order.total/100)|localizedcurrency('RUB') }}
-                                    </td>
-                                    <td>{{ order.createdAt|localizeddate }}</td>
-                                    <td class="text-right">
-                                        <span class="label
-                                              {% if order.state == "backoffice" %}label-info                                                      
-                                              {% elseif order.state == "post" %}label-primary
-                                              {% elseif order.state == "document" %}label-warning
-                                              {% else %}label-default
-                                              {% endif %}
-                                              ">{{ order.state|upper }}</span>
-                                    </td>
-                                </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+            {% set orders = completed %}
+            {% set panelTitle = 'Completed Today' %}
+            {% include 'AdminAdminBundle:Default:dashboardPanel.html.twig' %}
         </div>
     </div>
 {% endblock %}

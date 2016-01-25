@@ -1,0 +1,31 @@
+<div class="panel panel-default">
+    <div class="panel-heading clearfix">
+        <span class="panel-title">{{ panelTitle }}</span>
+        <span class="badge pull-right">{{ backoffice|length }}</span>
+    </div>
+    <div class="table-responsive dashboard">
+        <table class="table table-bordered table-hover table-striped records_list">
+            <tbody>
+                {% for order in orders %}
+                    <tr>
+                        <td><a class="btn btn-link" href="{{ path('orders_show', { 'id': order.id }) }}">{{ order.number }}</a></td>
+                        <td>{{ order.customer.name }}</td>
+                        <td class="text-right">
+                            {{ (order.total/100)|localizedcurrency('RUB') }}
+                        </td>
+                        <td>{{ order.createdAt|localizeddate('short', 'short') }}</td>
+                        <td class="text-right">
+                            <span class="label
+                                  {% if order.state == "backoffice" %}label-info                                                      
+                                  {% elseif order.state == "post" %}label-primary
+                                  {% elseif order.state == "document" %}label-warning
+                                  {% else %}label-default
+                                  {% endif %}
+                                  ">{{ order.state|upper }}</span>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
