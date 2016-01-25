@@ -115,7 +115,7 @@ class OrdersController extends Controller
                 if ("" == $comment->getComment()) {
                     $order->removeOrderComment($comment);
                 } else {
-                    $comment->setAuthor($this->getUser());
+                    $this->getUser()->addComment($comment);
                     $comment->setCreatedAt(new \DateTime());
                     $order->addOrderComment($comment);
                 }
@@ -177,7 +177,6 @@ class OrdersController extends Controller
             $comment = $form->getData();
             if ("" != $comment['comment']) {
                 $orderComment->setComment($comment['comment']);
-//                $orderComment->setAuthor($this->getUser());
                 $orderComment->setCreatedAt(new \DateTime());
                 $this->getUser()->addComment($orderComment);
                 $order->addOrderComment($orderComment);
@@ -381,7 +380,7 @@ class OrdersController extends Controller
                 if ("" == $comment->getComment()) {
                     $order->removeOrderComment($comment);
                 } else {
-                    $comment->setAuthor($this->getUser());
+                    $this->getUser()->addComment($comment);
                     $comment->setCreatedAt(new \DateTime());
                     $order->addOrderComment($comment);
                 }

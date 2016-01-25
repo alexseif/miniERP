@@ -38,7 +38,7 @@ class OrderComments
     /**
      *
      * @ORM\ManyToOne(targetEntity="Admin\AdminBundle\Entity\User", inversedBy="comments")
-     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=true)
      */
     private $author;
 
