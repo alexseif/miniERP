@@ -48,7 +48,7 @@ class OrderDocuments
     /**
      * @param UploadedFile $uploadedFile
      */
-    function __construct(UploadedFile $uploadedFile)
+    function upload(UploadedFile $uploadedFile)
     {
         $path = sha1(uniqid(mt_rand(), true)) . '.' . $uploadedFile->guessExtension();
         $this->setPath($path);

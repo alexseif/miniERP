@@ -174,7 +174,11 @@
                                     <div class="row">
                                         {%for document in order.orderDocuments%}
                                             <div class="col-sm-6">
-                                                <a href="{{ app.request.scheme ~ '://' ~ app.request.host ~ '/' ~ document.getWebPath }}" target="_blank">{{ document.id }}</a>
+                                                {% if document.path starts with 'http://www.mevisa.ru/' %}
+                                                    <a href="{{ document.path }}" target="_blank">{{ document.name }}</a>
+                                                {% else %}
+                                                    <a href="{{ app.request.scheme ~ '://' ~ app.request.host ~ '/' ~ document.getWebPath }}" target="_blank">{{ document.name }}</a>
+                                                {% endif %}
                                             </div>
                                         {% endfor %}
                                     </div>

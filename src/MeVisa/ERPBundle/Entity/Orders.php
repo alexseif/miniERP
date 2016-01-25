@@ -733,7 +733,8 @@ class Orders
         if ($this->uploadedFiles) {
             foreach ($this->uploadedFiles as $uploadedFile) {
                 if ($uploadedFile) {
-                    $file = new OrderDocuments($uploadedFile);
+                    $file = new OrderDocuments();
+                    $file->upload($uploadedFile);
                     $this->getOrderDocuments()->add($file);
                     $file->setOrderRef($this);
                     unset($uploadedFile);
