@@ -186,13 +186,26 @@
                             <div class="panel panel-default">
                                 <div class="panel-heading">
                                     <span class="panel-title">Notes</span>
+                                    <div class="pull-right">
+                                        <span class="badge">{{ app.user.username }}</span>
+                                    </div>
                                 </div>
                                 <div class="panel-body">
-                                    {%for comment in order.orderComments%}
-                                        {{ comment.author }}
-                                        {{ comment.comment }}
-                                        {{ comment.createdAt|date() }}
-                                    {% endfor %}
+                                    <div class="list-group">
+                                        {%for comment in order.orderComments%}
+                                            <div class="list-group-item well well-sm">
+                                                {{ comment.comment }}
+                                                <span class="label label-info label-pill pull-xs-right">-- {{ comment.author }} | {{ comment.createdAt|localizeddate('short', 'short') }}</span>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+
+                                    <div class="orderComments">
+                                        {{ form_start(comment_form) }}
+                                        {{ form_widget(comment_form.comment) }}
+                                        {{ form_widget(comment_form.save) }}
+                                        {{ form_end(comment_form) }}
+                                    </div>
                                 </div>
                             </div>
                         </div>

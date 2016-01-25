@@ -152,6 +152,42 @@ class OrdersController extends Controller
     }
 
     /**
+     * Creates a new Orders entity.
+     *
+     * @Route("/{id}/comment", name="orders_comments_new")
+     * @Method("POST")
+     */
+    public function createCommentAction(Request $request, $id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $order = $em->getRepository('MeVisaERPBundle:Orders')->find($id);
+
+        if (!$order) {
+            throw $this->createNotFoundException('Unable to find Orders entity.');
+        }
+
+        $orderComment = new \MeVisa\ERPBundle\Entity\OrderComments();
+        $orderComment->setOrderRef($id);
+        $form = $this->createCommentForm($orderComment);
+        $form->handleRequest($request);
+
+
+
+        if ($form->isValid()) {
+            $comment = $form->getData();
+            if ("" != $comment['comment']) {
+                $orderComment->setComment($comment['comment']);
+//                $orderComment->setAuthor($this->getUser());
+                $orderComment->setCreatedAt(new \DateTime());
+                $this->getUser()->addComment($orderComment);
+                $order->addOrderComment($orderComment);
+                $em->flush();
+            }
+        }
+        return $this->redirect($this->generateUrl('orders_show', array('id' => $id)));
+    }
+
+    /**
      * Creates a form to create a Orders entity.
      *
      * @param Orders $entity The entity
@@ -226,6 +262,9 @@ class OrdersController extends Controller
         $order->startOrderStateEnginge();
         $order->setOrderState($state);
 
+        $orderComment = new \MeVisa\ERPBundle\Entity\OrderComments();
+        $orderComment->setOrderRef($order->getId());
+        $commentForm = $this->createCommentForm($orderComment);
         $deleteForm = $this->createDeleteForm($id);
         $statusForm = $this->createStatusForm($order);
 
@@ -233,6 +272,7 @@ class OrdersController extends Controller
             'order' => $order,
             'delete_form' => $deleteForm->createView(),
             'status_form' => $statusForm->createView(),
+            'comment_form' => $commentForm->createView(),
         );
     }
 
@@ -413,6 +453,32 @@ class OrdersController extends Controller
                         ->add('submit', 'submit', array('label' => 'Delete'))
                         ->getForm()
         ;
+    }
+
+    /**
+     * Creates a form to update a Orders Status entity.
+     *
+     * @param Orders $entity The entity
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
+    private function createCommentForm(\MeVisa\ERPBundle\Entity\OrderComments $entity)
+    {
+        $form = $this->createFormBuilder()
+                ->setAction($this->generateUrl('orders_comments_new', array('id' => $entity->getOrderRef())))
+                ->setMethod('POST');
+
+        $form->add('comment', 'textarea', array(
+            'data' => $entity->getComment(),
+            'required' => true,
+            'label' => false
+        ));
+        $form->add('save', 'submit', array(
+            'label' => false,
+            'attr' => array('class' => 'pull-right')
+        ));
+
+        return $form->getForm();
     }
 
     /**

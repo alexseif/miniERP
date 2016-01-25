@@ -742,7 +742,6 @@ class Orders
         }
     }
 
-
     /**
      * Add invoices
      *
@@ -775,4 +774,5 @@ class Orders
     {
         return $this->invoices;
     }
+
 }
