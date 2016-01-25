@@ -107,7 +107,7 @@ class WCController extends Controller
 //
 //        $em->flush();
 
-        $this->apiAction();
+        return $this->apiAction();
 
         return new Response();
     }
@@ -234,6 +234,12 @@ class WCController extends Controller
             $order->setDeparture(\DateTime::createFromFormat("d/m/Y", $lineItem['meta'][4]['value'], $timezone));
             $order->setArrival(\DateTime::createFromFormat("d/m/Y", $lineItem['meta'][5]['value']), $timezone);
 //FIXME: Add documents links 
+            $docs = explode(',', $lineItem['meta'][6]['value']);
+            foreach ($docs as $doc) {
+                $document = new \MeVisa\ERPBundle\Entity\OrderDocuments();
+                $document->setPath('http://www.mevisa.ru/wp-content/uploads/product_files/confirmed/' . $doc);
+                $order->addOrderDocument($document);
+            }
         }
 
         $orderPayment = new OrderPayments();
@@ -250,8 +256,7 @@ class WCController extends Controller
 
         if ("" != $wcOrder['note']) {
             $orderComment = new OrderComments();
-            $orderComment->setComment($wcOrder['note']);
-            $orderComment->setAuthor("Customer: " . $customer->getName());
+            $orderComment->setComment($wcOrder['note'] . "-- Customer: " . $customer->getName());
             $orderComment->setCreatedAt(new \DateTime($wcOrder['created_at'], $timezone));
             $order->addOrderComment($orderComment);
         }
@@ -316,6 +321,14 @@ class WCController extends Controller
             $order->setDeparture(\DateTime::createFromFormat("d/m/Y", $lineItem['meta'][4]['value'], $timezone));
             $order->setArrival(\DateTime::createFromFormat("d/m/Y", $lineItem['meta'][5]['value']), $timezone);
 //FIXME: Add documents links 
+            $docs = explode(',', $lineItem['meta'][6]['value']);
+            foreach ($docs as $doc) {
+                $document = new \MeVisa\ERPBundle\Entity\OrderDocuments();
+                // http://www.mevisa.ru/wp-content/uploads/product_files/confirmed/3975-915-img_9996.jpg
+                $document->setPath('http://www.mevisa.ru/wp-content/uploads/product_files/confirmed/' . $wcOrder['order_number'] . '-' . $lineItem['product_id'] . '-' . $doc);
+                $document->setName($doc);
+                $order->addOrderDocument($document);
+            }
         }
 
         $orderPayment = new OrderPayments();
