@@ -21,7 +21,7 @@ class OrderCommentsType extends AbstractType
                 'required' => false
             ))
         // TODO: remove author and put from logged in user
-            ->add('author', 'choice', array('placeholder' => 'Author'))
+//            ->add('author', 'choice', array('placeholder' => 'Author'))
         ;
     }
 

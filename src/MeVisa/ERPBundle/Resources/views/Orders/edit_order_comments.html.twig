@@ -7,6 +7,14 @@
         </div>
     </div>
     <div class="panel-body">
+        <div class="list-group">
+            {%for comment in order.orderComments%}
+                <div class="list-group-item well well-sm">
+                    {{ comment.comment }}
+                    <span class="label label-info label-pill pull-xs-right">-- {{ comment.author }} | {{ comment.createdAt|localizeddate('short', 'short') }}</span>
+                </div>
+            {% endfor %}
+        </div>
         <div class="orderComments" data-prototype="{{ form_widget(edit_form.orderComments.vars.prototype.comment)|e }}"></div>
     </div>
 </div>
