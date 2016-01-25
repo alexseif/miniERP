@@ -1,0 +1,53 @@
+{% extends ':default:admin.html.twig' %}
+
+{% block title %}AdminAdminBundle:Users:index{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <span class="panel-title">Users</span>
+                    <span class="badge">{{ entities|length }} </span>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover table-striped records_list">
+                        <thead>
+                            <tr>
+                                <th>Username</th>
+                                <th>Email</th>
+                                <th>Enabled</th>
+                                <th>Roles</th>
+                                <th>Last Login</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for entity in entities %}
+                                <tr>
+                                    <td>{{ entity.username }}</td>
+                                    <td>{{ entity.email }}</td>
+                                    <td>{% if entity.enabled %}Enabled{% else %}Disabled{% endif %}</td>
+                                    <td>
+                                        {% set roleText = false %}
+                                        {% for role in entity.roles if not roleText %}
+                                            {% if role == "ROLE_SUPER_ADMIN" %}
+                                                {% set roleText = "Administrator" %}
+                                            {% elseif role == "ROLE_USER"%}
+                                                {% set roleText = "User" %}
+                                            {% else %}
+                                                {% set roleText = "None" %}
+                                            {% endif%}
+                                        {% endfor %}
+                                        {{ roleText }}
+                                    </td>
+                                    <td>{{ entity.lastlogin|localizeddate('short', 'short') }}</td>
+                                    <td></td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
