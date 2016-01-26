@@ -50,6 +50,8 @@ class OrderState
         //Processing
         $this->addState('processing', 'Processing');
         $this->addChild('processing', 'backoffice');
+        //Cancelled
+        $this->addState('cancelled', 'Cancelled');
     }
 
     public function setState($key)

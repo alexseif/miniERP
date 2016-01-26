@@ -237,6 +237,7 @@ class WCController extends Controller
             $docs = explode(',', $lineItem['meta'][6]['value']);
             foreach ($docs as $doc) {
                 $document = new \MeVisa\ERPBundle\Entity\OrderDocuments();
+                $document->setName($doc);
                 $document->setPath('http://www.mevisa.ru/wp-content/uploads/product_files/confirmed/' . $doc);
                 $order->addOrderDocument($document);
             }
