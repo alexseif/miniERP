@@ -8,6 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use MeVisa\ERPBundle\Entity\Orders;
+use MeVisa\ERPBundle\Entity\Invoices;
 use MeVisa\ERPBundle\Form\OrdersType;
 use Knp\Snappy\Pdf;
 
@@ -48,6 +49,8 @@ class OrdersController extends Controller
     {
         $order = new Orders();
         $order->setState('backoffice');
+        $order->setChannel('POS');
+        $order->setCreatedAt(new \DateTime("now"));
 
         $form = $this->createCreateForm($order);
         $form->handleRequest($request);
@@ -65,9 +68,6 @@ class OrdersController extends Controller
             }
 
             // TODO: State machine
-//            $order->setState('backoffice');
-            // TODO: Order Channel
-            $order->setChannel('POS');
 
             $customer = $order->getCustomer();
             if (!$customer->getId()) {
@@ -82,34 +82,19 @@ class OrdersController extends Controller
                 //  echo "Still no Customer <br/>";
             }
 
-            $orderProducts = $order->getOrderProducts();
-
-            // $orderProductCheck = false;
-//            $orderProductTotal = 0;
-            foreach ($orderProducts as $orderProduct) {
-                // TODO: Check Order Product
-                // TODO: Handle no proper products or disabled
-//                $product = $orderProduct->getProduct();
-//                $productPrice = $product->getPricing();
-//                $orderProduct->setUnitPrice($productPrice[0]->getPrice());
-//                $orderProduct->setTotal($productPrice[0]->getPrice() * $orderProduct->getQuantity());
-//                $orderProductTotal += $orderProduct->getTotal();
-                $order->addOrderProduct($orderProduct);
-                // $em->merge($orderProduct);
-            }
-//            $order->setProductsTotal($orderProductTotal);
-//            $order->setTotal($order->getProductsTotal() + $order->getAdjustmentTotal());
-
-            $order->setCreatedAt(new \DateTime("now"));
-
             $orderCompanions = $order->getOrderCompanions();
             // TODO: Check Order Companions
             foreach ($orderCompanions as $companion) {
                 $order->addOrderCompanion($companion);
             }
 
-            // TODO: Check Order Comments
-            // TODO: if order comment is not empty add new orderComment
+            $orderProducts = $order->getOrderProducts();
+            foreach ($orderProducts as $orderProduct) {
+                // TODO: Check Order Product
+                // TODO: Handle no proper products or disabled
+                $order->addOrderProduct($orderProduct);
+            }
+
             $orderComments = $order->getOrderComments();
             foreach ($orderComments as $comment) {
                 if ("" == $comment->getComment()) {
@@ -124,7 +109,9 @@ class OrdersController extends Controller
             $orderPayments = $order->getOrderPayments();
             foreach ($orderPayments as $payment) {
                 $payment->setCreatedAt(new \DateTime());
-                $payment->setState("paid");
+                if ("paid" == $payment->getState()) {
+                    //TODO: $this->generateInvoice();
+                }
                 $order->addOrderPayment($payment);
             }
 
@@ -140,13 +127,15 @@ class OrdersController extends Controller
 
             return $this->redirect($this->generateUrl('orders_show', array('id' => $order->getId())));
         } else {
-            return array(
-                "errors" => $form->getErrors()
-            );
+            foreach ($form->getErrors() as $error) {
+                $this->addFlash('error', $error);
+            }
         }
+        $productPrices = $em->getRepository('MeVisaERPBundle:ProductPrices')->findAll();
 
         return array(
             'order' => $order,
+            'productPrices' => $productPrices,
             'form' => $form->createView(),
         );
     }
@@ -219,7 +208,6 @@ class OrdersController extends Controller
     public function newAction()
     {
         $order = new Orders();
-        // Set initial state
         $order->setState('backoffice');
         $order->setChannel('pos');
 
@@ -372,6 +360,8 @@ class OrdersController extends Controller
 
             $orderProducts = $order->getOrderProducts();
             foreach ($orderProducts as $orderProduct) {
+                // TODO: Check Order Product
+                // TODO: Handle no proper products or disabled
                 $order->addOrderProduct($orderProduct);
             }
 
@@ -385,6 +375,18 @@ class OrdersController extends Controller
                     $order->addOrderComment($comment);
                 }
             }
+
+            $orderPayments = $order->getOrderPayments();
+            foreach ($orderPayments as $payment) {
+                $payment->setCreatedAt(new \DateTime());
+                if ("paid" == $payment->getState()) {
+                    //TODO: $this->generateInvoice();
+                }
+                $order->addOrderPayment($payment);
+            }
+
+            // TODO: Check Order
+            // TODO: Upload OrderDocuments then presist
             $orderDocuments = $order->getOrderDocuments();
             foreach ($orderDocuments as $document) {
                 $order->addOrderDocument($document);
@@ -396,11 +398,10 @@ class OrdersController extends Controller
 
             return $this->redirect($this->generateUrl('orders_show', array('id' => $id)));
         } else {
-            echo "Form not valid becuase:<br/>";
-            die();
-            $formErrors = $editForm->getErrors();
+            foreach ($form->getErrors() as $error) {
+                $this->addFlash('error', $error);
+            }
         }
-
         $productPrices = $em->getRepository('MeVisaERPBundle:ProductPrices')->findAll();
 
         return array(
@@ -517,7 +518,6 @@ class OrdersController extends Controller
      */
     public function updateStateAction(Request $request, $id)
     {
-
         $em = $this->getDoctrine()->getManager();
 
         $order = $em->getRepository('MeVisaERPBundle:Orders')->find($id);
@@ -565,7 +565,7 @@ class OrdersController extends Controller
     /**
      * Finds and displays a Orders entity.
      *
-     * @Route("/invoice/{id}", name="order_show_invoice")
+     * @Route("/{id}/invoice", name="order_show_invoice")
      * @Method("GET")
      * @Template()
      */
@@ -575,9 +575,12 @@ class OrdersController extends Controller
 
         $order = $em->getRepository('MeVisaERPBundle:Orders')->find($id);
 
+
         if (!$order) {
-            throw $this->createNotFoundException('Unable to find Orders entity.');
+            throw $this->createNotFoundException('Unable to find Order');
         }
+        $this->generateInvoice($order);
+
         $state = $order->getState();
         $order->startOrderStateEnginge();
         $order->setOrderState($state);
@@ -585,39 +588,16 @@ class OrdersController extends Controller
         $deleteForm = $this->createDeleteForm($id);
         $statusForm = $this->createStatusForm($order);
 
-        $myProjectDirectory = __DIR__ . '/../../../../';
-//        $myProjectDirectory = '/srv/www/mevisa/';
-
-
-
-        $snappy = new Pdf($myProjectDirectory . 'vendor/h4cc/wkhtmltopdf-i386/bin/wkhtmltopdf-i386');
-
-        $snappy->setOption('title', 'MeVisa Invoice');
-        $snappy->setOption('encoding', 'UTF');
-
-        $snappy->generateFromHtml($this->renderView(
-                        'MeVisaERPBundle:Orders:invoicepdf.html.twig', array(
-                    'order' => $order,
-                        )
-                ), $myProjectDirectory . 'web/invoices/file.pdf', array(), true);
-
-//        $this->get('knp_snappy.pdf')->generateFromHtml(
-//                $this->renderView(
-//                        'MeVisaERPBundle:Orders:invoice.html.twig', array(
-//                    'order' => $order,
-//                        )
-//                ), '/web/test/file.pdf'
-//        );
-
         return array(
             'order' => $order,
+            'invoiceNo' => 0
         );
     }
 
     /**
      * Finds and displays a Orders entity.
      *
-     * @Route("/invoice/{id}/pdf", name="order_show_pdf")
+     * @Route("/{id}/invoice/pdf", name="order_show_pdf")
      * @Method("GET")
      * @Template()
      */
@@ -629,6 +609,7 @@ class OrdersController extends Controller
 
         return array(
             'order' => $order,
+            'invoiceNo' => 0
         );
     }
 
@@ -653,6 +634,46 @@ class OrdersController extends Controller
         }
 
         return array('form' => $form->createView());
+    }
+
+    /**
+     * Generates an invoice
+     *
+     * @param Orders $order The entity
+     */
+    public function generateInvoice(Orders $order)
+    {
+        if (!$order) {
+            throw $this->createNotFoundException('Unable to find Order');
+        }
+
+        $invoice = new Invoices();
+
+        $invoice->setOrderRef($order);
+
+        $em = $this->getDoctrine()->getManager();
+
+        $em->persist($invoice);
+        $em->flush();
+
+        $state = $order->getState();
+        $order->startOrderStateEnginge();
+        $order->setOrderState($state);
+
+        $myProjectDirectory = __DIR__ . '/../../../../';
+
+        $snappy = new Pdf($myProjectDirectory . 'vendor/h4cc/wkhtmltopdf-i386/bin/wkhtmltopdf-i386');
+
+        $snappy->setOption('title', 'MeVisa Invoice' . $order->getId() . '-' . $invoice->getId());
+        $snappy->setOption('encoding', 'UTF');
+
+        $snappy->generateFromHtml($this->renderView(
+                        'MeVisaERPBundle:Orders:invoicepdf.html.twig', array(
+                    'order' => $order,
+                    'invoiceNo' => $invoice->getId()
+                        )
+                        //TODO: name file
+                ), $myProjectDirectory . 'web/invoices/mevisa-invoice-' . $order->getId() . '-' . $invoice->getId() . '.pdf', array(), true);
     }
 
 }

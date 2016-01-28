@@ -35,7 +35,7 @@ class Invoices
      */
     private $createdAt;
 
-    function __construct(\DateTime $createdAt)
+    function __construct()
     {
         $this->setCreatedAt(new \DateTime());
     }

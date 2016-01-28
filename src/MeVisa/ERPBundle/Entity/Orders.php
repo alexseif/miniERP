@@ -752,6 +752,7 @@ class Orders
     public function addInvoice(\MeVisa\ERPBundle\Entity\Invoices $invoices)
     {
         $this->invoices[] = $invoices;
+        $invoices->setOrderRef($this);
 
         return $this;
     }

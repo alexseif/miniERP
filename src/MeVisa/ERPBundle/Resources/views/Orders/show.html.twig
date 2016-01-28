@@ -220,6 +220,7 @@
                         <div class="col-sm-12">
                             <a class="btn btn-default" href="{{ path('orders') }}">Cancel</a>
                             <a class="btn btn-primary" href="{{ path('order_show_invoice', { 'id': order.id }) }}">Invoice</a>
+                            <a class="btn btn-primary" href="/invoices/mevisa-invoice-{{ order.id }}-{{ (order.invoices|last).id}}.pdf" target="_blank">Invoice</a>
                             <div class="btn-toolbar pull-right" role="toolbar">
                                 {{ form_start(status_form) }}
                                 {% for btn in status_form %}
