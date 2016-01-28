@@ -6,37 +6,55 @@
         .dashboard a{padding-top: 0px;padding-bottom: 0px;}
     </style>
     {% include 'AdminAdminBundle:Default:quickActions.html.twig' %}
-    {# TODO: Make panels colapsible  #}
-    {# TODO: Make widget out of panels #}
-    <div class="row">
-        <div class="col-sm-12">
-            {% set orders = backoffice %}
-            {% set panelTitle = 'Backoffice Orders' %}
-            {% include 'AdminAdminBundle:Default:dashboardPanel.html.twig' %}
+    <div id="panels">
+        <div class="row">
+            <div class="col-sm-12">
+                {% set orders = backoffice %}
+                {% set panelTitle = 'Backoffice Orders' %}
+                {% include 'AdminAdminBundle:Default:dashboardPanel.html.twig' %}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                {% set orders = pending %}
+                {% set panelTitle = 'Pending Orders' %}
+                {% include 'AdminAdminBundle:Default:dashboardPanel.html.twig' %}
+            </div>
+            <div class="col-sm-6">
+                {% set orders = document %}
+                {% set panelTitle = 'Document Required Orders' %}
+                {% include 'AdminAdminBundle:Default:dashboardPanel.html.twig' %}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">   
+                {% set orders = post %}
+                {% set panelTitle = 'Post Orders' %}
+                {% include 'AdminAdminBundle:Default:dashboardPanel.html.twig' %}
+            </div>
+            <div class="col-sm-6">
+                {% set orders = completed %}
+                {% set panelTitle = 'Completed Today' %}
+                {% include 'AdminAdminBundle:Default:dashboardPanel.html.twig' %}
+            </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col-sm-6">
-            {% set orders = pending %}
-            {% set panelTitle = 'Pending Orders' %}
-            {% include 'AdminAdminBundle:Default:dashboardPanel.html.twig' %}
-        </div>
-        <div class="col-sm-6">
-            {% set orders = document %}
-            {% set panelTitle = 'Document Required Orders' %}
-            {% include 'AdminAdminBundle:Default:dashboardPanel.html.twig' %}
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-sm-6">   
-            {% set orders = post %}
-            {% set panelTitle = 'Post Orders' %}
-            {% include 'AdminAdminBundle:Default:dashboardPanel.html.twig' %}
-        </div>
-        <div class="col-sm-6">
-            {% set orders = completed %}
-            {% set panelTitle = 'Completed Today' %}
-            {% include 'AdminAdminBundle:Default:dashboardPanel.html.twig' %}
-        </div>
-    </div>
+    <button class="hidden">Button</button>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript">
+        function updateOrders() {
+            $.ajax('{{path('dashboard_ajax')}}').done(function (response) {
+                $('#panels').html(response);
+            });
+            //TODO: play notification sound
+        }
+
+        $(document).ready(function () {
+            $('button').on('click', function () {
+                updateOrders();
+            });
+        });
+    </script>
 {% endblock %}

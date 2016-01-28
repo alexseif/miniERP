@@ -1,0 +1,31 @@
+<div class="row">
+    <div class="col-sm-12">
+        {% set orders = backoffice %}
+        {% set panelTitle = 'Backoffice Orders' %}
+        {% include 'AdminAdminBundle:Default:dashboardPanel.html.twig' %}
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-6">
+        {% set orders = pending %}
+        {% set panelTitle = 'Pending Orders' %}
+        {% include 'AdminAdminBundle:Default:dashboardPanel.html.twig' %}
+    </div>
+    <div class="col-sm-6">
+        {% set orders = document %}
+        {% set panelTitle = 'Document Required Orders' %}
+        {% include 'AdminAdminBundle:Default:dashboardPanel.html.twig' %}
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-6">   
+        {% set orders = post %}
+        {% set panelTitle = 'Post Orders' %}
+        {% include 'AdminAdminBundle:Default:dashboardPanel.html.twig' %}
+    </div>
+    <div class="col-sm-6">
+        {% set orders = completed %}
+        {% set panelTitle = 'Completed Today' %}
+        {% include 'AdminAdminBundle:Default:dashboardPanel.html.twig' %}
+    </div>
+</div>
