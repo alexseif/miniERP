@@ -27,8 +27,6 @@ class OrderState
         $this->addState('approved', 'Approved', 'success');
         $this->addState('rejected', 'Rejected', 'danger');
 
-        //TODO: add Cancelled
-
         $this->addChild('backoffice', 'not_paid');
         $this->addChild('backoffice', 'document');
         $this->addChild('backoffice', 'post');
