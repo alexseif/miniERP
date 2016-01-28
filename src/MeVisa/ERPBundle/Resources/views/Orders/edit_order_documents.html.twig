@@ -3,9 +3,9 @@
         <span class="panel-title">Order Documents</span>
     </div>
     <div class="panel-body">
-        {# TODO: https://github.com/harijoe/symfony-vagrant-up/tree/POC-html5-input-dropzone#}
+        {# TODO: dropzone.js#}
         {{ form_widget(edit_form.uploadedFiles)}}
-{# FIXME: Delete links for files#}
+        {# FIXME: Delete links for files#}
         <div class="row">
             {%for document in order.orderDocuments%}
                 <div class="col-sm-6">
