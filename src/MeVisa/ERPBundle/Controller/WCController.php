@@ -98,7 +98,6 @@ class WCController extends Controller
 //            return new Response('Order exists');
 //        }
 //
-//        //TODO: test the following lines
 //        $this->newOrder($em, $wcOrder);
 //
 //
@@ -233,7 +232,8 @@ class WCController extends Controller
 
             $order->setDeparture(\DateTime::createFromFormat("d/m/Y", $lineItem['meta'][4]['value'], $timezone));
             $order->setArrival(\DateTime::createFromFormat("d/m/Y", $lineItem['meta'][5]['value']), $timezone);
-//FIXME: Add documents links 
+
+            //FIXME: check available docs first
             $docs = explode(',', $lineItem['meta'][6]['value']);
             foreach ($docs as $doc) {
                 $document = new \MeVisa\ERPBundle\Entity\OrderDocuments();
@@ -321,7 +321,8 @@ class WCController extends Controller
 
             $order->setDeparture(\DateTime::createFromFormat("d/m/Y", $lineItem['meta'][4]['value'], $timezone));
             $order->setArrival(\DateTime::createFromFormat("d/m/Y", $lineItem['meta'][5]['value']), $timezone);
-//FIXME: Add documents links 
+
+            //FIXME: check available docs first
             $docs = explode(',', $lineItem['meta'][6]['value']);
             foreach ($docs as $doc) {
                 $document = new \MeVisa\ERPBundle\Entity\OrderDocuments();
