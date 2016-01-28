@@ -24,6 +24,7 @@ class AppKernel extends Kernel
             new Admin\SecurityBundle\AdminSecurityBundle(),
             new FOS\UserBundle\FOSUserBundle(),
             new Sonata\IntlBundle\SonataIntlBundle(),
+            new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

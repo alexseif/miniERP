@@ -19,7 +19,9 @@ framework:
     form:            ~
     csrf_protection: ~
     validation:      { enable_annotations: true }
-    #serializer:      { enable_annotations: true }
+    serializer:
+        enabled: true
+        enable_annotations: true
     templating:
         engines: ['twig']
         #assets_version: SomeVersionScheme
@@ -74,8 +76,17 @@ doctrine:
 
     orm:
         auto_generate_proxy_classes: "%kernel.debug%"
-        naming_strategy: doctrine.orm.naming_strategy.underscore
         auto_mapping: true
+        naming_strategy: doctrine.orm.naming_strategy.underscore
+        mappings:
+            loggable:
+                type: annotation
+                alias: GedmoLoggable
+                prefix: Gedmo\Loggable\Entity
+                dir: "%kernel.root_dir%/../vendor/gedmo/doctrine-extensions/lib/Gedmo/Loggable/Entity"
+#                is_bundle: false
+#        entity_managers:
+#            default:
 
 # Swiftmailer Configuration
 swiftmailer:

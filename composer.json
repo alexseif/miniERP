@@ -26,7 +26,8 @@
         "woothemes/woocommerce-api": "^2.0",
         "knplabs/knp-snappy": "^0.4.3",
         "h4cc/wkhtmltopdf-i386": "0.12.x",
-        "h4cc/wkhtmltoimage-i386": "0.12.x"
+        "h4cc/wkhtmltoimage-i386": "0.12.x",
+        "stof/doctrine-extensions-bundle": "^1.2"
     },
     "require-dev": {
         "sensio/generator-bundle": "~2.3"
