@@ -11,21 +11,20 @@
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                         </button>
-                        <a class="navbar-brand" href="{{ path('dashboard') }}">
-                            <img src="/images/sm_new_mevisa.png" alt="MeVisa">
+                        <a class="navbar-brand" href="{{ path('dashboard') }}" style="padding: 10px;">
+                            <img src="/images/sm_new_mevisa.png" alt="MeVisa" width="100%">
                         </a>
                     </div>
-
                     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
                         <ul class="nav navbar-nav">
-                            <li {% if app.request.get('_route') == 'dashboard' %} class="active"{% endif %}><a href="{{ path('dashboard') }}">Dashboard<span class="sr-only">(current)</span></a></li>
+                            <li {% if app.request.get('_route') == 'dashboard' %} class="active"{% endif %}><a href="{{ path('dashboard') }}"><span class="glyphicon glyphicon-home"></span> <span class="sr-only">(current)</span></a></li>
                             <li {% if app.request.get('_route') matches '/^order/' %} class="active"{% endif %}><a href="{{ path('orders') }}">Orders</a></li>
                             <li {% if app.request.get('_route') matches '/^customer/' %} class="active"{% endif %}><a href="{{ path('customers') }}">CRM</a></li>
                             <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Settings <span class="caret"></span></a>
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><span class="glyphicon glyphicon-cog"></span> <span class="caret"></span></a>
                                 <ul class="dropdown-menu" role="menu">
-                                    {#                                    <li><a href="{{ path('admin_currency') }}">Currency</a></li>#}
-                                    {#                                    <li><a href="{{ path('admin_vendors') }}">Vendors</a></li>#}
+                                    {#<li><a href="{{ path('admin_currency') }}">Currency</a></li>#}
+                                    {#<li><a href="{{ path('admin_vendors') }}">Vendors</a></li>#}
                                     <li><a href="{{ path('admin_products') }}">Products</a></li>
                                         {#<li class="divider"></li>
                                         <li><a href="#">Users</a></li>
@@ -35,14 +34,12 @@
                             </li>
                         </ul>
                         <form class="navbar-form navbar-left" role="search" action="{{ path('search') }}">
-                            <div class="form-group">
-                                <input class="form-control" placeholder="Search" type="text" name="search">
-                            </div>
+                            <input class="form-control" placeholder="Search" type="text" name="search">
                             <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search"></span></button>
                         </form>
                         <ul class="nav navbar-nav navbar-right">
-                            {# <li><a>{{ 1|localizedcurrency('USD') }} = {{ 00.00|localizedcurrency('RUB')}}</a></li>#}
-                            <li>
+                            <li style="padding-top: 15px;"><span class="badge">{{ 1|localizedcurrency('USD') }} : {{ 75.72 |localizedcurrency('RUB')}}</span></li>
+                            <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Hi {{ app.user.username }} <span class="caret"></span></a>
                                 <ul class="dropdown-menu" role="menu">
                                     <li><a href="{{ path('fos_user_change_password') }}">{{ 'change_password.submit'|trans({}, 'FOSUserBundle') }}</a></li>
