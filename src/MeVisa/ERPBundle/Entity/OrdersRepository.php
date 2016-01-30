@@ -32,7 +32,7 @@ class OrdersRepository extends EntityRepository
                         ->getResult();
     }
 
-    public function queryLastPOSNumber()
+    public function queryLastPOSOrder()
     {
         return $this->createQueryBuilder("o")
                         ->where("o.number LIKE 'POS%'")

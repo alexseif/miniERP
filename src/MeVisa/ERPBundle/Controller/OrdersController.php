@@ -59,16 +59,16 @@ class OrdersController extends Controller
 
         if ($form->isValid()) {
 
-            $orderNo = $em->getRepository('MeVisaERPBundle:Orders')->queryLastPOSNumber();
-            if ($orderNo) {
-                $number = ltrim($orderNo->getNumber(), 'POS');
-                $order->setNumber('POS' . ($number + 1));
+            $lastPOSOrder = $em->getRepository('MeVisaERPBundle:Orders')->queryLastPOSOrder();
+
+            if ($lastPOSOrder) {
+                $lastPOSNo = ltrim($lastPOSOrder->getNumber(), 'POS');
+                $order->setNumber('POS' . ($lastPOSNo + 1));
             } else {
                 $order->setNumber('POS1');
             }
 
             // TODO: State machine
-
             $customer = $order->getCustomer();
             if (!$customer->getId()) {
                 $em->persist($customer);
@@ -82,45 +82,7 @@ class OrdersController extends Controller
                 //  echo "Still no Customer <br/>";
             }
 
-            $orderCompanions = $order->getOrderCompanions();
-            // TODO: Check Order Companions
-            foreach ($orderCompanions as $companion) {
-                $order->addOrderCompanion($companion);
-            }
-
-            $orderProducts = $order->getOrderProducts();
-            foreach ($orderProducts as $orderProduct) {
-                // TODO: Check Order Product
-                // TODO: Handle no proper products or disabled
-                $order->addOrderProduct($orderProduct);
-            }
-
-            $orderComments = $order->getOrderComments();
-            foreach ($orderComments as $comment) {
-                if ("" == $comment->getComment()) {
-                    $order->removeOrderComment($comment);
-                } else {
-                    $this->getUser()->addComment($comment);
-                    $comment->setCreatedAt(new \DateTime());
-                    $order->addOrderComment($comment);
-                }
-            }
-
-            $orderPayments = $order->getOrderPayments();
-            foreach ($orderPayments as $payment) {
-                $payment->setCreatedAt(new \DateTime());
-                if ("paid" == $payment->getState()) {
-                    //TODO: $this->generateInvoice();
-                }
-                $order->addOrderPayment($payment);
-            }
-
-            // TODO: Check Order
-            // TODO: Upload OrderDocuments then presist
-            $orderDocuments = $order->getOrderDocuments();
-            foreach ($orderDocuments as $document) {
-                $order->addOrderDocument($document);
-            }
+            $this->setOrderDetails($order);
 
             $em->persist($order);
             $em->flush();
@@ -252,12 +214,10 @@ class OrdersController extends Controller
         $orderComment = new \MeVisa\ERPBundle\Entity\OrderComments();
         $orderComment->setOrderRef($order->getId());
         $commentForm = $this->createCommentForm($orderComment);
-        $deleteForm = $this->createDeleteForm($id);
         $statusForm = $this->createStatusForm($order);
 
         return array(
             'order' => $order,
-            'delete_form' => $deleteForm->createView(),
             'status_form' => $statusForm->createView(),
             'comment_form' => $commentForm->createView(),
         );
@@ -286,7 +246,6 @@ class OrdersController extends Controller
         }
 
         $editForm = $this->createEditForm($order);
-        $deleteForm = $this->createDeleteForm($id);
         $statusForm = $this->createStatusForm($order);
 
         $productPrices = $em->getRepository('MeVisaERPBundle:ProductPrices')->findAll();
@@ -295,7 +254,6 @@ class OrdersController extends Controller
             'order' => $order,
             'productPrices' => $productPrices,
             'edit_form' => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
             'status_form' => $statusForm->createView(),
         );
     }
@@ -345,114 +303,31 @@ class OrdersController extends Controller
         $order->startOrderStateEnginge();
         $order->setState($state);
 
-        $deleteForm = $this->createDeleteForm($id);
         $editForm = $this->createEditForm($order);
 
         $editForm->handleRequest($request);
 
         if ($editForm->isValid()) {
-
-            $orderCompanions = $order->getOrderCompanions();
-            // TODO: Check Order Companions
-            foreach ($orderCompanions as $companion) {
-                $order->addOrderCompanion($companion);
-            }
-
-            $orderProducts = $order->getOrderProducts();
-            foreach ($orderProducts as $orderProduct) {
-                // TODO: Check Order Product
-                // TODO: Handle no proper products or disabled
-                $order->addOrderProduct($orderProduct);
-            }
-
-            $orderComments = $order->getOrderComments();
-            foreach ($orderComments as $comment) {
-                if ("" == $comment->getComment()) {
-                    $order->removeOrderComment($comment);
-                } else {
-                    $this->getUser()->addComment($comment);
-                    $comment->setCreatedAt(new \DateTime());
-                    $order->addOrderComment($comment);
-                }
-            }
-
-            $orderPayments = $order->getOrderPayments();
-            foreach ($orderPayments as $payment) {
-                $payment->setCreatedAt(new \DateTime());
-                if ("paid" == $payment->getState()) {
-                    //TODO: $this->generateInvoice();
-                }
-                $order->addOrderPayment($payment);
-            }
-
-            // TODO: Check Order
-            // TODO: Upload OrderDocuments then presist
-            $orderDocuments = $order->getOrderDocuments();
-            foreach ($orderDocuments as $document) {
-                $order->addOrderDocument($document);
-            }
+            $this->setOrderDetails($order);
 
             $order->setUpdatedAt(new \DateTime());
 
             $em->flush();
 
-            return $this->redirect($this->generateUrl('orders_show', array('id' => $id)));
+            return $this->redirect($this->generateUrl('orders_show', array('id' => $order->getId())));
         } else {
             foreach ($form->getErrors() as $error) {
                 $this->addFlash('error', $error);
             }
         }
+        
         $productPrices = $em->getRepository('MeVisaERPBundle:ProductPrices')->findAll();
 
         return array(
             'order' => $order,
             'productPrices' => $productPrices,
             'edit_form' => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
         );
-    }
-
-    /**
-     * Deletes a Orders entity.
-     *
-     * @Route("/{id}", name="orders_delete")
-     * @Method("DELETE")
-     */
-    public function deleteAction(Request $request, $id)
-    {
-        $form = $this->createDeleteForm($id);
-        $form->handleRequest($request);
-
-        if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $entity = $em->getRepository('MeVisaERPBundle:Orders')->find($id);
-
-            if (!$entity) {
-                throw $this->createNotFoundException('Unable to find Orders entity.');
-            }
-
-            $em->remove($entity);
-            $em->flush();
-        }
-
-        return $this->redirect($this->generateUrl('orders'));
-    }
-
-    /**
-     * Creates a form to delete a Orders entity by id.
-     *
-     * @param mixed $id The entity id
-     *
-     * @return \Symfony\Component\Form\Form The form
-     */
-    private function createDeleteForm($id)
-    {
-        return $this->createFormBuilder()
-                        ->setAction($this->generateUrl('orders_delete', array('id' => $id)))
-                        ->setMethod('DELETE')
-                        ->add('submit', 'submit', array('label' => 'Delete'))
-                        ->getForm()
-        ;
     }
 
     /**
@@ -530,7 +405,6 @@ class OrdersController extends Controller
         $order->startOrderStateEnginge();
         $order->setState($state);
 
-        $deleteForm = $this->createDeleteForm($id);
         $statusForm = $this->createStatusForm($order);
 
         $statusForm->handleRequest($request);
@@ -558,7 +432,6 @@ class OrdersController extends Controller
             'order' => $order,
             'productPrices' => $productPrices,
             'status_form' => $statusForm->createView(),
-            'delete_form' => $deleteForm->createView(),
         );
     }
 
@@ -585,7 +458,6 @@ class OrdersController extends Controller
         $order->startOrderStateEnginge();
         $order->setOrderState($state);
 
-        $deleteForm = $this->createDeleteForm($id);
         $statusForm = $this->createStatusForm($order);
 
         return array(
@@ -674,6 +546,50 @@ class OrdersController extends Controller
                         )
                         //TODO: name file
                 ), $myProjectDirectory . 'web/invoices/mevisa-invoice-' . $order->getId() . '-' . $invoice->getId() . '.pdf', array(), true);
+    }
+
+    public function setOrderDetails($order)
+    {
+
+        $orderCompanions = $order->getOrderCompanions();
+        // TODO: Check Order Companions
+        foreach ($orderCompanions as $companion) {
+            $order->addOrderCompanion($companion);
+        }
+
+        $orderProducts = $order->getOrderProducts();
+        foreach ($orderProducts as $orderProduct) {
+            // TODO: Check Order Product
+            // TODO: Handle no proper products or disabled
+            $order->addOrderProduct($orderProduct);
+        }
+
+        $orderComments = $order->getOrderComments();
+        foreach ($orderComments as $comment) {
+            if ("" == $comment->getComment()) {
+                $order->removeOrderComment($comment);
+            } else {
+                $this->getUser()->addComment($comment);
+                $comment->setCreatedAt(new \DateTime());
+                $order->addOrderComment($comment);
+            }
+        }
+
+        $orderPayments = $order->getOrderPayments();
+        foreach ($orderPayments as $payment) {
+            $payment->setCreatedAt(new \DateTime());
+            if ("paid" == $payment->getState()) {
+//                    TODO: $this->generateInvoice();
+            }
+            $order->addOrderPayment($payment);
+        }
+
+        // TODO: Check Order
+        // TODO: Upload OrderDocuments then presist
+        $orderDocuments = $order->getOrderDocuments();
+        foreach ($orderDocuments as $document) {
+            $order->addOrderDocument($document);
+        }
     }
 
 }

@@ -20,7 +20,6 @@ function updatePricesAndTotals() {
 }
 
 function addProductForm() {
-    addPrototypeForm('ul.orderProducts', '<li></li>');
 //    var prototype = $productHolder.data('prototype');
 //    var index = $productHolder.data('index');
 //    var newForm = prototype.replace(/__name__/g, index);
@@ -28,6 +27,8 @@ function addProductForm() {
 //    var $newFormLi = $('<li></li>').append(newForm);
 //    $newProductLinkLi.before($newFormLi);
 
+    // Order products
+    addPrototypeForm('ul.orderProducts', '<li></li>');
     $('select[name="mevisa_erpbundle_orders[orderProducts][' + index + '][product]"]').change(function () {
         updatePricesAndTotals();
     });
@@ -39,21 +40,8 @@ function addProductForm() {
         $qty = $('input[name="mevisa_erpbundle_orders[orderProducts][0][quantity]"]').val();
         $('input[name="mevisa_erpbundle_orders[orderProducts][' + index + '][quantity]"]').val($qty);
     }
-
-    $('input[name="mevisa_erpbundle_orders[people]"]').change(function () {
-        var companionIndex = $companionHolder.data('index');
-        if (companionIndex <= 0) {
-            $noCompanions = $('input[name="mevisa_erpbundle_orders[people]"]').val();
-            for (i = 0; i < $noCompanions; i++) {
-                $('.addCompanion').click();
-                $('input[name="mevisa_erpbundle_orders[orderCompanions][0][name]"]').val($('input[name="mevisa_erpbundle_orders[customer][name]"]').val());
-            }
-        }
-    });
     $('.remove_product_link').show();
-
     $('select[name="mevisa_erpbundle_orders[orderProducts][' + index + '][product]"]').focus();
-
 }
 
 var $productHolder;
@@ -101,8 +89,8 @@ $(document).ready(function () {
 
     }
 
+    //Order Companions
     $companionHolder = $('tbody.companions');
-
     $companionHolder.data('index', $('tbody.companions tr').length);
 
     $('.addCompanion').on('click', function (e) {
@@ -114,7 +102,24 @@ $(document).ready(function () {
         });
     });
 
-    addPrototypeForm('div.orderPayments', '<div></div>');
+    $('input[name="mevisa_erpbundle_orders[people]"]').change(function () {
+        var companionIndex = $companionHolder.data('index');
+        if (companionIndex <= 0) {
+            $noCompanions = $('input[name="mevisa_erpbundle_orders[people]"]').val();
+            for (i = 0; i < $noCompanions; i++) {
+                $('.addCompanion').click();
+                $('input[name="mevisa_erpbundle_orders[orderCompanions][0][name]"]').val($('input[name="mevisa_erpbundle_orders[customer][name]"]').val());
+            }
+        }
+    });
+    $('.removeCompanion').on('click', function (e) {
+        e.preventDefault();
+        $(this).parent().parent().remove();
+    });
+
+    if ($('div.orderPayments').length) {
+        addPrototypeForm('div.orderPayments', '<div></div>');
+    }
     addPrototypeForm('div.orderComments', '<div></div>');
 
     $('#mevisa_erpbundle_orders_customer_name').focus();
