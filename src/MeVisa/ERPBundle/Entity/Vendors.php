@@ -37,7 +37,7 @@ class Vendors
     private $code;
 
     /**
-     * @ORM\OneToMany(targetEntity="Products", mappedBy="category")
+     * @ORM\OneToMany(targetEntity="Products", mappedBy="vendor")
      */
     protected $products;
 

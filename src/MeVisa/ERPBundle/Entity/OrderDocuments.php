@@ -18,7 +18,7 @@ class OrderDocuments
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    public $id;
+    private $id;
 
     /**
      * @var string

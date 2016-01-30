@@ -44,7 +44,7 @@ class ProductPrices
     private $createdAt;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Products", inversedBy="ProductPrices")
+     * @ORM\ManyToOne(targetEntity="Products", inversedBy="pricing")
      * @ORM\JoinColumn(name="product_id", referencedColumnName="id")
      * */
     private $product;

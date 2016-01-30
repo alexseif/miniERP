@@ -44,7 +44,7 @@
                                     <td class="text-right">{{ (result.productsTotal/100)|localizedcurrency('RUB') }}</td>
                                     <td class="text-right">{{ (result.adjustmentTotal/100)|localizedcurrency('RUB') }}</td>
                                     <td class="text-right">{{ (result.total/100)|localizedcurrency('RUB') }}</td>
-                                    <td>{% if result.createdAt %}{{ result.createdAt|locaizeddate }}{% endif %}</td>
+                                    <td>{% if result.createdAt %}{{ result.createdAt|localizeddate }}{% endif %}</td>
                                     <td><a class="btn btn-primary" href="{{ path('orders_show', { 'id': result.id }) }}">Open</a></td>
                                 </tr>
                             {% endfor %}

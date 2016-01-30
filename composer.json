@@ -1,6 +1,7 @@
 {
     "name": "alexseif/mevisa",
-    "license": "proprietary",
+    "description": "Custom tailored Mini ERP based integrated with a customized WooCommerce shop",
+    "license": "MIT",
     "type": "project",
     "autoload": {
         "psr-4": {
