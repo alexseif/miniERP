@@ -14,6 +14,7 @@
                             {{ (order.total/100)|localizedcurrency('RUB') }}
                         </td>
                         <td>{{ order.createdAt|localizeddate('short', 'short') }}</td>
+                        <td>{{ order.createdAt|ago }}</td>
                         <td class="text-right">
                             <span class="label
                                   {% if order.state == "backoffice" %}label-info                                                      
