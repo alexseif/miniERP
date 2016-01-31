@@ -17,7 +17,6 @@ use MeVisa\ERPBundle\Entity\Products;
 use MeVisa\ERPBundle\Entity\ProductPrices;
 use MeVisa\CRMBundle\Entity\Customers;
 use MeVisa\ERPBundle\WCAPI\RESTAPI;
-use Symfony\Component\HttpKernel\Exception\HttpException;
 
 /**
  * WooCommerce Logger controller.
@@ -289,7 +288,7 @@ class WCController extends Controller
         }
 
         $orderPayment = new OrderPayments();
-// method_id method_title
+        // method_id method_title
         $orderPayment->setMethod($wcOrder['payment_details']['method_id']);
         $orderPayment->setAmount($wcOrder['total'] * 100);
         $orderPayment->setCreatedAt(new \DateTime($wcOrder['created_at'], $timezone));
@@ -302,13 +301,14 @@ class WCController extends Controller
 
         if ("" != $wcOrder['note']) {
             $orderComment = new OrderComments();
-            $orderComment->setComment($wcOrder['note'] . "-- Customer: " . $customer->getName());
+            $orderComment->setComment($wcOrder['note'] . "-- Customer: " . $order->getCustomer()->getName());
             $orderComment->setCreatedAt(new \DateTime($wcOrder['created_at'], $timezone));
             $order->addOrderComment($orderComment);
         }
 
         $order->setNumber($wcOrder['order_number']);
         $order->setWcId($wcOrder['order_number']);
+        //FIXME: Dynamic channel
         $order->setChannel("MeVisa.ru");
 
         $order->setAdjustmentTotal($wcOrder['total_discount'] * 100);
