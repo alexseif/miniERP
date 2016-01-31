@@ -37,11 +37,15 @@ class OrdersType extends AbstractType
                     'divisor' => 100,
                     'required' => false,
                     'read_only' => true))
-                ->add('people', 'integer', array(
+                ->add('people', 'number', array(
                     'attr' => array('min' => 1)
                 ))
-                ->add('departure', 'date')
-                ->add('arrival', 'date')
+                ->add('departure', 'date', array(
+                    'widget' => 'single_text'
+                ))
+                ->add('arrival', 'date', array(
+                    'widget' => 'single_text'
+                ))
 //                ->add('createdAt', 'hidden')
 //                ->add('updatedAt', 'hidden', array('required' => false))
 //                ->add('deletedAt', 'hidden', array('required' => false))
@@ -52,19 +56,20 @@ class OrdersType extends AbstractType
         $builder->add('orderProducts', 'collection', array(
             'type' => new OrderProductsType(),
             'allow_add' => true,
+            'allow_delete' => true,
             'label' => false,
         ));
 
         $builder->add('orderCompanions', 'collection', array(
             'type' => new OrderCompanionsType(),
             'allow_add' => true,
+            'allow_delete' => true,
             'label' => false
         ));
 
         $builder->add('orderPayments', 'collection', array(
             'type' => new OrderPaymentsType(),
             'allow_add' => true,
-            'label' => false
         ));
 
         $builder->add('orderComments', 'collection', array(

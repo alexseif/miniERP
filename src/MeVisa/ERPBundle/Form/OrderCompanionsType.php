@@ -16,7 +16,11 @@ class OrderCompanionsType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-                ->add('name')
+                ->add('name', 'text', array(
+                    'attr' => array(
+                        'placeholder' => 'Name'
+                    )
+                ))
                 ->add('nationality', 'country', array(
                     'preferred_choices' => array('RU', 'UA'),
                     'data' => 'RU',
@@ -28,11 +32,17 @@ class OrderCompanionsType extends AbstractType
                   Y - year of issuance of the passport form. New Russian passport numbers were introduced in 1997.
                   S - six digits of the serial number
                  */
-                ->add('passportNumber', 'text', array('label' => 'Passport #'))
+                ->add('passportNumber', 'text', array(
+                    'label' => 'Passport #',
+                    'attr' => array(
+                        'placeholder' => 'Passport #'
+                    )
+                ))
                 ->add('passportExpiry', 'date', array(
                     'widget' => 'choice',
                     'years' => range(date('Y'), date('Y') + 12),
                     'days' => array(1),
+                    
                 ))
                 ->add('orderRef')
         ;

@@ -1,35 +1,58 @@
-<div class="panel panel-default">
-    <div class="panel-heading">
-        <div class="row">
-            <div class="col-sm-4">
-                {{ form_label(form.orderProducts.vars.prototype.product) }}
-            </div>
-            <div class="col-sm-2">
-                {{ form_label(form.orderProducts.vars.prototype.quantity) }}
-            </div>
-            <div class="col-sm-3">
-                {{ form_label(form.orderProducts.vars.prototype.unitPrice) }}
-            </div>
-            <div class="col-sm-3">
-                {{ form_label(form.orderProducts.vars.prototype.total) }}
-                <a href="#" class="btn btn-default add_product_link pull-right"><span class="glyphicon glyphicon-plus-sign" title="Add another product"></span></a>
-            </div>
-        </div>
+<div class='panel panel-default'>
+    <div class='panel-heading'>
+        <span class="panel-title">Products</span>
+        <a href="#" class="btn text-primary add_product_link btn-xs pull-right"><span class="glyphicon glyphicon-plus-sign" title="Add another product"></span> Add another product</a>
     </div>
-    <div class="panel-body">
-        <ul class="list-unstyled orderProducts" data-prototype="{{'<div class="row">'
- ~ '<div class="col-sm-4">' ~ form_widget(form.orderProducts.vars.prototype.product) ~ '</div>'
- ~ '<div class="col-sm-2">' ~ form_widget(form.orderProducts.vars.prototype.quantity) ~ '</div>'
- ~ '<div class="col-sm-3">' ~ form_widget(form.orderProducts.vars.prototype.unitPrice) ~ '</div>'
- ~ '<div class="col-sm-3">' ~ form_widget(form.orderProducts.vars.prototype.total) ~ '</div>'
- ~ '</div>'}}">
-        </ul>
-        <a href="#" class="btn text-danger remove_product_link pull-right" tabindex="-100"><span class="glyphicon glyphicon-minus-sign" title="Remove this product"></span></a>
+    <div class="table-responsive">
+        <table class="table table-hover table-condensed table-striped">
+            <thead>
+                <tr>
+                    <th >{{ form_label(form.orderProducts.vars.prototype.product) }}</th>
+                    <th>
+                        {{ form_label(form.orderProducts.vars.prototype.quantity) }}
+                    </th>
+                    <th>
+                        {{ form_label(form.orderProducts.vars.prototype.unitPrice) }}
+                    </th>
+                    <th>
+                        {{ form_label(form.orderProducts.vars.prototype.total) }}
+                    </th>
+                </tr>
+            </thead>
+            <tbody class="orderProducts" data-prototype="{{
+'<td>' ~ form_widget(form.orderProducts.vars.prototype.product) ~ '</td>'
+ ~ '<td>' ~ form_widget(form.orderProducts.vars.prototype.quantity) ~ '</td>'
+ ~ '<td>' ~ form_widget(form.orderProducts.vars.prototype.unitPrice) ~ '</td>'
+ ~ '<td colspan="2">' ~ form_widget(form.orderProducts.vars.prototype.total) ~ '</td>'
+                   }}">
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="4" class='text-center'>
+                        <a href="#" class="btn text-danger btn-xs remove_product_link" tabindex="-100"><span class="glyphicon glyphicon-trash" title="Remove last product"></span> Remove last product</a>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
     </div>
-    <div class="panel-footer">
-        <div class="row">
-            <div class="col-sm-4">{{ form_row(form.productsTotal) }}</div>
-            <div class="col-sm-6 col-sm-offset-2">{{ form_row(form.adjustmentTotal) }}</div>
+    <div class='panel-footer'>
+        <div class='row'>
+            <div class='col-sm-4'>
+                {{ form_row(form.productsTotal) }}
+            </div>
+            <div class='col-sm-4'>
+                {{ form_row(form.adjustmentTotal) }}
+            </div>
+            <div class='col-sm-4'>
+                <div class='form-group'>
+                    <label for="" class="col-sm-2 control-label">Order Total</label>
+                    <div class="col-sm-10">
+                        <div class="input-group">
+                            <input type="text" class="form-control" disabled="disabled" name="order_total" ><span class="input-group-addon"> руб.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>

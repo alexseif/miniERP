@@ -1,16 +1,21 @@
 {% extends ':default:admin.html.twig' %}
 
+{% block title %}Order # {{ order.number }}{% endblock %}
 {% block content %}
-    <div class="row">
-        <div class="col-md-12">
-            {{ form_errors(status_form) }}
-        </div>
-    </div>
+    <style type="text/css">
+        .table > tbody > tr > td, .table > tbody > tr > th, .table > tfoot > tr > td, .table > tfoot > tr > th, .table > thead > tr > td, .table > thead > tr > th {
+            border-top: none;
+            border-bottom: 1px solid #ddd;
+            line-height: 1.42857;
+            padding: 8px;
+            vertical-align: middle;
+        }
+    </style>
     <div class="row">
         <div class="col-md-12">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <span class="panel-title">Order</span>
+                    <span class="panel-title">Order # {{ order.number }}</span>
                     <div class="pull-right">
                         &nbsp;<span class="label label-default">{{ order.channel|upper }}</span>
                         &nbsp;<span class="label label-{{order.orderState.currentState.bootstrapClass}}">{{ order.stateName|upper }}</span>
@@ -19,46 +24,51 @@
                 </div>
                 <div class="panel-body">
                     <div class="row">
-                        <div class="col-sm-6">
-                            <ul class="list-group">
-                                <li class="list-group-item"><label class="col-sm-2">Name</label> {{order.customer.name}}</li>
-                                <li class="list-group-item"><label class="col-sm-2">Email</label> {{order.customer.email}}</li>
-                                <li class="list-group-item"><label class="col-sm-2">Phone</label> {{order.customer.phone}}</li>
-                            </ul>
-                        </div>
-                        <div class="col-sm-6">
-                            <ul class="list-group" style="text-align: right;"> 
-                                <li class="list-group-item"><label class="col-sm-3">Order#</label>{{ order.number }}</li>
-                                <li class="list-group-item"><label class="col-sm-3">Adjustment</label>{{ (order.adjustmentTotal/100)|localizedcurrency('RUB') }}</li>
-                                <li class="list-group-item"><label class="col-sm-3">Total</label> {{ (order.total/100)|localizedcurrency('RUB') }}</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <div class="panel panel-default">
+                        <div class="col-sm-4">
+                            <div class='panel panel-default'>
                                 <div class="table-responsive">
-                                    <table class="table table-hover">
+                                    <table class="table table-condensed table-hover" style="border: none;">
                                         <tbody>
-                                            <tr>
-                                                <th rowspan="2">People</th>
-                                                <td rowspan="2">{{ order.people }}</td>
-                                                <th>Departure</th>
-                                                <td>{{ order.departure|localizeddate('medium', 'none') }}</td>
-                                            </tr>
-                                            <tr>
-                                                <th>Arrival</th>
-                                                <td>{{ order.arrival|localizeddate('medium', 'none') }}</td>
-                                            </tr>
+                                            <tr><th>Name</th><td>{{order.customer.name}}</td></tr>
+                                            <tr><th>Email</th><td>{{order.customer.email}}</td></tr>
+                                            <tr><th>Phone</th><td>{{order.customer.phone}}</td></tr>
                                         </tbody>
                                     </table>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-sm-6">
-                            <div class="panel panel-default">
+                        <div class="col-sm-4">
+                            <div class='panel panel-default'>
                                 <div class="table-responsive">
-                                    <table class="table table-bordered table-hover table-striped records_list">
+                                    <table class="table table-condensed table-hover text-right">
+                                        <tbody>
+                                            <tr><th>People</th><td>{{ order.people }}</td></tr>
+                                            <tr><th>Departure</th><td>{{ order.departure|localizeddate('medium', 'none') }}</td></tr>
+                                            <tr><th>Arrival</th><td>{{ order.arrival|localizeddate('medium', 'none') }}</td></tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class='panel panel-default'>
+                                <div class="table-responsive">
+                                    <table class="table table-condensed table-hover text-right">
+                                        <tbody>
+                                            <tr><th>Order #</th><td>{{ order.number }}</td></tr>
+                                            <tr><th>Adjustment</th><td>{{ (order.adjustmentTotal/100)|localizedcurrency('RUB') }}</td></tr>
+                                            <tr><th>Total</th><td>{{ (order.total/100)|localizedcurrency('RUB') }}</td></tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class='panel panel-default'>
+                                <div class="table-responsive">
+                                    <table class="table table-hover table-striped table-condensed records_list">
                                         <thead>
                                             <tr>
                                                 <th>Product</th>
@@ -77,6 +87,42 @@
                                                 </tr>
                                             {% endfor %}
                                         </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class='panel panel-default'>
+                                <div class="table-responsive">
+                                    <table class="table table-hover table-condensed records_list">
+                                        <thead>
+                                            <tr>
+                                                <th>Payment</th>
+                                                <th>Amount</th>
+                                                <th>State</th>
+                                                <th>Detail</th>
+                                                <th>Created at</th>
+                                            </tr>
+                                        </thead>
+                                        {% if (order.orderPayments|length) %}
+                                            <tbody>
+                                                {%for payment in order.orderPayments%}
+                                                    <tr>
+                                                        <td>{{ payment.method }}</td>
+                                                        <td>{{ (payment.amount/100)|localizedcurrency('RUB') }}</td>
+                                                        <td>
+                                                            {% if(payment.state=="not_paid") %}
+                                                                <span class="label label-danger">NOT PAID</span>
+                                                            {% elseif(payment.state=="paid") %}
+                                                                <span class="label label-success">PAID</span>    
+                                                            {% endif %}
+                                                        </td>
+                                                        <td>{{ payment.detail }}</td>
+                                                        <td>{{ payment.createdAt|localizeddate }}</td>
+                                                    </tr>
+                                                {% endfor %}
+                                            </tbody>
+                                        {% endif %}
                                     </table>
                                 </div>
                             </div>
@@ -115,59 +161,6 @@
                         <div class="col-sm-6">
                             <div class="panel panel-default">
                                 <div class="panel-heading">
-                                    <span class="panel-title">Payments</span>
-                                    <div class="pull-right">
-                                        {# FIXME: actually figure out if it's paid don't check last#}
-                                        {% if (order.orderPayments|length) %}
-                                            {% if(order.orderPayments|last.state=="not_paid") %}
-                                                <span class="label label-danger">NOT PAID</span>
-                                            {% elseif(order.orderPayments|last.state=="paid") %}
-                                                <span class="label label-success">PAID</span>    
-                                            {% endif %}
-                                        {% else %}
-                                            <span class="label label-danger">NOT PAID</span>
-                                        {% endif %}
-                                    </div>
-                                </div>
-                                {% if (order.orderPayments|length) %}
-                                    <div class="table-responsive">
-                                        <table class="table table-bordered table-hover table-striped records_list">
-                                            <thead>
-                                                <tr>
-                                                    <th>Method</th>
-                                                    <th>Amount</th>
-                                                    <th>State</th>
-                                                    <th>Detail</th>
-                                                    <th>Created at</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                {%for payment in order.orderPayments%}
-                                                    <tr>
-                                                        <td>{{ payment.method }}</td>
-                                                        <td>{{ (payment.amount/100)|localizedcurrency('RUB') }}</td>
-                                                        <td>
-                                                            {% if(payment.state=="not_paid") %}
-                                                                <span class="label label-danger">NOT PAID</span>
-                                                            {% elseif(payment.state=="paid") %}
-                                                                <span class="label label-success">PAID</span>    
-                                                            {% endif %}
-                                                        </td>
-                                                        <td>{{ payment.detail }}</td>
-                                                        <td>{{ payment.createdAt|localizeddate }}</td>
-                                                    </tr>
-                                                {% endfor %}
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                {% endif %}
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
                                     <span class="panel-title">Documents</span>
                                 </div>
                                 <div class="panel-body">
@@ -185,7 +178,9 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-sm-6">
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
                             {# TODO: add availability to add another note #}
                             <div class="panel panel-default">
                                 <div class="panel-heading">
@@ -216,20 +211,18 @@
                     </div>
                 </div>
                 <div class="panel-footer">
-                    <div class="row">
-                        <div class="col-sm-12">
-                            <a class="btn btn-default" href="{{ path('orders') }}">Cancel</a>
-                            {% if order.invoices is not empty %}
-                                <a class="btn btn-primary" href="{{ path('order_show_invoice', { 'id': order.id }) }}">Invoice</a>
-                                <a class="btn btn-primary" href="/invoices/mevisa-invoice-{{ order.id }}-{{ (order.invoices|last).id}}.pdf" target="_blank">Invoice</a>
-                            {% endif %}
-                            <div class="btn-toolbar pull-right" role="toolbar">
-                                {{ form_start(status_form) }}
-                                {% for btn in status_form %}
-                                    {{ form_widget(btn) }}
-                                {% endfor %}
-                                {{ form_end(status_form) }}
-                            </div>
+                    <div class="clearfix">
+                        <a class="btn btn-primary" href="{{ path('order_show_invoice', { 'id': order.id }) }}">Generate Invoice</a>
+                        {% if order.invoices is not empty %}
+                            <a class="btn btn-primary" href="{{ path('order_show_invoice', { 'id': order.id }) }}">Invoice</a>
+                            <a class="btn btn-primary" href="/invoices/mevisa-invoice-{{ order.id }}-{{ (order.invoices|last).id}}.pdf" target="_blank">Invoice</a>
+                        {% endif %}
+                        <div class="btn-toolbar pull-right" role="toolbar">
+                            {{ form_start(status_form) }}
+                            {% for btn in status_form %}
+                                {{ form_widget(btn) }}
+                            {% endfor %}
+                            {{ form_end(status_form) }}
                         </div>
                     </div>
                 </div>

@@ -17,6 +17,7 @@ function updatePricesAndTotals() {
 
     total = subtotal + parseInt($('input[name="mevisa_erpbundle_orders[adjustmentTotal]"]').val());
     $('input[name="mevisa_erpbundle_orders[total]"]').val(total);
+    $('input[name="order_total"]').val(total);
 }
 
 function addProductForm() {
@@ -28,7 +29,7 @@ function addProductForm() {
 //    $newProductLinkLi.before($newFormLi);
 
     // Order products
-    addPrototypeForm('ul.orderProducts', '<li></li>');
+    addPrototypeForm('tbody.orderProducts', '<tr></tr>');
     $('select[name="mevisa_erpbundle_orders[orderProducts][' + index + '][product]"]').change(function () {
         updatePricesAndTotals();
     });
@@ -59,10 +60,10 @@ $(document).ready(function () {
         updatePricesAndTotals();
     });
 
-    $productHolder = $('ul.orderProducts');
+    $productHolder = $('tbody.orderProducts');
 
 
-    $productHolder.data('index', $('ul.orderProducts li').length);
+    $productHolder.data('index', $('tbody.orderProducts tr').length);
     $('div.orderPayments').data('index', 0);
     $('div.orderComments').data('index', 0);
 
@@ -74,13 +75,13 @@ $(document).ready(function () {
 
     $removeProductLink.on('click', function (e) {
         e.preventDefault();
-        index = $('ul.orderProducts').data('index');
+        index = $('tbody.orderProducts').data('index');
         if (index > 1) {
-            $('ul.orderProducts li:last').remove();
-            $('ul.orderProducts').data('index', index - 1);
+            $('tbody.orderProducts tr:last').remove();
+            $('tbody.orderProducts').data('index', index - 1);
             updatePricesAndTotals();
         } else {
-            $(this).hide();
+//            $(this).hide();
         }
     });
 

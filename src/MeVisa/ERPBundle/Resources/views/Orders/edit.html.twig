@@ -1,4 +1,5 @@
 {% extends ':default:admin.html.twig' %}
+{% block title %}Edit Order {{ order.number }}{% endblock %}
 {% block stylesheets %}
     {{ parent() }}
     <link rel="stylesheet" type="text/css" href="/css/chosen.min.css" />
@@ -10,6 +11,15 @@
         .orderProducts li{margin-top: 5px;}
         .list-group-item{padding-top: 2px;padding-bottom: 2px}
         .badge{margin-top: 5px;}
+        .table > tbody > tr > td, .table > tbody > tr > th, .table > tfoot > tr > td, .table > tfoot > tr > th, .table > thead > tr > td, .table > thead > tr > th {
+            border-top: none;
+            border-bottom: 1px solid #ddd;
+            line-height: 1.42857;
+            padding: 8px;
+            vertical-align: middle;
+        }
+        .no-border > tbody > tr > td, .no-border > tbody > tr > th, .no-border > tfoot > tr > td, .no-border > tfoot > tr > th, .no-border > thead > tr > td, .no-border > thead > tr > th 
+        {border: none;}
     </style>
 {% endblock %}
 {% block content %}
@@ -18,11 +28,11 @@
     {{ form_errors(edit_form) }}
     <div class="panel panel-default">
         <div class="panel-heading clearfix">
-            <span class="panel-title">Order # {{ order.number }}</span>
+            <span class="panel-title">Edit Order # {{ order.number }}</span>
             <div class="pull-right">
                 <span class="label label-default">{{ order.channel|upper }}</span>
                 &nbsp;<span class="label label-info">{{ order.stateName|upper }}</span>
-                &nbsp;<span class="label label-default"> {{ order.createdAt|date() }}</span>
+                &nbsp;<span class="label label-default"> {{ order.createdAt|localizeddate }}</span>
             </div>
         </div>
         <div class="panel-body">
@@ -44,6 +54,8 @@
             <!-- Order Companions -->
             {% include 'MeVisaERPBundle:Orders:edit_order_companions.html.twig' %}
             <!-- Order Companions -->
+            <div class="row">
+                <div class="col-sm-6">
             <!-- Order Payments -->
             {% include 'MeVisaERPBundle:Orders:edit_order_payments.html.twig' %}
             <!-- Order Payments -->
@@ -53,13 +65,11 @@
                     {% include 'MeVisaERPBundle:Orders:edit_order_documents.html.twig' %}
                     <!-- Order Documents -->
                 </div>
-                <div class="col-sm-6">
+            </div>
                     <!-- Order Comments -->
                     {% include 'MeVisaERPBundle:Orders:edit_order_comments.html.twig' %}
                     <!-- Order Comments -->
                 </div>
-            </div>
-        </div>
         <!-- panel body -->
         <div class="panel-footer">
             <div class="row">
@@ -67,7 +77,16 @@
                 <div class="col-sm-2"><a class="btn btn-warning" href="{{ path('dashboard') }}">Cancel</a></div>
                 <div class="col-sm-4">{{ form_row(edit_form.total) }}</div>
                 <div class="col-sm-4">
-
+                    {#                    <div class="btn-toolbar pull-right">#}
+                    {# {% for child in order.orderState.currentState.children %}
+                         <button class="btn-{{child.bootstrapClass}} btn btn-toolbar" name="mevisa_erpbundle_orders[{{child.key}}]" id="mevisa_erpbundle_orders_{{child.key}}" type="submit">{{child.name}}</button>
+                     {% endfor %}#}
+                    {# <button class="btn-warning btn" name="mevisa_erpbundle_orders[submit]" id="mevisa_erpbundle_orders_submit" type="submit">DOCUMENT</button>#}
+                    {# <button class="btn-primary btn" name="mevisa_erpbundle_orders[submit]" id="mevisa_erpbundle_orders_submit" type="submit">POST</button>#}
+                    {#{{ form_widget(form.not_paid) }}
+                    {{ form_widget(form.document) }}
+                    {{ form_widget(form.post) }}#}
+                    {#                    </div>#}
                     {{ form_row(edit_form.state) }}
                 </div>
                 <div class="col-sm-2">{{ form_widget(edit_form.update) }}</div>

@@ -2,17 +2,11 @@
     <div class="panel-heading">
         <span class="panel-title">Order Details</span>
     </div>
-    <div class="panel-body">
-        <div class="row">
-            <div class="col-sm-12">
-                {{ form_row(edit_form.people)}}
-            </div>
-            <div class="col-sm-12">
-                {{ form_row(edit_form.departure)}}
-            </div>
-            <div class="col-sm-12">
-                {{ form_row(edit_form.arrival)}}
-            </div>
-        </div>
-    </div>
+    <table class="table table-condensed table-hover no-border ">
+        <tbody>
+            <tr><td>{{ form_label(edit_form.people)}}</td><td>{{ form_widget(edit_form.people)}}</td></tr>
+            <tr><td>{{ form_label(edit_form.departure)}}</td><td>{{ form_widget(edit_form.departure)}}</td></tr>
+            <tr><td>{{ form_label(edit_form.arrival)}}</td><td>{{ form_widget(edit_form.arrival)}}</td></tr>
+        </tbody>
+    </table>
 </div>
