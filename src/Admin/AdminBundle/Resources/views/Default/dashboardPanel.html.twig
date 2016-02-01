@@ -4,7 +4,7 @@
         <span class="badge pull-right">{{ orders|length }}</span>
     </div>
     <div class="table-responsive dashboard">
-        <table class="table table-bordered table-hover table-striped table-condensed records_list">
+        <table class="table table-bordered table-hover table-striped {{ panelTitle != 'Backoffice Orders' ? 'table-condensed' : '' }} records_list">
             <tbody>
                 {% for order in orders %}
                     <tr>
