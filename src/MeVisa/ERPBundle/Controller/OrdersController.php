@@ -320,7 +320,7 @@ class OrdersController extends Controller
                 $this->addFlash('error', $error);
             }
         }
-        
+
         $productPrices = $em->getRepository('MeVisaERPBundle:ProductPrices')->findAll();
 
         return array(
@@ -417,6 +417,7 @@ class OrdersController extends Controller
                     $order->setState($key);
                 }
             }
+            $order->setUpdatedAt(new \DateTime());
 
             $em->flush();
 

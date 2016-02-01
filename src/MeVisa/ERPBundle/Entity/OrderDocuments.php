@@ -179,8 +179,10 @@ class OrderDocuments
      */
     public function removeFile()
     {
-        if ($file = $this->getUploadRootDir() . '/' . $this->path) {
-            unlink($file);
+        if (0 === strpos('/^http://www.mevisa.ru', $this->path)) {
+            if ($file = $this->getUploadRootDir() . '/' . $this->path) {
+                unlink($file);
+            }
         }
     }
 

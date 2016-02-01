@@ -53,7 +53,7 @@ class RESTAPI
         $parameters = array(
             "status" => "completed",
         );
-        $orders = $this->client->orders->get();
+        $orders = $this->client->orders->get(null, $parameters);
         return $orders;
     }
 

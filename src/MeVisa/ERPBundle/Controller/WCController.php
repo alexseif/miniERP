@@ -120,7 +120,9 @@ class WCController extends Controller
         foreach ($wcOrders['orders'] as $wcOrder) {
             $order = $em->getRepository('MeVisaERPBundle:Orders')->findOneBy(array('wcId' => $wcOrder['order_number']));
             if ($order) {
-                $order = $this->updateOrder($em, $wcOrder, $order);
+                if (\is_null($order->getUpdatedAt())) {
+                    $order = $this->updateOrder($em, $wcOrder, $order);
+                }
             } else {
                 $order = $this->newOrder($em, $wcOrder);
             }
@@ -212,6 +214,12 @@ class WCController extends Controller
     {
         $timezone = new \DateTimeZone('UTC');
         $order->startOrderStateEnginge();
+
+        $orderDocuments = $order->getOrderDocuments();
+        foreach ($orderDocuments as $orderDocument) {
+            $order->removeOrderDocument($orderDocument);
+            $em->remove($orderDocument);
+        }
 
         $orderProducts = $order->getOrderProducts();
         foreach ($orderProducts as $orderProduct) {
