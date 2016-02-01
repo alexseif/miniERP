@@ -1,4 +1,4 @@
-<div class='panel panel-default'>
+<div class="panel panel-default">
     <div class='panel-heading'>
         <span class="panel-title">Products</span>
         <a href="#" class="btn text-primary add_product_link btn-xs pull-right"><span class="glyphicon glyphicon-plus-sign" title="Add another product"></span> Add another product</a>
@@ -19,6 +19,14 @@
  ~ '<td>' ~ form_widget(form.orderProducts.vars.prototype.unitPrice) ~ '</td>'
  ~ '<td colspan="2">' ~ form_widget(form.orderProducts.vars.prototype.total) ~ '</td>'
                    }}">
+                {% for product in form.orderProducts %}
+                    <tr>
+                        <td>{{form_widget(product.product)}}</td>
+                        <td>{{form_widget(product.quantity)}}</td>
+                        <td>{{form_widget(product.unitPrice)}}</td>
+                        <td>{{form_widget(product.total)}}</td>
+                    </tr>
+                {% endfor %}
             </tbody>
             <tfoot>
                 <tr>

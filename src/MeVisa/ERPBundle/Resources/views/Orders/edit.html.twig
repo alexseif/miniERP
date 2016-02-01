@@ -23,9 +23,9 @@
     </style>
 {% endblock %}
 {% block content %}
-    {{ form_start(edit_form) }}
-    {{ form_row(edit_form._token) }}
-    {{ form_errors(edit_form) }}
+    {{ form_start(form) }}
+    {{ form_row(form._token) }}
+    {{ form_errors(form) }}
     <div class="panel panel-default">
         <div class="panel-heading clearfix">
             <span class="panel-title">Edit Order # {{ order.number }}</span>
@@ -39,70 +39,70 @@
             <div class="row">
                 <div class="col-sm-6">
                     <!-- Order Customer-->
-                    {% include 'MeVisaERPBundle:Orders:edit_order_customer.html.twig' %}
+                    {% include 'MeVisaERPBundle:Orders:order_customer_form.html.twig' %}
                     <!-- Order Customer-->
                 </div>
                 <div class="col-sm-6">
                     <!-- Order Details -->
-                    {% include 'MeVisaERPBundle:Orders:edit_order_details.html.twig' %}
+                    {% include 'MeVisaERPBundle:Orders:order_details_form.html.twig' %}
                     <!-- Order Details -->
                 </div>
             </div>
             <!-- Order Products -->
-            {% include 'MeVisaERPBundle:Orders:edit_order_products.html.twig' %}
+            {% include 'MeVisaERPBundle:Orders:order_products_form.html.twig' %}
             <!-- Order Products -->
             <!-- Order Companions -->
-            {% include 'MeVisaERPBundle:Orders:edit_order_companions.html.twig' %}
+            {% include 'MeVisaERPBundle:Orders:order_companions_form.html.twig' %}
             <!-- Order Companions -->
             <div class="row">
                 <div class="col-sm-6">
-            <!-- Order Payments -->
-            {% include 'MeVisaERPBundle:Orders:edit_order_payments.html.twig' %}
-            <!-- Order Payments -->
-            <div class="row">
+                    <!-- Order Payments -->
+                    {% include 'MeVisaERPBundle:Orders:order_payments_form.html.twig' %}
+                    <!-- Order Payments -->
+                </div>
                 <div class="col-sm-6">
                     <!-- Order Documents -->
-                    {% include 'MeVisaERPBundle:Orders:edit_order_documents.html.twig' %}
+                    {% include 'MeVisaERPBundle:Orders:order_documents_form.html.twig' %}
                     <!-- Order Documents -->
                 </div>
             </div>
-                    <!-- Order Comments -->
-                    {% include 'MeVisaERPBundle:Orders:edit_order_comments.html.twig' %}
-                    <!-- Order Comments -->
+            <!-- Order Comments -->
+            {% include 'MeVisaERPBundle:Orders:order_comments_form.html.twig' %}
+            <!-- Order Comments -->
+        </div>
+            <!-- panel body -->
+            <div class="panel-footer">
+                <div class="row">
+                    {#FIXME: return to order show #}
+                    <div class="col-sm-2"><a class="btn btn-warning" href="{{ path('dashboard') }}">Cancel</a></div>
+                    <div class="col-sm-4">{{ form_row(form.total) }}</div>
+                    <div class="col-sm-4">
+                        {# <div class="btn-toolbar pull-right">#}
+                        {# {% for child in order.orderState.currentState.children %}
+                             <button class="btn-{{child.bootstrapClass}} btn btn-toolbar" name="mevisa_erpbundle_orders[{{child.key}}]" id="mevisa_erpbundle_orders_{{child.key}}" type="submit">{{child.name}}</button>
+                         {% endfor %}#}
+                        {# <button class="btn-warning btn" name="mevisa_erpbundle_orders[submit]" id="mevisa_erpbundle_orders_submit" type="submit">DOCUMENT</button>#}
+                        {# <button class="btn-primary btn" name="mevisa_erpbundle_orders[submit]" id="mevisa_erpbundle_orders_submit" type="submit">POST</button>#}
+                        {#{{ form_widget(form.not_paid) }}
+                        {{ form_widget(form.document) }}
+                        {{ form_widget(form.post) }}#}
+                        {# </div>#}
+                        {{ form_row(form.state) }}
+                    </div>
+                    <div class="col-sm-2">{{ form_widget(form.update) }}</div>
                 </div>
-        <!-- panel body -->
-        <div class="panel-footer">
-            <div class="row">
-                {#FIXME: return to order show #}
-                <div class="col-sm-2"><a class="btn btn-warning" href="{{ path('dashboard') }}">Cancel</a></div>
-                <div class="col-sm-4">{{ form_row(edit_form.total) }}</div>
-                <div class="col-sm-4">
-                    {#                    <div class="btn-toolbar pull-right">#}
-                    {# {% for child in order.orderState.currentState.children %}
-                         <button class="btn-{{child.bootstrapClass}} btn btn-toolbar" name="mevisa_erpbundle_orders[{{child.key}}]" id="mevisa_erpbundle_orders_{{child.key}}" type="submit">{{child.name}}</button>
-                     {% endfor %}#}
-                    {# <button class="btn-warning btn" name="mevisa_erpbundle_orders[submit]" id="mevisa_erpbundle_orders_submit" type="submit">DOCUMENT</button>#}
-                    {# <button class="btn-primary btn" name="mevisa_erpbundle_orders[submit]" id="mevisa_erpbundle_orders_submit" type="submit">POST</button>#}
-                    {#{{ form_widget(form.not_paid) }}
-                    {{ form_widget(form.document) }}
-                    {{ form_widget(form.post) }}#}
-                    {#                    </div>#}
-                    {{ form_row(edit_form.state) }}
-                </div>
-                <div class="col-sm-2">{{ form_widget(edit_form.update) }}</div>
             </div>
         </div>
-    </div>
-    {{ form_end(edit_form, {'render_rest': false}) }}
-{% endblock %}
-{% block javascripts %}
-    {{ parent() }}
-    <script type="text/javascript" src="/js/chosen.jquery.min.js"></script>
-    <script type="text/javascript" src="/js/orders.js"></script>
-    <script type="text/javascript">
-        var productPrices = new Array();
-        {% for price in productPrices %}
-            productPrices[{{ price.product.id }}] = {{price.price/100}};
-        {% endfor %}
-    </script>
-{% endblock %}
+        {{ form_end(form, {'render_rest': false}) }}
+    {% endblock %}
+    {% block javascripts %}
+        {{ parent() }}
+        <script type="text/javascript" src="/js/chosen.jquery.min.js"></script>
+        <script type="text/javascript" src="/js/orders.js"></script>
+        <script type="text/javascript">
+            var productPrices = new Array();
+            {% for price in productPrices %}
+                productPrices[{{ price.product.id }}] = {{price.price/100}};
+            {% endfor %}
+        </script>
+    {% endblock %}

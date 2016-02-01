@@ -3,6 +3,7 @@
         <span class="panel-title">Payment details</span>
     </div>
     <div class="panel-body">
+        {{ dump(form.orderPayments|length) }}
         <div class="orderPayments form-group-sm" data-prototype='{{form_widget(form.orderPayments.vars.prototype)|e }}' ></div>
     </div>
 </div>

@@ -39,35 +39,35 @@
             <div class="row">
                 <div class="col-sm-6">
                     <!-- Order Customer-->
-                    {% include 'MeVisaERPBundle:Orders:new_order_customer.html.twig' %}
+                    {% include 'MeVisaERPBundle:Orders:order_customer_form.html.twig' %}
                     <!-- Order Customer-->
                 </div>
                 <div class="col-sm-6">
                     <!-- Order Details -->
-                    {% include 'MeVisaERPBundle:Orders:new_order_details.html.twig' %}
+                    {% include 'MeVisaERPBundle:Orders:order_details_form.html.twig' %}
                     <!-- Order Details -->
                 </div>
             </div>
             <!-- Order Products -->
-            {% include 'MeVisaERPBundle:Orders:new_order_products.html.twig' %}
+            {% include 'MeVisaERPBundle:Orders:order_products_form.html.twig' %}
             <!-- Order Products -->
             <!-- Order Companions -->
-            {% include 'MeVisaERPBundle:Orders:new_order_companions.html.twig' %}
+            {% include 'MeVisaERPBundle:Orders:order_companions_form.html.twig' %}
             <!-- Order Companions -->
             <div class="row">
                 <div class="col-sm-6">
                     <!-- Order Payments -->
-                    {% include 'MeVisaERPBundle:Orders:new_order_payments.html.twig' %}
+                    {% include 'MeVisaERPBundle:Orders:order_payments_form.html.twig' %}
                     <!-- Order Payments -->
                 </div>
                 <div class="col-sm-6">
                     <!-- Order Documents -->
-                    {% include 'MeVisaERPBundle:Orders:new_order_documents.html.twig' %}
+                    {% include 'MeVisaERPBundle:Orders:order_documents_form.html.twig' %}
                     <!-- Order Documents -->
                 </div>
             </div>
             <!-- Order Comments -->
-            {% include 'MeVisaERPBundle:Orders:new_order_comments.html.twig' %}
+            {% include 'MeVisaERPBundle:Orders:order_comments_form.html.twig' %}
             <!-- Order Comments -->
         </div>
         <!-- panel body -->
@@ -76,7 +76,7 @@
                 <div class="col-sm-2"><a class="btn btn-warning" href="{{ path('dashboard') }}">Cancel</a></div>
                 <div class="col-sm-4">{{ form_row(form.total) }}</div>
                 <div class="col-sm-4">
-                    {#                    <div class="btn-toolbar pull-right">#}
+                    {# <div class="btn-toolbar pull-right">#}
                     {# {% for child in order.orderState.currentState.children %}
                          <button class="btn-{{child.bootstrapClass}} btn btn-toolbar" name="mevisa_erpbundle_orders[{{child.key}}]" id="mevisa_erpbundle_orders_{{child.key}}" type="submit">{{child.name}}</button>
                      {% endfor %}#}
@@ -85,7 +85,7 @@
                     {#{{ form_widget(form.not_paid) }}
                     {{ form_widget(form.document) }}
                     {{ form_widget(form.post) }}#}
-                    {#                    </div>#}
+                    {# </div>#}
                     {{ form_row(form.state) }}
                 </div>
                 <div class="col-sm-2">{{ form_widget(form.save) }}</div>

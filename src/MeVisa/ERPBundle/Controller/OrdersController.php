@@ -253,7 +253,7 @@ class OrdersController extends Controller
         return array(
             'order' => $order,
             'productPrices' => $productPrices,
-            'edit_form' => $editForm->createView(),
+            'form' => $editForm->createView(),
             'status_form' => $statusForm->createView(),
         );
     }
