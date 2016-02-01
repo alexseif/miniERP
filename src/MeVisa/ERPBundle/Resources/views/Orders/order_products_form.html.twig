@@ -3,40 +3,38 @@
         <span class="panel-title">Products</span>
         <a href="#" class="btn text-primary add_product_link btn-xs pull-right"><span class="glyphicon glyphicon-plus-sign" title="Add another product"></span> Add another product</a>
     </div>
-    <div class="table-responsive">
-        <table class="table table-hover table-condensed table-striped">
-            <thead>
-                <tr>
-                    <th >{{ form_label(form.orderProducts.vars.prototype.product) }}</th>
-                    <th>{{ form_label(form.orderProducts.vars.prototype.quantity) }}</th>
-                    <th>{{ form_label(form.orderProducts.vars.prototype.unitPrice) }}</th>
-                    <th>{{ form_label(form.orderProducts.vars.prototype.total) }}</th>
-                </tr>
-            </thead>
-            <tbody class="orderProducts" data-prototype="{{
+    <table class="table table-hover table-condensed table-striped">
+        <thead>
+            <tr>
+                <th >{{ form_label(form.orderProducts.vars.prototype.product) }}</th>
+                <th>{{ form_label(form.orderProducts.vars.prototype.quantity) }}</th>
+                <th>{{ form_label(form.orderProducts.vars.prototype.unitPrice) }}</th>
+                <th>{{ form_label(form.orderProducts.vars.prototype.total) }}</th>
+            </tr>
+        </thead>
+        <tbody class="orderProducts" data-prototype="{{
 '<td>' ~ form_widget(form.orderProducts.vars.prototype.product) ~ '</td>'
  ~ '<td>' ~ form_widget(form.orderProducts.vars.prototype.quantity) ~ '</td>'
  ~ '<td>' ~ form_widget(form.orderProducts.vars.prototype.unitPrice) ~ '</td>'
  ~ '<td colspan="2">' ~ form_widget(form.orderProducts.vars.prototype.total) ~ '</td>'
-                   }}">
-                {% for product in form.orderProducts %}
-                    <tr>
-                        <td>{{form_widget(product.product)}}</td>
-                        <td>{{form_widget(product.quantity)}}</td>
-                        <td>{{form_widget(product.unitPrice)}}</td>
-                        <td>{{form_widget(product.total)}}</td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-            <tfoot>
+               }}">
+            {% for product in form.orderProducts %}
                 <tr>
-                    <td colspan="4" class='text-center'>
-                        <a href="#" class="btn text-danger btn-xs remove_product_link" tabindex="-100"><span class="glyphicon glyphicon-trash" title="Remove last product"></span> Remove last product</a>
-                    </td>
+                    <td>{{form_widget(product.product)}}</td>
+                    <td>{{form_widget(product.quantity)}}</td>
+                    <td>{{form_widget(product.unitPrice)}}</td>
+                    <td>{{form_widget(product.total)}}</td>
                 </tr>
-            </tfoot>
-        </table>
-    </div>
+            {% endfor %}
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="4" class='text-center'>
+                    <a href="#" class="btn text-danger btn-xs remove_product_link" tabindex="-100"><span class="glyphicon glyphicon-trash" title="Remove last product"></span> Remove last product</a>
+                </td>
+            </tr>
+        </tfoot>
+    </table>
     <div class='panel-footer'>
         <div class='row'>
             <div class='col-sm-4'>

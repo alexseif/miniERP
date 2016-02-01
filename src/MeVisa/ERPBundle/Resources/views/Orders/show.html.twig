@@ -189,16 +189,17 @@
                                         <span class="badge">{{ app.user.username }}</span>
                                     </div>
                                 </div>
-                                <div class="panel-body">
-                                    <div class="list-group">
+                                <div class="panel-body order-comment">
+                                    <ul class="comments">
                                         {%for comment in order.orderComments%}
-                                            <div class="list-group-item well well-sm">
-                                                {{ comment.comment }}
-                                                <span class="label label-info label-pill pull-xs-right">-- {{ comment.author }} | {{ comment.createdAt|localizeddate('short', 'short') }}</span>
-                                            </div>
+                                            <li class="clearfix">
+                                                <div class="post-comments">
+                                                    <p class="meta">{{ comment.createdAt|localizeddate('short', 'short') }} <span class="pull-right">{{ comment.author }}</span></p>
+                                                    <p>{{ comment.comment }}</p>
+                                                </div>
+                                            </li>
                                         {% endfor %}
-                                    </div>
-
+                                    </ul>
                                     <div class="orderComments">
                                         {{ form_start(comment_form) }}
                                         {{ form_widget(comment_form.comment) }}

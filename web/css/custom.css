@@ -14,3 +14,44 @@ and open the template in the editor.
 #currency tr:first-child td{background-color: #dff0d8;font-weight: bold;}
 #currency td:first-child{text-align: right;}
 .navbar-brand:hover{background-color: #eee;text-decoration: none;}
+.order-comment::before,
+    .order-comment::after,
+    .order-comment-form::before,
+    .order-comment-form::after{
+        content: "";
+        display: table;
+        clear: both;
+    }
+
+    .order-comment{
+        font-size: 14px;
+        background:#eee;
+        padding-left: 15%;
+        padding-right: 15%;
+    }
+
+    .order-comment ul{
+        list-style-type: none;
+        padding: 0;
+    }
+
+    .order-comment .post-comments{
+        border: 1px solid #eee;
+        margin-bottom: 10px;
+        padding: 10px 20px;
+        position: relative;
+        -webkit-border-radius: 4px;
+        -moz-border-radius: 4px;
+        -o-border-radius: 4px;
+        border-radius: 4px;
+        background: #fff;
+        {#        color: #6b6e80;#}
+        position: relative;
+    }
+    .order-comment .meta {
+        font-size: 13px;
+        color: #aaaaaa;
+        padding-bottom: 8px;
+        margin-bottom: 10px !important;
+        border-bottom: 1px solid #eee;
+    }

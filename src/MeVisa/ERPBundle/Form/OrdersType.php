@@ -75,6 +75,7 @@ class OrdersType extends AbstractType
         $builder->add('orderComments', 'collection', array(
             'type' => new OrderCommentsType(),
             'allow_add' => true,
+            'allow_delete' => false,
             'label' => false
         ));
 

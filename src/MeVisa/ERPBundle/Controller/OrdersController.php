@@ -350,7 +350,7 @@ class OrdersController extends Controller
         ));
         $form->add('save', 'submit', array(
             'label' => false,
-            'attr' => array('class' => 'pull-right')
+            'attr' => array('class' => 'pull-right btn-default')
         ));
 
         return $form->getForm();
