@@ -21,6 +21,7 @@ class OrdersRepository extends EntityRepository
                         ->getQuery()
                         ->getResult();
     }
+
     public function findAllPending()
     {
         return $this->createQueryBuilder('o')
@@ -47,11 +48,10 @@ class OrdersRepository extends EntityRepository
 
         return $this->createQueryBuilder("o")
                         ->leftJoin("o.customer", 'c')
-//                        ->("c.id = o.customer")
                         ->where("c.name LIKE ?1")
-                        ->setParameter("1", "%".$text)
-                        ->orWhere("c.name LIKE ?2")
-                        ->setParameter("2", $text."%")
+                        ->orWhere("c.name LIKE ?1")
+                        ->orWhere("o.number LIKE ?1")
+                        ->setParameter("1", "%" . $text)
                         ->getQuery()
                         ->getResult();
     }
