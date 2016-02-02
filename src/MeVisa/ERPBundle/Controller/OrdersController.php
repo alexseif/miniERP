@@ -11,6 +11,7 @@ use MeVisa\ERPBundle\Entity\Orders;
 use MeVisa\ERPBundle\Entity\Invoices;
 use MeVisa\ERPBundle\Form\OrdersType;
 use Knp\Snappy\Pdf;
+use Symfony\Component\Filesystem\Filesystem;
 
 /**
  * Orders controller.
@@ -86,6 +87,13 @@ class OrdersController extends Controller
 
             $em->persist($order);
             $em->flush();
+
+            $payments = $order->getOrderPayments();
+            foreach ($payments as $payment) {
+                if ("paid" == $payment->getState()) {
+                    $this->generateInvoice();
+                }
+            }
 
             return $this->redirect($this->generateUrl('orders_show', array('id' => $order->getId())));
         } else {
@@ -314,6 +322,12 @@ class OrdersController extends Controller
 
             $em->flush();
 
+            $payments = $order->getOrderPayments();
+            foreach ($payments as $payment) {
+                if ("paid" == $payment->getState()) {
+                    $this->generateInvoice($order);
+                }
+            }
             return $this->redirect($this->generateUrl('orders_show', array('id' => $order->getId())));
         } else {
             foreach ($form->getErrors() as $error) {
@@ -459,8 +473,6 @@ class OrdersController extends Controller
         $order->startOrderStateEnginge();
         $order->setOrderState($state);
 
-        $statusForm = $this->createStatusForm($order);
-
         return array(
             'order' => $order,
             'invoiceNo' => 0
@@ -493,7 +505,6 @@ class OrdersController extends Controller
     public function uploadAction(Request $request, $id)
     {
         $form = $this->createForm(new \MeVisa\ERPBundle\Form\OrderDocumentsType());
-//        $form->getForm();
 
         $form->handleRequest($request);
 
@@ -521,37 +532,43 @@ class OrdersController extends Controller
         }
 
         $invoice = new Invoices();
-
-        $invoice->setOrderRef($order);
-
-        $em = $this->getDoctrine()->getManager();
-
-        $em->persist($invoice);
-        $em->flush();
-
-        $state = $order->getState();
-        $order->startOrderStateEnginge();
-        $order->setOrderState($state);
-
+        $invoices = $order->getInvoices();
+        foreach ($invoices as $inv) {
+            $invoice = $inv;
+        }
         $myProjectDirectory = __DIR__ . '/../../../../';
+        $invoicePath = $myProjectDirectory . 'web/invoices/mevisa-invoice-' . $order->getNumber() . '-' . $invoice->getId() . '.pdf';
+        $fs = new Filesystem();
 
-        $snappy = new Pdf($myProjectDirectory . 'vendor/h4cc/wkhtmltopdf-i386/bin/wkhtmltopdf-i386');
+        if (!$fs->exists($invoicePath)) {
+            $invoice->setCreatedAt(new \DateTime());
 
-        $snappy->setOption('title', 'MeVisa Invoice' . $order->getId() . '-' . $invoice->getId());
-        $snappy->setOption('encoding', 'UTF');
+            $em = $this->getDoctrine()->getManager();
 
-        $snappy->generateFromHtml($this->renderView(
-                        'MeVisaERPBundle:Orders:invoicepdf.html.twig', array(
-                    'order' => $order,
-                    'invoiceNo' => $invoice->getId()
-                        )
-                        //TODO: name file
-                ), $myProjectDirectory . 'web/invoices/mevisa-invoice-' . $order->getId() . '-' . $invoice->getId() . '.pdf', array(), true);
+
+            $state = $order->getState();
+            $order->startOrderStateEnginge();
+            $order->setOrderState($state);
+
+            $em->flush();
+
+
+            $snappy = new Pdf($myProjectDirectory . 'vendor/h4cc/wkhtmltopdf-i386/bin/wkhtmltopdf-i386');
+
+            $snappy->setOption('title', 'MeVisa Invoice' . $order->getNumber() . '-' . $invoice->getId());
+            $snappy->setOption('encoding', 'UTF');
+
+            $snappy->generateFromHtml($this->renderView(
+                            'MeVisaERPBundle:Orders:invoicepdf.html.twig', array(
+                        'order' => $order,
+                        'invoice' => $invoice
+                            )
+                    ), $invoicePath, array(), true);
+        }
     }
 
     public function setOrderDetails($order)
     {
-
         $orderCompanions = $order->getOrderCompanions();
         // TODO: Check Order Companions
         foreach ($orderCompanions as $companion) {
@@ -576,19 +593,19 @@ class OrdersController extends Controller
             }
         }
 
-        $orderPayments = $order->getOrderPayments();
-        foreach ($orderPayments as $payment) {
-            $payment->setCreatedAt(new \DateTime());
-            if ("paid" == $payment->getState()) {
-//                    TODO: $this->generateInvoice();
-            }
-            $order->addOrderPayment($payment);
-        }
-
         $invoices = $order->getInvoices();
         foreach ($invoices as $invoice) {
             $order->addInvoice($invoice);
         }
+
+        $orderPayments = $order->getOrderPayments();
+        foreach ($orderPayments as $payment) {
+            if ("paid" == $payment->getState()) {
+                $payment->setCreatedAt(new \DateTime());
+            }
+            $order->addOrderPayment($payment);
+        }
+
 
         // TODO: Check Order
         // TODO: Upload OrderDocuments then presist

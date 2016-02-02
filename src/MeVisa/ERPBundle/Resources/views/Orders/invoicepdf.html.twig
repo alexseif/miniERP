@@ -42,8 +42,7 @@
             </div>
             <div class="row">
                 <div class="col-xs-12">
-                    {# FIXME: invoice no #}
-                    <h1 class="text-center">Счет № {{ invoiceNo }}  от {{ "now" | format_date(null, 'ru', 'Europe/Moscow', constant('IntlDateFormatter::LONG')) }}</h1>
+                    <h1 class="text-center">Счет № {{ invoice.id }}  от {{ "now" | format_date(null, 'ru', 'Europe/Moscow', constant('IntlDateFormatter::LONG')) }}</h1>
                 </div>
             </div>
             <div class="row">
