@@ -25,189 +25,37 @@
                 <div class="panel-body">
                     <div class="row">
                         <div class="col-sm-4">
-                            <div class='panel panel-default'>
-                                <div class="table-responsive">
-                                    <table class="table table-condensed table-hover" style="border: none;">
-                                        <tbody>
-                                            <tr><th>Name</th><td>{{order.customer.name}}</td></tr>
-                                            <tr><th>Email</th><td>{{order.customer.email}}</td></tr>
-                                            <tr><th>Phone</th><td>{{order.customer.phone}}</td></tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
+                            {% include 'MeVisaERPBundle:Orders:order_customer.html.twig' %}
                         </div>
                         <div class="col-sm-4">
-                            <div class='panel panel-default'>
-                                <div class="table-responsive">
-                                    <table class="table table-condensed table-hover text-right">
-                                        <tbody>
-                                            <tr><th>People</th><td>{{ order.people }}</td></tr>
-                                            <tr><th>Departure</th><td>{{ order.departure|localizeddate('medium', 'none') }}</td></tr>
-                                            <tr><th>Arrival</th><td>{{ order.arrival|localizeddate('medium', 'none') }}</td></tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
+                            {% include 'MeVisaERPBundle:Orders:order_details.html.twig' %}
                         </div>
                         <div class="col-sm-4">
-                            <div class='panel panel-default'>
-                                <div class="table-responsive">
-                                    <table class="table table-condensed table-hover text-right">
-                                        <tbody>
-                                            <tr><th>Order #</th><td>{{ order.number }}</td></tr>
-                                            <tr><th>Adjustment</th><td>{{ (order.adjustmentTotal/100)|localizedcurrency('RUB') }}</td></tr>
-                                            <tr><th>Total</th><td>{{ (order.total/100)|localizedcurrency('RUB') }}</td></tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
+                            {% include 'MeVisaERPBundle:Orders:order_totals.html.twig' %}
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-sm-6">
-                            <div class='panel panel-default'>
-                                <div class="table-responsive">
-                                    <table class="table table-hover table-striped table-condensed records_list">
-                                        <thead>
-                                            <tr>
-                                                <th>Product</th>
-                                                <th>Qty.</th>
-                                                <th>Unit Price</th>
-                                                <th>Total</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {%for product in order.orderProducts %}
-                                                <tr>
-                                                    <td>{{ product.product.name }}</td>
-                                                    <td>{{ product.quantity }}</td>
-                                                    <td>{{ (product.unitPrice/100)|localizedcurrency('RUB') }}</td>
-                                                    <td>{{ (product.total/100)|localizedcurrency('RUB') }}</td>
-                                                </tr>
-                                            {% endfor %}
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
+                            {% include 'MeVisaERPBundle:Orders:order_products.html.twig' %}
                         </div>
                         <div class="col-sm-6">
-                            <div class='panel panel-default'>
-                                <div class="table-responsive">
-                                    <table class="table table-hover table-condensed records_list">
-                                        <thead>
-                                            <tr>
-                                                <th>Payment</th>
-                                                <th>Amount</th>
-                                                <th>State</th>
-                                                <th>Detail</th>
-                                                <th>Created at</th>
-                                            </tr>
-                                        </thead>
-                                        {% if (order.orderPayments|length) %}
-                                            <tbody>
-                                                {%for payment in order.orderPayments%}
-                                                    <tr>
-                                                        <td>{{ payment.method }}</td>
-                                                        <td>{{ (payment.amount/100)|localizedcurrency('RUB') }}</td>
-                                                        <td>
-                                                            {% if(payment.state=="not_paid") %}
-                                                                <span class="label label-danger">NOT PAID</span>
-                                                            {% elseif(payment.state=="paid") %}
-                                                                <span class="label label-success">PAID</span>    
-                                                            {% endif %}
-                                                        </td>
-                                                        <td>{{ payment.detail }}</td>
-                                                        <td>{{ payment.createdAt|localizeddate }}</td>
-                                                    </tr>
-                                                {% endfor %}
-                                            </tbody>
-                                        {% endif %}
-                                    </table>
-                                </div>
-                            </div>
+                            {% include 'MeVisaERPBundle:Orders:order_payments.html.twig' %}
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-sm-6">
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <span class="panel-title">Companions</span>
-                                </div>
-                                <div class="table-responsive">
-                                    <table class="table table-bordered table-hover table-striped records_list">
-                                        <thead>
-                                            <tr>
-                                                <th>Name</th>
-                                                <th>Nationality</th>
-                                                <th>Passport #</th>
-                                                <th>Passport Expiry</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {% for companion in order.orderCompanions %}
-                                                <tr>
-                                                    <td>{{companion.name}}</td>
-                                                    <td>{{companion.nationality}}</td>
-                                                    <td>{{companion.passportNumber}}</td>
-                                                    <td>{{companion.passportExpiry|date('m-Y')}}</td>
-                                                </tr>
-                                            {% endfor %}
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
+                            {% include 'MeVisaERPBundle:Orders:order_companions.html.twig' %}
                         </div>
                         <div class="col-sm-6">
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <span class="panel-title">Documents</span>
-                                </div>
-                                <div class="panel-body">
-                                    <div class="row">
-                                        {%for document in order.orderDocuments%}
-                                            <div class="col-sm-6">
-                                                {% if document.path starts with 'http://www.mevisa.ru/' %}
-                                                    <a href="{{ document.path }}" target="_blank">{{ document.name }}</a>
-                                                {% else %}
-                                                    <a href="{{ app.request.scheme ~ '://' ~ app.request.host ~ '/' ~ document.getWebPath }}" target="_blank">{{ document.name }}</a>
-                                                {% endif %}
-                                            </div>
-                                        {% endfor %}
-                                    </div>
-                                </div>
-                            </div>
+                            {% include 'MeVisaERPBundle:Orders:order_documents.html.twig' %}
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-sm-12">
-                            {# TODO: add availability to add another note #}
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <span class="panel-title">Notes</span>
-                                    <div class="pull-right">
-                                        <span class="badge">{{ app.user.username }}</span>
-                                    </div>
-                                </div>
-                                <div class="panel-body order-comment">
-                                    <ul class="comments">
-                                        {%for comment in order.orderComments%}
-                                            <li class="clearfix">
-                                                <div class="post-comments">
-                                                    <p class="meta">{{ comment.createdAt|localizeddate('short', 'short') }} <span class="pull-right">{{ comment.author }}</span></p>
-                                                    <p>{{ comment.comment }}</p>
-                                                </div>
-                                            </li>
-                                        {% endfor %}
-                                    </ul>
-                                    <div class="orderComments">
-                                        {{ form_start(comment_form) }}
-                                        {{ form_widget(comment_form.comment) }}
-                                        {{ form_widget(comment_form.save) }}
-                                        {{ form_end(comment_form) }}
-                                    </div>
-                                </div>
-                            </div>
+                        <div class="col-sm-6">
+                            {% include 'MeVisaERPBundle:Orders:order_invoices.html.twig' %}
+                        </div>
+                        <div class="col-sm-6">
+                            {% include 'MeVisaERPBundle:Orders:order_notes.html.twig' %}
                         </div>
                     </div>
                 </div>

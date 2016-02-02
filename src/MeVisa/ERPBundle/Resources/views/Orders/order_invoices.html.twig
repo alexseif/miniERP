@@ -1,0 +1,8 @@
+<div class='panel panel-default'>
+    <div class="panel-heading">Payee Invoice Signature Details</div>
+    <div class='panel-body'>
+        {% for invoice in order.invoices %}
+            {{ invoice.customerSignature|nl2br }}
+        {% endfor %}
+    </div>
+</div>

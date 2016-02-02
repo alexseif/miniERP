@@ -1,0 +1,26 @@
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <span class="panel-title">Notes</span>
+        <div class="pull-right">
+            <span class="badge">{{ app.user.username }}</span>
+        </div>
+    </div>
+    <div class="panel-body order-comment">
+        <ul class="comments">
+            {%for comment in order.orderComments%}
+                <li class="clearfix">
+                    <div class="post-comments">
+                        <p class="meta">{{ comment.createdAt|localizeddate('short', 'short') }} <span class="pull-right">{{ comment.author }}</span></p>
+                        <p>{{ comment.comment }}</p>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+        <div class="orderComments">
+            {{ form_start(comment_form) }}
+            {{ form_widget(comment_form.comment) }}
+            {{ form_widget(comment_form.save) }}
+            {{ form_end(comment_form) }}
+        </div>
+    </div>
+</div>

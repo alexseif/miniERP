@@ -1,0 +1,19 @@
+<div class="panel panel-default">
+{# FIXME: wrap long file names   #}
+    <div class="panel-heading">
+        <span class="panel-title">Documents</span>
+    </div>
+    <div class="panel-body">
+        <div class="row">
+            {%for document in order.orderDocuments%}
+                <div class="col-sm-6">
+                    {% if document.path starts with 'http://www.mevisa.ru/' %}
+                        <a href="{{ document.path }}" target="_blank">{{ document.name }}</a>
+                    {% else %}
+                        <a href="{{ app.request.scheme ~ '://' ~ app.request.host ~ '/' ~ document.getWebPath }}" target="_blank">{{ document.name }}</a>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>

@@ -1,0 +1,11 @@
+<div class='panel panel-default'>
+    <div class="table-responsive">
+        <table class="table table-condensed table-hover text-right">
+            <tbody>
+                <tr><th>Order #</th><td>{{ order.number }}</td></tr>
+                <tr><th>Adjustment</th><td>{{ (order.adjustmentTotal/100)|localizedcurrency('RUB') }}</td></tr>
+                <tr><th>Total</th><td>{{ (order.total/100)|localizedcurrency('RUB') }}</td></tr>
+            </tbody>
+        </table>
+    </div>
+</div>

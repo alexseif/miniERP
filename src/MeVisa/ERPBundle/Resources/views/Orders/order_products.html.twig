@@ -1,0 +1,24 @@
+<div class='panel panel-default'>
+    <div class="table-responsive">
+        <table class="table table-hover table-striped table-condensed records_list">
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Qty.</th>
+                    <th>Unit Price</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                {%for product in order.orderProducts %}
+                    <tr>
+                        <td>{{ product.product.name }}</td>
+                        <td>{{ product.quantity }}</td>
+                        <td>{{ (product.unitPrice/100)|localizedcurrency('RUB') }}</td>
+                        <td>{{ (product.total/100)|localizedcurrency('RUB') }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
