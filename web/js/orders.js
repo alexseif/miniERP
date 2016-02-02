@@ -127,6 +127,9 @@ $(document).ready(function () {
         $('div.invoice .col-sm-2').remove();
         $('div.invoice .col-sm-10').addClass('col-sm-12');
         $('div.invoice .col-sm-10').removeClass('col-sm-10');
+        if($('#mevisa_erpbundle_orders_invoices_0_customerSignature').empty()){
+           $('#mevisa_erpbundle_orders_invoices_0_customerSignature').val("Адрес: \nпаспорт: \nКонтактный телефон:"); 
+        }
     }
     addPrototypeForm('div.orderComments', '<div></div>');
 

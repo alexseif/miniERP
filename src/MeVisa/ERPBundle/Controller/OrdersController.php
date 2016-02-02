@@ -585,6 +585,11 @@ class OrdersController extends Controller
             $order->addOrderPayment($payment);
         }
 
+        $invoices = $order->getInvoices();
+        foreach ($invoices as $invoice) {
+            $order->addInvoice($invoice);
+        }
+
         // TODO: Check Order
         // TODO: Upload OrderDocuments then presist
         $orderDocuments = $order->getOrderDocuments();

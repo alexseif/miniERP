@@ -6,6 +6,7 @@
         {# FIXME: Delete links for files#}
         <div class="row">
             {%for document in order.orderDocuments%}
+                {# FIXME: wordwrap for long links #}
                 <div class="col-sm-6">
                     {% if document.path starts with 'http://www.mevisa.ru/' %}
                         <a href="{{ document.path }}" target="_blank">{{ document.name }}</a>

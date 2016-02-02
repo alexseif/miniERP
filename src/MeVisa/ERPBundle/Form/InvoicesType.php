@@ -16,10 +16,6 @@ class InvoicesType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('customerSignature', 'textarea', array(
-            'attr' => array(
-                'placeholder' => "Адрес: \nпаспорт: \nКонтактный телефон:",
-            ),
-            'data' => "Адрес: \nпаспорт: \nКонтактный телефон: ",
             'label' => false
         ));
     }
