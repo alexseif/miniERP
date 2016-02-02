@@ -66,9 +66,18 @@
                     <!-- Order Documents -->
                 </div>
             </div>
-            <!-- Order Comments -->
-            {% include 'MeVisaERPBundle:Orders:order_comments_form.html.twig' %}
-            <!-- Order Comments -->
+            <div class="row">
+                <div class="col-sm-6">
+                    <!-- Invoice -->
+                    {% include 'MeVisaERPBundle:Orders:order_invoices_form.html.twig' %}
+                    <!-- Invoice -->
+                </div>
+                <div class="col-sm-6">
+                    <!-- Order Comments -->
+                    {% include 'MeVisaERPBundle:Orders:order_comments_form.html.twig' %}
+                    <!-- Order Comments -->
+                </div>
+            </div>
         </div>
         <!-- panel body -->
         <div class="panel-footer">

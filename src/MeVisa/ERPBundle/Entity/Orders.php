@@ -182,6 +182,7 @@ class Orders
         $this->orderCompanions = new ArrayCollection();
         $this->orderComments = new ArrayCollection();
         $this->orderDocuments = new ArrayCollection();
+        $this->invoices = new ArrayCollection();
         $this->uploadedFiles = new ArrayCollection();
         $this->setCreatedAt(new \DateTime());
     }

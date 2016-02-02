@@ -1,0 +1,9 @@
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <span class="panel-title">Payee Signature Details</span>
+    </div>
+    <div class="panel-body">
+        <div class="hidden">{{ form_label(form.invoices.vars.prototype)  }}</div>
+        <div class="invoice" data-prototype="{{ form_widget(form.invoices.vars.prototype)|e  }}"></div>
+    </div>
+</div>

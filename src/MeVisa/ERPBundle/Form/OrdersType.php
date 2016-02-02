@@ -85,6 +85,12 @@ class OrdersType extends AbstractType
             'required' => false,
                 )
         );
+        $builder->add('invoices', 'collection', array(
+            'type' => new InvoicesType(),
+            'allow_add' => true,
+            'label' => false
+                )
+        );
     }
 
     /**

@@ -65,6 +65,7 @@ $(document).ready(function () {
 
     $productHolder.data('index', $('tbody.orderProducts tr').length);
     $('div.orderPayments').data('index', 0);
+    $('div.invoice').data('index', 0);
     $('div.orderComments').data('index', 0);
 
 
@@ -120,6 +121,12 @@ $(document).ready(function () {
 
     if ($('div.orderPayments').length) {
         addPrototypeForm('div.orderPayments', '<div></div>');
+    }
+    if ($('div.invoice').length) {
+        addPrototypeForm('div.invoice', '<div></div>');
+        $('div.invoice .col-sm-2').remove();
+        $('div.invoice .col-sm-10').addClass('col-sm-12');
+        $('div.invoice .col-sm-10').removeClass('col-sm-10');
     }
     addPrototypeForm('div.orderComments', '<div></div>');
 
