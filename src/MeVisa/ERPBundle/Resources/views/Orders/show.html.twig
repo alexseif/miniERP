@@ -61,10 +61,8 @@
                 </div>
                 <div class="panel-footer">
                     <div class="clearfix">
-                        <a class="btn btn-primary" href="{{ path('order_show_invoice', { 'id': order.id }) }}">Generate Invoice</a>
                         {% if order.invoices is not empty %}
-                            <a class="btn btn-primary" href="{{ path('order_show_invoice', { 'id': order.id }) }}">Invoice</a>
-                            <a class="btn btn-primary" href="/invoices/mevisa-invoice-{{ order.id }}-{{ (order.invoices|last).id}}.pdf" target="_blank">Invoice</a>
+                            <a class="btn btn-primary" href="/invoices/mevisa-invoice-{{ order.number }}-{{ (order.invoices|last).id}}.pdf" target="_blank">Invoice</a>
                         {% endif %}
                         <div class="btn-toolbar pull-right" role="toolbar">
                             {{ form_start(status_form) }}
