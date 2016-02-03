@@ -27,9 +27,10 @@ class OrderPaymentsType extends AbstractType
                 ->add('method', 'choice', array(
                     // TODO: get payment options properly
                     'choices' => array(
+                        'payu' => 'PayU',
                         'online' => 'Online',
-                        'banktransfer' => 'Bank Transfer',
                         'creditcard' => 'Credit Card',
+                        'banktransfer' => 'Bank Transfer',
                         'cash' => 'Cash'
                     ),
                     'required' => false
@@ -42,8 +43,6 @@ class OrderPaymentsType extends AbstractType
                 ->add('detail', 'textarea', array(
                     'required' => false
                 ))
-//                ->add('createdAt')
-//                ->add('orderRef')
         ;
     }
 
