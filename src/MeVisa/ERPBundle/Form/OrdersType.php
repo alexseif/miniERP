@@ -42,20 +42,20 @@ class OrdersType extends AbstractType
                 ))
                 ->add('departure', 'date', array(
                     'widget' => 'single_text',
-                    'format' => 'dd-MM-yyyy',
+                    'format' => 'dd.MM.yyyy',
                     'attr' => array(
                         'class' => 'form-control input-inline datepicker',
                         'data-provide' => 'datepicker',
-                        'data-date-format' => 'dd-mm-yyyy',
+                        'data-date-format' => 'dd.mm.yy',
                     )
                 ))
                 ->add('arrival', 'date', array(
                     'widget' => 'single_text',
-                    'format' => 'dd-MM-yyyy',
+                    'format' => 'dd.MM.yyyy',
                     'attr' => array(
                         'class' => 'form-control input-inline datepicker',
                         'data-provide' => 'datepicker',
-                        'data-date-format' => 'dd-mm-yyyy',
+                        'data-date-format' => 'dd.mm.yy',
             )))
 //                ->add('createdAt', 'hidden')
 //                ->add('updatedAt', 'hidden', array('required' => false))

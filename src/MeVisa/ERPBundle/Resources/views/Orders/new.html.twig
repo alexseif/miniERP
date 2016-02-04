@@ -112,7 +112,10 @@
     <script type="text/javascript" src="/js/chosen.jquery.min.js"></script>
     <script type="text/javascript" src="/js/orders.js"></script>
     <script type="text/javascript">
-        $('.datepicker').datepicker();
+        
+        $('.datepicker').datepicker({
+            dateFormat: "dd.mm.yy"
+        });
     </script>
     <script type="text/javascript">
         var productPrices = new Array();
