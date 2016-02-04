@@ -16,6 +16,11 @@
 {#                        <td>{{ order.createdAt|localizeddate('short', 'short') }}</td>#}
                         <td>{{ order.createdAt|ago }}</td>
                         <td class="text-right">
+                            {#<span class="label
+                                  {% if (order.orderPayments|last).state == "paid" %}label-success
+                                  {% else %}label-warning
+                                  {% endif %}
+                                  ">{{ (order.orderPayments|last).state|upper }}</span>#}
                             <span class="label
                                   {% if order.state == "backoffice" %}label-info                                                      
                                   {% elseif order.state == "post" %}label-primary

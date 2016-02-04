@@ -28,7 +28,7 @@
                             {% for entity in entities %}
                                 <tr>
                                     <td><a class="btn btn-link" href="{{ path('orders_show', { 'id': entity.id }) }}">{{ entity.number }}</a></td>
-                                    <td>
+                                    <td class="text-right">
                                         <span class="label 
                                               {% if entity.state == "backoffice" %}label-info                                                      
                                               {% elseif entity.state == "post" %}label-primary
@@ -37,6 +37,13 @@
                                               {% endif %}
                                               ">
                                             {{ entity.state|upper }}
+                                        </span>&nbsp;
+                                        <span class="label 
+                                              {% if entity.orderPayments|last.state == "paid" %}label-success
+                                              {% else %}label-warning
+                                              {% endif %}
+                                              ">
+                                            {{ entity.orderPayments|last.state|upper }}
                                         </span>
                                     </td>
                                     <td>{{ entity.customer.name }}</td>
