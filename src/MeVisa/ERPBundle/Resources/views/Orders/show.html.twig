@@ -72,6 +72,9 @@
                                     {{ form_widget(btn) }}
                                 {% endfor %}
                                 {{ form_end(status_form) }}
+                                {% if is_granted('ROLE_ADMIN') %}
+                                    <a class="btn btn-default" href="{{ path('orders_edit', { "id" : order.id }) }}">Edit</a>
+                                {% endif %}
                             {% else %}
                                 <a class="btn btn-default" href="{{ path('orders_edit', { "id" : order.id }) }}">Edit</a>
                             {% endif %}
