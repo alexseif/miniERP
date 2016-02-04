@@ -91,7 +91,7 @@ class OrdersController extends Controller
             $payments = $order->getOrderPayments();
             foreach ($payments as $payment) {
                 if ("paid" == $payment->getState()) {
-                    $this->generateInvoice();
+                    $this->generateInvoice($order->getId());
                 }
             }
 
@@ -325,7 +325,7 @@ class OrdersController extends Controller
             $payments = $order->getOrderPayments();
             foreach ($payments as $payment) {
                 if ("paid" == $payment->getState()) {
-                    $this->generateInvoice($order);
+                    $this->generateInvoice($order->getId());
                 }
             }
             return $this->redirect($this->generateUrl('orders_show', array('id' => $order->getId())));
@@ -467,30 +467,11 @@ class OrdersController extends Controller
         if (!$order) {
             throw $this->createNotFoundException('Unable to find Order');
         }
-        $this->generateInvoice($order);
+        $this->generateInvoice($order->getId());
 
         $state = $order->getState();
         $order->startOrderStateEnginge();
         $order->setOrderState($state);
-
-        return array(
-            'order' => $order,
-            'invoiceNo' => 0
-        );
-    }
-
-    /**
-     * Finds and displays a Orders entity.
-     *
-     * @Route("/{id}/invoice/pdf", name="order_show_pdf")
-     * @Method("GET")
-     * @Template()
-     */
-    public function invoicepdfAction($id)
-    {
-        $em = $this->getDoctrine()->getManager();
-
-        $order = $em->getRepository('MeVisaERPBundle:Orders')->find($id);
 
         return array(
             'order' => $order,
@@ -521,12 +502,40 @@ class OrdersController extends Controller
     }
 
     /**
-     * Generates an invoice
+     * Finds and displays a Orders entity.
      *
-     * @param Orders $order The entity
+     * @Route("/{id}/invoicepdf", name="order_show_pdf")
+     * @Method("GET")
+     * @Template()
      */
-    public function generateInvoice(Orders $order)
+    public function invoicepdfAction($id)
     {
+        $em = $this->getDoctrine()->getManager();
+
+        $order = $em->getRepository('MeVisaERPBundle:Orders')->find($id);
+        $invoice = new Invoices();
+
+        $invoices = $order->getInvoices();
+        foreach ($invoices as $inv) {
+            $invoice = $inv;
+        }
+
+        return array(
+            'order' => $order,
+            'invoice' => $invoice
+        );
+    }
+
+    /**
+     * Generates an invoice
+     */
+    public function generateInvoice($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $order = $em->getRepository('MeVisaERPBundle:Orders')->find($id);
+
+
         if (!$order) {
             throw $this->createNotFoundException('Unable to find Order');
         }
@@ -536,35 +545,31 @@ class OrdersController extends Controller
         foreach ($invoices as $inv) {
             $invoice = $inv;
         }
+
         $myProjectDirectory = __DIR__ . '/../../../../';
         $invoicePath = $myProjectDirectory . 'web/invoices/mevisa-invoice-' . $order->getNumber() . '-' . $invoice->getId() . '.pdf';
         $fs = new Filesystem();
 
         if (!$fs->exists($invoicePath)) {
-            $invoice->setCreatedAt(new \DateTime());
-
-            $em = $this->getDoctrine()->getManager();
-
-
-            $state = $order->getState();
-            $order->startOrderStateEnginge();
-            $order->setOrderState($state);
-
-            $em->flush();
-
 
             $snappy = new Pdf($myProjectDirectory . 'vendor/h4cc/wkhtmltopdf-i386/bin/wkhtmltopdf-i386');
 
-            $snappy->setOption('title', 'MeVisa Invoice' . $order->getNumber() . '-' . $invoice->getId());
-            $snappy->setOption('encoding', 'UTF');
+            $snappy->setOption('title', 'MeVisa Invoice ' . $order->getNumber() . '-' . $invoice->getId());
+            $snappy->setOption('encoding', 'UTF-8');
+            $snappy->setOption('lowquality', null);
 
-            $snappy->generateFromHtml($this->renderView(
-                            'MeVisaERPBundle:Orders:invoicepdf.html.twig', array(
-                        'order' => $order,
-                        'invoice' => $invoice
-                            )
-                    ), $invoicePath, array(), true);
+            $renderedView = $this->renderView(
+                    'MeVisaERPBundle:Orders:invoicepdf.html.twig', array(
+                'order' => $order,
+                'invoice' => $invoice
+                    )
+            );
+            $snappy->generateFromHtml($renderedView, $invoicePath);
+            $invoice->setCreatedAt(new \DateTime());
+
+            $em->flush();
         }
+        return true;
     }
 
     public function setOrderDetails($order)

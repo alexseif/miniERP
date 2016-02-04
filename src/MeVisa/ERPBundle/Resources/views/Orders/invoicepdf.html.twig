@@ -102,10 +102,10 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {%for product in order.orderProducts %}
+                    {% for key, product in order.orderProducts %}
                         <tr>
                             {# FIXME: row number #}
-                            <td>1</td>
+                            <td>{{ key + 1 }}</td>
                             <td>{{ product.product.name }}</td>
                             <td>{{ product.quantity }}</td>
                             <td>{{ (product.unitPrice/100)|localizedcurrency('RUB') }}</td>
