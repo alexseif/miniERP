@@ -581,14 +581,18 @@ class OrdersController extends Controller
         $orderCompanions = $order->getOrderCompanions();
         // TODO: Check Order Companions
         foreach ($orderCompanions as $companion) {
-            $order->addOrderCompanion($companion);
+            if (empty($companion->getId())) {
+                $order->addOrderCompanion($companion);
+            }
         }
 
         $orderProducts = $order->getOrderProducts();
         foreach ($orderProducts as $orderProduct) {
             // TODO: Check Order Product
             // TODO: Handle no proper products or disabled
-            $order->addOrderProduct($orderProduct);
+            if (empty($orderProduct->getId())) {
+                $order->addOrderProduct($orderProduct);
+            }
         }
 
         $orderComments = $order->getOrderComments();
@@ -598,13 +602,17 @@ class OrdersController extends Controller
             } else {
                 $this->getUser()->addComment($comment);
                 $comment->setCreatedAt(new \DateTime());
-                $order->addOrderComment($comment);
+                if (empty($comment->getId())) {
+                    $order->addOrderComment($comment);
+                }
             }
         }
 
         $invoices = $order->getInvoices();
         foreach ($invoices as $invoice) {
-            $order->addInvoice($invoice);
+            if (empty($invoice->getId())) {
+                $order->addInvoice($invoice);
+            }
         }
 
         $orderPayments = $order->getOrderPayments();
@@ -612,7 +620,9 @@ class OrdersController extends Controller
             if ("paid" == $payment->getState()) {
                 $payment->setCreatedAt(new \DateTime());
             }
-            $order->addOrderPayment($payment);
+            if (empty($payment->getId())) {
+                $order->addOrderPayment($payment);
+            }
         }
 
 
@@ -620,7 +630,9 @@ class OrdersController extends Controller
         // TODO: Upload OrderDocuments then presist
         $orderDocuments = $order->getOrderDocuments();
         foreach ($orderDocuments as $document) {
-            $order->addOrderDocument($document);
+            if (empty($document->getId())) {
+                $order->addOrderDocument($document);
+            }
         }
     }
 
