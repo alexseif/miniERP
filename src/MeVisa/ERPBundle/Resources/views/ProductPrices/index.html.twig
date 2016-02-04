@@ -30,7 +30,9 @@
                                         <td>{{ (entity.cost/100)|localizedcurrency('RUB') }}</td>
                                         <td>{{ (entity.price/100)|localizedcurrency('RUB') }}</td>
                                         <td>
-                                            <a class="btn btn-primary" href="{{ path('admin_pricing_edit', { 'id': entity.id }) }}">edit</a>
+                                            {% if is_granted('ROLE_ADMIN') %}
+                                                <a class="btn btn-primary" href="{{ path('admin_pricing_edit', { 'id': entity.id }) }}">edit</a>
+                                            {% endif %}
                                         </td>
                                     </tr>
                                 {% endfor %}
@@ -42,6 +44,8 @@
         </div>
     </div>
     <!-- /.row -->
-    <a class="btn btn-primary" href="{{ path('admin_pricing_new', { 'product_id': product.id }) }}">Add Product Pricing</a>
+    {% if is_granted('ROLE_ADMIN') %}
+        <a class="btn btn-primary" href="{{ path('admin_pricing_new', { 'product_id': product.id }) }}">Add Product Pricing</a>
+    {% endif %}
     <a class="btn btn-warning pull-right" href="{{ path('admin_products') }}">Back</a>
 {% endblock %}
