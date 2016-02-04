@@ -5,9 +5,11 @@ namespace MeVisa\ERPBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * @ORM\Entity
+ * @Gedmo\Loggable
  * @ORM\HasLifecycleCallbacks
  */
 class OrderDocuments
@@ -23,6 +25,7 @@ class OrderDocuments
     /**
      * @var string
      *
+     * @Gedmo\Versioned
      * @ORM\Column(name="name", type="string", length=255)
      */
     private $name;
@@ -30,6 +33,7 @@ class OrderDocuments
     /**
      * @var string
      *
+     * @Gedmo\Versioned
      * @ORM\Column(name="path", type="string", length=255)
      */
     private $path;

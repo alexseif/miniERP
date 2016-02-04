@@ -7,11 +7,13 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
 use MeVisa\ERPBundle\Business\OrderState;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * Orders
  *
  * @ORM\Table()
+ * @Gedmo\Loggable
  * @ORM\Entity(repositoryClass="MeVisa\ERPBundle\Entity\OrdersRepository")
  * @ORM\HasLifecycleCallbacks
  */
@@ -37,6 +39,7 @@ class Orders
     /**
      * @var string
      *
+     * @Gedmo\Versioned
      * @ORM\Column(name="number", type="string", length=20)
      */
     private $number;
@@ -44,6 +47,7 @@ class Orders
     /**
      * @var string
      *
+     * @Gedmo\Versioned
      * @ORM\Column(name="state", type="string", length=255)
      */
     private $state;
@@ -58,6 +62,7 @@ class Orders
     /**
      * @var string
      *
+     * @Gedmo\Versioned
      * @ORM\Column(name="channel", type="string", length=255)
      */
     private $channel;
@@ -65,6 +70,7 @@ class Orders
     /**
      * @var integer
      *
+     * @Gedmo\Versioned
      * @ORM\Column(name="productsTotal", type="integer")
      */
     private $productsTotal;
@@ -79,6 +85,7 @@ class Orders
     /**
      * @var integer
      *
+     * @Gedmo\Versioned
      * @ORM\Column(name="total", type="integer")
      */
     private $total;
@@ -86,6 +93,7 @@ class Orders
     /**
      * @var integer
      *
+     * @Gedmo\Versioned
      * @ORM\Column(name="people", type="integer", nullable=true)
      */
     private $people;
@@ -93,6 +101,7 @@ class Orders
     /**
      * @var \DateTime
      *
+     * @Gedmo\Versioned
      * @ORM\Column(name="arrival", type="date", nullable=true)
      */
     private $arrival;
@@ -100,6 +109,7 @@ class Orders
     /**
      * @var \DateTime
      *
+     * @Gedmo\Versioned
      * @ORM\Column(name="departure", type="date", nullable=true)
      */
     private $departure;
@@ -107,6 +117,7 @@ class Orders
     /**
      * @var \DateTime
      *
+     * @Gedmo\Versioned
      * @ORM\Column(name="createdAt", type="datetime")
      */
     private $createdAt;
@@ -114,6 +125,7 @@ class Orders
     /**
      * @var \DateTime
      *
+     * @Gedmo\Versioned
      * @ORM\Column(name="updatedAt", type="datetime", nullable=true)
      */
     private $updatedAt;

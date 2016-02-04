@@ -3,11 +3,13 @@
 namespace MeVisa\ERPBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * OrderCompanions
  *
  * @ORM\Table()
+ * @Gedmo\Loggable
  * @ORM\Entity(repositoryClass="MeVisa\ERPBundle\Entity\OrderCompanionsRepository")
  */
 class OrderCompanions
@@ -32,6 +34,7 @@ class OrderCompanions
     /**
      * @var string
      *
+     * @Gedmo\Versioned
      * @ORM\Column(name="name", type="string", length=255)
      */
     private $name;
@@ -39,6 +42,7 @@ class OrderCompanions
     /**
      * @var string
      *
+     * @Gedmo\Versioned
      * @ORM\Column(name="nationality", type="string", length=255)
      */
     private $nationality;
@@ -46,6 +50,7 @@ class OrderCompanions
     /**
      * @var string
      *
+     * @Gedmo\Versioned
      * @ORM\Column(name="passport_number", type="string", length=255)
      */
     private $passportNumber;
@@ -53,6 +58,7 @@ class OrderCompanions
     /**
      * @var \DateTime
      *
+     * @Gedmo\Versioned
      * @ORM\Column(name="passport_expiry", type="datetime")
      */
     private $passportExpiry;

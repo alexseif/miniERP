@@ -4,11 +4,13 @@ namespace MeVisa\CRMBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * Customers
  *
  * @ORM\Table()
+ * @Gedmo\Loggable
  * @ORM\Entity(repositoryClass="MeVisa\CRMBundle\Entity\CustomersRepository")
  */
 class Customers
@@ -26,6 +28,7 @@ class Customers
     /**
      * @var string
      *
+     * @Gedmo\Versioned
      * @ORM\Column(name="name", type="string", length=255)
      * @Assert\NotBlank()
      * @Assert\Regex("/^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$/u")
@@ -35,6 +38,7 @@ class Customers
     /**
      * @var string
      *
+     * @Gedmo\Versioned
      * @ORM\Column(name="email", type="string", length=255)
      */
     private $email;
@@ -42,6 +46,7 @@ class Customers
     /**
      * @var string
      *
+     * @Gedmo\Versioned
      * @ORM\Column(name="phone", type="string", length=25)
      */
     private $phone;

@@ -3,15 +3,18 @@
 namespace MeVisa\ERPBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * OrderPayments
  *
  * @ORM\Table()
+ * @Gedmo\Loggable
  * @ORM\Entity(repositoryClass="MeVisa\ERPBundle\Entity\OrderPaymentsRepository")
  */
 class OrderPayments
 {
+
     /**
      * @var integer
      *
@@ -30,6 +33,7 @@ class OrderPayments
     /**
      * @var string
      *
+     * @Gedmo\Versioned
      * @ORM\Column(name="method", type="string", length=255, nullable=true)
      */
     private $method;
@@ -37,6 +41,7 @@ class OrderPayments
     /**
      * @var integer
      *
+     * @Gedmo\Versioned
      * @ORM\Column(name="amount", type="integer", nullable=true)
      */
     private $amount;
@@ -44,6 +49,7 @@ class OrderPayments
     /**
      * @var string
      *
+     * @Gedmo\Versioned
      * @ORM\Column(name="state", type="string", length=255)
      */
     private $state;
@@ -51,6 +57,7 @@ class OrderPayments
     /**
      * @var string
      *
+     * @Gedmo\Versioned
      * @ORM\Column(name="detail", type="text", nullable=true)
      */
     private $detail;
@@ -58,6 +65,7 @@ class OrderPayments
     /**
      * @var \DateTime
      *
+     * @Gedmo\Versioned
      * @ORM\Column(name="createdAt", type="datetime", nullable=true)
      */
     private $createdAt;
@@ -214,4 +222,5 @@ class OrderPayments
     {
         return $this->orderRef;
     }
+
 }

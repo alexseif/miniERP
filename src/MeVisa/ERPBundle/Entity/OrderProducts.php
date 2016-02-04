@@ -3,15 +3,18 @@
 namespace MeVisa\ERPBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * OrderProducts
  *
  * @ORM\Table()
+ * @Gedmo\Loggable
  * @ORM\Entity(repositoryClass="MeVisa\ERPBundle\Entity\OrderProductsRepository")
  */
 class OrderProducts
 {
+
     /**
      * @var integer
      *
@@ -29,6 +32,7 @@ class OrderProducts
     private $orderRef;
 
     /**
+     * @Gedmo\Versioned
      * @ORM\ManyToOne(targetEntity="Products", inversedBy="orderProducts")
      * @ORM\JoinColumn(name="product_id", referencedColumnName="id")
      */
@@ -37,6 +41,7 @@ class OrderProducts
     /**
      * @var integer
      *
+     * @Gedmo\Versioned
      * @ORM\Column(name="quantity", type="integer")
      */
     private $quantity;
@@ -44,6 +49,7 @@ class OrderProducts
     /**
      * @var integer
      *
+     * @Gedmo\Versioned
      * @ORM\Column(name="unitPrice", type="integer")
      */
     private $unitPrice;
@@ -51,6 +57,7 @@ class OrderProducts
     /**
      * @var integer
      *
+     * @Gedmo\Versioned
      * @ORM\Column(name="total", type="integer")
      */
     private $total;
@@ -179,4 +186,5 @@ class OrderProducts
     {
         return $this->total;
     }
+
 }

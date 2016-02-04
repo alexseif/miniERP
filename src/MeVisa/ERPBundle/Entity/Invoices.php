@@ -3,11 +3,13 @@
 namespace MeVisa\ERPBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * Invoices
  *
  * @ORM\Table()
+ * @Gedmo\Loggable
  * @ORM\Entity(repositoryClass="MeVisa\ERPBundle\Entity\InvoicesRepository")
  */
 class Invoices
@@ -30,6 +32,7 @@ class Invoices
 
     /**
      * @var text
+     * @Gedmo\Versioned
      * @ORM\Column(name="customer_signature", type="text", nullable=true)
      */
     private $customerSignature;
@@ -102,7 +105,6 @@ class Invoices
         return $this->createdAt;
     }
 
-
     /**
      * Set customerSignature
      *
@@ -125,4 +127,5 @@ class Invoices
     {
         return $this->customerSignature;
     }
+
 }
