@@ -215,6 +215,10 @@ class OrdersController extends Controller
         if (!$order) {
             throw $this->createNotFoundException('Unable to find Orders entity.');
         }
+
+//        $repo = $em->getRepository('Gedmo\Loggable\Entity\LogEntry');
+//        $log = $repo->findBy(array('objectId' => $order->getId()));
+
         $state = $order->getState();
         $order->startOrderStateEnginge();
         $order->setOrderState($state);
