@@ -31,6 +31,13 @@ class OrderComments
     private $orderRef;
 
     /**
+     * @var integer
+     *
+     * @ORM\Column(name="wc_id", type="integer", nullable=true)
+     */
+    private $wcId;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="comment", type="text")
@@ -163,4 +170,27 @@ class OrderComments
         return $this->orderRef;
     }
 
+
+    /**
+     * Set wcId
+     *
+     * @param integer $wcId
+     * @return OrderComments
+     */
+    public function setWcId($wcId)
+    {
+        $this->wcId = $wcId;
+
+        return $this;
+    }
+
+    /**
+     * Get wcId
+     *
+     * @return integer 
+     */
+    public function getWcId()
+    {
+        return $this->wcId;
+    }
 }

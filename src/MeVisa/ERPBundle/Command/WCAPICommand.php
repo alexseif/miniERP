@@ -42,6 +42,8 @@ class WCAPICommand extends ContainerAwareCommand
             } else {
                 $order = $this->newOrder($em, $wcOrder);
             }
+            $wcOrderNotes = $client->getOrderNotes($wcOrder['order_number']);
+            $this->updateOrderNotes($em, $order, $wcOrderNotes['order_notes']);
             $em->persist($order);
         }
         $em->flush();
@@ -114,6 +116,23 @@ class WCAPICommand extends ContainerAwareCommand
 
         $this->setOrderDetails($wcOrder, $order, $timezone, $em);
         return $order;
+    }
+
+    public function updateOrderNotes($em, $order, $wcOrderNotes)
+    {
+        $timezone = new \DateTimeZone('UTC');
+        foreach ($wcOrderNotes as $note) {
+            $orderComment = new OrderComments();
+            $orderComment->setWcId($note['id']);
+            if ($note['customer_note']) {
+                $orderComment->setComment($note['note'] . "-- Customer: " . $order->getCustomer()->getName());
+            } else {
+                $orderComment->setComment($note['note']);
+            }
+
+            $orderComment->setCreatedAt(new \DateTime($note['created_at'], $timezone));
+            $order->addOrderComment($orderComment);
+        }
     }
 
     protected function setOrderDetails($wcOrder, $order, $timezone, $em)
