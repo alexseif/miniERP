@@ -42,7 +42,7 @@ class DefaultController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $pending = $em->getRepository('MeVisaERPBundle:Orders')->findAllPending("pending");
+//        $pending = $em->getRepository('MeVisaERPBundle:Orders')->findAllPending("pending");
         $backoffice = $em->getRepository('MeVisaERPBundle:Orders')->findAllByState("backoffice");
         $document = $em->getRepository('MeVisaERPBundle:Orders')->findAllByState("document");
         $post = $em->getRepository('MeVisaERPBundle:Orders')->findAllByState("post");
@@ -56,7 +56,7 @@ class DefaultController extends Controller
 //            "completed" => $completed,
 //        ));
         return array(
-            "pending" => $pending,
+//            "pending" => $pending,
             "backoffice" => $backoffice,
             "document" => $document,
             "post" => $post,
