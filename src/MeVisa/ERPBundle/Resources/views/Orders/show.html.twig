@@ -65,6 +65,9 @@
                         {% if order.invoices is not empty %}
                             <a class="btn btn-primary" href="/invoices/mevisa-invoice-{{ order.number }}-{{ (order.invoices|last).id}}.pdf" target="_blank">Invoice</a>
                         {% endif %}
+                        {% if is_granted('ROLE_ADMIN') and order.updatedAt  %}
+                            <a class="btn btn-default" href="{{ path('orders_edit', { "id" : order.id }) }}">Edit</a>
+                        {% endif %}
                         <div class="btn-toolbar pull-right" role="toolbar">
                             {% if order.updatedAt %}
                                 {{ form_start(status_form) }}
@@ -72,9 +75,6 @@
                                     {{ form_widget(btn) }}
                                 {% endfor %}
                                 {{ form_end(status_form) }}
-                                {% if is_granted('ROLE_ADMIN') %}
-                                    <a class="btn btn-default" href="{{ path('orders_edit', { "id" : order.id }) }}">Edit</a>
-                                {% endif %}
                             {% else %}
                                 <a class="btn btn-default" href="{{ path('orders_edit', { "id" : order.id }) }}">Edit</a>
                             {% endif %}
