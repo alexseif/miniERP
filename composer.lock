@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "4b6df80d022a1cc67614aaf973317183",
-    "content-hash": "7385402c85b016e0593db4712c23ac91",
+    "hash": "946ea5466f3dbac36929341fd094cd80",
+    "content-hash": "e3f883932b9edeecf913a0350a2de8ac",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -932,46 +932,6 @@
                 "wkhtmltoimage"
             ],
             "time": "2016-02-02 19:38:59"
-        },
-        {
-            "name": "h4cc/wkhtmltopdf-amd64",
-            "version": "0.12.3",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/h4cc/wkhtmltopdf-amd64.git",
-                "reference": "b80ce6720349e98cebac7e8a19426455805fa7e1"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/h4cc/wkhtmltopdf-amd64/zipball/b80ce6720349e98cebac7e8a19426455805fa7e1",
-                "reference": "b80ce6720349e98cebac7e8a19426455805fa7e1",
-                "shasum": ""
-            },
-            "bin": [
-                "bin/wkhtmltopdf-amd64"
-            ],
-            "type": "library",
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "LGPL Version 3"
-            ],
-            "authors": [
-                {
-                    "name": "Julius Beckmann",
-                    "email": "github@h4cc.de"
-                }
-            ],
-            "description": "Convert html to pdf using webkit (qtwebkit). Static linked linux binary for amd64 systems.",
-            "homepage": "http://wkhtmltopdf.org/",
-            "keywords": [
-                "binary",
-                "convert",
-                "pdf",
-                "snapshot",
-                "thumbnail",
-                "wkhtmltopdf"
-            ],
-            "time": "2016-02-02 19:38:55"
         },
         {
             "name": "h4cc/wkhtmltopdf-i386",
