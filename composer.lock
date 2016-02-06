@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "9491682ebafefb0682cfe54f1aa2f217",
-    "content-hash": "276e9e59f361bee23b903769e0227844",
+    "hash": "4b6df80d022a1cc67614aaf973317183",
+    "content-hash": "7385402c85b016e0593db4712c23ac91",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -895,16 +895,16 @@
         },
         {
             "name": "h4cc/wkhtmltoimage-i386",
-            "version": "0.12.2.1",
+            "version": "0.12.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/h4cc/wkhtmltoimage-i386.git",
-                "reference": "7353ee02a7170b3401b57273014c8ecf667bca6e"
+                "reference": "af38a5a957d811c26d7661e4b6527a8517c92050"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/h4cc/wkhtmltoimage-i386/zipball/7353ee02a7170b3401b57273014c8ecf667bca6e",
-                "reference": "7353ee02a7170b3401b57273014c8ecf667bca6e",
+                "url": "https://api.github.com/repos/h4cc/wkhtmltoimage-i386/zipball/af38a5a957d811c26d7661e4b6527a8517c92050",
+                "reference": "af38a5a957d811c26d7661e4b6527a8517c92050",
                 "shasum": ""
             },
             "bin": [
@@ -931,20 +931,60 @@
                 "thumbnail",
                 "wkhtmltoimage"
             ],
-            "time": "2015-01-22 08:00:16"
+            "time": "2016-02-02 19:38:59"
         },
         {
-            "name": "h4cc/wkhtmltopdf-i386",
-            "version": "0.12.2.1",
+            "name": "h4cc/wkhtmltopdf-amd64",
+            "version": "0.12.3",
             "source": {
                 "type": "git",
-                "url": "https://github.com/h4cc/wkhtmltopdf-i386.git",
-                "reference": "9fac188d05e0893393e8c69c59a19caa8376f8ec"
+                "url": "https://github.com/h4cc/wkhtmltopdf-amd64.git",
+                "reference": "b80ce6720349e98cebac7e8a19426455805fa7e1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/h4cc/wkhtmltopdf-i386/zipball/9fac188d05e0893393e8c69c59a19caa8376f8ec",
-                "reference": "9fac188d05e0893393e8c69c59a19caa8376f8ec",
+                "url": "https://api.github.com/repos/h4cc/wkhtmltopdf-amd64/zipball/b80ce6720349e98cebac7e8a19426455805fa7e1",
+                "reference": "b80ce6720349e98cebac7e8a19426455805fa7e1",
+                "shasum": ""
+            },
+            "bin": [
+                "bin/wkhtmltopdf-amd64"
+            ],
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL Version 3"
+            ],
+            "authors": [
+                {
+                    "name": "Julius Beckmann",
+                    "email": "github@h4cc.de"
+                }
+            ],
+            "description": "Convert html to pdf using webkit (qtwebkit). Static linked linux binary for amd64 systems.",
+            "homepage": "http://wkhtmltopdf.org/",
+            "keywords": [
+                "binary",
+                "convert",
+                "pdf",
+                "snapshot",
+                "thumbnail",
+                "wkhtmltopdf"
+            ],
+            "time": "2016-02-02 19:38:55"
+        },
+        {
+            "name": "h4cc/wkhtmltopdf-i386",
+            "version": "0.12.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/h4cc/wkhtmltopdf-i386.git",
+                "reference": "79f2f8ed78d35f5541beceb2ec6fcd01a76e05ba"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/h4cc/wkhtmltopdf-i386/zipball/79f2f8ed78d35f5541beceb2ec6fcd01a76e05ba",
+                "reference": "79f2f8ed78d35f5541beceb2ec6fcd01a76e05ba",
                 "shasum": ""
             },
             "bin": [
@@ -971,7 +1011,7 @@
                 "thumbnail",
                 "wkhtmltopdf"
             ],
-            "time": "2015-01-22 07:59:36"
+            "time": "2016-02-02 19:38:57"
         },
         {
             "name": "incenteev/composer-parameter-handler",
@@ -1417,16 +1457,16 @@
         },
         {
             "name": "paragonie/random_compat",
-            "version": "1.1.6",
+            "version": "v1.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/paragonie/random_compat.git",
-                "reference": "e6f80ab77885151908d0ec743689ca700886e8b0"
+                "reference": "b0e69d10852716b2ccbdff69c75c477637220790"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/paragonie/random_compat/zipball/e6f80ab77885151908d0ec743689ca700886e8b0",
-                "reference": "e6f80ab77885151908d0ec743689ca700886e8b0",
+                "url": "https://api.github.com/repos/paragonie/random_compat/zipball/b0e69d10852716b2ccbdff69c75c477637220790",
+                "reference": "b0e69d10852716b2ccbdff69c75c477637220790",
                 "shasum": ""
             },
             "require": {
@@ -1461,7 +1501,7 @@
                 "pseudorandom",
                 "random"
             ],
-            "time": "2016-01-29 16:19:52"
+            "time": "2016-02-06 03:52:05"
         },
         {
             "name": "psr/log",
