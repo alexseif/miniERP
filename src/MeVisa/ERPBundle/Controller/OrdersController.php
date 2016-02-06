@@ -551,7 +551,7 @@ class OrdersController extends Controller
 
         $myProjectDirectory = __DIR__ . '/../../../../';
         $invoicePath = $myProjectDirectory . 'web/invoices/mevisa-invoice-' . $order->getNumber() . '-' . $invoice->getId() . '.pdf';
-        $this->get('knp_snappy.pdf')->generate('http://www.google.fr', '/path/to/the/file.pdf');
+        $this->get('knp_snappy.pdf')->generate('http://www.google.fr', $invoicePath);
 //        $fs = new Filesystem();
 //
 //        if (!$fs->exists($invoicePath)) {
