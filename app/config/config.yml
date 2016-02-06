@@ -107,3 +107,13 @@ fos_user:
 sonata_intl:
     timezone:
         default: Europe/Moscow
+        
+knp_snappy:
+    pdf:
+        enabled:    true
+        binary:     "%kernel.root_dir%/../bin/wkhtmltopdf-i386"
+        options:    []
+    image:
+        enabled:    false
+        binary:     "%kernel.root_dir%/../bin/wkhtmltoimage-i386"
+        options:    []
