@@ -119,3 +119,4 @@ knp_snappy:
         enabled:    false
         binary:     "%kernel.root_dir%/../bin/wkhtmltoimage-i386"
         options:    []
+    temporary_folder: %kernel.cache_dir%/snappy
