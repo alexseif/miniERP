@@ -557,7 +557,7 @@ class OrdersController extends Controller
             'invoice' => $invoice
                 )
         );
-        $this->get('knp_snappy.pdf')->generate('http://www.google.com', $invoicePath);
+        $this->get('knp_snappy.pdf')->generateFromHtml($renderedView, $invoicePath);
 //        $fs = new Filesystem();
 //
 //        if (!$fs->exists($invoicePath)) {
