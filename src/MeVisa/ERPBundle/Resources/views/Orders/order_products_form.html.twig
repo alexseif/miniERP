@@ -1,12 +1,9 @@
-<style type="text/css">
-    .orderProducts th{width: 23%;}
-</style>
 <div class="panel panel-default">
     <div class='panel-heading'>
         <span class="panel-title">Products</span>
         <a href="#" class="btn text-primary add_product_link btn-xs pull-right"><span class="glyphicon glyphicon-plus-sign" title="Add another product"></span> Add another product</a>
     </div>
-    <table class="table table-hover table-condensed table-striped">
+    <table class="table table-hover table-condensed table-striped order-products-form">
         <thead>
             <tr>
                 <th style="width: 31%;">{{ form_label(form.orderProducts.vars.prototype.product) }}</th>
