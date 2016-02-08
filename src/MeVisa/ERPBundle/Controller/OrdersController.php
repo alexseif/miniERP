@@ -88,11 +88,6 @@ class OrdersController extends Controller
             $em->flush();
 
             $payments = $order->getOrderPayments();
-            foreach ($payments as $payment) {
-                if ("paid" == $payment->getState()) {
-                    $this->generateInvoice($order->getId());
-                }
-            }
 
             return $this->redirect($this->generateUrl('orders_show', array('id' => $order->getId())));
         } else {
@@ -326,11 +321,7 @@ class OrdersController extends Controller
             $em->flush();
 
             $payments = $order->getOrderPayments();
-            foreach ($payments as $payment) {
-                if ("paid" == $payment->getState()) {
-                    $this->generateInvoice($order->getId());
-                }
-            }
+
             return $this->redirect($this->generateUrl('orders_show', array('id' => $order->getId())));
         } else {
             foreach ($form->getErrors() as $error) {
