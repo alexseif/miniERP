@@ -37,10 +37,10 @@ function addProductForm() {
         updatePricesAndTotals();
     });
 
-    if (index >= 1) {
-        $qty = $('input[name="mevisa_erpbundle_orders[orderProducts][0][quantity]"]').val();
-        $('input[name="mevisa_erpbundle_orders[orderProducts][' + index + '][quantity]"]').val($qty);
-    }
+//    if (index >= 1) {
+//        $qty = $('input[name="mevisa_erpbundle_orders[orderProducts][0][quantity]"]').val();
+//        $('input[name="mevisa_erpbundle_orders[orderProducts][' + index + '][quantity]"]').val($qty);
+//    }
     $('.remove_product_link').show();
     $('select[name="mevisa_erpbundle_orders[orderProducts][' + index + '][product]"]').focus();
 }
@@ -64,6 +64,16 @@ $(document).ready(function () {
 
 
     $productHolder.data('index', $('tbody.orderProducts tr').length);
+    for (i = 0; i < $productHolder.data('index'); i++)
+    {
+        $('select[name="mevisa_erpbundle_orders[orderProducts][' + i + '][product]"]').change(function () {
+            updatePricesAndTotals();
+        });
+        $('input[name="mevisa_erpbundle_orders[orderProducts][' + i + '][quantity]"]').change(function () {
+            updatePricesAndTotals();
+        });
+    }
+
     $('div.orderPayments').data('index', 0);
     $('div.invoice').data('index', 0);
     $('div.orderComments').data('index', 0);
@@ -127,8 +137,8 @@ $(document).ready(function () {
         $('div.invoice .col-sm-2').remove();
         $('div.invoice .col-sm-10').addClass('col-sm-12');
         $('div.invoice .col-sm-10').removeClass('col-sm-10');
-        if($('#mevisa_erpbundle_orders_invoices_0_customerSignature').empty()){
-           $('#mevisa_erpbundle_orders_invoices_0_customerSignature').val("Адрес: \nпаспорт: \nКонтактный телефон:"); 
+        if ($('#mevisa_erpbundle_orders_invoices_0_customerSignature').empty()) {
+            $('#mevisa_erpbundle_orders_invoices_0_customerSignature').val("Адрес: \nпаспорт: \nКонтактный телефон:");
         }
     }
     addPrototypeForm('div.orderComments', '<div></div>');

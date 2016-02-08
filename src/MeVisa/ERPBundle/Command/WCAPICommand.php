@@ -155,10 +155,12 @@ class WCAPICommand extends ContainerAwareCommand
                 $em->persist($product);
             }
 
+            $productPricing = $product->getPricing();
+            $unitPrice = $productPricing[0]->getPrice();
             $orderProduct = new OrderProducts();
             $orderProduct->setProduct($product);
-            $orderProduct->setQuantity($lineItem['quantity']);
-            $orderProduct->setUnitPrice($lineItem['price'] * 100);
+            $orderProduct->setQuantity(($lineItem['total']*100)/$unitPrice);
+            $orderProduct->setUnitPrice($unitPrice);
             $orderProduct->setTotal($lineItem['total'] * 100);
 
             $order->addOrderProduct($orderProduct);
