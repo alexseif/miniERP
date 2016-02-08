@@ -16,7 +16,7 @@ class CurrencyRepository extends EntityRepository
     {
         return $this->getEntityManager()
                         ->getRepository("AppBundle:Currency")
-                        ->findOneBy("", "createdAt Desc");
+                        ->findOneBy(array(), array("createdAt" => "Desc"));
     }
 
 }

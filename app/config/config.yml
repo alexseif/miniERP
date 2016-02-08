@@ -43,6 +43,7 @@ twig:
     form:
         resources: ['bootstrap_3_horizontal_layout.html.twig']
     globals:
+        currency: '@app.currency'
 
 # Assetic Configuration
 assetic:

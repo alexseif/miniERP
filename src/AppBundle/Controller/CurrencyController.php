@@ -57,6 +57,7 @@ class CurrencyController extends Controller
         $form->handleRequest($request);
         $entity->setCur1('USD');
         $entity->setCur2('RUB');
+        $entity->setValue($entity->getValue()*100);
         $entity->setCreatedAt(new \DateTime());
 
         if ($form->isValid()) {

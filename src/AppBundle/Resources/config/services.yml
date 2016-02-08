@@ -1,5 +1,13 @@
+parameters:
+    currency.class: AppBundle\Currency\CurrencyService
+
 services:
     onconnect.listener:
         class: AppBundle\EventListener\OnConnect
         tags:
             - { name: doctrine.event_listener, event: postConnect }
+
+    app.currency:
+        class:  %currency.class%
+#        arguments: ['@doctrine.orm.default_entity_manager']
+        arguments: [@doctrine.orm.entity_manager]
