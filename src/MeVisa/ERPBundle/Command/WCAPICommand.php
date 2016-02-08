@@ -23,7 +23,7 @@ class WCAPICommand extends ContainerAwareCommand
     {
         $this
                 ->setName('wcapi:get')
-                ->setDescription('Greet someone');
+                ->setDescription('Fetch orders from WC');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -122,16 +122,19 @@ class WCAPICommand extends ContainerAwareCommand
     {
         $timezone = new \DateTimeZone('UTC');
         foreach ($wcOrderNotes as $note) {
-            $orderComment = new OrderComments();
-            $orderComment->setWcId($note['id']);
-            if ($note['customer_note']) {
-                $orderComment->setComment($note['note'] . "-- Customer: " . $order->getCustomer()->getName());
-            } else {
-                $orderComment->setComment($note['note']);
-            }
+            $ExistingOrderComment = $em->getRepository('MeVisaERPBundle:OrderComments')->findOneBy(array('wcId' => $note['id']));
+            if (!$ExistingOrderComment) {
+                $orderComment = new OrderComments();
+                $orderComment->setWcId($note['id']);
+                if ($note['customer_note']) {
+                    $orderComment->setComment($note['note'] . "-- Customer: " . $order->getCustomer()->getName());
+                } else {
+                    $orderComment->setComment($note['note']);
+                }
 
-            $orderComment->setCreatedAt(new \DateTime($note['created_at'], $timezone));
-            $order->addOrderComment($orderComment);
+                $orderComment->setCreatedAt(new \DateTime($note['created_at'], $timezone));
+                $order->addOrderComment($orderComment);
+            }
         }
     }
 
