@@ -1,5 +1,5 @@
 <style type="text/css">
-    .orderProducts td{width: 23%;}
+    .orderProducts th{width: 23%;}
 </style>
 <div class="panel panel-default">
     <div class='panel-heading'>
@@ -9,7 +9,7 @@
     <table class="table table-hover table-condensed table-striped">
         <thead>
             <tr>
-                <th >{{ form_label(form.orderProducts.vars.prototype.product) }}</th>
+                <th style="width: 31%;">{{ form_label(form.orderProducts.vars.prototype.product) }}</th>
                 <th>{{ form_label(form.orderProducts.vars.prototype.quantity) }}</th>
                 <th>{{ form_label(form.orderProducts.vars.prototype.unitPrice) }}</th>
                 <th>{{ form_label(form.orderProducts.vars.prototype.total) }}</th>
@@ -23,7 +23,7 @@
                }}">
             {% for product in form.orderProducts %}
                 <tr>
-                    <td style="width: 31%;">{{form_widget(product.product)}}</td>
+                    <td>{{form_widget(product.product)}}</td>
                     <td>{{form_widget(product.quantity)}}</td>
                     <td>{{form_widget(product.unitPrice)}}</td>
                     <td>{{form_widget(product.total)}}</td>
