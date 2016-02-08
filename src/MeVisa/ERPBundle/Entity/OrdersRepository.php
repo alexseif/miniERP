@@ -51,7 +51,8 @@ class OrdersRepository extends EntityRepository
                         ->where("c.name LIKE ?1")
                         ->orWhere("c.name LIKE ?1")
                         ->orWhere("o.number LIKE ?1")
-                        ->setParameter("1", "%" . $text)
+                        ->orWhere("c.phone LIKE ?1")
+                        ->setParameter("1", "%" . $text . "%")
                         ->getQuery()
                         ->getResult();
     }
