@@ -55,4 +55,6 @@ and open the template in the editor.
     margin-bottom: 10px !important;
     border-bottom: 1px solid #eee;
 }
-.order-products-form th{width: 23%;}
+.order-products-form th:first-child{width: 40%;}
+.order-products-form th:nth-child(2){width: 10%;}
+.order-products-form th{width: 25%;}
