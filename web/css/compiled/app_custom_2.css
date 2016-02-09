@@ -7,6 +7,7 @@ and open the template in the editor.
     Created on : Sep 27, 2015, 10:25:48 PM
     Author     : alexseif
 */
+.navbar-default .navbar-nav > li > a{font-weight:bold;}
 .ml-5{margin-right: 5px;}
 .firstCol25 th{width: 25%;}
 .panel{border-radius: 5px;}
@@ -14,3 +15,47 @@ and open the template in the editor.
 #currency tr:first-child td{background-color: #dff0d8;font-weight: bold;}
 #currency td:first-child{text-align: right;}
 .navbar-brand:hover{background-color: #eee;text-decoration: none;}
+.order-comment::before,
+.order-comment::after,
+.order-comment-form::before,
+.order-comment-form::after{
+    content: "";
+    display: table;
+    clear: both;
+}
+
+.order-comment{
+    font-size: 14px;
+    background:#eee;
+    padding-left: 15%;
+    padding-right: 15%;
+}
+
+.order-comment ul{
+    list-style-type: none;
+    padding: 0;
+}
+
+.order-comment .post-comments{
+    border: 1px solid #eee;
+    margin-bottom: 10px;
+    padding: 10px 20px;
+    position: relative;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    -o-border-radius: 4px;
+    border-radius: 4px;
+    background: #fff;
+    /*color: #6b6e80;*/
+    position: relative;
+}
+.order-comment .meta {
+    font-size: 13px;
+    color: #aaaaaa;
+    padding-bottom: 8px;
+    margin-bottom: 10px !important;
+    border-bottom: 1px solid #eee;
+}
+.order-products-form th:first-child{width: 40%;}
+.order-products-form th:nth-child(2){width: 10%;}
+.order-products-form th{width: 25%;}

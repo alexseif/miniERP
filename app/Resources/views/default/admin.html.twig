@@ -23,7 +23,7 @@
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><span class="glyphicon glyphicon-cog"></span> <span class="caret"></span></a>
                                 <ul class="dropdown-menu" role="menu">
-                                    <li><a href="{{ path('admin_currency') }}">Currency</a></li>
+                                    {% if is_granted('ROLE_ADMIN') %}<li><a href="{{ path('admin_currency') }}">Currency</a></li>{% endif %}
                                         {#<li><a href="{{ path('admin_vendors') }}">Vendors</a></li>#}
                                     <li><a href="{{ path('admin_products') }}">Products</a></li>
                                         {#<li class="divider"></li>
@@ -38,7 +38,7 @@
                             <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search"></span></button>
                         </form>
                         <ul class="nav navbar-nav navbar-right">
-                            {% if is_granted('ROLE_ADMIN') %}<li style="padding-top: 15px;"><span class="badge">{{ 1|localizedcurrency('USD') }} : {{ (currency.currency.value/100)|localizedcurrency('RUB')}}</span></li>{% endif %}
+                            <li style="padding-top: 15px;"><span class="badge">{{ 1|localizedcurrency('USD') }} : {{ (currency.currency.value/100)|localizedcurrency('RUB')}}</span></li>
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Hi {{ app.user.username }} <span class="caret"></span></a>
                                 <ul class="dropdown-menu" role="menu">

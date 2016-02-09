@@ -504,6 +504,8 @@ class OrdersController extends Controller
      */
     public function invoicepdfAction($id)
     {
+        $this->generateInvoice($id);
+
         $em = $this->getDoctrine()->getManager();
 
         $order = $em->getRepository('MeVisaERPBundle:Orders')->find($id);
@@ -548,7 +550,10 @@ class OrdersController extends Controller
             'invoice' => $invoice
                 )
         );
-        $this->get('knp_snappy.pdf')->generateFromHtml($renderedView, $invoicePath);
+        // $pdfGenerator = new Spraed\PDFGeneratorBundle\SpraedPDFGeneratorBundle();
+        $pdfGenerator = $this->get('spraed.pdf.generator');
+
+        file_put_contents($invoicePath, $pdfGenerator->generatePDF($renderedView, $invoicePath));
 //        $fs = new Filesystem();
 //
 //        if (!$fs->exists($invoicePath)) {

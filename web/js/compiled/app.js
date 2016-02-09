@@ -16,27 +16,37 @@ d.trigger("activate.bs.scrollspy")},b.prototype.clear=function(){a(this.selector
 function addPrototypeForm(selector, wrapper, placement) {
     placement = placement || 'append';
     componentHolder = $(selector);
-    componentHolder.data('index', componentHolder.find(':input').length);
+    if (componentHolder.length) {
 
-    prototype = componentHolder.data('prototype');
-    index = componentHolder.data('index');
+//    componentHolder.data('index', componentHolder.find(':input').length);
 
-    newForm = prototype.replace(/__name__/g, index);
-    componentHolder.data('index', index + 1);
+        prototype = componentHolder.data('prototype');
+        if (prototype) {
+            index = componentHolder.data('index');
 
-    newFormWrapper = $(wrapper).append(newForm);
+            newForm = prototype.replace(/__name__/g, index);
+            componentHolder.data('index', index + 1);
 
-    switch (placement) {
-        case 'after':
-            componentHolder.after(newFormWrapper);
+            newWrapper = $(wrapper);
+            newWrapper.data('step', index);
 
-            break;
-        case 'before':
-            componentHolder.before(newFormWrapper);
-            break;
-        case 'append':
-        default:
-            componentHolder.append(newFormWrapper);
-            break;
+            newFormWrapper = newWrapper.append(newForm);
+
+            switch (placement) {
+                case 'after':
+                    componentHolder.after(newFormWrapper);
+
+                    break;
+                case 'before':
+                    componentHolder.before(newFormWrapper);
+                    break;
+                case 'append':
+                default:
+                    componentHolder.append(newFormWrapper);
+                    break;
+            }
+        }
+    } else {
+        console.log('selector: ' + selector + ' not found');
     }
 }
