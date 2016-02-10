@@ -558,23 +558,6 @@ class OrdersController extends Controller
 //
 //        if (!$fs->exists($invoicePath)) {
 //
-////            $snappy = new Pdf($myProjectDirectory . 'vendor/h4cc/wkhtmltopdf-i386/bin/wkhtmltopdf-i386');
-//            $snappy = $this->get('knp_snappy.pdf');
-//
-//            $snappy->setOption('title', 'MeVisa Invoice ' . $order->getNumber() . '-' . $invoice->getId());
-//            $snappy->setOption('encoding', 'UTF-8');
-//            $snappy->setOption('lowquality', null);
-//
-////            $renderedView = $this->renderView(
-////                    'MeVisaERPBundle:Orders:invoicepdf.html.twig', array(
-////                'order' => $order,
-////                'invoice' => $invoice
-////                    )
-////            );
-////            $snappy->generateFromHtml($renderedView, $invoicePath);
-//            $snappy->generate('http://google.com', $invoicePath);
-//            $invoice->setCreatedAt(new \DateTime());
-//
 //            $em->flush();
 //        }
         return true;
