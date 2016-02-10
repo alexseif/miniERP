@@ -27,7 +27,7 @@
         "woothemes/woocommerce-api": "^2.0",
         "stof/doctrine-extensions-bundle": "^1.2",
         "knplabs/knp-time-bundle": "^1.5",
-        "spipu/html2pdf": "^4.5"
+        "mpdf/mpdf": "^6.0"
     },
     "require-dev": {
         "sensio/generator-bundle": "~2.3"

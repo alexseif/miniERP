@@ -551,9 +551,11 @@ class OrdersController extends Controller
             'invoice' => $invoice
                 )
         );
-        $html2pdf = new \HTML2PDF();
-        $html2pdf->writeHTML($renderedView);
-        $html2pdf->Output($invoicePath.$invoiceName, 'F');
+
+        $mpdf = new \mPDF();
+        $mpdf->WriteHTML($renderedView);
+        $mpdf->Output();
+
 //        $fs = new Filesystem();
 //
 //        if (!$fs->exists($invoicePath)) {

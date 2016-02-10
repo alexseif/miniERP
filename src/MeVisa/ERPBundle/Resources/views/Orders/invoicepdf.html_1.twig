@@ -1,8 +1,10 @@
+<!DOCTYPE html>
 <html>
     <head>
-        <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
-        <link rel="stylesheet" type="text/css" href="{{ absolute_url(asset('css/bootstrap.mins.css')) }}" />
-        <link rel="stylesheet" type="text/css" href="{{ absolute_url(asset('css/custom.css')) }}" />
+        <meta charset="UTF-8" />
+        <title>MeVisa Invoice</title>
+        <link rel="stylesheet" type="text/css" href="http://visallc.nichost.ru/css/bootstrap.min.css" />
+        <link rel="stylesheet" type="text/css" href="http://visallc.nichost.ru/css/custom.css" />
         <style type="text/css">
             body{font-size: 10pt;font-family: serif;}
             table, tr, td, th, tbody, thead, tfoot {page-break-inside: avoid !important;}
@@ -23,32 +25,27 @@
             .srb{width: 100%;max-width: 100%;margin-bottom: 0px;}
             .srb td{padding-left:  8px;line-height: 1.42857143;vertical-align: top;width: 50%;word-wrap: normal;}
             .srb td:first-child{border-right: 1px solid #ddd;}
-        </style>  
+        </style>    
     </head>
-    <body>        
-        <div class="page">
-            <page_header>
-                <div class="row page-header">
-                    <div class="col-xs-12">
-                        <table style="width: 100%;">
-                            <tr>
-                                <td>ООО "ВИЗА"</td>
-                                <td style="text-align: right;"><img src="{{ absolute_url(asset('images/visa_logo.png')) }}" alt="Visa LLC" height="50px"/></td>
-                            </tr>
-                            <tr>
-                                <td>Адрес:</td>
-                                <td><small> Москва ул. Маросейка 7/8 офис 210, тел.+7(499) 713-49-00, +7(812) 906-22-83, +7(499) 714-69-09</small></td>
-                            </tr>
-                        </table>
-                    </div>
+    <body>
+        <div class="page invoice">
+            <div class="row page-header">
+                <div class="col-xs-12">
+                    <table style="width: 100%;">
+                        <tr>
+                            <th>ООО "ВИЗА"</th>
+                            <td class="text-right"><img src="http://visallc.nichost.ru/images/sm_new_mevisa.png" alt="MeVisa"/></td>
+                        </tr>
+                    </table>
+                    Адрес:<small> Москва ул. Маросейка 7/8 офис 210, тел.+7(499) 713-49-00, +7(812) 906-22-83, +7(499) 714-69-09</small>
                 </div>
-            </page_header>
-            {#<div class="row">
+            </div>
+            <div class="row">
                 <div class="col-xs-12">
                     <h1 class="text-center">Счет № {{ invoice.id }}  от {{ "now" | format_date(null, 'ru', 'Europe/Moscow', constant('IntlDateFormatter::LONG')) }}</h1>
                 </div>
-            </div>#}
-            {#<div class="row">
+            </div>
+            <div class="row">
                 <div class="col-xs-6 col-xs-offset-3">
                     <table class="table tb">
                         <tbody>
@@ -58,11 +55,10 @@
                                 <th class="lb">КПП:</th>
                                 <td>770101001</td>
                             </tr>
-                        </tbody>
                     </table>
                 </div>
-            </div>#}
-            {#<div class="row">
+            </div>
+            <div class="row">
                 <div class="col-xs-10 col-xs-offset-1">
                     <table class="table tb">
                         <thead>
@@ -73,7 +69,8 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <td>ООО "ВИЗА"<br/>
+                                <td>
+                                    ООО "ВИЗА"<br/>
                                     Счет №: 40702810738000007699
                                 </td>
                                 <td class="lb">
@@ -85,16 +82,16 @@
                         </tbody>
                     </table>
                 </div>
-            </div>#}
-            {#<div class="row">
+            </div>
+            <div class="row">
                 <div class="col-xs-2"><label>Заказчик:</label></div>
                 <div class="col-xs-10">{{order.customer.name}}</div>
-            </div>#}
-            {#<div class="row">
+            </div>
+            <div class="row">
                 <div class="col-xs-2"><label>Плательщик:</label></div>
                 <div class="col-xs-10">{{order.customer.name}}</div>
-            </div>#}
-            {#<table class="table table-bordered">
+            </div>
+            <table class="table table-bordered">
                 <thead>
                     <tr>
                         <th>№</th>
@@ -107,7 +104,7 @@
                 <tbody>
                     {% for key, product in order.orderProducts %}
                         <tr>
-                            {# FIXME: row number 
+                            {# FIXME: row number #}
                             <td>{{ key + 1 }}</td>
                             <td>{{ product.product.name }}</td>
                             <td>{{ product.quantity }}</td>
@@ -122,43 +119,38 @@
                         <th>{{ (order.total/100)|localizedcurrency('RUB') }}</th>
                     </tr>
                 </tfoot>
-            </table>#}
+            </table>
             {# TODO: load values#}
-            {#<div class="row" style="position: relative;bottom: 5px;">
+            <div class="row" style="position: relative;bottom: 5px;">
                 <div class="col-xs-12">
                     <table class="srb">
-                        <tbody>
-                            <tr>
-                                <td>
-                                    <p>Руководитель предприятия</p>
-                                    <p>( Вазири Тарек Махмуд Мохамед )</p>
-                                    <br/>
-                                    <p>_____________________________</p>
-                                </td>
-                                <td>
-                                    <p>Главный бухгалтер</p>
-                                    <p>( Вазири Тарек Махмуд Мохамед )</p>
-                                    <br/>
-                                    <p>_____________________________</p>
-                                </td>
-                            </tr>
-                        </tbody>
+                        <tr>
+                            <td>
+                                <p>Руководитель предприятия</p>
+                                <p>( Вазири Тарек Махмуд Мохамед )</p>
+                                <br/>
+                                <p>_____________________________</p>
+                            </td>
+                            <td>
+                                <p>Главный бухгалтер</p>
+                                <p>( Вазири Тарек Махмуд Мохамед )</p>
+                                <br/>
+                                <p>_____________________________</p>
+                            </td>
+                        </tr>
                     </table>
                 </div>
-            </div>#}
+            </div>
         </div>
-    <page>
-        {#<div class="agreement">
+        <div class="page agreement">
             <div class="row page-header" style="margin-bottom: 10px;">
                 <div class="col-xs-12">
                     <table style="width: 100%;">
-                        <tbody>
-                            <tr>
-                                <td>г.  Москва</td>
-                                <td class="text-center"><h1 class="text-center" style="margin: 0px;"><small>ДОГОВОР ОБ ОКАЗАНИИ ВИЗОВЫХ УСЛУГ №7945</small></h1></td>
-                                <td class="text-right">{{ "now" | format_date(null, 'ru', 'Europe/Moscow', constant('IntlDateFormatter::LONG')) }}</td>
-                            </tr>
-                        </tbody>
+                        <tr>
+                            <td>г.  Москва</td>
+                            <td class="text-center"><h1 class="text-center" style="margin: 0px;"><small>ДОГОВОР ОБ ОКАЗАНИИ ВИЗОВЫХ УСЛУГ №7945</small></h1></td>
+                            <td class="text-right">{{ "now" | format_date(null, 'ru', 'Europe/Moscow', constant('IntlDateFormatter::LONG')) }}</td>
+                        </tr>
                     </table>
                 </div>
             </div>
@@ -228,20 +220,16 @@
                     </div>
                 </div>
             </div>
-        </div>#}
-    </page>
-    <page>
-        {#<div class="agreement2">
+        </div>
+        <div class="page agreement2">
             <div class="row page-header" style="margin-bottom: 10px;">
                 <div class="col-xs-12">
                     <table style="width: 100%;">
-                        <tbody>
-                            <tr>
-                                <td style="width:10%;"></td>
-                                <td class="text-center"><h1 class="text-center" style="margin: 0px;"><small>Штрафы, налагаемые Иммиграционными властями:</small></h1></td>
-                                <td class="text-right">{{ "now" | format_date(null, 'ru', 'Europe/Moscow', constant('IntlDateFormatter::LONG')) }}</td>
-                            </tr>
-                        </tbody>
+                        <tr>
+                            <td style="width:10%;"></td>
+                            <td class="text-center"><h1 class="text-center" style="margin: 0px;"><small>Штрафы, налагаемые Иммиграционными властями:</small></h1></td>
+                            <td class="text-right">{{ "now" | format_date(null, 'ru', 'Europe/Moscow', constant('IntlDateFormatter::LONG')) }}</td>
+                        </tr>
                     </table>
                 </div>
             </div>
@@ -251,7 +239,6 @@
                 </div>
             </div>
             {% include 'MeVisaERPBundle:Orders:invoiceSignature.html.twig' %}
-        </div>#}
-    </page>
-</body>
+        </div>
+    </body>
 </html>
