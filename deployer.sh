@@ -1,4 +1,5 @@
 git pull
+export SYMFONY_ENV=prod
 php -c ~/etc/php.ini composer.phar install --no-dev --optimize-autoloader
 php -c ~/etc/php.ini app/console cache:clear --env=prod --no-debug
 php -c ~/etc/php.ini app/console assetic:dump --env=prod --no-debug
