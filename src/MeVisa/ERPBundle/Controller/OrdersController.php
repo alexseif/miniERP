@@ -543,17 +543,17 @@ class OrdersController extends Controller
         }
 
         $myProjectDirectory = __DIR__ . '/../../../../';
-        $invoicePath = $myProjectDirectory . 'web/invoices/mevisa-invoice-' . $order->getNumber() . '-' . $invoice->getId() . '.pdf';
+        $invoiceName = 'mevisa-invoice-' . $order->getNumber() . '-' . $invoice->getId() . '.pdf';
+        $invoicePath = $myProjectDirectory . 'web/invoices/';
         $renderedView = $this->renderView(
                 'MeVisaERPBundle:Orders:invoicepdf.html.twig', array(
             'order' => $order,
             'invoice' => $invoice
                 )
         );
-        // $pdfGenerator = new Spraed\PDFGeneratorBundle\SpraedPDFGeneratorBundle();
-        $pdfGenerator = $this->get('spraed.pdf.generator');
-
-        file_put_contents($invoicePath, $pdfGenerator->generatePDF($renderedView, $invoicePath));
+        $html2pdf = new \HTML2PDF();
+        $html2pdf->writeHTML($renderedView);
+        $html2pdf->Output($invoicePath.$invoiceName, 'F');
 //        $fs = new Filesystem();
 //
 //        if (!$fs->exists($invoicePath)) {
