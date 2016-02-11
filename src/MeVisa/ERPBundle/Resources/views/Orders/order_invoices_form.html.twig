@@ -5,7 +5,12 @@
     <div class="panel-body">
         {% if form.invoices|length %}
             {% for invoice in form.invoices %}
-                <div class="invoice">{{form_widget(invoice) }}</div>
+                {{ dump(invoice) }}
+                {%if invoice.vars['data'].createdAt is empty %}
+                    <div class="invoice">{{form_widget(invoice) }}</div>
+                {% else %}
+                    <div class="invoice">{{form_widget(invoice,  { 'attr':{'disabled':true} }) }}</div>
+                {% endif %}
             {% endfor %}
         {% else %}
             <div class="invoice" data-prototype="{{ form_widget(form.invoices.vars.prototype)|e  }}"></div>
