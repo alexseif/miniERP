@@ -5,7 +5,6 @@
     <div class="panel-body">
         {% if form.invoices|length %}
             {% for invoice in form.invoices %}
-                {{ dump(invoice) }}
                 {%if invoice.vars['data'].createdAt is empty %}
                     <div class="invoice">{{form_widget(invoice) }}</div>
                 {% else %}
