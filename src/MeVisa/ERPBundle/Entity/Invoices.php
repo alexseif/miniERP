@@ -40,14 +40,11 @@ class Invoices
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="createdAt", type="datetime")
+     * @Gedmo\Versioned
+     * @ORM\Column(name="createdAt", type="datetime", nullable=true)
      */
     private $createdAt;
 
-    function __construct()
-    {
-        $this->setCreatedAt(new \DateTime());
-    }
 
     /**
      * Get id

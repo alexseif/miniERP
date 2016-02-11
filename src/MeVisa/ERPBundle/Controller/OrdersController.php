@@ -231,7 +231,7 @@ class OrdersController extends Controller
                 $document->thumbnail = implode('/', $parts);
             } else {
                 $document->thumbnail = false;
-                $document->setPath($this->get('request')->getScheme() . '://' . $this->get('request')->getHttpHost() . $this->get('request')->getBasePath() .'/'. $document->getWebPath());
+                $document->setPath($this->get('request')->getScheme() . '://' . $this->get('request')->getHttpHost() . $this->get('request')->getBasePath() . '/' . $document->getWebPath());
             }
         }
         return array(
@@ -511,27 +511,14 @@ class OrdersController extends Controller
     /**
      * Finds and displays a Orders entity.
      *
-     * @Route("/{id}/invoicepdf", name="order_show_pdf")
+     * @Route("/{id}/invoicepdf", name="order_generate_pdf")
      * @Method("GET")
      */
     public function invoicepdfAction($id)
     {
         $this->generateInvoice($id);
-
-        $em = $this->getDoctrine()->getManager();
-
-        $order = $em->getRepository('MeVisaERPBundle:Orders')->find($id);
-        $invoice = new Invoices();
-
-        $invoices = $order->getInvoices();
-        foreach ($invoices as $inv) {
-            $invoice = $inv;
-        }
-        return new \Symfony\Component\HttpFoundation\Response();
-        return array(
-            'order' => $order,
-            'invoice' => $invoice
-        );
+        $this->addFlash('success', 'invoice generated');
+        return $this->redirect($this->generateUrl('orders_show', array('id' => $id)));
     }
 
     /**
@@ -553,6 +540,7 @@ class OrdersController extends Controller
         foreach ($invoices as $inv) {
             $invoice = $inv;
         }
+        $invoice->setCreatedAt(new \DateTime());
 
         $myProjectDirectory = __DIR__ . '/../../../../';
         $invoiceName = 'mevisa-invoice-' . $order->getNumber() . '-' . $invoice->getId() . '.pdf';
@@ -587,8 +575,7 @@ class OrdersController extends Controller
         $mpdf->WriteHTML($pdfWaiverHTML);
         $mpdf->Output($invoicePath . $invoiceName, 'F');
 
-//
-//            $em->flush();
+        $em->flush();
         return true;
     }
 
