@@ -1,0 +1,22 @@
+@page {
+    margin-top: 5mm;
+    margin-bottom: 5mm;
+}
+body{font-size: 10pt;text-align: justify;}
+table, tr, td, th, tbody, thead, tfoot {page-break-inside: avoid !important;}
+td, th{padding: 8px;}
+h1{font-size: 15pt;}
+.page {overflow: hidden;page-break-after: always;}
+.do-not-print{display: none;}
+.border-right{border-right:  1px solid #ddd;}
+.numbered-list OL{ counter-reset: item;}
+.numbered-list LI { display: block; }
+.numbered-list LI:before { content: counters(item, ".") " "; counter-increment: item; }
+.numbered-list OL{padding-left: 0px;}
+.numbered-list OL OL{padding-left: 20px;}
+.agreement{text-align: justify;}
+.sign{text-align: left;}
+.sign td{padding-left: 12px; font-size: x-small;}
+.tb{border: 1px solid #ddd;}
+.lb{border-left: 1px solid #ddd;}
+.bold{font-weight: bold;}

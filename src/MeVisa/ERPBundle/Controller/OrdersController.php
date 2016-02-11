@@ -500,7 +500,6 @@ class OrdersController extends Controller
      *
      * @Route("/{id}/invoicepdf", name="order_show_pdf")
      * @Method("GET")
-     * @Template()
      */
     public function invoicepdfAction($id)
     {
@@ -515,7 +514,7 @@ class OrdersController extends Controller
         foreach ($invoices as $inv) {
             $invoice = $inv;
         }
-
+        return new \Symfony\Component\HttpFoundation\Response();
         return array(
             'order' => $order,
             'invoice' => $invoice
@@ -545,23 +544,38 @@ class OrdersController extends Controller
         $myProjectDirectory = __DIR__ . '/../../../../';
         $invoiceName = 'mevisa-invoice-' . $order->getNumber() . '-' . $invoice->getId() . '.pdf';
         $invoicePath = $myProjectDirectory . 'web/invoices/';
-        $renderedView = $this->renderView(
-                'MeVisaERPBundle:Orders:invoicepdf.html.twig', array(
+        $pdfInvoiceHTML = $this->renderView(
+                'MeVisaERPBundle:Orders:pdfinvoice.html.twig', array(
+            'order' => $order,
+            'invoice' => $invoice
+                )
+        );
+        $pdfAgreementHTML = $this->renderView(
+                'MeVisaERPBundle:Orders:pdfagreement.html.twig', array(
+            'order' => $order,
+            'invoice' => $invoice
+                )
+        );
+        $pdfWaiverHTML = $this->renderView(
+                'MeVisaERPBundle:Orders:pdfwaiver.html.twig', array(
             'order' => $order,
             'invoice' => $invoice
                 )
         );
 
-        $mpdf = new \mPDF();
-        $mpdf->WriteHTML($renderedView);
-        $mpdf->Output();
 
-//        $fs = new Filesystem();
-//
-//        if (!$fs->exists($invoicePath)) {
+        $mpdf = new \mPDF("ru-RU", "A4");
+        $mpdf->SetTitle("MeVisa Invoice " . $order->getNumber() . '-' . $invoice->getId());
+        $mpdf->SetAuthor("Visa LLC");
+        $mpdf->WriteHTML($pdfInvoiceHTML);
+        $mpdf->AddPage();
+        $mpdf->WriteHTML($pdfAgreementHTML);
+        $mpdf->AddPage();
+        $mpdf->WriteHTML($pdfWaiverHTML);
+        $mpdf->Output($invoicePath . $invoiceName, 'F');
+
 //
 //            $em->flush();
-//        }
         return true;
     }
 
