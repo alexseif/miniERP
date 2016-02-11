@@ -13,7 +13,7 @@
                         <td class="text-right">
                             {{ (order.total/100)|localizedcurrency('RUB') }}
                         </td>
-{#                        <td>{{ order.createdAt|localizeddate('short', 'short') }}</td>#}
+                        {#                        <td>{{ order.createdAt|localizeddate('short', 'short') }}</td>#}
                         <td>{{ order.createdAt|ago }}</td>
                         <td class="text-right">
                             {#<span class="label
@@ -25,6 +25,7 @@
                                   {% if order.state == "backoffice" %}label-info                                                      
                                   {% elseif order.state == "post" %}label-primary
                                   {% elseif order.state == "document" %}label-warning
+                                  {% elseif order.state == "approved" %}label-success
                                   {% else %}label-default
                                   {% endif %}
                                   ">{{ order.state|upper }}</span>

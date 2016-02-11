@@ -25,7 +25,7 @@ class OrderState
         $this->addState('document', 'Document', 'warning');
         $this->addState('post', 'Post', 'success');
         $this->addState('approved', 'Approved', 'success');
-        $this->addState('rejected', 'Rejected', 'danger');
+        $this->addState('rejected', 'Rejected', 'default');
 
         $this->addChild('backoffice', 'not_paid');
         $this->addChild('backoffice', 'document');

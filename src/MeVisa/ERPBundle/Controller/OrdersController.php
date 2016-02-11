@@ -82,6 +82,10 @@ class OrdersController extends Controller
                 //  echo "Still no Customer <br/>";
             }
 
+            if ("approved" == $order->getState() || "rejected" == $order->getState()) {
+                $order->setCompletedAt(new \DateTime());
+            }
+
             $this->setOrderDetails($order);
 
             $em->persist($order);
@@ -329,7 +333,13 @@ class OrdersController extends Controller
         if ($editForm->isValid()) {
             $this->setOrderDetails($order);
 
-            $order->setUpdatedAt(new \DateTime());
+            if (empty($order->getUpdatedAt())) {
+                $order->setUpdatedAt(new \DateTime());
+            }
+
+            if ("approved" == $order->getState() || "rejected" == $order->getState()) {
+                $order->setCompletedAt(new \DateTime());
+            }
 
             $em->flush();
 
@@ -438,8 +448,13 @@ class OrdersController extends Controller
                     $order->setState($key);
                 }
             }
-            $order->setUpdatedAt(new \DateTime());
-
+            if ("approved" == $order->getState() || "rejected" == $order->getState()) {
+                $order->setCompletedAt(new \DateTime());
+            }
+            
+            if (empty($order->getUpdatedAt())) {
+                $order->setUpdatedAt(new \DateTime());
+            }
             $em->flush();
 
             return $this->redirect($this->generateUrl('orders_show', array('id' => $id)));

@@ -22,6 +22,14 @@ class OrdersRepository extends EntityRepository
                         ->getResult();
     }
 
+    public function findAllComplete()
+    {
+        return $this->createQueryBuilder('o')
+                        ->Where("DATE_DIFF(o.completedAt, CURRENT_DATE()) = 0")
+                        ->getQuery()
+                        ->getResult();
+    }
+
     public function findAllPending()
     {
         return $this->createQueryBuilder('o')

@@ -23,7 +23,7 @@ class DefaultController extends Controller
         $backoffice = $em->getRepository('MeVisaERPBundle:Orders')->findAllByState("backoffice");
         $document = $em->getRepository('MeVisaERPBundle:Orders')->findAllByState("document");
         $post = $em->getRepository('MeVisaERPBundle:Orders')->findAllByState("post");
-        $completed = $em->getRepository('MeVisaERPBundle:Orders')->findAllByState("approved");
+        $completed = $em->getRepository('MeVisaERPBundle:Orders')->findAllComplete();
 
         return array(
             "pending" => $pending,
