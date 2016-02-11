@@ -38,6 +38,7 @@ class OrdersType extends AbstractType
                     'required' => false,
                     'read_only' => true))
                 ->add('people', 'number', array(
+                    'label' => 'PAX No',
                     'attr' => array('min' => 1)
                 ))
                 ->add('departure', 'date', array(
