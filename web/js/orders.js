@@ -18,6 +18,19 @@ function updatePricesAndTotals() {
     total = subtotal + parseInt($('input[name="mevisa_erpbundle_orders[adjustmentTotal]"]').val());
     $('input[name="mevisa_erpbundle_orders[total]"]').val(total);
     $('input[name="order_total"]').val(total);
+    if ("paid" === $('input[name="mevisa_erpbundle_orders[orderPayments][0][state]"]:checked').val()) {
+        if (total === parseInt($('input[name="mevisa_erpbundle_orders[orderPayments][0][amount]"]').val())) {
+            $('#payment-panel').removeClass('panel-danger');
+            $('#payment-panel').addClass('panel-default');
+            $('#payment-panel .form-group:nth-child(3)').removeClass('has-error');
+        } else {
+            $('#payment-panel').removeClass('panel-default');
+            $('#payment-panel').addClass('panel-danger');
+            $('#payment-panel .form-group:nth-child(3)').addClass('has-error');
+        }
+    } else {
+        $('input[name="mevisa_erpbundle_orders[orderPayments][0][amount]"]').val(total);
+    }
 }
 
 function addProductForm() {
