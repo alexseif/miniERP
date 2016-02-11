@@ -1,8 +1,15 @@
 <div class='panel panel-default'>
     <div class="panel-heading">Payee Invoice Signature Details</div>
-    <div class='panel-body'>
+    <table class="table table-condensed invoice">
         {% for invoice in order.invoices %}
-            {{ invoice.customerSignature|nl2br }}
+            <tr class="{{ loop.last ? 'bg-success' : 'text-muted' }}">
+                <td>Invoice #:{{ invoice.id }}<br/>{{ invoice.createdat|localizeddate('short') }}</td>
+                <td>{{ invoice.customerSignature|nl2br }}</td>
+            </tr>
         {% endfor %}
+    </table>
+    <div class="panel-footer text-right">
+        <a class='btn btn-default'>Generate</a>
+        <a class='btn btn-default'><span class="glyphicons glyphicons-send"></span>Send</a>
     </div>
 </div>

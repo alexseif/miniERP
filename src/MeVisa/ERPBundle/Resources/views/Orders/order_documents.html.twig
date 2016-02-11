@@ -5,20 +5,16 @@
     </div>
     <div class="panel-body">
         <div class="row">
-            {%for document in order.orderDocuments%}
+            {%for document in documents%}
                 <div class="col-xs-12 col-md-6">
-                    {% if document.path starts with 'http://www.mevisa.ru/' %}
-                        <a href="{{ document.path }}" class="thumbnail" target="_blank">
-                            {% if document.path ends with 'pdf' %}
-                                <span class="glyphicon glyphicon-file"></span>
-                            {% else %}
-                                <img src="{{ document.path }}" alt="{{ document.name }}" />
-                            {% endif %}
-                            {{ document.name }}
-                        </a>
-                    {% else %}
-                        <a href="{{ app.request.scheme ~ '://' ~ app.request.host ~ '/' ~ document.getWebPath }}" target="_blank">{{ document.name }}</a>
-                    {% endif %}
+                    <a href="{{ document.path}}" class="thumbnail" target="_blank">
+                        {% if document.path ends with 'pdf' %}
+                            <span class="glyphicon glyphicon-file"></span>
+                        {% else %}
+                            <img src="{{ document.thumbnail ? document.thumbnail : document.path }}" alt="{{ document.name }}" width="100%"/>
+                        {% endif %}
+                        <span style="word-wrap: break-word;">{{ document.name }}</span>
+                    </a>
                 </div>
             {% endfor %}
         </div>

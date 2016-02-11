@@ -7,6 +7,15 @@ and open the template in the editor.
     Created on : Sep 27, 2015, 10:25:48 PM
     Author     : alexseif
 */
+.table-success {
+    color: #fff;
+    background-color: #dff0d8;
+    border-color: #4cae4c;
+}
+tr.bg-success:hover,
+tr.bg-success:focus {
+    background-color: #c1e2b3;
+}
 .navbar-default .navbar-nav > li > a{font-weight:bold;}
 .ml-5{margin-right: 5px;}
 .firstCol25 th{width: 25%;}

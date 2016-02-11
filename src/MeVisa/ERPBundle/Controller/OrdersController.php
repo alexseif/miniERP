@@ -222,8 +222,21 @@ class OrdersController extends Controller
         $commentForm = $this->createCommentForm($orderComment);
         $statusForm = $this->createStatusForm($order);
 
+        $orderDocuments = $order->getOrderDocuments();
+        foreach ($orderDocuments as $document) {
+            if (0 === strpos($document->getPath(), 'http://www.mevisa.ru/')) {
+                $parts = explode('/', $document->getPath());
+                $parts[count($parts) - 2] = 'thumbs';
+                $parts[count($parts) - 1] = $document->getName();
+                $document->thumbnail = implode('/', $parts);
+            } else {
+                $document->thumbnail = false;
+                $document->setPath($this->get('request')->getScheme() . '://' . $this->get('request')->getHttpHost() . $this->get('request')->getBasePath() .'/'. $document->getWebPath());
+            }
+        }
         return array(
             'order' => $order,
+            'documents' => $orderDocuments,
             'status_form' => $statusForm->createView(),
             'comment_form' => $commentForm->createView(),
         );
