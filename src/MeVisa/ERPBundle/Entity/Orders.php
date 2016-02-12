@@ -190,7 +190,7 @@ class Orders
         $this->startOrderStateEnginge();
 
         $this->orderProducts = new ArrayCollection();
-//        $this->orderPayments = new ArrayCollection();
+        $this->orderPayments = new ArrayCollection();
         $this->orderCompanions = new ArrayCollection();
         $this->orderComments = new ArrayCollection();
         $this->orderDocuments = new ArrayCollection();

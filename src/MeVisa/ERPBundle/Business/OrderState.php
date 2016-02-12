@@ -75,7 +75,7 @@ class OrderState
         return $this->currentState->getChildren();
     }
 
-    public function addState($key, $name, $bootstrapClass = "primary")
+    public function addState($key, $name, $bootstrapClass = "default")
     {
         $this->states[$key] = new State($key, $name, $bootstrapClass);
     }
