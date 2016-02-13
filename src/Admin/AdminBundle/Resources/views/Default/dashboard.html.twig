@@ -4,6 +4,10 @@
     <style type="text/css">
         .dashboard{max-height: 250px; }
         .dashboard a{padding-top: 0px;padding-bottom: 0px;}
+        .highlight {background-color: lightyellow;}
+        .table-striped > tbody > tr:nth-child(odd).highlight > td {
+            background-color: lightyellow;
+        }    
     </style>
     {% include 'AdminAdminBundle:Default:quickActions.html.twig' %}
     <div id="panels">

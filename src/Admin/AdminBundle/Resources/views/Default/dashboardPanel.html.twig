@@ -6,8 +6,14 @@
     <div class="table-responsive dashboard">
         <table class="table table-bordered table-hover table-striped {{ panelTitle != 'Backoffice Orders' ? 'table-condensed' : '' }} records_list">
             <tbody>
+                {% set highlight = ''%}
                 {% for order in orders %}
-                    <tr>
+                    {% if order.state == "post" %}
+                        {% if  date(order.updatedAt) < date('-2days') %}
+                            {% set highlight = 'highlight' %}
+                        {% endif %}
+                    {% endif %}
+                    <tr class="{{ highlight }}">
                         <td><a class="btn btn-link" href="{{ path('orders_show', { 'id': order.id }) }}">{{ order.number }}</a></td>
                         <td>{{ order.customer.name }}</td>
                         <td class="text-right">
