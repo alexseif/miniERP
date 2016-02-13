@@ -1,4 +1,9 @@
-<div class="panel panel-default">
+<style type="text/css">
+    #order-docs a{word-wrap: break-word;height: 120px; overflow: hidden;}
+    #order-docs a:hover{overflow: visible;}
+    #order-docs a span.glyphicon{font-size: 2.5em;}
+</style>
+<div class="panel panel-default" id="order-docs">
     {# FIXME: wrap long file names   #}
     <div class="panel-heading">
         <span class="panel-title">Documents</span>
@@ -6,14 +11,14 @@
     <div class="panel-body">
         <div class="row">
             {%for document in documents%}
-                <div class="col-xs-12 col-md-6">
-                    <a href="{{ document.path}}" class="thumbnail" target="_blank">
+                <div class="col-xs-12 col-md-4">
+                    <a href="{{ document.path}}" class="thumbnail text-center" target="_blank">
                         {% if document.path ends with 'pdf' %}
                             <span class="glyphicon glyphicon-file"></span>
                         {% else %}
-                            <img src="{{ document.thumbnail ? document.thumbnail : document.path }}" alt="{{ document.name }}" width="100%"/>
+                            <img src="{{ document.thumbnail ? document.thumbnail : document.path }}" alt="{{ document.name }}"/>
                         {% endif %}
-                        <span style="word-wrap: break-word;">{{ document.name }}</span>
+                        <span>{{ document.name }}</span>
                     </a>
                 </div>
             {% endfor %}
