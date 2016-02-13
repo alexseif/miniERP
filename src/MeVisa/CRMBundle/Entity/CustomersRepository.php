@@ -12,4 +12,15 @@ use Doctrine\ORM\EntityRepository;
  */
 class CustomersRepository extends EntityRepository
 {
+
+    public function findLikeName($name)
+    {
+        return $this->createQueryBuilder('c')
+                        ->select('c, c.name as value')
+                        ->where("c.name LIKE ?1")
+                        ->setParameter('1', "%" . $name . "%")
+                        ->getQuery()
+                        ->getArrayResult();
+    }
+
 }

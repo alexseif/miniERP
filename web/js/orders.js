@@ -159,4 +159,14 @@ $(document).ready(function () {
     $('#mevisa_erpbundle_orders_customer_name').focus();
 
     $('.align-inline .radio').addClass('radio-inline');
+
+    //Customer Autocomplete
+    $("#mevisa_erpbundle_orders_customer_name").autocomplete({
+        minLength: 2,
+        source: 'select_customer',
+        select: function (event, ui) {
+            $('#mevisa_erpbundle_orders_customer_email').val(ui.item[0].email);
+            $('#mevisa_erpbundle_orders_customer_phone').val(ui.item[0].phone);
+        }
+    });
 });

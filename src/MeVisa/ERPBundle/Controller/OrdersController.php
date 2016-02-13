@@ -11,6 +11,7 @@ use MeVisa\ERPBundle\Entity\Orders;
 use MeVisa\ERPBundle\Entity\Invoices;
 use MeVisa\ERPBundle\Form\OrdersType;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
  * Orders controller.
@@ -194,6 +195,27 @@ class OrdersController extends Controller
             'order' => $order,
             'productPrices' => $productPrices,
             'form' => $form->createView(),
+        );
+    }
+
+    /**
+     * Search
+     *
+     * @Route("/select_customer", name="select_customer")
+     * @Method("GET")
+     * @Template()
+     */
+    public function selectCustomerAction(Request $request)
+    {
+        $term = $request->get('term');
+
+        $em = $this->getDoctrine()->getManager();
+        $entities = $em->getRepository('MeVisaCRMBundle:Customers')->findLikeName($term);
+
+        return new JsonResponse($entities);
+
+        return array(
+            'entities' => $entities,
         );
     }
 
@@ -451,7 +473,7 @@ class OrdersController extends Controller
             if ("approved" == $order->getState() || "rejected" == $order->getState()) {
                 $order->setCompletedAt(new \DateTime());
             }
-            
+
             if (empty($order->getUpdatedAt())) {
                 $order->setUpdatedAt(new \DateTime());
             }
