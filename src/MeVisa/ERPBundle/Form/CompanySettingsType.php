@@ -15,7 +15,6 @@ class CompanySettingsType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        dump($options);
         $builder
                 ->add('name')
                 ->add('bank')
