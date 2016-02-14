@@ -8,18 +8,24 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class CompanySettingsType extends AbstractType
 {
+
     /**
      * @param FormBuilderInterface $builder
      * @param array $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        dump($options);
         $builder
-            ->add('name')
-            ->add('jsonValue')
+                ->add('name')
+                ->add('bank')
+                ->add('agreement', 'textarea', array(
+                    "attr" => array(
+                        "class" => "tinymce"
+            )))
         ;
     }
-    
+
     /**
      * @param OptionsResolverInterface $resolver
      */
@@ -37,4 +43,5 @@ class CompanySettingsType extends AbstractType
     {
         return 'mevisa_erpbundle_companysettings';
     }
+
 }

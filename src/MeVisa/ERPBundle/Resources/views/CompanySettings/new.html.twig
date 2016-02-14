@@ -1,15 +1,27 @@
-{% extends '::base.html.twig' %}
+{% extends ':default:admin.html.twig' %}
 
-{% block body -%}
+{% block content %}
     <h1>CompanySettings creation</h1>
 
-    {{ form(form) }}
-
-        <ul class="record_actions">
-    <li>
-        <a href="{{ path('companysettings') }}">
-            Back to the list
-        </a>
-    </li>
-</ul>
+    {{ form_start(form) }}
+    {{ form_row(form.name) }}
+    {{ form_row(form.bank) }}
+    {{ form_row(form.agreement) }}
+{#    {{ form_row(form.jsonValue.name) }}#}
+    {{ form_end(form, {'render_rest': false}) }}
+    {#    {{ dump(form)}}#}
+    <ul class="record_actions">
+        <li>
+            <a href="{{ path('companysettings') }}">
+                Back to the list
+            </a>
+        </li>
+    </ul>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="/js/tinymce/tinymce.min.js"></script>
+    <script type="text/javascript">
+        tinymce.init({selector: 'textarea'});
+    </script>
 {% endblock %}

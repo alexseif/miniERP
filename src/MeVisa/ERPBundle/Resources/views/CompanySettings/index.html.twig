@@ -1,9 +1,9 @@
-{% extends '::base.html.twig' %}
+{% extends ':default:admin.html.twig' %}
 
-{% block body -%}
+{% block content %}
     <h1>CompanySettings list</h1>
 
-    <table class="records_list">
+    <table class="table records_list">
         <thead>
             <tr>
                 <th>Id</th>
@@ -13,31 +13,31 @@
             </tr>
         </thead>
         <tbody>
-        {% for entity in entities %}
-            <tr>
-                <td><a href="{{ path('companysettings_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
-                <td>{{ entity.name }}</td>
-                <td>{{ entity.jsonValue }}</td>
-                <td>
-                <ul>
-                    <li>
-                        <a href="{{ path('companysettings_show', { 'id': entity.id }) }}">show</a>
-                    </li>
-                    <li>
-                        <a href="{{ path('companysettings_edit', { 'id': entity.id }) }}">edit</a>
-                    </li>
-                </ul>
-                </td>
-            </tr>
-        {% endfor %}
+            {% for entity in entities %}
+                <tr>
+                    <td><a href="{{ path('companysettings_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+                    <td>{{ entity.name }}</td>
+                    <td>{{ entity.jsonValue }}</td>
+                    <td>
+                        <ul>
+                            <li>
+                                <a href="{{ path('companysettings_show', { 'id': entity.id }) }}">show</a>
+                            </li>
+                            <li>
+                                <a href="{{ path('companysettings_edit', { 'id': entity.id }) }}">edit</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+            {% endfor %}
         </tbody>
     </table>
 
-        <ul>
+    <ul>
         <li>
             <a href="{{ path('companysettings_new') }}">
                 Create a new entry
             </a>
         </li>
     </ul>
-    {% endblock %}
+{% endblock %}

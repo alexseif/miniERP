@@ -12,6 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class CompanySettings
 {
+
     /**
      * @var integer
      *
@@ -22,19 +23,19 @@ class CompanySettings
     private $id;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="name", type="string", length=255)
-     */
-    private $name;
-
-    /**
      * @var array
      *
      * @ORM\Column(name="jsonValue", type="json_array")
      */
     private $jsonValue;
 
+    public function __construct()
+    {
+        $this->jsonValue = array();
+        $this->jsonValue['name'] = '';
+        $this->jsonValue['bank'] = '';
+        $this->jsonValue['agreement'] = '';
+    }
 
     /**
      * Get id
@@ -54,7 +55,7 @@ class CompanySettings
      */
     public function setName($name)
     {
-        $this->name = $name;
+        $this->jsonValue['name'] = $name;
 
         return $this;
     }
@@ -66,7 +67,53 @@ class CompanySettings
      */
     public function getName()
     {
-        return $this->name;
+        return $this->jsonValue['name'];
+    }
+
+    /**
+     * Set bank
+     *
+     * @param string $bank
+     * @return CompanySettings
+     */
+    public function setBank($bank)
+    {
+        $this->jsonValue['bank'] = $bank;
+
+        return $this;
+    }
+
+    /**
+     * Get bank
+     *
+     * @return string 
+     */
+    public function getBank()
+    {
+        return $this->jsonValue['bank'];
+    }
+
+    /**
+     * Set agreement
+     *
+     * @param string $agreement
+     * @return CompanySettings
+     */
+    public function setAgreement($agreement)
+    {
+        $this->jsonValue['agreement'] = $agreement;
+
+        return $this;
+    }
+
+    /**
+     * Get agreement
+     *
+     * @return string 
+     */
+    public function getAgreement()
+    {
+        return $this->jsonValue['agreement'];
     }
 
     /**
@@ -91,4 +138,5 @@ class CompanySettings
     {
         return $this->jsonValue;
     }
+
 }
