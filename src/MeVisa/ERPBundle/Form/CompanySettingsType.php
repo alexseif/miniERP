@@ -6,7 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class CompanyType extends AbstractType
+class CompanySettingsType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
@@ -16,13 +16,7 @@ class CompanyType extends AbstractType
     {
         $builder
             ->add('name')
-            ->add('address')
-            ->add('account')
-            ->add('phones')
-            ->add('signee1')
-            ->add('signee1Title')
-            ->add('signee2')
-            ->add('signee2Title')
+            ->add('jsonValue')
         ;
     }
     
@@ -32,7 +26,7 @@ class CompanyType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'MeVisa\ERPBundle\Entity\Company'
+            'data_class' => 'MeVisa\ERPBundle\Entity\CompanySettings'
         ));
     }
 
@@ -41,6 +35,6 @@ class CompanyType extends AbstractType
      */
     public function getName()
     {
-        return 'mevisa_erpbundle_company';
+        return 'mevisa_erpbundle_companysettings';
     }
 }

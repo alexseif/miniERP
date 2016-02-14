@@ -7,21 +7,21 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use MeVisa\ERPBundle\Entity\AgreementTemplate;
-use MeVisa\ERPBundle\Form\AgreementTemplateType;
+use MeVisa\ERPBundle\Entity\CompanySettings;
+use MeVisa\ERPBundle\Form\CompanySettingsType;
 
 /**
- * AgreementTemplate controller.
+ * CompanySettings controller.
  *
- * @Route("/agreement")
+ * @Route("/companysettings")
  */
-class AgreementTemplateController extends Controller
+class CompanySettingsController extends Controller
 {
 
     /**
-     * Lists all AgreementTemplate entities.
+     * Lists all CompanySettings entities.
      *
-     * @Route("/", name="agreement")
+     * @Route("/", name="companysettings")
      * @Method("GET")
      * @Template()
      */
@@ -29,22 +29,22 @@ class AgreementTemplateController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entities = $em->getRepository('MeVisaERPBundle:AgreementTemplate')->findAll();
+        $entities = $em->getRepository('MeVisaERPBundle:CompanySettings')->findAll();
 
         return array(
             'entities' => $entities,
         );
     }
     /**
-     * Creates a new AgreementTemplate entity.
+     * Creates a new CompanySettings entity.
      *
-     * @Route("/", name="agreement_create")
+     * @Route("/", name="companysettings_create")
      * @Method("POST")
-     * @Template("MeVisaERPBundle:AgreementTemplate:new.html.twig")
+     * @Template("MeVisaERPBundle:CompanySettings:new.html.twig")
      */
     public function createAction(Request $request)
     {
-        $entity = new AgreementTemplate();
+        $entity = new CompanySettings();
         $form = $this->createCreateForm($entity);
         $form->handleRequest($request);
 
@@ -53,7 +53,7 @@ class AgreementTemplateController extends Controller
             $em->persist($entity);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('agreement_show', array('id' => $entity->getId())));
+            return $this->redirect($this->generateUrl('companysettings_show', array('id' => $entity->getId())));
         }
 
         return array(
@@ -63,16 +63,16 @@ class AgreementTemplateController extends Controller
     }
 
     /**
-     * Creates a form to create a AgreementTemplate entity.
+     * Creates a form to create a CompanySettings entity.
      *
-     * @param AgreementTemplate $entity The entity
+     * @param CompanySettings $entity The entity
      *
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createCreateForm(AgreementTemplate $entity)
+    private function createCreateForm(CompanySettings $entity)
     {
-        $form = $this->createForm(new AgreementTemplateType(), $entity, array(
-            'action' => $this->generateUrl('agreement_create'),
+        $form = $this->createForm(new CompanySettingsType(), $entity, array(
+            'action' => $this->generateUrl('companysettings_create'),
             'method' => 'POST',
         ));
 
@@ -82,15 +82,15 @@ class AgreementTemplateController extends Controller
     }
 
     /**
-     * Displays a form to create a new AgreementTemplate entity.
+     * Displays a form to create a new CompanySettings entity.
      *
-     * @Route("/new", name="agreement_new")
+     * @Route("/new", name="companysettings_new")
      * @Method("GET")
      * @Template()
      */
     public function newAction()
     {
-        $entity = new AgreementTemplate();
+        $entity = new CompanySettings();
         $form   = $this->createCreateForm($entity);
 
         return array(
@@ -100,9 +100,9 @@ class AgreementTemplateController extends Controller
     }
 
     /**
-     * Finds and displays a AgreementTemplate entity.
+     * Finds and displays a CompanySettings entity.
      *
-     * @Route("/{id}", name="agreement_show")
+     * @Route("/{id}", name="companysettings_show")
      * @Method("GET")
      * @Template()
      */
@@ -110,10 +110,10 @@ class AgreementTemplateController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('MeVisaERPBundle:AgreementTemplate')->find($id);
+        $entity = $em->getRepository('MeVisaERPBundle:CompanySettings')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find AgreementTemplate entity.');
+            throw $this->createNotFoundException('Unable to find CompanySettings entity.');
         }
 
         $deleteForm = $this->createDeleteForm($id);
@@ -125,9 +125,9 @@ class AgreementTemplateController extends Controller
     }
 
     /**
-     * Displays a form to edit an existing AgreementTemplate entity.
+     * Displays a form to edit an existing CompanySettings entity.
      *
-     * @Route("/{id}/edit", name="agreement_edit")
+     * @Route("/{id}/edit", name="companysettings_edit")
      * @Method("GET")
      * @Template()
      */
@@ -135,10 +135,10 @@ class AgreementTemplateController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('MeVisaERPBundle:AgreementTemplate')->find($id);
+        $entity = $em->getRepository('MeVisaERPBundle:CompanySettings')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find AgreementTemplate entity.');
+            throw $this->createNotFoundException('Unable to find CompanySettings entity.');
         }
 
         $editForm = $this->createEditForm($entity);
@@ -152,16 +152,16 @@ class AgreementTemplateController extends Controller
     }
 
     /**
-    * Creates a form to edit a AgreementTemplate entity.
+    * Creates a form to edit a CompanySettings entity.
     *
-    * @param AgreementTemplate $entity The entity
+    * @param CompanySettings $entity The entity
     *
     * @return \Symfony\Component\Form\Form The form
     */
-    private function createEditForm(AgreementTemplate $entity)
+    private function createEditForm(CompanySettings $entity)
     {
-        $form = $this->createForm(new AgreementTemplateType(), $entity, array(
-            'action' => $this->generateUrl('agreement_update', array('id' => $entity->getId())),
+        $form = $this->createForm(new CompanySettingsType(), $entity, array(
+            'action' => $this->generateUrl('companysettings_update', array('id' => $entity->getId())),
             'method' => 'PUT',
         ));
 
@@ -170,20 +170,20 @@ class AgreementTemplateController extends Controller
         return $form;
     }
     /**
-     * Edits an existing AgreementTemplate entity.
+     * Edits an existing CompanySettings entity.
      *
-     * @Route("/{id}", name="agreement_update")
+     * @Route("/{id}", name="companysettings_update")
      * @Method("PUT")
-     * @Template("MeVisaERPBundle:AgreementTemplate:edit.html.twig")
+     * @Template("MeVisaERPBundle:CompanySettings:edit.html.twig")
      */
     public function updateAction(Request $request, $id)
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('MeVisaERPBundle:AgreementTemplate')->find($id);
+        $entity = $em->getRepository('MeVisaERPBundle:CompanySettings')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find AgreementTemplate entity.');
+            throw $this->createNotFoundException('Unable to find CompanySettings entity.');
         }
 
         $deleteForm = $this->createDeleteForm($id);
@@ -193,7 +193,7 @@ class AgreementTemplateController extends Controller
         if ($editForm->isValid()) {
             $em->flush();
 
-            return $this->redirect($this->generateUrl('agreement_edit', array('id' => $id)));
+            return $this->redirect($this->generateUrl('companysettings_edit', array('id' => $id)));
         }
 
         return array(
@@ -203,9 +203,9 @@ class AgreementTemplateController extends Controller
         );
     }
     /**
-     * Deletes a AgreementTemplate entity.
+     * Deletes a CompanySettings entity.
      *
-     * @Route("/{id}", name="agreement_delete")
+     * @Route("/{id}", name="companysettings_delete")
      * @Method("DELETE")
      */
     public function deleteAction(Request $request, $id)
@@ -215,21 +215,21 @@ class AgreementTemplateController extends Controller
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $entity = $em->getRepository('MeVisaERPBundle:AgreementTemplate')->find($id);
+            $entity = $em->getRepository('MeVisaERPBundle:CompanySettings')->find($id);
 
             if (!$entity) {
-                throw $this->createNotFoundException('Unable to find AgreementTemplate entity.');
+                throw $this->createNotFoundException('Unable to find CompanySettings entity.');
             }
 
             $em->remove($entity);
             $em->flush();
         }
 
-        return $this->redirect($this->generateUrl('agreement'));
+        return $this->redirect($this->generateUrl('companysettings'));
     }
 
     /**
-     * Creates a form to delete a AgreementTemplate entity by id.
+     * Creates a form to delete a CompanySettings entity by id.
      *
      * @param mixed $id The entity id
      *
@@ -238,7 +238,7 @@ class AgreementTemplateController extends Controller
     private function createDeleteForm($id)
     {
         return $this->createFormBuilder()
-            ->setAction($this->generateUrl('agreement_delete', array('id' => $id)))
+            ->setAction($this->generateUrl('companysettings_delete', array('id' => $id)))
             ->setMethod('DELETE')
             ->add('submit', 'submit', array('label' => 'Delete'))
             ->getForm()

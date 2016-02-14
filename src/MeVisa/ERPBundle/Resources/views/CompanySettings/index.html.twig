@@ -1,34 +1,30 @@
-{% extends ':default:admin.html.twig' %}
+{% extends '::base.html.twig' %}
 
-{% block content %}
-    <h1>AgreementTemplate list</h1>
+{% block body -%}
+    <h1>CompanySettings list</h1>
 
     <table class="records_list">
         <thead>
             <tr>
                 <th>Id</th>
                 <th>Name</th>
-                <th>Agreement</th>
-                <th>Signee</th>
-                <th>Signeetitle</th>
+                <th>Jsonvalue</th>
                 <th>Actions</th>
             </tr>
         </thead>
         <tbody>
         {% for entity in entities %}
             <tr>
-                <td><a href="{{ path('agreement_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+                <td><a href="{{ path('companysettings_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
                 <td>{{ entity.name }}</td>
-                <td>{{ entity.agreement }}</td>
-                <td>{{ entity.signee }}</td>
-                <td>{{ entity.signeeTitle }}</td>
+                <td>{{ entity.jsonValue }}</td>
                 <td>
                 <ul>
                     <li>
-                        <a href="{{ path('agreement_show', { 'id': entity.id }) }}">show</a>
+                        <a href="{{ path('companysettings_show', { 'id': entity.id }) }}">show</a>
                     </li>
                     <li>
-                        <a href="{{ path('agreement_edit', { 'id': entity.id }) }}">edit</a>
+                        <a href="{{ path('companysettings_edit', { 'id': entity.id }) }}">edit</a>
                     </li>
                 </ul>
                 </td>
@@ -39,7 +35,7 @@
 
         <ul>
         <li>
-            <a href="{{ path('agreement_new') }}">
+            <a href="{{ path('companysettings_new') }}">
                 Create a new entry
             </a>
         </li>

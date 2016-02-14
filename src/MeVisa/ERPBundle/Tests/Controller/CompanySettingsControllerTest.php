@@ -4,7 +4,7 @@ namespace MeVisa\ERPBundle\Tests\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-class AgreementTemplateControllerTest extends WebTestCase
+class CompanySettingsControllerTest extends WebTestCase
 {
     /*
     public function testCompleteScenario()
@@ -13,13 +13,13 @@ class AgreementTemplateControllerTest extends WebTestCase
         $client = static::createClient();
 
         // Create a new entry in the database
-        $crawler = $client->request('GET', '/agreement/');
-        $this->assertEquals(200, $client->getResponse()->getStatusCode(), "Unexpected HTTP status code for GET /agreement/");
+        $crawler = $client->request('GET', '/companysettings/');
+        $this->assertEquals(200, $client->getResponse()->getStatusCode(), "Unexpected HTTP status code for GET /companysettings/");
         $crawler = $client->click($crawler->selectLink('Create a new entry')->link());
 
         // Fill in the form and submit it
         $form = $crawler->selectButton('Create')->form(array(
-            'mevisa_erpbundle_agreementtemplate[field_name]'  => 'Test',
+            'mevisa_erpbundle_companysettings[field_name]'  => 'Test',
             // ... other fields to fill
         ));
 
@@ -33,7 +33,7 @@ class AgreementTemplateControllerTest extends WebTestCase
         $crawler = $client->click($crawler->selectLink('Edit')->link());
 
         $form = $crawler->selectButton('Update')->form(array(
-            'mevisa_erpbundle_agreementtemplate[field_name]'  => 'Foo',
+            'mevisa_erpbundle_companysettings[field_name]'  => 'Foo',
             // ... other fields to fill
         ));
 
