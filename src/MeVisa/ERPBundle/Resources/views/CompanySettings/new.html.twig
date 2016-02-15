@@ -5,11 +5,7 @@
 
     {{ form_start(form) }}
     {{ form_widget(form) }}
-    {#    {{ form_row(form.bank) }}#}
-    {{ form_row(form.agreement) }}
-    {#    {{ form_row(form.jsonValue.name) }}#}
     {{ form_end(form, {'render_rest': false}) }}
-    {#    {{ dump(form)}}#}
     <ul class="record_actions">
         <li>
             <a href="{{ path('companysettings') }}">
