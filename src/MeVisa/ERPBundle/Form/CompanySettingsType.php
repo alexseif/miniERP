@@ -17,10 +17,31 @@ class CompanySettingsType extends AbstractType
     {
         $builder
                 ->add('name')
+                ->add('address', 'textarea', array(
+                    "attr" => array(
+                        "class" => "ckeditor"
+            )))
                 ->add('bank')
+                ->add('invoiceSignature1', 'textarea', array(
+                    "attr" => array(
+                        "class" => "ckeditor"
+            )))
+                ->add('invoiceSignature2', 'textarea', array(
+                    "attr" => array(
+                        "class" => "ckeditor"
+            )))
                 ->add('agreement', 'textarea', array(
                     "attr" => array(
-                        "class" => "tinymce"
+                        "class" => "ckeditor"
+            )))
+                ->add('agreementSignature', 'textarea', array(
+                    "attr" => array(
+                        "class" => "ckeditor"
+            )))
+                ->add('agreementSignatureName')
+                ->add('waiver', 'textarea', array(
+                    "attr" => array(
+                        "class" => "ckeditor"
             )))
         ;
     }

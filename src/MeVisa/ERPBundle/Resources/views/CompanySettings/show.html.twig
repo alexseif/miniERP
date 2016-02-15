@@ -15,7 +15,11 @@
             </tr>
             <tr>
                 <th>Jsonvalue</th>
-                <td>{{ entity.jsonValue }}</td>
+                <td>
+                    {% for key,item in entity.jsonValue %}
+                        {{ key }} => {{ item|raw }}<br/>
+                    {% endfor %}
+                </td>
             </tr>
         </tbody>
     </table>
