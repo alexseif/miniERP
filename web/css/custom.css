@@ -65,7 +65,7 @@ tr.bg-success:focus {
 .table-striped > tbody > tr:nth-child(odd).highlight > td {background-color: #fcf8e3;}
 .records_list tbody tr td{vertical-align: middle;}
 .panel .form-group{ margin-bottom: 5px;}
-.panel-body{font-size: 11px;}
+/*.panel-body{font-size: 11px;}*/
 .panel-body label{font-weight: 550}
 .panel .control-label{padding-left: 5px; padding-right: 5px;}
 .orderProducts li{margin-top: 5px;}
