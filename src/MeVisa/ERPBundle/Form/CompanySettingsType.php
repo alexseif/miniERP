@@ -21,7 +21,10 @@ class CompanySettingsType extends AbstractType
                     "attr" => array(
                         "class" => "ckeditor"
             )))
-                ->add('bank')
+                ->add('bank', 'textarea', array(
+                    "attr" => array(
+                        "class" => "ckeditor"
+            )))
                 ->add('invoiceSignature1', 'textarea', array(
                     "attr" => array(
                         "class" => "ckeditor"

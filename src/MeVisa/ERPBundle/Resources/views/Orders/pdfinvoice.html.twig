@@ -37,8 +37,8 @@
                     <tr>
                         <td style="width: 50%;vertical-align: top;">
                             <p class="bold">Получатель</p>
-                            ООО "ВИЗА"<br/>
-                            Счет №: 40702810738000007699
+                            <p>{{companySettings.jsonValue['name']|raw}}</p>
+                            {{companySettings.jsonValue['bank']|raw}}
                         </td>
                         <td class="lb">
                             <p class="bold">Банк получателя</p>
