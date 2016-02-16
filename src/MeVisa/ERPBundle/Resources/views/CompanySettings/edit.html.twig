@@ -2,7 +2,10 @@
 
 {% block content %}
     <h1>MeVisa Settings</h1>
-
+    <style type="text/css">
+        .panel-body{font-size: 14px;}
+        .panel-body input[type="text"]{margin: 4px;}
+    </style>
     {{ form_start(edit_form) }}
     <div class="panel-group" id="accordion">
         {% for key,item in edit_form %}
@@ -13,7 +16,7 @@
                             <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapse{{loop.index0}}">{{ key|capitalize }}</a>
                         </h4>
                     </div>
-                    <div class="panel-collapse collapse {{ loop.index0 == 0 ? 'in' :''}}" id="collapse{{loop.index0}}">
+                    <div class="panel-body panel-collapse collapse {{ loop.index0 == 0 ? 'in' :''}}" id="collapse{{loop.index0}}">
                         {{ form_widget(item) }}
                     </div>
                 </div>

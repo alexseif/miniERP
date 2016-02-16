@@ -1,0 +1,127 @@
+{% extends ':default:admin.html.twig' %}
+
+{% block content %}
+    <h1>MeVisa Settings</h1>
+    <ul class="nav nav-tabs nav-justified">
+        <li role="presentation" class="active"><a data-toggle="tab" href="#invoice">Invoice</a></li>
+        <li role="presentation"><a data-toggle="tab" href="#agreement">Agreement</a></li>
+        <li role="presentation"><a data-toggle="tab" href="#waiver">Waiver</a></li>
+    </ul>
+    <link rel="stylesheet" type="text/css" href="{{ absolute_url(asset('css/pdf.css')) }}" />
+    <style type="text/css">
+        .panel-body{font-size: 10pt;}
+    </style>
+    <div class="tab-content">
+        <div class="panel panel-default tab-pane fade in active" id="invoice">
+            <div class="panel-body">
+                <div class="clearfix">
+                    <div style="float:right; width: 80; height: 80; text-align: right; vertical-align: bottom;"><img src="{{ absolute_url(asset('images/visa_logo.png')) }}" height="80" /></div>
+                    <div>
+                        <span style="font-weight: bold; font-size: 14pt;">{{companySettings.jsonValue['name']}}</span><br/>
+                        {{include(template_from_string(companySettings.jsonValue['address']))}}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-xs-12">
+                        <h1 class="text-center">Счет № {{ invoice.id }}  от {{ "now" | format_date(null, 'ru', 'Europe/Moscow', constant('IntlDateFormatter::LONG')) }}</h1>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-6 col-xs-offset-3">
+                        <table class="table tb">
+                            <tr>
+                                <td style="width: 50%;"><b>ИНН:</b> 7701375794</td>
+                                <td class="lb"><b>КПП:</b> 770101001</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-10 col-xs-offset-1">
+                        <table class="table tb">
+                            <tr>
+                                <td style="width: 50%;vertical-align: top;">
+                                    <p class="bold">Получатель</p>
+                                    ООО "ВИЗА"<br/>
+                                    Счет №: 40702810738000007699
+                                </td>
+                                <td class="lb">
+                                    <p class="bold">Банк получателя</p>
+                                    Банк: АО "АЛЬФА-БАНК" Г. МОСКВА<br/>
+                                    БИК: 044525593<br/>
+                                    Корр. счет: 30101810200000000593<br/>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <p>
+                    <span class="bold">Заказчик:</span> {{order.customer.name}}<br/>
+                    <span class="bold">Плательщик:</span> {{order.customer.name}}
+                </p>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>№</th>
+                            <th>Наименование товара</th>
+                            <th>Коли-чество</th>
+                            <th>Цена</th>
+                            <th>Сумма</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for key, product in order.orderProducts %}
+                            <tr>
+                                {# FIXME: row number #}
+                                <td>{{ key + 1 }}</td>
+                                <td>{{ product.product.name }}</td>
+                                <td>{{ product.quantity }}</td>
+                                <td>{{ (product.unitPrice/100)|localizedcurrency('RUB') }}</td>
+                                <td>{{ (product.total/100)|localizedcurrency('RUB') }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th colspan="4" class="text-right">Всего к оплате</th>
+                            <th>{{ (order.total/100)|localizedcurrency('RUB') }}</th>
+                        </tr>
+                    </tfoot>
+                </table>
+                <br/><br/>
+                <table class="table">
+                    <tr>
+                        <td style="widht:50%;">
+                            {{companySettings.jsonValue['invoiceSignature1']|raw}}<br/>
+                            <p>_____________________________</p>
+                        </td>
+                        <td>
+                            {{companySettings.jsonValue['invoiceSignature2']|raw}}<br/>
+                            <p>_____________________________</p>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="panel panel-default tab-pane fade" id="agreement">
+            <div class="panel-body">
+                {{companySettings.jsonValue['agreement']|raw}}
+            </div>
+        </div>
+        <div class="panel panel-default tab-pane fade" id="waiver">
+            <div class="panel-body">
+                {{companySettings.jsonValue['waiver']|raw}}
+            </div>
+        </div>
+    </div>
+
+
+    companySettings.jsonValue['bank']
+
+    companySettings.jsonValue['agreementSignature']
+    companySettings.jsonValue['agreementSignatureName']
+    <a href="{{ path('companysettings_edit', { 'id': companySettings.id }) }}" class="btn btn-default">
+        Edit
+    </a>
+{% endblock %}

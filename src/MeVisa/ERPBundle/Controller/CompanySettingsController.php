@@ -35,6 +35,7 @@ class CompanySettingsController extends Controller
             'entities' => $entities,
         );
     }
+
     /**
      * Creates a new CompanySettings entity.
      *
@@ -58,7 +59,7 @@ class CompanySettingsController extends Controller
 
         return array(
             'entity' => $entity,
-            'form'   => $form->createView(),
+            'form' => $form->createView(),
         );
     }
 
@@ -91,11 +92,46 @@ class CompanySettingsController extends Controller
     public function newAction()
     {
         $entity = new CompanySettings();
-        $form   = $this->createCreateForm($entity);
+        $form = $this->createCreateForm($entity);
 
         return array(
             'entity' => $entity,
-            'form'   => $form->createView(),
+            'form' => $form->createView(),
+        );
+    }
+
+    /**
+     * Finds and displays a CompanySettings entity.
+     *
+     * @Route("/preview", name="companysettings_preview")
+     * @Method("GET")
+     * @Template()
+     */
+    public function previewAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $CompanySettings = $em->getRepository('MeVisaERPBundle:CompanySettings')->find(1);
+
+        if (!$CompanySettings) {
+            throw $this->createNotFoundException('Unable to find CompanySettings entity.');
+        }
+
+        $order = new \MeVisa\ERPBundle\Entity\Orders();
+        $customer= new \MeVisa\CRMBundle\Entity\Customers();
+        $customer->setName("Preview");
+        $order->setCustomer($customer);
+        $product = new \MeVisa\ERPBundle\Entity\Products();
+        $product->setName("Preivew");
+        $orderProduct = New \MeVisa\ERPBundle\Entity\OrderProducts();
+        $orderProduct->setProduct($product);
+        $order->addOrderProduct($orderProduct);
+        $invoice = new \MeVisa\ERPBundle\Entity\Invoices();
+
+        return array(
+            'companySettings' => $CompanySettings,
+            'order' => $order,
+            'invoice' => $invoice,
         );
     }
 
@@ -119,7 +155,7 @@ class CompanySettingsController extends Controller
         $deleteForm = $this->createDeleteForm($id);
 
         return array(
-            'entity'      => $entity,
+            'entity' => $entity,
             'delete_form' => $deleteForm->createView(),
         );
     }
@@ -145,19 +181,19 @@ class CompanySettingsController extends Controller
         $deleteForm = $this->createDeleteForm($id);
 
         return array(
-            'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
+            'entity' => $entity,
+            'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         );
     }
 
     /**
-    * Creates a form to edit a CompanySettings entity.
-    *
-    * @param CompanySettings $entity The entity
-    *
-    * @return \Symfony\Component\Form\Form The form
-    */
+     * Creates a form to edit a CompanySettings entity.
+     *
+     * @param CompanySettings $entity The entity
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
     private function createEditForm(CompanySettings $entity)
     {
         $form = $this->createForm(new CompanySettingsType(), $entity, array(
@@ -169,6 +205,7 @@ class CompanySettingsController extends Controller
 
         return $form;
     }
+
     /**
      * Edits an existing CompanySettings entity.
      *
@@ -193,15 +230,16 @@ class CompanySettingsController extends Controller
         if ($editForm->isValid()) {
             $em->flush();
 
-            return $this->redirect($this->generateUrl('companysettings_edit', array('id' => $id)));
+            return $this->redirect($this->generateUrl('companysettings_show', array('id' => $id)));
         }
 
         return array(
-            'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
+            'entity' => $entity,
+            'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         );
     }
+
     /**
      * Deletes a CompanySettings entity.
      *
@@ -238,10 +276,11 @@ class CompanySettingsController extends Controller
     private function createDeleteForm($id)
     {
         return $this->createFormBuilder()
-            ->setAction($this->generateUrl('companysettings_delete', array('id' => $id)))
-            ->setMethod('DELETE')
-            ->add('submit', 'submit', array('label' => 'Delete'))
-            ->getForm()
+                        ->setAction($this->generateUrl('companysettings_delete', array('id' => $id)))
+                        ->setMethod('DELETE')
+                        ->add('submit', 'submit', array('label' => 'Delete'))
+                        ->getForm()
         ;
     }
+
 }
