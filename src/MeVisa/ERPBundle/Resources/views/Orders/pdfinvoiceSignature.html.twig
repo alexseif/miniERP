@@ -1,23 +1,18 @@
 <table class="table sign">
     <tr>
-        <td style="width: 50%;"><span class="bold">Исполнитель:</span> ООО "ВИЗА"</td>
+        <td style="width: 50%;"><span class="bold">Исполнитель:</span> {{companySettings.jsonValue['name']|raw}}</td>
         <td><span class="bold">Заказчик: ФИО:</span> {{order.customer.name}}</td>
     </tr>
     <tr>
         <td>
-            105082 Москва Рубцовская наб.дом3 стр 3, пом I, комн 25<br/>
-            Место нахождения: ул. Маросейка 7/8 офис 206 ком.3<br/>
-            ИНН 7701375794&nbsp;|&nbsp;КПП 770101001<br/>
-            Р/с 40702810738000007699 в ОАО "Сбербанк России" г.Москва<br/>
-            К/с 30101810400000000225 <br/>
-            Контактный телефон: +7(499)7145474, +7(812)7152061, +7(495)9736558
+            {{ companySettings.jsonValue['agreementSignature']|raw }}
         </td>
         <td style="vertical-align: top;">
             {{ invoice.customerSignature|nl2br }}
         </td>
     </tr>
     <tr>
-        <td><br/>_____________________________ <small>/Вазири Тарек Махмуд Мохамед/ М.П.</small></td>
+        <td><br/>_____________________________ <small>{{ companySettings.jsonValue['agreementSignatureName']|raw }}</small></td>
         <td><br/>_____________________________  <small>/{{order.customer.name}}/</small></td>
     </tr>
 </table>

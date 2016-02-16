@@ -572,6 +572,8 @@ class OrdersController extends Controller
             throw $this->createNotFoundException('Unable to find Order');
         }
 
+        $CompanySettings = $em->getRepository('MeVisaERPBundle:CompanySettings')->find(1);
+
         $invoice = new Invoices();
         $invoices = $order->getInvoices();
         foreach ($invoices as $inv) {
@@ -585,26 +587,29 @@ class OrdersController extends Controller
         $pdfInvoiceHTML = $this->renderView(
                 'MeVisaERPBundle:Orders:pdfinvoice.html.twig', array(
             'order' => $order,
-            'invoice' => $invoice
+            'invoice' => $invoice,
+            'companySettings' => $CompanySettings
                 )
         );
         $pdfAgreementHTML = $this->renderView(
                 'MeVisaERPBundle:Orders:pdfagreement.html.twig', array(
             'order' => $order,
-            'invoice' => $invoice
+            'invoice' => $invoice,
+            'companySettings' => $CompanySettings
                 )
         );
         $pdfWaiverHTML = $this->renderView(
                 'MeVisaERPBundle:Orders:pdfwaiver.html.twig', array(
             'order' => $order,
-            'invoice' => $invoice
+            'invoice' => $invoice,
+            'companySettings' => $CompanySettings
                 )
         );
 
 
         $mpdf = new \mPDF("ru-RU", "A4");
         $mpdf->SetTitle("MeVisa Invoice " . $order->getNumber() . '-' . $invoice->getId());
-        $mpdf->SetAuthor("Visa LLC");
+        $mpdf->SetAuthor($CompanySettings->getName());
         $mpdf->WriteHTML($pdfInvoiceHTML);
         $mpdf->AddPage();
         $mpdf->WriteHTML($pdfAgreementHTML);
