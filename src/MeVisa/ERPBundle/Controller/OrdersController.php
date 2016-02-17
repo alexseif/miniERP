@@ -571,7 +571,7 @@ class OrdersController extends Controller
     {
         $message = \Swift_Message::newInstance()
             ->setSubject('Hello Email')
-            ->setFrom('alex_seif24@hotmail.com')
+            ->setFrom('zakaz@mevisa.ru')
             ->setTo('alex.seif@gmail.com')
             ->setBody(
             $this->renderView(
