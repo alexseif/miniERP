@@ -1,5 +1,4 @@
 {% extends ':default:admin.html.twig' %}
 {% block content %}
-    {{ app.environment }}
-    Welcome Email! 2
+    {% include 'MeVisaERPBundle:Orders:email.html.twig' %}
 {% endblock %}
