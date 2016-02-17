@@ -1,12 +1,12 @@
-/*
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
-*/
-/* 
-    Created on : Sep 27, 2015, 10:25:48 PM
-    Author     : alexseif
-*/
+.table-success {
+    color: #fff;
+    background-color: #dff0d8;
+    border-color: #4cae4c;
+}
+tr.bg-success:hover,
+tr.bg-success:focus {
+    background-color: #c1e2b3;
+}
 .navbar-default .navbar-nav > li > a{font-weight:bold;}
 .ml-5{margin-right: 5px;}
 .firstCol25 th{width: 25%;}
@@ -59,3 +59,35 @@ and open the template in the editor.
 .order-products-form th:first-child{width: 40%;}
 .order-products-form th:nth-child(2){width: 10%;}
 .order-products-form th{width: 25%;}
+.dashboard{max-height: 250px;}
+.dashboard a{padding-top: 0px;padding-bottom: 0px;}
+.highlight {background-color: #fcf8e3;}
+.table-striped > tbody > tr:nth-child(odd).highlight > td {background-color: #fcf8e3;}
+.records_list tbody tr td{vertical-align: middle;}
+.panel .form-group{ margin-bottom: 5px;}
+.panel-body{font-size: 11px;}
+.panel-body label{font-weight: 550}
+.panel .control-label{padding-left: 5px; padding-right: 5px;}
+.orderProducts li{margin-top: 5px;}
+.list-group-item{padding-top: 2px;padding-bottom: 2px}
+.badge{margin-top: 5px;}
+.table > tbody > tr > td, .table > tbody > tr > th, .table > tfoot > tr > td, .table > tfoot > tr > th, .table > thead > tr > td, .table > thead > tr > th {
+    vertical-align: middle;
+}
+.no-border > tbody > tr > td, .no-border > tbody > tr > th, .no-border > tfoot > tr > td, .no-border > tfoot > tr > th, .no-border > thead > tr > td, .no-border > thead > tr > th 
+{border: none;}
+.ui-datepicker {z-index: 10 !important;}
+#order-docs a{word-wrap: break-word;height: 120px; overflow: hidden;}
+#order-docs a:hover{overflow: visible;}
+#order-docs a span.glyphicon{font-size: 2.5em;}
+.panel-heading .accordion-toggle:after {
+    /* symbol for "opening" panels */
+    font-family: 'Glyphicons Halflings';  /* essential for enabling glyphicon */
+    content: "\e114";    /* adjust as needed, taken from bootstrap.css */
+    float: right;        /* adjust as needed */
+    color: grey;         /* adjust as needed */
+}
+.panel-heading .accordion-toggle.collapsed:after {
+    /* symbol for "collapsed" panels */
+    content: "\e080";    /* adjust as needed, taken from bootstrap.css */
+}
