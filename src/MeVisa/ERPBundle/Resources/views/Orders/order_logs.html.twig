@@ -1,0 +1,20 @@
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <span class="panel-title">Log</span>
+    </div>
+    <div class="panel-body order-comment">
+        <ul class="comments">
+            {%for log in logs %}
+                <li class="clearfix">
+                    <div class="post-comments">
+                        <p class="meta">{{ log.action }} @ {{ log.loggedAt|localizeddate('short', 'short') }} <span class="pull-right">by {{ log.username ? log.username : "mevisa.ru"}}</span></p>
+                        <p>{% if log.data.state is defined %} {{ log.data.state }} {% endif %}</p>
+                        {% for name,value in log.data %}   
+                            {{ name }} = {{ value.timestamp is defined ? value|localizeddate('short') : value }}<br/>
+                        {% endfor %}
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>

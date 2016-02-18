@@ -40,7 +40,6 @@ class Invoices
     /**
      * @var \DateTime
      *
-     * @Gedmo\Versioned
      * @ORM\Column(name="createdAt", type="datetime", nullable=true)
      */
     private $createdAt;

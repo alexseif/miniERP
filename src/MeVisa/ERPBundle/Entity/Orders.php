@@ -54,6 +54,7 @@ class Orders
 
     /**
      *
+     * @Gedmo\Versioned
      * @ORM\ManyToOne(targetEntity="MeVisa\CRMBundle\Entity\Customers", inversedBy="orders", cascade={"persist"})
      * @ORM\JoinColumn(name="customer_id", referencedColumnName="id", onDelete="CASCADE")
      */
@@ -78,6 +79,7 @@ class Orders
     /**
      * @var integer
      *
+     * @Gedmo\Versioned
      * @ORM\Column(name="adjustmentTotal", type="integer")
      */
     private $adjustmentTotal;
@@ -140,6 +142,7 @@ class Orders
     /**
      * @var \DateTime
      *
+     * @Gedmo\Versioned
      * @ORM\Column(name="completedAt", type="datetime", nullable=true)
      */
     private $completedAt;
@@ -196,7 +199,6 @@ class Orders
         $this->orderDocuments = new ArrayCollection();
         $this->invoices = new ArrayCollection();
         $this->uploadedFiles = new ArrayCollection();
-        $this->setCreatedAt(new \DateTime());
     }
 
     /**

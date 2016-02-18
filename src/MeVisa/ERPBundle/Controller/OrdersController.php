@@ -227,8 +227,9 @@ class OrdersController extends Controller
             throw $this->createNotFoundException('Unable to find Orders entity.');
         }
 
-//        $repo = $em->getRepository('Gedmo\Loggable\Entity\LogEntry');
-//        $log = $repo->findBy(array('objectId' => $order->getId()));
+        $logRepo = $em->getRepository('Gedmo\Loggable\Entity\LogEntry'); // we use default log entry class
+        $orderLog = $em->find('MeVisa\ERPBundle\Entity\Orders', $id);
+        $logs = $logRepo->getLogEntries($orderLog);
 
         $state = $order->getState();
         $order->startOrderStateEnginge();
@@ -253,6 +254,7 @@ class OrdersController extends Controller
         }
         return array(
             'order' => $order,
+            'logs' => $logs,
             'documents' => $orderDocuments,
             'status_form' => $statusForm->createView(),
             'comment_form' => $commentForm->createView(),

@@ -35,11 +35,7 @@ class WCAPICommand extends ContainerAwareCommand
         $wcOrders = $client->getCompletedOrders();
         foreach ($wcOrders['orders'] as $wcOrder) {
             $order = $em->getRepository('MeVisaERPBundle:Orders')->findOneBy(array('wcId' => $wcOrder['order_number']));
-            if ($order) {
-                if (\is_null($order->getUpdatedAt())) {
-                    $order = $this->updateOrder($em, $wcOrder, $order);
-                }
-            } else {
+            if (!$order) {
                 $order = $this->newOrder($em, $wcOrder);
             }
             $wcOrderNotes = $client->getOrderNotes($wcOrder['order_number']);
@@ -69,11 +65,11 @@ class WCAPICommand extends ContainerAwareCommand
         } else {
             $order->setCustomer($customerExists);
             $orderCommentText = '';
-// Emails do not match
+            // Emails do not match
             if ($customer->getEmail() != $customerExists->getEmail()) {
                 $orderCommentText .= 'Email do not match, new email: ' . $customer->getEmail();
             }
-// Phones do not match
+            // Phones do not match
             if ($customer->getPhone() != $customerExists->getPhone()) {
                 $orderCommentText .='Phone do not match, new phone: ' . $customer->getPhone();
             }
@@ -83,36 +79,6 @@ class WCAPICommand extends ContainerAwareCommand
                 $order->addOrderComment($orderComment);
             }
         }
-
-        $this->setOrderDetails($wcOrder, $order, $timezone, $em);
-        return $order;
-    }
-
-    public function updateOrder($em, $wcOrder, $order)
-    {
-        $timezone = new \DateTimeZone('UTC');
-        $order->startOrderStateEnginge();
-
-        $orderDocuments = $order->getOrderDocuments();
-        foreach ($orderDocuments as $orderDocument) {
-            $order->removeOrderDocument($orderDocument);
-            $em->remove($orderDocument);
-        }
-
-        $orderProducts = $order->getOrderProducts();
-        foreach ($orderProducts as $orderProduct) {
-            $order->removeOrderProduct($orderProduct);
-            $em->remove($orderProduct);
-        }
-        $orderPayments = $order->getOrderPayments();
-        foreach ($orderPayments as $orderPayment) {
-            $order->removeOrderPayment($orderPayment);
-            $em->remove($orderPayment);
-        }
-
-        $order->getCustomer()->setName($wcOrder['billing_address']['first_name'] . ' ' . $wcOrder['billing_address']['last_name']);
-        $order->getCustomer()->setEmail($wcOrder['billing_address']['email']);
-        $order->getCustomer()->setPhone($wcOrder['billing_address']['phone']);
 
         $this->setOrderDetails($wcOrder, $order, $timezone, $em);
         return $order;
@@ -159,7 +125,7 @@ class WCAPICommand extends ContainerAwareCommand
             $unitPrice = $productPricing[0]->getPrice();
             $orderProduct = new OrderProducts();
             $orderProduct->setProduct($product);
-            $orderProduct->setQuantity(($lineItem['total']*100)/$unitPrice);
+            $orderProduct->setQuantity(($lineItem['total'] * 100) / $unitPrice);
             $orderProduct->setUnitPrice($unitPrice);
             $orderProduct->setTotal($lineItem['total'] * 100);
 
