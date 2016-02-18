@@ -1,0 +1,8 @@
+parameters:
+    order.class: MeVisa\ERPBundle\Service\OrderService
+
+services:
+
+    erp.order:
+        class:  %order.class%
+        arguments: [ '@doctrine.orm.entity_manager' ]
