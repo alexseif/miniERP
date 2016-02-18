@@ -60,14 +60,7 @@ class OrdersController extends Controller
 
         if ($form->isValid()) {
 
-            $lastPOSOrder = $em->getRepository('MeVisaERPBundle:Orders')->queryLastPOSOrder();
-
-            if ($lastPOSOrder) {
-                $lastPOSNo = ltrim($lastPOSOrder->getNumber(), 'POS');
-                $order->setNumber('POS'.($lastPOSNo + 1));
-            } else {
-                $order->setNumber('POS1');
-            }
+            $order->setNumber($this->get('erp.order')->generateNewPOSNumber());
 
             // TODO: State machine
             $customer = $order->getCustomer();
@@ -94,8 +87,7 @@ class OrdersController extends Controller
 
             $payments = $order->getOrderPayments();
 
-            return $this->redirect($this->generateUrl('orders_show',
-                        array('id' => $order->getId())));
+            return $this->redirect($this->generateUrl('orders_show', array('id' => $order->getId())));
         } else {
             foreach ($form->getErrors() as $error) {
                 $this->addFlash('error', $error);
@@ -118,7 +110,7 @@ class OrdersController extends Controller
      */
     public function createCommentAction(Request $request, $id)
     {
-        $em    = $this->getDoctrine()->getManager();
+        $em = $this->getDoctrine()->getManager();
         $order = $em->getRepository('MeVisaERPBundle:Orders')->find($id);
 
         if (!$order) {
@@ -127,10 +119,8 @@ class OrdersController extends Controller
 
         $orderComment = new \MeVisa\ERPBundle\Entity\OrderComments();
         $orderComment->setOrderRef($id);
-        $form         = $this->createCommentForm($orderComment);
+        $form = $this->createCommentForm($orderComment);
         $form->handleRequest($request);
-
-
 
         if ($form->isValid()) {
             $comment = $form->getData();
@@ -142,8 +132,7 @@ class OrdersController extends Controller
                 $em->flush();
             }
         }
-        return $this->redirect($this->generateUrl('orders_show',
-                    array('id' => $id)));
+        return $this->redirect($this->generateUrl('orders_show', array('id' => $id)));
     }
 
     /**
@@ -155,14 +144,12 @@ class OrdersController extends Controller
      */
     private function createCreateForm(Orders $entity)
     {
-        $form = $this->createForm(new OrdersType(), $entity,
-            array(
+        $form = $this->createForm(new OrdersType(), $entity, array(
             'action' => $this->generateUrl('orders_create'),
             'method' => 'POST',
         ));
 
-        $form->add('save', 'submit',
-            array(
+        $form->add('save', 'submit', array(
             'label' => null,
             'attr' => array(
                 'class' => 'btn-success pull-right'
@@ -191,7 +178,7 @@ class OrdersController extends Controller
 //            ));
 //        }
 
-        $em            = $this->getDoctrine()->getManager();
+        $em = $this->getDoctrine()->getManager();
         //FIXME: Select with invalid product_prices produces errors
         $productPrices = $em->getRepository('MeVisaERPBundle:ProductPrices')->findAll();
 
@@ -213,7 +200,7 @@ class OrdersController extends Controller
     {
         $term = $request->get('term');
 
-        $em       = $this->getDoctrine()->getManager();
+        $em = $this->getDoctrine()->getManager();
         $entities = $em->getRepository('MeVisaCRMBundle:Customers')->findLikeName($term);
 
         return new JsonResponse($entities);
@@ -249,19 +236,19 @@ class OrdersController extends Controller
 
         $orderComment = new \MeVisa\ERPBundle\Entity\OrderComments();
         $orderComment->setOrderRef($order->getId());
-        $commentForm  = $this->createCommentForm($orderComment);
-        $statusForm   = $this->createStatusForm($order);
+        $commentForm = $this->createCommentForm($orderComment);
+        $statusForm = $this->createStatusForm($order);
 
         $orderDocuments = $order->getOrderDocuments();
         foreach ($orderDocuments as $document) {
             if (0 === strpos($document->getPath(), 'http://www.mevisa.ru/')) {
-                $parts                    = explode('/', $document->getPath());
+                $parts = explode('/', $document->getPath());
                 $parts[count($parts) - 2] = 'thumbs';
                 $parts[count($parts) - 1] = $document->getName();
-                $document->thumbnail      = implode('/', $parts);
+                $document->thumbnail = implode('/', $parts);
             } else {
                 $document->thumbnail = false;
-                $document->setPath($this->get('request')->getScheme().'://'.$this->get('request')->getHttpHost().$this->get('request')->getBasePath().'/'.$document->getWebPath());
+                $document->setPath($this->get('request')->getScheme() . '://' . $this->get('request')->getHttpHost() . $this->get('request')->getBasePath() . '/' . $document->getWebPath());
             }
         }
         return array(
@@ -294,7 +281,7 @@ class OrdersController extends Controller
             throw $this->createNotFoundException('Unable to find Orders entity.');
         }
 
-        $editForm   = $this->createEditForm($order);
+        $editForm = $this->createEditForm($order);
         $statusForm = $this->createStatusForm($order);
 
         $productPrices = $em->getRepository('MeVisaERPBundle:ProductPrices')->findAll();
@@ -316,15 +303,12 @@ class OrdersController extends Controller
      */
     private function createEditForm(Orders $entity)
     {
-        $form = $this->createForm(new OrdersType(), $entity,
-            array(
-            'action' => $this->generateUrl('orders_update',
-                array('id' => $entity->getId())),
+        $form = $this->createForm(new OrdersType(), $entity, array(
+            'action' => $this->generateUrl('orders_update', array('id' => $entity->getId())),
             'method' => 'PUT',
         ));
 
-        $form->add('update', 'submit',
-            array(
+        $form->add('update', 'submit', array(
             'label' => null,
             'attr' => array(
                 'class' => 'btn-success pull-right'
@@ -374,8 +358,7 @@ class OrdersController extends Controller
 
             $payments = $order->getOrderPayments();
 
-            return $this->redirect($this->generateUrl('orders_show',
-                        array('id' => $order->getId())));
+            return $this->redirect($this->generateUrl('orders_show', array('id' => $order->getId())));
         } else {
             foreach ($form->getErrors() as $error) {
                 $this->addFlash('error', $error);
@@ -401,18 +384,15 @@ class OrdersController extends Controller
     private function createCommentForm(\MeVisa\ERPBundle\Entity\OrderComments $entity)
     {
         $form = $this->createFormBuilder()
-            ->setAction($this->generateUrl('orders_comments_new',
-                    array('id' => $entity->getOrderRef())))
-            ->setMethod('POST');
+                ->setAction($this->generateUrl('orders_comments_new', array('id' => $entity->getOrderRef())))
+                ->setMethod('POST');
 
-        $form->add('comment', 'textarea',
-            array(
+        $form->add('comment', 'textarea', array(
             'data' => $entity->getComment(),
             'required' => true,
             'label' => false
         ));
-        $form->add('save', 'submit',
-            array(
+        $form->add('save', 'submit', array(
             'label' => false,
             'attr' => array('class' => 'pull-right btn-default')
         ));
@@ -429,19 +409,17 @@ class OrdersController extends Controller
      */
     private function createStatusForm(Orders $entity)
     {
-        $form     = $this->createFormBuilder()
-            ->setAction($this->generateUrl('orders_status_update',
-                    array('id' => $entity->getId())))
-            ->setMethod('PUT');
+        $form = $this->createFormBuilder()
+                ->setAction($this->generateUrl('orders_status_update', array('id' => $entity->getId())))
+                ->setMethod('PUT');
         $children = $entity->getOrderState()->getCurrentState()->getChildren();
         if (is_array($children)) {
             foreach ($children as $key => $child) {
-                $form->add($child->getKey(), 'submit',
-                    array(
+                $form->add($child->getKey(), 'submit', array(
                     'label' => $child->getName(),
                     'attr' => array(
-                        'id' => 'state_'.$key,
-                        'class' => 'ml-5 btn-group btn-'.$child->getBootstrapClass(),
+                        'id' => 'state_' . $key,
+                        'class' => 'ml-5 btn-group btn-' . $child->getBootstrapClass(),
                         'value' => $child->getKey(),
                 )));
             }
@@ -492,8 +470,7 @@ class OrdersController extends Controller
             }
             $em->flush();
 
-            return $this->redirect($this->generateUrl('orders_show',
-                        array('id' => $id)));
+            return $this->redirect($this->generateUrl('orders_show', array('id' => $id)));
         } else {
             echo "Form not valid becuase:<br/>";
             $formErrors = $statusForm->getErrors();
@@ -505,35 +482,6 @@ class OrdersController extends Controller
             'order' => $order,
             'productPrices' => $productPrices,
             'status_form' => $statusForm->createView(),
-        );
-    }
-
-    /**
-     * Finds and displays a Orders entity.
-     *
-     * @Route("/{id}/invoice", name="order_show_invoice")
-     * @Method("GET")
-     * @Template()
-     */
-    public function invoiceAction($id)
-    {
-        $em = $this->getDoctrine()->getManager();
-
-        $order = $em->getRepository('MeVisaERPBundle:Orders')->find($id);
-
-
-        if (!$order) {
-            throw $this->createNotFoundException('Unable to find Order');
-        }
-        $this->generateInvoice($order->getId());
-
-        $state = $order->getState();
-        $order->startOrderStateEnginge();
-        $order->setOrderState($state);
-
-        return array(
-            'order' => $order,
-            'invoiceNo' => 0
         );
     }
 
@@ -553,8 +501,7 @@ class OrdersController extends Controller
             $em->persist($document);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('orders_show',
-                        array('id' => $id)));
+            return $this->redirect($this->generateUrl('orders_show', array('id' => $id)));
         }
 
         return array('form' => $form->createView());
@@ -570,15 +517,15 @@ class OrdersController extends Controller
     public function approvalAction($id)
     {
         $message = \Swift_Message::newInstance()
-            ->setSubject('Hello Email')
-            ->setFrom('zakaz@mevisa.ru')
-            ->setTo('alex.seif@gmail.com')
-            ->setBody(
-            $this->renderView(
-                'MeVisaERPBundle:Orders:email.html.twig', array()
-            ), 'text/html'
+                ->setSubject('Hello Email')
+                ->setFrom('zakaz@mevisa.ru')
+                ->setTo('alex.seif@gmail.com')
+                ->setBody(
+                $this->renderView(
+                        'MeVisaERPBundle:Orders:email.html.twig', array()
+                ), 'text/html'
         );
-        $result  = $this->get('mailer')->send($message);
+        $result = $this->get('mailer')->send($message);
 
         $this->addFlash('success', 'Approval sent');
 //        return $this->redirect($this->generateUrl('orders_show',
@@ -594,76 +541,18 @@ class OrdersController extends Controller
      */
     public function invoicepdfAction($id)
     {
-        $this->generateInvoice($id);
-        $this->addFlash('success', 'invoice generated');
-        return $this->redirect($this->generateUrl('orders_show',
-                    array('id' => $id)));
-    }
-
-    /**
-     * Generates an invoice
-     */
-    public function generateInvoice($id)
-    {
         $em = $this->getDoctrine()->getManager();
 
         $order = $em->getRepository('MeVisaERPBundle:Orders')->find($id);
-
 
         if (!$order) {
             throw $this->createNotFoundException('Unable to find Order');
         }
 
-        $CompanySettings = $em->getRepository('MeVisaERPBundle:CompanySettings')->find(1);
+        $this->get('erp.order')->generateInvoice($order);
 
-        $invoice  = new Invoices();
-        $invoices = $order->getInvoices();
-        foreach ($invoices as $inv) {
-            $invoice = $inv;
-        }
-        $invoice->setCreatedAt(new \DateTime());
-
-        $myProjectDirectory = __DIR__.'/../../../../';
-        $invoiceName        = 'mevisa-invoice-'.$order->getNumber().'-'.$invoice->getId().'.pdf';
-        $invoicePath        = $myProjectDirectory.'web/invoices/';
-        $pdfInvoiceHTML     = $this->renderView(
-            'MeVisaERPBundle:Orders:pdfinvoice.html.twig',
-            array(
-            'order' => $order,
-            'invoice' => $invoice,
-            'companySettings' => $CompanySettings
-            )
-        );
-        $pdfAgreementHTML   = $this->renderView(
-            'MeVisaERPBundle:Orders:pdfagreement.html.twig',
-            array(
-            'order' => $order,
-            'invoice' => $invoice,
-            'companySettings' => $CompanySettings
-            )
-        );
-        $pdfWaiverHTML      = $this->renderView(
-            'MeVisaERPBundle:Orders:pdfwaiver.html.twig',
-            array(
-            'order' => $order,
-            'invoice' => $invoice,
-            'companySettings' => $CompanySettings
-            )
-        );
-
-
-        $mpdf = new \mPDF("ru-RU", "A4");
-        $mpdf->SetTitle("MeVisa Invoice ".$order->getNumber().'-'.$invoice->getId());
-        $mpdf->SetAuthor($CompanySettings->getName());
-        $mpdf->WriteHTML($pdfInvoiceHTML);
-        $mpdf->AddPage();
-        $mpdf->WriteHTML($pdfAgreementHTML);
-        $mpdf->AddPage();
-        $mpdf->WriteHTML($pdfWaiverHTML);
-        $mpdf->Output($invoicePath.$invoiceName, 'F');
-
-        $em->flush();
-        return true;
+        $this->addFlash('success', 'invoice generated');
+        return $this->redirect($this->generateUrl('orders_show', array('id' => $id)));
     }
 
     public function setOrderDetails($order)
@@ -725,4 +614,5 @@ class OrdersController extends Controller
             }
         }
     }
+
 }
