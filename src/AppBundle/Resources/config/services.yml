@@ -1,5 +1,5 @@
 parameters:
-    currency.class: AppBundle\Currency\CurrencyService
+    currency.class: AppBundle\Service\CurrencyService
 
 services:
     onconnect.listener:

@@ -2,22 +2,30 @@
 
 namespace AppBundle\Service;
 
-use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\EntityManager;
 
-/**
- * Description of CurrencyService
- *
- * @author alexseif
- */
 class CurrencyService
 {
 
-    public function __construct()
+    protected $em;
+
+    /**
+     * @InjectParams({
+     *    "em" = @Inject("doctrine.orm.entity_manager")
+     * })
+     */
+    public function __construct(EntityManager $em)
     {
-        // TODO: Load Currency Repository, then setup a service to load currency in menu in admin.html.twig
-        return $this->getDoctrine()
+        $this->em = $em;
+    }
+
+    public function getCurrency()
+    {
+        return $this
+                        ->em
                         ->getRepository('AppBundle:Currency')
                         ->getToDate();
+//        return '7400';
     }
 
 }
