@@ -57,7 +57,7 @@ class WCAPICommand extends ContainerAwareCommand
         $customer->setEmail($wcOrder['billing_address']['email']);
         $customer->setPhone($wcOrder['billing_address']['phone']);
 
-        $customerExists = $em->getRepository('MeVisaCRMBundle:Customers')->findOneBy(array('name' => $customer->getName()));
+        $customerExists = $em->getRepository('MeVisaCRMBundle:Customers')->findOneBy(array('email' => $customer->getEmail()));
 
         if (!$customerExists) {
             $em->persist($customer);
@@ -136,7 +136,6 @@ class WCAPICommand extends ContainerAwareCommand
             $order->setDeparture(\DateTime::createFromFormat("d/m/Y", $lineItem['meta'][4]['value'], $timezone));
             $order->setArrival(\DateTime::createFromFormat("d/m/Y", $lineItem['meta'][5]['value']), $timezone);
 
-            //FIXME: check available docs first
             $docs = explode(',', $lineItem['meta'][6]['value']);
             foreach ($docs as $doc) {
                 $document = new \MeVisa\ERPBundle\Entity\OrderDocuments();
