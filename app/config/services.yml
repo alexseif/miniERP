@@ -8,6 +8,10 @@ services:
         class: Twig_Extensions_Extension_Intl
         tags:
             - { name: twig.extension }
+    twig.extension.stringloader:
+        class: Twig_Extension_StringLoader
+        tags:
+            - { name: twig.extension }
 #    currency:
 #        class: %currency.class%
 #        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]
