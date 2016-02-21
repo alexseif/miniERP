@@ -29,6 +29,8 @@ tr.bg-success:focus {
     background:#eee;
     padding-left: 15%;
     padding-right: 15%;
+    max-height: 244px;
+    overflow-y: scroll;
 }
 
 .order-comment ul{
@@ -87,7 +89,7 @@ tr.bg-success:focus {
     float: right;        /* adjust as needed */
     color: grey;         /* adjust as needed */
 }
-.panel-heading .accordion-toggle.collapsed:after {
-    /* symbol for "collapsed" panels */
-    content: "\e080";    /* adjust as needed, taken from bootstrap.css */
-}
+/* symbol for "collapsed" panels */
+/* adjust as needed, taken from bootstrap.css */
+.panel-heading .accordion-toggle.collapsed:after {content: "\e080";}
+#order-log .list-group{padding: 15px 10px;max-height: 244px; overflow-y: scroll;} #order-log .badge{margin-top: 0px;}

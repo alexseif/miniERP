@@ -227,9 +227,7 @@ class OrdersController extends Controller
             throw $this->createNotFoundException('Unable to find Orders entity.');
         }
 
-        $logRepo = $em->getRepository('Gedmo\Loggable\Entity\LogEntry'); // we use default log entry class
-        $orderLog = $em->find('MeVisa\ERPBundle\Entity\Orders', $id);
-        $logs = $logRepo->getLogEntries($orderLog);
+        $logs = $this->getOrderLog($id);
 
         $state = $order->getState();
         $order->startOrderStateEnginge();
@@ -237,6 +235,7 @@ class OrdersController extends Controller
 
         $orderComment = new \MeVisa\ERPBundle\Entity\OrderComments();
         $orderComment->setOrderRef($order->getId());
+
         $commentForm = $this->createCommentForm($orderComment);
         $statusForm = $this->createStatusForm($order);
 
@@ -252,6 +251,7 @@ class OrdersController extends Controller
                 $document->setPath($this->get('request')->getScheme() . '://' . $this->get('request')->getHttpHost() . $this->get('request')->getBasePath() . '/' . $document->getWebPath());
             }
         }
+
         return array(
             'order' => $order,
             'logs' => $logs,
@@ -286,11 +286,25 @@ class OrdersController extends Controller
         $editForm = $this->createEditForm($order);
         $statusForm = $this->createStatusForm($order);
 
+        $logs = $this->getOrderLog($id);
         $productPrices = $em->getRepository('MeVisaERPBundle:ProductPrices')->findAll();
 
+        $orderDocuments = $order->getOrderDocuments();
+        foreach ($orderDocuments as $document) {
+            if (0 === strpos($document->getPath(), 'http://www.mevisa.ru/')) {
+                $parts = explode('/', $document->getPath());
+                $parts[count($parts) - 2] = 'thumbs';
+                $parts[count($parts) - 1] = $document->getName();
+                $document->thumbnail = implode('/', $parts);
+            } else {
+                $document->thumbnail = false;
+                $document->setPath($this->get('request')->getScheme() . '://' . $this->get('request')->getHttpHost() . $this->get('request')->getBasePath() . '/' . $document->getWebPath());
+            }
+        }
         return array(
             'order' => $order,
             'productPrices' => $productPrices,
+            'logs' => $logs,
             'form' => $editForm->createView(),
             'status_form' => $statusForm->createView(),
         );
@@ -357,9 +371,6 @@ class OrdersController extends Controller
             }
 
             $em->flush();
-
-            $payments = $order->getOrderPayments();
-
             return $this->redirect($this->generateUrl('orders_show', array('id' => $order->getId())));
         } else {
             foreach ($form->getErrors() as $error) {
@@ -367,12 +378,29 @@ class OrdersController extends Controller
             }
         }
 
+        $statusForm = $this->createStatusForm($order);
+        $logs = $this->getOrderLog($id);
         $productPrices = $em->getRepository('MeVisaERPBundle:ProductPrices')->findAll();
+
+        $orderDocuments = $order->getOrderDocuments();
+        foreach ($orderDocuments as $document) {
+            if (0 === strpos($document->getPath(), 'http://www.mevisa.ru/')) {
+                $parts = explode('/', $document->getPath());
+                $parts[count($parts) - 2] = 'thumbs';
+                $parts[count($parts) - 1] = $document->getName();
+                $document->thumbnail = implode('/', $parts);
+            } else {
+                $document->thumbnail = false;
+                $document->setPath($this->get('request')->getScheme() . '://' . $this->get('request')->getHttpHost() . $this->get('request')->getBasePath() . '/' . $document->getWebPath());
+            }
+        }
 
         return array(
             'order' => $order,
             'productPrices' => $productPrices,
-            'edit_form' => $editForm->createView(),
+            'logs' => $logs,
+            'form' => $editForm->createView(),
+            'status_form' => $statusForm->createView(),
         );
     }
 
@@ -578,13 +606,15 @@ class OrdersController extends Controller
 
         $orderComments = $order->getOrderComments();
         foreach ($orderComments as $comment) {
-            if ("" == $comment->getComment()) {
-                $order->removeOrderComment($comment);
-            } else {
-                $this->getUser()->addComment($comment);
-                $comment->setCreatedAt(new \DateTime());
-                if (empty($comment->getId())) {
-                    $order->addOrderComment($comment);
+            if (!$comment->getId()) {
+                if ("" == $comment->getComment()) {
+                    $order->removeOrderComment($comment);
+                } else {
+                    $this->getUser()->addComment($comment);
+                    $comment->setCreatedAt(new \DateTime());
+                    if (empty($comment->getId())) {
+                        $order->addOrderComment($comment);
+                    }
                 }
             }
         }
@@ -615,6 +645,14 @@ class OrdersController extends Controller
                 $order->addOrderDocument($document);
             }
         }
+    }
+
+    public function getOrderLog($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $logRepo = $em->getRepository('Gedmo\Loggable\Entity\LogEntry');
+        $orderLog = $em->find('MeVisa\ERPBundle\Entity\Orders', $id);
+        return $logRepo->getLogEntries($orderLog);
     }
 
 }

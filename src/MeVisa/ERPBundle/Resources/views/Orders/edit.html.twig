@@ -40,25 +40,33 @@
             <!-- Order Companions -->
             <div class="row">
                 <div class="col-sm-6">
-                    <!-- Order Payments -->
-                    {% include 'MeVisaERPBundle:Orders:order_payments_form.html.twig' %}
-                    <!-- Order Payments -->
-                </div>
-                <div class="col-sm-6">
                     <!-- Order Documents -->
                     {% include 'MeVisaERPBundle:Orders:order_documents_form.html.twig' %}
                     <!-- Order Documents -->
                 </div>
-            </div><div class="row">
+                <div class="col-sm-6">
+                    <!-- Order Payments -->
+                    {% include 'MeVisaERPBundle:Orders:order_payments_form.html.twig' %}
+                    <!-- Order Payments -->
+                </div>
+{#            </div>#}
+{#            <div class="row">#}
                 <div class="col-sm-6">
                     <!-- Invoice -->
                     {% include 'MeVisaERPBundle:Orders:order_invoices_form.html.twig' %}
                     <!-- Invoice -->
                 </div>
+            </div>
+            <div class="row">
                 <div class="col-sm-6">
                     <!-- Order Comments -->
                     {% include 'MeVisaERPBundle:Orders:order_comments_form.html.twig' %}
                     <!-- Order Comments -->
+                </div>
+                <div class="col-sm-6">
+                    <!-- Order Log -->
+                    {% include 'MeVisaERPBundle:Orders:order_logs.html.twig' %}
+                    <!-- Order Log -->
                 </div>
             </div>
         </div>
