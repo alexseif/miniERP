@@ -41,8 +41,7 @@ class OrderCompanionsType extends AbstractType
                 ->add('passportExpiry', 'date', array(
                     'widget' => 'choice',
                     'years' => range(date('Y'), date('Y') + 12),
-                    'days' => array(1),
-                    
+                    'format' => 'ddMMyyy',
                 ))
                 ->add('orderRef')
         ;
