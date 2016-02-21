@@ -39,7 +39,7 @@ class WCAPICommand extends ContainerAwareCommand
                 $order = $this->newOrder($em, $wcOrder);
             }
             $wcOrderNotes = $client->getOrderNotes($wcOrder['order_number']);
-            $this->updateOrderNotes($em, $order, $wcOrderNotes['order_notes']);
+//            $this->updateOrderNotes($em, $order, $wcOrderNotes['order_notes']);
             $em->persist($order);
         }
         $em->flush();
