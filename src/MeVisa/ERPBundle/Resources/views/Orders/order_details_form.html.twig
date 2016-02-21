@@ -4,9 +4,9 @@
     </div>
     <table class="table table-condensed table-hover no-border ">
         <tbody>
-            <tr><td>{{ form_label(form.people)}}</td><td>{{ form_widget(form.people)}}</td></tr>
-            <tr><td>{{ form_label(form.departure)}}</td><td>{{ form_widget(form.departure)}}</td></tr>
-            <tr><td>{{ form_label(form.arrival)}}</td><td>{{ form_widget(form.arrival)}}</td></tr>
+            <tr><td><label for="mevisa_erpbundle_orders_people" class="control-label required">PAX No</label></td><td>{{ form_widget(form.people) }}</td></tr>
+            <tr><td><label for="mevisa_erpbundle_orders_departure" class="control-label required">Departure</label></td><td>{{ form_widget(form.departure) }}</td></tr>
+            <tr><td><label for="mevisa_erpbundle_orders_arrival" class="control-label required">Arrival</label></td><td>{{ form_widget(form.arrival) }}</td></tr>
         </tbody>
     </table>
 </div>
