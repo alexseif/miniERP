@@ -37,15 +37,17 @@
     </table>
     <div class='panel-footer'>
         <div class='row'>
-            <div class='col-sm-3'>
-                {{ form_row(form.productsTotal) }}
+            <div class='col-sm-4'>
+                <label class="control-label">Subtotal</label>
+                {{ form_widget(form.productsTotal) }}
             </div>
-            <div class='col-sm-5'>
-                {{ form_row(form.adjustmentTotal) }}
+            <div class='col-sm-4'>
+                <label for="mevisa_erpbundle_orders_adjustmentTotal" class="control-label required">Adjustment</label>
+                {{ form_widget(form.adjustmentTotal) }}
             </div>
             <div class='col-sm-4'>
                 <div class='form-group'>
-                    <label for="" class="col-sm-2 control-label">Order Total</label>
+                    <label class="control-label">Order Total</label>
                     <div class="col-sm-10">
                         <div class="input-group">
                             <input type="text" class="form-control" disabled="disabled" name="order_total" ><span class="input-group-addon"> руб.</span>
