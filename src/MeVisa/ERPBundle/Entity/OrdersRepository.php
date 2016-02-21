@@ -56,11 +56,13 @@ class OrdersRepository extends EntityRepository
 
         return $this->createQueryBuilder("o")
                         ->leftJoin("o.customer", 'c')
+                        ->leftJoin("o.orderCompanions", 'oc')
                         ->where("c.name LIKE ?1")
                         ->orWhere("c.name LIKE ?1")
                         ->orWhere("o.number LIKE ?1")
                         ->orWhere("c.phone LIKE ?1")
                         ->orWhere("c.email LIKE ?1")
+                        ->orWhere("oc.passportNumber LIKE ?1")
                         ->setParameter("1", "%" . $text . "%")
                         ->getQuery()
                         ->getResult();
