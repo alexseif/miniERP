@@ -32,6 +32,7 @@
                                   {% elseif order.state == "post" %}label-primary
                                   {% elseif order.state == "document" %}label-warning
                                   {% elseif order.state == "approved" %}label-success
+                                  {% elseif order.state == "rejected" %}label-danger
                                   {% else %}label-default
                                   {% endif %}
                                   ">{{ order.state|upper }}</span>
