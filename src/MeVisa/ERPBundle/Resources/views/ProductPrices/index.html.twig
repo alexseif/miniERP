@@ -19,7 +19,7 @@
                         <table class="table table-bordered table-hover table-striped records_list">
                             <thead>
                                 <tr>
-                                    <th>Cost</th>
+                                    {% if is_granted('ROLE_ADMIN') %}<th>Cost</th>{% endif %}
                                     <th>Price</th>
                                     <th>Actions</th>
                                 </tr>
@@ -27,7 +27,7 @@
                             <tbody>
                                 {% for entity in entities %}
                                     <tr>
-                                        <td>{{ (entity.cost/100)|localizedcurrency('RUB') }}</td>
+                                        {% if is_granted('ROLE_ADMIN') %}<td>{{ (entity.cost/100)|localizedcurrency('RUB') }}</td>{% endif %}
                                         <td>{{ (entity.price/100)|localizedcurrency('RUB') }}</td>
                                         <td>
                                             {% if is_granted('ROLE_ADMIN') %}
