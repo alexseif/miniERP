@@ -72,7 +72,8 @@ tr.bg-success:focus {
 .panel .control-label{padding-left: 5px; padding-right: 5px;}
 .orderProducts li{margin-top: 5px;}
 .list-group-item{padding-top: 2px;padding-bottom: 2px}
-.badge{margin-top: 5px;}
+/*TODO: Remember why you needed this*/
+/*.badge{margin-top: 5px;}*/
 .table > tbody > tr > td, .table > tbody > tr > th, .table > tfoot > tr > td, .table > tfoot > tr > th, .table > thead > tr > td, .table > thead > tr > th {
     vertical-align: middle;
 }
