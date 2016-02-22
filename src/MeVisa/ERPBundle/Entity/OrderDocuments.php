@@ -31,7 +31,6 @@ class OrderDocuments
     /**
      * @var string
      *
-     * @Gedmo\Versioned
      * @ORM\Column(name="path", type="string", length=255)
      */
     private $path;
