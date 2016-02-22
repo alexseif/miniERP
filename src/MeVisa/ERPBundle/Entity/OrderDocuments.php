@@ -9,7 +9,6 @@ use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * @ORM\Entity
- * @Gedmo\Loggable
  * @ORM\HasLifecycleCallbacks
  */
 class OrderDocuments
@@ -25,7 +24,6 @@ class OrderDocuments
     /**
      * @var string
      *
-     * @Gedmo\Versioned
      * @ORM\Column(name="name", type="string", length=255)
      */
     private $name;

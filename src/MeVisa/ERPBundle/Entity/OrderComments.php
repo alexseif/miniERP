@@ -9,7 +9,6 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * OrderComments
  *
  * @ORM\Table()
- * @Gedmo\Loggable
  * @ORM\Entity(repositoryClass="MeVisa\ERPBundle\Entity\OrderCommentsRepository")
  */
 class OrderComments

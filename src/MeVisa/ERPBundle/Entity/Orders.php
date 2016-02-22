@@ -39,7 +39,6 @@ class Orders
     /**
      * @var string
      *
-     * @Gedmo\Versioned
      * @ORM\Column(name="number", type="string", length=20)
      */
     private $number;
@@ -63,7 +62,6 @@ class Orders
     /**
      * @var string
      *
-     * @Gedmo\Versioned
      * @ORM\Column(name="channel", type="string", length=255)
      */
     private $channel;
@@ -119,7 +117,6 @@ class Orders
     /**
      * @var \DateTime
      *
-     * @Gedmo\Versioned
      * @ORM\Column(name="createdAt", type="datetime")
      */
     private $createdAt;
@@ -127,15 +124,13 @@ class Orders
     /**
      * @var \DateTime
      *
-     * @Gedmo\Versioned
      * @ORM\Column(name="updatedAt", type="datetime", nullable=true)
      */
     private $updatedAt;
-    
+
     /**
      * @var \DateTime
      *
-     * @Gedmo\Versioned
      * @ORM\Column(name="postedAt", type="datetime", nullable=true)
      */
     private $postedAt;
@@ -150,7 +145,6 @@ class Orders
     /**
      * @var \DateTime
      *
-     * @Gedmo\Versioned
      * @ORM\Column(name="completedAt", type="datetime", nullable=true)
      */
     private $completedAt;
@@ -800,7 +794,6 @@ class Orders
         return $this->invoices;
     }
 
-
     /**
      * Set postedAt
      *
@@ -823,4 +816,5 @@ class Orders
     {
         return $this->postedAt;
     }
+
 }
