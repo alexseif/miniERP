@@ -416,10 +416,6 @@ class OrdersController extends Controller
                 $order->setUpdatedAt(new \DateTime());
             }
 
-            if ("approved" == $order->getState() || "rejected" == $order->getState()) {
-                $order->setCompletedAt(new \DateTime());
-            }
-
             $em->flush();
             return $this->redirect($this->generateUrl('orders_show', array('id' => $order->getId())));
         } else {
@@ -637,6 +633,14 @@ class OrdersController extends Controller
 
     public function setOrderDetails($order)
     {
+        if ("approved" == $order->getState() || "rejected" == $order->getState()) {
+            $order->setCompletedAt(new \DateTime());
+        }
+
+        if ("post" == $order->getState()) {
+            $order->setPostedAt(new \DateTime());
+        }
+
         $orderCompanions = $order->getOrderCompanions();
         // TODO: Check Order Companions
         foreach ($orderCompanions as $companion) {

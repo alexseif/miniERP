@@ -131,6 +131,14 @@ class Orders
      * @ORM\Column(name="updatedAt", type="datetime", nullable=true)
      */
     private $updatedAt;
+    
+    /**
+     * @var \DateTime
+     *
+     * @Gedmo\Versioned
+     * @ORM\Column(name="postedAt", type="datetime", nullable=true)
+     */
+    private $postedAt;
 
     /**
      * @var \DateTime
@@ -792,4 +800,27 @@ class Orders
         return $this->invoices;
     }
 
+
+    /**
+     * Set postedAt
+     *
+     * @param \DateTime $postedAt
+     * @return Orders
+     */
+    public function setPostedAt($postedAt)
+    {
+        $this->postedAt = $postedAt;
+
+        return $this;
+    }
+
+    /**
+     * Get postedAt
+     *
+     * @return \DateTime 
+     */
+    public function getPostedAt()
+    {
+        return $this->postedAt;
+    }
 }
