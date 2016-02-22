@@ -8,7 +8,7 @@
             <div class="panel panel-default">
                 <div class="panel-heading clearfix">                    
                     <span class="panel-title">Orders</span>
-                    <span class="badge">{{ entities|length }} </span>
+                    <span class="badge">{{ orders|length }} </span>
                 </div>
                 <div class="table-responsive">
                     <table class="table table-bordered table-striped  records_list">
@@ -25,31 +25,31 @@
                             </tr>
                         </thead>
                         <tbody>
-                            {% for entity in entities %}
+                            {% for order in orders %}
                                 {% set highlight = ''%}
-                                {% if entity.state == "post" %}
-                                    {% if  (date(entity.postedAt) < date('-2days')) and entity.postedAt.timestamp is defined %}
+                                {% if order.state == "post" %}
+                                    {% if  (date(order.postedAt) < date('-2days')) and order.postedAt.timestamp is defined %}
                                         {% set highlight = 'highlight' %}
                                     {% endif %}
                                 {% endif %}
-                                {% if entity.state == "backoffice" %}
-                                    {% if  (date(entity.createdAt) < date('-2days')) %}
+                                {% if order.state == "backoffice" %}
+                                    {% if  (date(order.createdAt) < date('-2days')) %}
                                         {% set highlight = 'highlight' %}
                                     {% endif %}
                                 {% endif %}
                                 <tr class="{{ highlight }}">
-                                    <td class="text-center"><a class="btn btn-link" href="{{ path('orders_show', { 'id': entity.id }) }}">{{ entity.number }}</a></td>
+                                    <td class="text-center"><a class="btn btn-link" href="{{ path('orders_show', { 'id': order.id }) }}">{{ order.number }}</a></td>
                                     <td>
-                                        <span class="label {% if entity.state == "backoffice" %}label-info{% elseif entity.state == "post" %}label-primary{% elseif entity.state == "document" %}label-warning{% elseif entity.state == "rejected" %}label-danger{% elseif entity.state == "approved" %}label-success{% else %}label-default{% endif %}">{{ entity.state|upper }}</span>
-                                        &nbsp;<span class="label {% if entity.orderPayments|last.state == "paid" %}label-success{% else %}label-warning{% endif %}">{{ entity.orderPayments|last.state|upper }}</span>
+                                        <span class="label {% if order.state == "backoffice" %}label-info{% elseif order.state == "post" %}label-primary{% elseif order.state == "document" %}label-warning{% elseif order.state == "rejected" %}label-danger{% elseif order.state == "approved" %}label-success{% else %}label-default{% endif %}">{{ order.state|upper }}</span>
+                                        &nbsp;<span class="label {% if order.orderPayments|last.state == "paid" %}label-success{% else %}label-warning{% endif %}">{{ order.orderPayments|last.state|upper }}</span>
                                     </td>
-                                    <td>{{ entity.customer.name }}</td>
-                                    <td>{{ entity.channel }}</td>
-                                    {# <td class="text-right">{{ (entity.productsTotal/100)|localizedcurrency('RUB') }}</td>#}
-                                    <td class="text-right">{{ (entity.adjustmentTotal/100)|localizedcurrency('RUB') }}</td>
-                                    <td class="text-right">{{ (entity.total/100)|localizedcurrency('RUB') }}</td>
-                                    <td>{% if entity.createdAt %}{{ entity.createdAt|localizeddate('medium', 'short') }}{% endif %}</td>
-                                    <td><a class="btn btn-primary btn-sm" href="{{ path('orders_show', { 'id': entity.id }) }}">Open</a></td>
+                                    <td>{{ order.customer.name }}</td>
+                                    <td>{{ order.channel }}</td>
+                                    {# <td class="text-right">{{ (order.productsTotal/100)|localizedcurrency('RUB') }}</td>#}
+                                    <td class="text-right">{{ (order.adjustmentTotal/100)|localizedcurrency('RUB') }}</td>
+                                    <td class="text-right">{{ (order.total/100)|localizedcurrency('RUB') }}</td>
+                                    <td>{% if order.createdAt %}{{ order.createdAt|localizeddate('medium', 'short') }}{% endif %}</td>
+                                    <td><a class="btn btn-primary btn-sm" href="{{ path('orders_show', { 'id': order.id }) }}">Open</a></td>
                                 </tr>
                             {% endfor %}
                         </tbody>

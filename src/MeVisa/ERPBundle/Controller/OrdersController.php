@@ -30,75 +30,8 @@ class OrdersController extends Controller
      */
     public function indexAction()
     {
-        $em = $this->getDoctrine()->getManager();
-
-        $entities = $em->getRepository('MeVisaERPBundle:Orders')->findAll();
-
         return array(
-            'entities' => $entities,
-        );
-    }
-
-    /**
-     * Creates a new Orders entity.
-     *
-     * @Route("/", name="orders_create")
-     * @Method("POST")
-     * @Template("MeVisaERPBundle:Orders:new.html.twig")
-     */
-    public function createAction(Request $request)
-    {
-        $order = new Orders();
-        $order->setState('backoffice');
-        $order->setChannel('POS');
-        $order->setCreatedAt(new \DateTime("now"));
-
-        $form = $this->createCreateForm($order);
-        $form->handleRequest($request);
-
-        $em = $this->getDoctrine()->getManager();
-
-        if ($form->isValid()) {
-
-            $order->setNumber($this->get('erp.order')->generateNewPOSNumber());
-
-            // TODO: State machine
-            $customer = $order->getCustomer();
-            if (!$customer->getId()) {
-                $em->persist($customer);
-                // TODO: Check new Customer
-                // TODO: add new customer
-            }
-
-            // $customerCheck = $em->getRepository('MeVisaCRMBundle:Customer')->find($order->getCustomer()->getId());
-            $customerCheck = true;
-            if (!$customerCheck) {
-                //  echo "Still no Customer <br/>";
-            }
-
-            if ("approved" == $order->getState() || "rejected" == $order->getState()) {
-                $order->setCompletedAt(new \DateTime());
-            }
-
-            $this->setOrderDetails($order);
-
-            $em->persist($order);
-            $em->flush();
-
-            $payments = $order->getOrderPayments();
-
-            return $this->redirect($this->generateUrl('orders_show', array('id' => $order->getId())));
-        } else {
-            foreach ($form->getErrors() as $error) {
-                $this->addFlash('error', $error);
-            }
-        }
-        $productPrices = $em->getRepository('MeVisaERPBundle:ProductPrices')->findAll();
-
-        return array(
-            'order' => $order,
-            'productPrices' => $productPrices,
-            'form' => $form->createView(),
+            'orders' => $this->get('erp.order')->getOrdersList(),
         );
     }
 
@@ -110,12 +43,7 @@ class OrdersController extends Controller
      */
     public function createCommentAction(Request $request, $id)
     {
-        $em = $this->getDoctrine()->getManager();
-        $order = $em->getRepository('MeVisaERPBundle:Orders')->find($id);
-
-        if (!$order) {
-            throw $this->createNotFoundException('Unable to find Orders entity.');
-        }
+        $order = $this->get('erp.order')->getOrder($id);
 
         $orderComment = new \MeVisa\ERPBundle\Entity\OrderComments();
         $orderComment->setOrderRef($id);
@@ -136,16 +64,21 @@ class OrdersController extends Controller
     }
 
     /**
-     * Creates a form to create a Orders entity.
+     * Displays a form to create a new Orders entity.
      *
-     * @param Orders $entity The entity
-     *
-     * @return \Symfony\Component\Form\Form The form
+     * @Route("/new", name="orders_new")
+     * @Method({"GET", "POST"})
+     * @Template()
      */
-    private function createCreateForm(Orders $entity)
+    public function newAction(Request $request)
     {
-        $form = $this->createForm(new OrdersType(), $entity, array(
-            'action' => $this->generateUrl('orders_create'),
+        $order = new Orders();
+        $order->setState('backoffice');
+        $order->setChannel('POS');
+        $order->setCreatedAt(new \DateTime("now"));
+
+        $form = $this->createForm(new OrdersType(), $order, array(
+            'action' => $this->generateUrl('orders_new'),
             'method' => 'POST',
         ));
 
@@ -155,28 +88,24 @@ class OrdersController extends Controller
                 'class' => 'btn-success pull-right'
         )));
 
-        return $form;
-    }
-
-    /**
-     * Displays a form to create a new Orders entity.
-     *
-     * @Route("/new", name="orders_new")
-     * @Method("GET")
-     * @Template()
-     */
-    public function newAction()
-    {
-        $order = new Orders();
-        $order->setState('backoffice');
-        $order->setChannel('pos');
-
-        $form = $this->createCreateForm($order);
-
+        $form->handleRequest($request);
+// TODO: State buttons
 //        foreach ($order->getOrderState()->getCurrentState()->getChildren() as $state) {
 //            $form->add($state->getKey(), 'submit', array('attr' => array('class' => 'btn-toolbar btn-' . $state->getBootstrapClass())
 //            ));
 //        }
+        if ($form->isSubmitted()) {
+            if ($form->isValid()) {
+
+                $this->get('erp.order')->createNewPOSOrder($order);
+
+                return $this->redirect($this->generateUrl('orders_show', array('id' => $order->getId())));
+            } else {
+                foreach ($form->getErrors() as $error) {
+                    $this->addFlash('error', $error);
+                }
+            }
+        }
 
         $em = $this->getDoctrine()->getManager();
         //FIXME: Select with invalid product_prices produces errors
@@ -190,7 +119,7 @@ class OrdersController extends Controller
     }
 
     /**
-     * Search
+     * Customer intellicense 
      *
      * @Route("/select_customer", name="select_customer")
      * @Method("GET")
@@ -227,7 +156,7 @@ class OrdersController extends Controller
             throw $this->createNotFoundException('Unable to find Orders entity.');
         }
 
-        $logs = $this->getOrderLog($id);
+
 
         $state = $order->getState();
         $order->startOrderStateEnginge();
@@ -254,7 +183,7 @@ class OrdersController extends Controller
 
         return array(
             'order' => $order,
-            'logs' => $logs,
+            'logs' => $this->get('erp.order')->getOrderLog($id),
             'documents' => $orderDocuments,
             'status_form' => $statusForm->createView(),
             'comment_form' => $commentForm->createView(),
@@ -272,7 +201,6 @@ class OrdersController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-
         $order = $em->getRepository('MeVisaERPBundle:Orders')->find($id);
 
         $state = $order->getState();
@@ -286,7 +214,6 @@ class OrdersController extends Controller
         $editForm = $this->createEditForm($order);
         $statusForm = $this->createStatusForm($order);
 
-        $logs = $this->getOrderLog($id);
         $productPrices = $em->getRepository('MeVisaERPBundle:ProductPrices')->findAll();
 
         $orderDocuments = $order->getOrderDocuments();
@@ -305,7 +232,7 @@ class OrdersController extends Controller
             'order' => $order,
             'productPrices' => $productPrices,
             'documents' => $orderDocuments,
-            'logs' => $logs,
+            'logs' => $this->get('erp.order')->getOrderLog($id),
             'form' => $editForm->createView(),
             'status_form' => $statusForm->createView(),
         );
@@ -324,19 +251,18 @@ class OrdersController extends Controller
 
 
         $order = $em->getRepository('MeVisaERPBundle:Orders')->find($id);
+        if (!$order) {
+            throw $this->createNotFoundException('Unable to find Orders entity.');
+        }
 
         $state = $order->getState();
         $order->startOrderStateEnginge();
         $order->setState($state);
 
-        if (!$order) {
-            throw $this->createNotFoundException('Unable to find Orders entity.');
-        }
 
         $editForm = $this->createEditForm($order);
         $statusForm = $this->createStatusForm($order);
 
-        $logs = $this->getOrderLog($id);
         $productPrices = $em->getRepository('MeVisaERPBundle:ProductPrices')->findAll();
 
         $orderDocuments = $order->getOrderDocuments();
@@ -355,7 +281,7 @@ class OrdersController extends Controller
             'order' => $order,
             'productPrices' => $productPrices,
             'documents' => $orderDocuments,
-            'logs' => $logs,
+            'logs' => $this->get('erp.order')->getOrderLog($id),
             'form' => $editForm->createView(),
         );
     }
@@ -410,13 +336,9 @@ class OrdersController extends Controller
         $editForm->handleRequest($request);
 
         if ($editForm->isValid()) {
-            $this->setOrderDetails($order);
 
-            if (empty($order->getUpdatedAt())) {
-                $order->setUpdatedAt(new \DateTime());
-            }
+            $this->get('erp.order')->saveOrder($order);
 
-            $em->flush();
             return $this->redirect($this->generateUrl('orders_show', array('id' => $order->getId())));
         } else {
             foreach ($form->getErrors() as $error) {
@@ -425,7 +347,6 @@ class OrdersController extends Controller
         }
 
         $statusForm = $this->createStatusForm($order);
-        $logs = $this->getOrderLog($id);
         $productPrices = $em->getRepository('MeVisaERPBundle:ProductPrices')->findAll();
 
         $orderDocuments = $order->getOrderDocuments();
@@ -444,7 +365,7 @@ class OrdersController extends Controller
         return array(
             'order' => $order,
             'productPrices' => $productPrices,
-            'logs' => $logs,
+            'logs' => $this->get('erp.order')->getOrderLog($id),
             'form' => $editForm->createView(),
             'status_form' => $statusForm->createView(),
         );
@@ -479,16 +400,16 @@ class OrdersController extends Controller
     /**
      * Creates a form to update a Orders Status entity.
      *
-     * @param Orders $entity The entity
+     * @param Orders $order The entity
      *
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createStatusForm(Orders $entity)
+    private function createStatusForm(Orders $order)
     {
         $form = $this->createFormBuilder()
-                ->setAction($this->generateUrl('orders_status_update', array('id' => $entity->getId())))
+                ->setAction($this->generateUrl('orders_status_update', array('id' => $order->getId())))
                 ->setMethod('PUT');
-        $children = $entity->getOrderState()->getCurrentState()->getChildren();
+        $children = $order->getOrderState()->getCurrentState()->getChildren();
         if (is_array($children)) {
             foreach ($children as $key => $child) {
                 $form->add($child->getKey(), 'submit', array(
@@ -617,96 +538,10 @@ class OrdersController extends Controller
      */
     public function invoicepdfAction($id)
     {
-        $em = $this->getDoctrine()->getManager();
-
-        $order = $em->getRepository('MeVisaERPBundle:Orders')->find($id);
-
-        if (!$order) {
-            throw $this->createNotFoundException('Unable to find Order');
-        }
-
-        $this->get('erp.order')->generateInvoice($order);
+        $this->get('erp.order')->generateInvoice($id);
 
         $this->addFlash('success', 'invoice generated');
         return $this->redirect($this->generateUrl('orders_show', array('id' => $id)));
-    }
-
-    public function setOrderDetails($order)
-    {
-        if ("approved" == $order->getState() || "rejected" == $order->getState()) {
-            $order->setCompletedAt(new \DateTime());
-        }
-
-        if ("post" == $order->getState()) {
-            $order->setPostedAt(new \DateTime());
-        }
-
-        $orderCompanions = $order->getOrderCompanions();
-        // TODO: Check Order Companions
-        foreach ($orderCompanions as $companion) {
-            if (empty($companion->getId())) {
-                $order->addOrderCompanion($companion);
-            }
-        }
-
-        $orderProducts = $order->getOrderProducts();
-        foreach ($orderProducts as $orderProduct) {
-            // TODO: Check Order Product
-            // TODO: Handle no proper products or disabled
-            if (empty($orderProduct->getId())) {
-                $order->addOrderProduct($orderProduct);
-            }
-        }
-
-        $orderComments = $order->getOrderComments();
-        foreach ($orderComments as $comment) {
-            if (!$comment->getId()) {
-                if ("" == $comment->getComment()) {
-                    $order->removeOrderComment($comment);
-                } else {
-                    $this->getUser()->addComment($comment);
-                    $comment->setCreatedAt(new \DateTime());
-                    if (empty($comment->getId())) {
-                        $order->addOrderComment($comment);
-                    }
-                }
-            }
-        }
-
-        $invoices = $order->getInvoices();
-        foreach ($invoices as $invoice) {
-            if (empty($invoice->getId())) {
-                $order->addInvoice($invoice);
-            }
-        }
-
-        $orderPayments = $order->getOrderPayments();
-        foreach ($orderPayments as $payment) {
-            if ("paid" == $payment->getState()) {
-                $payment->setCreatedAt(new \DateTime());
-            }
-            if (empty($payment->getId())) {
-                $order->addOrderPayment($payment);
-            }
-        }
-
-
-        // TODO: Check Order
-        // TODO: Upload OrderDocuments then presist
-        $orderDocuments = $order->getOrderDocuments();
-        foreach ($orderDocuments as $document) {
-            if (empty($document->getId())) {
-                $order->addOrderDocument($document);
-            }
-        }
-    }
-
-    public function getOrderLog($id)
-    {
-        $em = $this->getDoctrine()->getManager();
-        $logRepo = $em->getRepository('Gedmo\Loggable\Entity\LogEntry');
-        $orderLog = $em->find('MeVisa\ERPBundle\Entity\Orders', $id);
-        return $logRepo->getLogEntries($orderLog);
     }
 
 }
