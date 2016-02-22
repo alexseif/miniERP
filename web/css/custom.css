@@ -63,8 +63,8 @@ tr.bg-success:focus {
 .order-products-form th{width: 25%;}
 .dashboard{max-height: 250px;}
 .dashboard a{padding-top: 0px;padding-bottom: 0px;}
-.highlight {background-color: #fcf8e3;}
-.table-striped > tbody > tr:nth-child(odd).highlight > td {background-color: #fcf8e3;}
+.highlight {background-color: #f2dede;font-weight: bold;}
+.table-striped > tbody > tr:nth-child(odd).highlight > td {background-color: #f2dede;}
 .records_list tbody tr td{vertical-align: middle;}
 .panel .form-group{ margin-bottom: 5px;}
 /*.panel-body{font-size: 11px;}*/
