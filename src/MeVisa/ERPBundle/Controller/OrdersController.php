@@ -304,9 +304,59 @@ class OrdersController extends Controller
         return array(
             'order' => $order,
             'productPrices' => $productPrices,
+            'documents' => $orderDocuments,
             'logs' => $logs,
             'form' => $editForm->createView(),
             'status_form' => $statusForm->createView(),
+        );
+    }
+
+    /**
+     * Displays a form to edit an existing Orders entity.
+     *
+     * @Route("/{id}/companions", name="orders_edit_companions")
+     * @Method("GET")
+     * @Template()
+     */
+    public function editCompanionsAction($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+
+        $order = $em->getRepository('MeVisaERPBundle:Orders')->find($id);
+
+        $state = $order->getState();
+        $order->startOrderStateEnginge();
+        $order->setState($state);
+
+        if (!$order) {
+            throw $this->createNotFoundException('Unable to find Orders entity.');
+        }
+
+        $editForm = $this->createEditForm($order);
+        $statusForm = $this->createStatusForm($order);
+
+        $logs = $this->getOrderLog($id);
+        $productPrices = $em->getRepository('MeVisaERPBundle:ProductPrices')->findAll();
+
+        $orderDocuments = $order->getOrderDocuments();
+        foreach ($orderDocuments as $document) {
+            if (0 === strpos($document->getPath(), 'http://www.mevisa.ru/')) {
+                $parts = explode('/', $document->getPath());
+                $parts[count($parts) - 2] = 'thumbs';
+                $parts[count($parts) - 1] = $document->getName();
+                $document->thumbnail = implode('/', $parts);
+            } else {
+                $document->thumbnail = false;
+                $document->setPath($this->get('request')->getScheme() . '://' . $this->get('request')->getHttpHost() . $this->get('request')->getBasePath() . '/' . $document->getWebPath());
+            }
+        }
+        return array(
+            'order' => $order,
+            'productPrices' => $productPrices,
+            'documents' => $orderDocuments,
+            'logs' => $logs,
+            'form' => $editForm->createView(),
         );
     }
 

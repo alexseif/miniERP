@@ -1,0 +1,89 @@
+{% extends ':default:admin.html.twig' %}
+
+{% block title %}Order # {{ order.number }}{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">                        
+                    <a class="btn btn-default" href="{{ path('dashboard') }}"><span class="glyphicon glyphicon-arrow-left"></span></a>
+                    <span class="panel-title">Order # {{ order.number }}</span>
+                    <div class="pull-right">
+                        &nbsp;<span class="label label-default">{{ order.channel|upper }}</span>
+                        &nbsp;<span class="label label-{{order.orderState.currentState.bootstrapClass}}">{{ order.stateName|upper }}</span>
+                        &nbsp;<span class="label label-default"> {{ order.createdAt|localizeddate }}</span>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-sm-4">
+                            {% include 'MeVisaERPBundle:Orders:order_customer.html.twig' %}
+                        </div>
+                        <div class="col-sm-4">
+                            {% include 'MeVisaERPBundle:Orders:order_details.html.twig' %}
+                        </div>
+                        <div class="col-sm-4">
+                            {% include 'MeVisaERPBundle:Orders:order_totals.html.twig' %}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            {% include 'MeVisaERPBundle:Orders:order_products.html.twig' %}
+                        </div>
+                        <div class="col-sm-6">
+                            {% include 'MeVisaERPBundle:Orders:order_payments.html.twig' %}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            {% include 'MeVisaERPBundle:Orders:order_companions_form.html.twig' %}
+                        </div>
+                        <div class="col-sm-6">
+                            {% include 'MeVisaERPBundle:Orders:order_documents.html.twig' %}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            {% include 'MeVisaERPBundle:Orders:order_invoices.html.twig' %}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            {# {% include 'MeVisaERPBundle:Orders:order_notes.html.twig' %}#}
+                        </div>
+                        <div class="col-sm-6">
+                            {% include 'MeVisaERPBundle:Orders:order_logs.html.twig' %}
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-footer">
+                    {#<div class="clearfix">
+                        {% if order.invoices is not empty %}
+                            <a class="btn btn-primary" href="/invoices/mevisa-invoice-{{ order.number }}-{{ (order.invoices|last).id}}.pdf" target="_blank">Invoice</a>
+                        {% endif %}
+                        {% if is_granted('ROLE_ADMIN') and order.updatedAt  %}
+                            <a class="btn btn-default" href="{{ path('orders_edit', { "id" : order.id }) }}">Edit</a>
+                        {% endif %}
+                        <div class="btn-toolbar pull-right" role="toolbar">
+                            {% if order.updatedAt %}
+                                {{ form_start(status_form) }}
+                                {% for btn in status_form %}
+                                    {{ form_widget(btn) }}
+                                {% endfor %}
+                                {{ form_end(status_form) }}
+                            {% else %}
+                                <a class="btn btn-default" href="{{ path('orders_edit', { "id" : order.id }) }}">Edit</a>
+                            {% endif %}
+                        </div>
+                    </div>#}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="/js/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="/js/chosen.jquery.min.js"></script>
+    <script type="text/javascript" src="/js/orders.js"></script>
+{% endblock %}
