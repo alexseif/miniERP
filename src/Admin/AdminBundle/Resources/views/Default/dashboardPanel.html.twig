@@ -6,8 +6,8 @@
     <div class="table-responsive dashboard">
         <table class="table table-bordered table-striped {{ panelTitle != 'Backoffice Orders' ? 'table-condensed' : '' }} records_list">
             <tbody>
-                {% set highlight = ''%}
                 {% for order in orders %}
+                {% set highlight = ''%}
                     {% if order.state == "post" %}
                         {% if  (date(order.postedAt) < date('-2days')) and order.postedAt.timestamp is defined %}
                             {% set highlight = 'highlight' %}
@@ -43,7 +43,6 @@
                                   ">{{ order.state|upper }}</span>
                         </td>
                     </tr>
-                    {% set highlight = ''%}
                 {% endfor %}
             </tbody>
         </table>

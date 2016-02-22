@@ -11,7 +11,7 @@
                     <span class="badge">{{ entities|length }} </span>
                 </div>
                 <div class="table-responsive">
-                    <table class="table table-bordered table-hover table-striped  records_list">
+                    <table class="table table-bordered table-striped  records_list">
                         <thead>
                             <tr>
                                 <th>Order #</th>
@@ -26,7 +26,18 @@
                         </thead>
                         <tbody>
                             {% for entity in entities %}
-                                <tr>
+                                {% set highlight = ''%}
+                                {% if entity.state == "post" %}
+                                    {% if  (date(entity.postedAt) < date('-2days')) and entity.postedAt.timestamp is defined %}
+                                        {% set highlight = 'highlight' %}
+                                    {% endif %}
+                                {% endif %}
+                                {% if entity.state == "backoffice" %}
+                                    {% if  (date(entity.createdAt) < date('-2days')) %}
+                                        {% set highlight = 'highlight' %}
+                                    {% endif %}
+                                {% endif %}
+                                <tr class="{{ highlight }}">
                                     <td class="text-center"><a class="btn btn-link" href="{{ path('orders_show', { 'id': entity.id }) }}">{{ entity.number }}</a></td>
                                     <td>
                                         <span class="label {% if entity.state == "backoffice" %}label-info{% elseif entity.state == "post" %}label-primary{% elseif entity.state == "document" %}label-warning{% elseif entity.state == "rejected" %}label-danger{% elseif entity.state == "approved" %}label-success{% else %}label-default{% endif %}">{{ entity.state|upper }}</span>
