@@ -245,7 +245,7 @@ class OrdersController extends Controller
      * @Method("GET")
      * @Template()
      */
-    public function editCompanionsAction($id)
+    public function orderEditCompanionsAction($id)
     {
         $em = $this->getDoctrine()->getManager();
 
