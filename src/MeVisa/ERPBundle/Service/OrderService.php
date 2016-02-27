@@ -174,6 +174,12 @@ class OrderService
         }
         $invoice->setCreatedAt(new \DateTime());
 
+        $products = $order->getOrderProducts();
+        $productsLine = array();
+        foreach ($products as $product) {
+            $productsLine[] = $product->getProduct()->getName();
+        }
+        $productsLine = implode(',', $productsLine);
         $myProjectDirectory = __DIR__ . '/../../../../';
         $invoiceName = 'mevisa-invoice-' . $order->getNumber() . '-' . $invoice->getId() . '.pdf';
         $invoicePath = $myProjectDirectory . 'web/invoices/';
@@ -187,6 +193,7 @@ class OrderService
         $pdfAgreementHTML = $this->templating->render(
                 'MeVisaERPBundle:Orders:pdfagreement.html.twig', array(
             'order' => $order,
+            'productsLine' => $productsLine,
             'invoice' => $invoice,
             'companySettings' => $CompanySettings
                 )
