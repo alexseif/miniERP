@@ -1,5 +1,3 @@
-$('.chosen-input').chosen({no_results_text: "Add new", allow_single_deselect: true});
-
 function updatePricesAndTotals() {
     var index = $productHolder.data('index');
     var subtotal = 0;
@@ -56,6 +54,7 @@ function addProductForm() {
 //    }
     $('.remove_product_link').show();
     $('select[name="mevisa_erpbundle_orders[orderProducts][' + index + '][product]"]').focus();
+    $('.chosen-input').chosen({no_results_text: "Add new", allow_single_deselect: true});
 }
 
 var $productHolder;
@@ -125,6 +124,7 @@ $(document).ready(function () {
             e.preventDefault();
             $(this).parent().parent().remove();
         });
+        $('.chosen-input').chosen({no_results_text: "Add new", allow_single_deselect: true});
     });
 
     $('input[name="mevisa_erpbundle_orders[people]"]').change(function () {
@@ -145,6 +145,7 @@ $(document).ready(function () {
     if ($('div.orderPayments').length) {
         addPrototypeForm('div.orderPayments', '<div></div>');
     }
+
     if ($('div.invoice').length) {
         addPrototypeForm('div.invoice', '<div></div>');
         $('div.invoice .col-sm-2').remove();
@@ -169,4 +170,6 @@ $(document).ready(function () {
             $('#mevisa_erpbundle_orders_customer_phone').val(ui.item[0].phone);
         }
     });
+
+    $('.chosen-input').chosen({no_results_text: "Add new", allow_single_deselect: true});
 });

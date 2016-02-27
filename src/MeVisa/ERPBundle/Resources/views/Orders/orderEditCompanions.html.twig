@@ -34,22 +34,18 @@
                             {% include 'MeVisaERPBundle:Orders:order_payments.html.twig' %}
                         </div>
                     </div>
+                    {% include 'MeVisaERPBundle:Orders:orderEditCompanions_form.html.twig' %}
                     <div class="row">
-                        <div class="col-sm-6">
-                            {% include 'MeVisaERPBundle:Orders:orderEditCompanions_form.html.twig' %}
-                        </div>
                         <div class="col-sm-6">
                             {% include 'MeVisaERPBundle:Orders:order_documents.html.twig' %}
                         </div>
-                    </div>
-                    <div class="row">
                         <div class="col-sm-6">
                             {% include 'MeVisaERPBundle:Orders:order_invoices.html.twig' %}
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-sm-6">
-{#                             {% include 'MeVisaERPBundle:Orders:order_notes.html.twig' %}#}
+                            {#                             {% include 'MeVisaERPBundle:Orders:order_notes.html.twig' %}#}
                         </div>
                         <div class="col-sm-6">
                             {% include 'MeVisaERPBundle:Orders:order_logs.html.twig' %}

@@ -21,26 +21,34 @@ class OrdersType extends AbstractType
                     'choices' => array(
                         'pending' => 'Pending',
                         'backoffice' => 'Back Office'),
-                ))
+                        )
+                )
                 ->add('productsTotal', 'money', array(
                     'currency' => 'RUB',
                     'divisor' => 100,
                     'label' => 'Subtotal',
-                    'read_only' => true))
+                    'read_only' => true
+                        )
+                )
                 ->add('adjustmentTotal', 'money', array(
                     'currency' => 'RUB',
                     'divisor' => 100,
                     'label' => 'Adjustment',
-                    'data' => 0))
+                    'data' => 0
+                        )
+                )
                 ->add('total', 'money', array(
                     'currency' => 'RUB',
                     'divisor' => 100,
                     'required' => false,
-                    'read_only' => true))
-                ->add('people', 'number', array(
+                    'read_only' => true
+                        )
+                )
+                ->add('people', 'integer', array(
                     'label' => 'PAX No',
                     'attr' => array('min' => 1)
-                ))
+                        )
+                )
                 ->add('departure', 'date', array(
                     'widget' => 'single_text',
                     'format' => 'dd.MM.yyyy',
@@ -48,8 +56,8 @@ class OrdersType extends AbstractType
                         'class' => 'form-control input-inline datepicker',
                         'data-provide' => 'datepicker',
                         'data-date-format' => 'dd.mm.yy',
-                    )
-                ))
+                    ))
+                )
                 ->add('arrival', 'date', array(
                     'widget' => 'single_text',
                     'format' => 'dd.MM.yyyy',
@@ -57,7 +65,8 @@ class OrdersType extends AbstractType
                         'class' => 'form-control input-inline datepicker',
                         'data-provide' => 'datepicker',
                         'data-date-format' => 'dd.mm.yy',
-            )))
+                    ))
+                )
 //                ->add('createdAt', 'hidden')
 //                ->add('updatedAt', 'hidden', array('required' => false))
 //                ->add('deletedAt', 'hidden', array('required' => false))
