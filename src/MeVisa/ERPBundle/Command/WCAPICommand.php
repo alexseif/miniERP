@@ -80,7 +80,7 @@ class WCAPICommand extends ContainerAwareCommand
             }
         }
 
-        $this->setOrderDetails($wcOrder, $order, $timezone, $em, $output);
+        $this->setOrderDetails($wcOrder, $order, $timezone, $em);
         return $order;
     }
 
