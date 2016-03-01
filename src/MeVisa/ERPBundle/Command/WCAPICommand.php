@@ -36,17 +36,17 @@ class WCAPICommand extends ContainerAwareCommand
         foreach ($wcOrders['orders'] as $wcOrder) {
             $order = $em->getRepository('MeVisaERPBundle:Orders')->findOneBy(array('wcId' => $wcOrder['order_number']));
             if (!$order) {
-                $order = $this->newOrder($em, $wcOrder, $output);
+                $order = $this->newOrder($em, $wcOrder);
             }
             $wcOrderNotes = $client->getOrderNotes($wcOrder['order_number']);
 //            $this->updateOrderNotes($em, $order, $wcOrderNotes['order_notes']);
-//            $em->persist($order);
+            $em->persist($order);
         }
-//        $em->flush();
+        $em->flush();
         $output->writeln('complete');
     }
 
-    public function newOrder($em, $wcOrder, $output)
+    public function newOrder($em, $wcOrder)
     {
         $timezone = new \DateTimeZone('UTC');
 
@@ -104,7 +104,7 @@ class WCAPICommand extends ContainerAwareCommand
         }
     }
 
-    protected function setOrderDetails($wcOrder, $order, $timezone, $em, $output)
+    protected function setOrderDetails($wcOrder, $order, $timezone, $em)
     {
         foreach ($wcOrder['line_items'] as $lineItem) {
             $product = $em->getRepository('MeVisaERPBundle:Products')->findOneBy(array('wcId' => $lineItem['product_id']));
