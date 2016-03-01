@@ -40,9 +40,9 @@ class WCAPICommand extends ContainerAwareCommand
             }
             $wcOrderNotes = $client->getOrderNotes($wcOrder['order_number']);
 //            $this->updateOrderNotes($em, $order, $wcOrderNotes['order_notes']);
-            $em->persist($order);
+//            $em->persist($order);
         }
-        $em->flush();
+//        $em->flush();
         $output->writeln('complete');
     }
 
@@ -133,8 +133,18 @@ class WCAPICommand extends ContainerAwareCommand
 
             $order->setPeople($lineItem['meta'][0]['value']);
 
-            $order->setDeparture(\DateTime::createFromFormat("d/m/Y", $lineItem['meta'][4]['value'], $timezone));
-            $order->setArrival(\DateTime::createFromFormat("d/m/Y", $lineItem['meta'][5]['value']), $timezone);
+//            $order->setDeparture(\DateTime::createFromFormat("d/m/Y", $lineItem['meta'][4]['value'], $timezone));
+//            $order->setArrival(\DateTime::createFromFormat("d/m/Y", $lineItem['meta'][5]['value']), $timezone);
+            foreach ($lineItem['meta'] as $key => $value) {
+                if (is_array($value)) {
+                    $output->writeln($key . " => Array");
+                    foreach ($value as $key2 => $value2) {
+                        $output->writeln($key . " => " . $value);
+                    }
+                } else {
+                    $output->writeln($key . " => " . $value);
+                }
+            }
 
             $docs = explode(',', $lineItem['meta'][6]['value']);
             foreach ($docs as $doc) {
