@@ -51,7 +51,7 @@ class RESTAPI
     public function getCompletedOrders()
     {
         $parameters = array(
-            "status" => "completed",
+//            "status" => "completed",
         );
         $orders = $this->client->orders->get(null, $parameters);
         return $orders;
@@ -59,7 +59,7 @@ class RESTAPI
     public function getCompletedOrdersSecondPage()
     {
         $parameters = array(
-            "status" => "completed",
+//            "status" => "completed",
             "page" => "2",
         );
         $orders = $this->client->orders->get(null, $parameters);
