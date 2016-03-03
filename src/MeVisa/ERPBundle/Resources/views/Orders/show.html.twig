@@ -61,7 +61,7 @@
                         {% if order.invoices is not empty %}
                             <a class="btn btn-primary" href="/invoices/mevisa-invoice-{{ order.number }}-{{ (order.invoices|last).id}}.pdf" target="_blank">Invoice</a>
                         {% endif %}
-                        {% if is_granted('ROLE_ADMIN') and order.updatedAt  %}
+                        {% if is_granted('ROLE_SUPER_ADMIN') and order.updatedAt  %}
                             <a class="btn btn-default" href="{{ path('orders_edit', { "id" : order.id }) }}">Edit</a>
                         {% endif %}
                         <div class="btn-toolbar pull-right" role="toolbar">

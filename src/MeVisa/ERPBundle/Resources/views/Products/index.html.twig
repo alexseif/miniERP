@@ -6,7 +6,7 @@
         <div class="panel-heading ">
             <div class="clearfix">
                 <span class="panel-title"> Products <small> {{ entities|length }} </small></span>
-                {% if is_granted('ROLE_ADMIN') %}
+                {% if is_granted('ROLE_SUPER_ADMIN') %}
                     <a class="btn btn-primary btn-sm pull-right" href="{{ path('admin_products_new') }}">Add Product</a>
                 {% endif %}
             </div>
@@ -35,7 +35,7 @@
                             <td class="text-right">{{ (entity.pricing[0].price/100)|localizedcurrency('RUB') }}</td>
                             <td>
                                 <a class="btn btn-primary btn-sm" href="{{ path('admin_products_show', { 'id': entity.id }) }}">show</a>
-                                {% if is_granted('ROLE_ADMIN') %}
+                                {% if is_granted('ROLE_SUPER_ADMIN') %}
                                     <a class="btn btn-primary btn-sm" href="{{ path('admin_products_edit', { 'id': entity.id }) }}">edit</a>
                                 {% endif %}
                                 <a class="btn btn-primary btn-sm" href="{{ path('admin_pricing', { 'product_id': entity.id }) }}">Pricing</a>
