@@ -34,10 +34,13 @@ class WCAPICommand extends ContainerAwareCommand
         $em = $this->getContainer()->get('doctrine')->getManager();
         $wcOrders = $client->getCompletedOrders();
         foreach ($wcOrders['orders'] as $wcOrder) {
-            $output->writeln($wcOrder['order_number']);
+            $output->writeln($wcOrder['order_number'] . ":" . $wcOrder['payment_details']['paid']);
             $order = $em->getRepository('MeVisaERPBundle:Orders')->findOneBy(array('wcId' => $wcOrder['order_number']));
             if (!$order) {
-                $order = $this->newOrder($em, $wcOrder);
+                if (true == $wcOrder['payment_details']['paid']) {
+                    $output->writeln("Saving order " . $wcOrder['order_number']);
+                    $order = $this->newOrder($em, $wcOrder);
+                }
             }
             $wcOrderNotes = $client->getOrderNotes($wcOrder['order_number']);
 //            $this->updateOrderNotes($em, $order, $wcOrderNotes['order_notes']);
@@ -45,10 +48,13 @@ class WCAPICommand extends ContainerAwareCommand
         }
         $wcOrders = $client->getCompletedOrdersSecondPage();
         foreach ($wcOrders['orders'] as $wcOrder) {
-            $output->writeln($wcOrder['order_number']);
+            $output->writeln($wcOrder['order_number'] . ":" . $wcOrder['payment_details']['paid']);
             $order = $em->getRepository('MeVisaERPBundle:Orders')->findOneBy(array('wcId' => $wcOrder['order_number']));
             if (!$order) {
-                $order = $this->newOrder($em, $wcOrder);
+                if (true == $wcOrder['payment_details']['paid']) {
+                    $output->writeln("Saving order " . $wcOrder['order_number']);
+                    $order = $this->newOrder($em, $wcOrder);
+                }
             }
             $wcOrderNotes = $client->getOrderNotes($wcOrder['order_number']);
 //            $this->updateOrderNotes($em, $order, $wcOrderNotes['order_notes']);
@@ -94,26 +100,6 @@ class WCAPICommand extends ContainerAwareCommand
 
         $this->setOrderDetails($wcOrder, $order, $timezone, $em);
         return $order;
-    }
-
-    public function updateOrderNotes($em, $order, $wcOrderNotes)
-    {
-        $timezone = new \DateTimeZone('UTC');
-        foreach ($wcOrderNotes as $note) {
-            $ExistingOrderComment = $em->getRepository('MeVisaERPBundle:OrderComments')->findOneBy(array('wcId' => $note['id']));
-            if (!$ExistingOrderComment) {
-                $orderComment = new OrderComments();
-                $orderComment->setWcId($note['id']);
-                if ($note['customer_note']) {
-                    $orderComment->setComment($note['note'] . "-- Customer: " . $order->getCustomer()->getName());
-                } else {
-                    $orderComment->setComment($note['note']);
-                }
-
-                $orderComment->setCreatedAt(new \DateTime($note['created_at'], $timezone));
-                $order->addOrderComment($orderComment);
-            }
-        }
     }
 
     protected function setOrderDetails($wcOrder, $order, $timezone, $em)
@@ -212,6 +198,26 @@ class WCAPICommand extends ContainerAwareCommand
         $order->setTotal($wcOrder['total'] * 100);
         $order->setState($wcOrder['status']);
         $order->setCreatedAt(new \DateTime($wcOrder['created_at'], $timezone));
+    }
+
+    public function updateOrderNotes($em, $order, $wcOrderNotes)
+    {
+        $timezone = new \DateTimeZone('UTC');
+        foreach ($wcOrderNotes as $note) {
+            $ExistingOrderComment = $em->getRepository('MeVisaERPBundle:OrderComments')->findOneBy(array('wcId' => $note['id']));
+            if (!$ExistingOrderComment) {
+                $orderComment = new OrderComments();
+                $orderComment->setWcId($note['id']);
+                if ($note['customer_note']) {
+                    $orderComment->setComment($note['note'] . "-- Customer: " . $order->getCustomer()->getName());
+                } else {
+                    $orderComment->setComment($note['note']);
+                }
+
+                $orderComment->setCreatedAt(new \DateTime($note['created_at'], $timezone));
+                $order->addOrderComment($orderComment);
+            }
+        }
     }
 
 }
