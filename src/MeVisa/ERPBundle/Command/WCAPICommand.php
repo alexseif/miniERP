@@ -133,16 +133,41 @@ class WCAPICommand extends ContainerAwareCommand
 
             $order->setPeople($lineItem['meta'][0]['value']);
 
-            $order->setDeparture(\DateTime::createFromFormat("d/m/Y", $lineItem['meta'][4]['value'], $timezone));
-            $order->setArrival(\DateTime::createFromFormat("d/m/Y", $lineItem['meta'][5]['value']), $timezone);
+            $departureOffset = 4;
+            $arrivalOffset = 5;
+            $documentsOffset = 6;
+            if ("Дата вылета" == $lineItem['meta'][$departureOffset]['key']) {
+                $departure = \DateTime::createFromFormat("d/m/Y", $lineItem['meta'][$departureOffset]['value'], $timezone);
+                if (FALSE === $departure) {
+                    --$arrivalOffset;
+                    --$documentsOffset;
+                } else {
+                    $order->setDeparture($departure);
+                }
+            } else {
+                --$arrivalOffset;
+                --$documentsOffset;
+            }
 
-            $docs = explode(',', $lineItem['meta'][6]['value']);
-            foreach ($docs as $doc) {
-                $document = new \MeVisa\ERPBundle\Entity\OrderDocuments();
-                $document->setName($doc);
-                // http://www.mevisa.ru/wp-content/uploads/product_files/confirmed/3975-915-img_9996.jpg
-                $document->setPath('http://www.mevisa.ru/wp-content/uploads/product_files/confirmed/' . $wcOrder['order_number'] . '-' . $lineItem['product_id'] . '-' . $doc);
-                $order->addOrderDocument($document);
+            if ("Дата возврата" == $lineItem['meta'][$arrivalOffset]['key']) {
+                $arrival = \DateTime::createFromFormat("d/m/Y", $lineItem['meta'][$arrivalOffset]['value'], $timezone);
+                if (FALSE === $arrival) {
+                    --$documentsOffset;
+                } else {
+                    $order->setArrival($arrival);
+                }
+            } else {
+                --$documentsOffset;
+            }
+            if ("Прикрепите копию паспорта и фото (для всех туристов)" == $lineItem['meta'][$documentsOffset]['key']) {
+                $docs = explode(',', $lineItem['meta'][$documentsOffset]['value']);
+                foreach ($docs as $doc) {
+                    $document = new \MeVisa\ERPBundle\Entity\OrderDocuments();
+                    $document->setName($doc);
+                    // http://www.mevisa.ru/wp-content/uploads/product_files/confirmed/3975-915-img_9996.jpg
+                    $document->setPath('http://www.mevisa.ru/wp-content/uploads/product_files/confirmed/' . $wcOrder['order_number'] . '-' . $lineItem['product_id'] . '-' . $doc);
+                    $order->addOrderDocument($document);
+                }
             }
         }
 
