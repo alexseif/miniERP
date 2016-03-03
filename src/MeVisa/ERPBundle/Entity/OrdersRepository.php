@@ -13,11 +13,20 @@ use Doctrine\ORM\EntityRepository;
 class OrdersRepository extends EntityRepository
 {
 
+    public function findAll()
+    {
+        return $this->createQueryBuilder('o')
+                        ->orderBy("o.createdAt, o.wcId")
+                        ->getQuery()
+                        ->getResult();
+    }
+
     public function findAllByState($state)
     {
         return $this->createQueryBuilder('o')
                         ->where("o.state = ?1")
                         ->setParameter('1', $state)
+                        ->orderBy("o.createdAt, o.wcId")
                         ->getQuery()
                         ->getResult();
     }
@@ -26,6 +35,7 @@ class OrdersRepository extends EntityRepository
     {
         return $this->createQueryBuilder('o')
                         ->Where("DATE_DIFF(o.completedAt, CURRENT_DATE()) = 0")
+                        ->orderBy("o.createdAt, o.wcId")
                         ->getQuery()
                         ->getResult();
     }
@@ -37,6 +47,7 @@ class OrdersRepository extends EntityRepository
                         ->orWhere("o.state = ?2")
                         ->setParameter('1', 'pending')
                         ->setParameter('2', 'processing')
+                        ->orderBy("o.createdAt, o.wcId")
                         ->getQuery()
                         ->getResult();
     }
