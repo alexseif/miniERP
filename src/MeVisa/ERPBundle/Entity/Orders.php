@@ -244,7 +244,7 @@ class Orders
      */
     public function setState($state)
     {
-        if ('completed' == $state) {
+        if ('completed' == $state || 'processing' == $state) {
             $state = 'backoffice';
         }
         $this->setOrderState($state);
