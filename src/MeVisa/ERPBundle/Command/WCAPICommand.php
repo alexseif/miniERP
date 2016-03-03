@@ -34,6 +34,18 @@ class WCAPICommand extends ContainerAwareCommand
         $em = $this->getContainer()->get('doctrine')->getManager();
         $wcOrders = $client->getCompletedOrders();
         foreach ($wcOrders['orders'] as $wcOrder) {
+            $output->writeln($wcOrder['order_number']);
+            $order = $em->getRepository('MeVisaERPBundle:Orders')->findOneBy(array('wcId' => $wcOrder['order_number']));
+            if (!$order) {
+                $order = $this->newOrder($em, $wcOrder);
+            }
+            $wcOrderNotes = $client->getOrderNotes($wcOrder['order_number']);
+//            $this->updateOrderNotes($em, $order, $wcOrderNotes['order_notes']);
+            $em->persist($order);
+        }
+        $wcOrders = $client->getCompletedOrdersSecondPage();
+        foreach ($wcOrders['orders'] as $wcOrder) {
+            $output->writeln($wcOrder['order_number']);
             $order = $em->getRepository('MeVisaERPBundle:Orders')->findOneBy(array('wcId' => $wcOrder['order_number']));
             if (!$order) {
                 $order = $this->newOrder($em, $wcOrder);

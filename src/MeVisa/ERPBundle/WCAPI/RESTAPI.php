@@ -56,6 +56,15 @@ class RESTAPI
         $orders = $this->client->orders->get(null, $parameters);
         return $orders;
     }
+    public function getCompletedOrdersSecondPage()
+    {
+        $parameters = array(
+            "status" => "completed",
+            "page" => "2",
+        );
+        $orders = $this->client->orders->get(null, $parameters);
+        return $orders;
+    }
 
     public function getOrdersStatuses()
     {
