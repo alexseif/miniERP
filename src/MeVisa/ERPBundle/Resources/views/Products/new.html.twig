@@ -1,20 +1,28 @@
 {% extends ':default:admin.html.twig' %}
 
 {% block content %}
-    <!-- Page Heading -->
-    <div class="row">
-        <div class="col-md-12">
-            <h3 class="page-header">
-                New Product
-            </h3>
-        </div>
-    </div>
     <!-- /.row -->
     <div class="row">
         <div class="col-md-12">
             <div class="panel panel-default">
+                <div class="panel-heading">
+                    <span class="panel-title">New Product</span>
+                </div>
                 <div class="panel-body">
-                    {{ form(form) }}
+                    {{ form_row(form.name) }}
+                    {{ form_row(form.requiredDocuments) }}
+                    {{ form_row(form.enabled) }}
+                    {{ form_row(form.vendor) }}
+                </div>
+                <div class="panel-footer">
+                    <div class="row">
+                        <div class="col-sm-10">
+                            <a class="btn btn-warning" href="{{ path('admin_products') }}">Back</a>
+                        </div>
+                        <div class="col-sm-2">
+                            {{ form_widget(form.submit) }}
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -22,7 +30,16 @@
     <!-- /.row -->
     <div class="row">
         <div class="col-md-11"></div>
-        <div class="col-md-1"><a class="btn btn-warning" href="{{ path('admin_products') }}">Back</a></div>
+        <div class="col-md-1"></div>
     </div>
     <!-- /.row -->
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="/js/chosen.jquery.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.chosen-input').chosen({no_results_text: "Add new", allow_single_deselect: true});
+        });
+    </script>
 {% endblock %}

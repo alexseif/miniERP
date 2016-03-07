@@ -97,7 +97,10 @@ class ProductsController extends Controller
             'method' => 'POST',
         ));
 
-        $form->add('submit', 'submit', array('label' => 'Create'));
+        $form->add('submit', 'submit', array(
+            'label' => 'Save',
+            'attr' => array('class' => 'btn-success pull-right')
+        ));
 
         return $form;
     }
@@ -180,7 +183,7 @@ class ProductsController extends Controller
 
         return array(
             'entity' => $entity,
-            'edit_form' => $editForm->createView(),
+            'form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         );
     }
@@ -199,7 +202,10 @@ class ProductsController extends Controller
             'method' => 'PUT',
         ));
 
-        $form->add('submit', 'submit', array('label' => 'Update'));
+        $form->add('submit', 'submit', array(
+            'label' => 'Save',
+            'attr' => array('class' => 'btn-success pull-right')
+        ));
 
         return $form;
     }
@@ -242,7 +248,7 @@ class ProductsController extends Controller
 
         return array(
             'entity' => $entity,
-            'edit_form' => $editForm->createView(),
+            'form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         );
     }
