@@ -13,6 +13,23 @@ use Doctrine\ORM\EntityRepository;
 class OrdersRepository extends EntityRepository
 {
 
+    public function find($id)
+    {
+        return $this->createQueryBuilder('o')
+                        ->select('o, c, op, oc, opa, od, oco, i')
+                        ->leftJoin('o.customer', 'c')
+                        ->leftJoin('o.orderProducts', 'op')
+                        ->leftJoin('o.orderCompanions', 'oc')
+                        ->leftJoin('o.orderPayments', 'opa')
+                        ->leftJoin('o.orderDocuments', 'od')
+                        ->leftJoin('o.orderComments', 'oco')
+                        ->leftJoin('o.invoices', 'i')
+                        ->where("o.id = ?1")
+                        ->setParameter('1', $id)
+                        ->getQuery()
+                        ->getOneOrNullResult();
+    }
+
     public function findAll()
     {
         return $this->createQueryBuilder('o')
@@ -24,6 +41,8 @@ class OrdersRepository extends EntityRepository
     public function findAllByState($state)
     {
         return $this->createQueryBuilder('o')
+                        ->select('o, c')
+                        ->leftJoin('o.customer', 'c')
                         ->where("o.state = ?1")
                         ->setParameter('1', $state)
                         ->orderBy("o.createdAt, o.wcId")
@@ -34,6 +53,8 @@ class OrdersRepository extends EntityRepository
     public function findAllComplete()
     {
         return $this->createQueryBuilder('o')
+                        ->select('o, c')
+                        ->leftJoin('o.customer', 'c')
                         ->Where("DATE_DIFF(o.completedAt, CURRENT_DATE()) = 0")
                         ->orderBy("o.createdAt, o.wcId")
                         ->getQuery()
@@ -43,6 +64,8 @@ class OrdersRepository extends EntityRepository
     public function findAllPending()
     {
         return $this->createQueryBuilder('o')
+                        ->select('o, c')
+                        ->leftJoin('o.customer', 'c')
                         ->where("o.state = ?1")
                         ->orWhere("o.state = ?2")
                         ->setParameter('1', 'pending')
@@ -66,6 +89,7 @@ class OrdersRepository extends EntityRepository
     {
 
         return $this->createQueryBuilder("o")
+                        ->select('o, c')
                         ->leftJoin("o.customer", 'c')
                         ->leftJoin("o.orderCompanions", 'oc')
                         ->where("c.name LIKE ?1")
