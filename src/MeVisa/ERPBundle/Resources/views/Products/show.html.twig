@@ -3,32 +3,37 @@
 {% block content %}
     <div class="row">
         <div class="col-md-12">
-            <div class="panel panel-default">
+            <div class="panel panel-info">
                 <div class="panel-heading">
                     <span class="panel-title">Product <small> {{ entity.name }} </small></span>
+                    <span class="label label-{% if entity.enabled %}success{% else %}danger{% endif %} pull-right">{% if entity.enabled %}Enabled{% else %}Disabled{% endif %}</span>
                 </div>
                 <div class="panel-body">
-                    <div class="table-responsive">
-                        <table class="table table-bordered table-hover table-striped records_list">
-                            <tbody>
-                                <tr>
-                                    <th>Name</th>
-                                    <td>{{ entity.name }}</td>
-                                </tr>
-                                <tr>
-                                    <th>Required Documents</th>
-                                    <td>
-                                        {% for req in entity.requiredDocuments%}
-                                            {% filter upper %}{{ req }}{% endfilter %}<br/>
-                                        {% endfor %}
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th>Status</th>
-                                    <td>{% if entity.enabled %}Enabled{% else %}Disabled{% endif %}</td>
-                                </tr>
-                            </tbody>
-                        </table>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <ul class="list-group">
+                                <li class="list-group-item clearfix">
+                                    <label class="col-sm-4">Name</label> 
+                                    {{ entity.name }}
+                                </li>
+                                <li class="list-group-item clearfix">
+                                    <label class="col-sm-12">Required Documents</label>
+                                    {% for req in entity.requiredDocuments%}
+                                        {% filter upper %}{{ req }}{% endfilter %}<br/>
+                                    {% endfor %}
+                                </li>
+                                <li class="list-group-item clearfix"><label class="col-sm-4">Vendor</label> {{ entity.vendor }}</li>
+                            </ul>
+                        </div>
+                        <div class="col-sm-6">
+                            <ul class="list-group">
+                                <li class="list-group-item clearfix">
+                                    <label class="col-sm-4">Price</label> 
+                                    {{ (entity.pricing|last.price/100)|localizedcurrency('RUB') }}
+                                </li>
+                                <li class="list-group-item clearfix"><label class="col-sm-4">Cost</label> {{ (entity.pricing|last.cost/100)|localizedcurrency('RUB') }}</li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
                 <div class="panel-footer">

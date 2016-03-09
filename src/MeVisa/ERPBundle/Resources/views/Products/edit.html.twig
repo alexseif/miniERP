@@ -3,15 +3,33 @@
 {% block content %}
     <div class="row">
         <div class="col-md-12">
+            {{ form_start(form) }}
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <span class="panel-title">Edit Product <small>{{ entity.name }}</small></span>
                 </div>
                 <div class="panel-body">
-                    {{ form_row(form.name) }}
-                    {{ form_row(form.requiredDocuments) }}
-                    {{ form_row(form.enabled) }}
-                    {{ form_row(form.vendor) }}                </div>
+                    <div class="row">
+                        <div class="col-sm-8">
+                            {{ form_row(form.name) }}
+                            {{ form_row(form.requiredDocuments) }}
+                            {{ form_row(form.vendor) }}              
+                            {{ form_row(form.enabled) }}
+                        </div>
+                        <div class="col-sm-4">
+                            <ul class="list-group">
+                                <li class="list-group-item">
+                                    <label>Price</label>
+                                    {{ (entity.pricing|last.price/100)|localizedcurrency('RUB') }}
+                                </li>
+                                <li class="list-group-item">
+                                    <label>Cost</label>
+                                    {{ (entity.pricing|last.cost/100)|localizedcurrency('RUB') }}
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
                 <div class="panel-footer">
                     <div class="row">
                         <div class="col-md-10"><a class="btn btn-warning" href="{{ path('admin_products') }}">Back</a></div>
@@ -21,6 +39,7 @@
                     </div>
                 </div>
             </div>
+            {{ form(form) }}
         </div>
     </div>
     <!-- /.row -->

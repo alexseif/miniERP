@@ -4,9 +4,11 @@
     <!-- /.row -->
     <div class="row">
         <div class="col-md-12">
-            <div class="panel panel-default">
+            <div class="panel panel-info">
                 <div class="panel-heading">
-                    <span class="panel-title">New Product</span>
+                    <span class="h2">New Product</span>                           
+                    <a class="btn btn-warning pull-right" href="{{ path('admin_products') }}"><span class="glyphicon glyphicon-arrow-left"></span></a>
+
                 </div>
                 <div class="panel-body">
                     {{ form_row(form.name) }}
@@ -17,7 +19,6 @@
                 <div class="panel-footer">
                     <div class="row">
                         <div class="col-sm-10">
-                            <a class="btn btn-warning" href="{{ path('admin_products') }}">Back</a>
                         </div>
                         <div class="col-sm-2">
                             {{ form_widget(form.submit) }}

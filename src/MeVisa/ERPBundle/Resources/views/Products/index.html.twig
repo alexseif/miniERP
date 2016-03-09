@@ -2,10 +2,10 @@
 
 {% block content %}
     <!-- page content -->
-    <div class="panel panel-default">
+    <div class="panel panel-info">
         <div class="panel-heading ">
             <div class="clearfix">
-                <span class="panel-title"> Products <small> {{ entities|length }} </small></span>
+                <span class="h2"> Products <small> {{ entities|length }} </small></span>
                 {% if is_granted('ROLE_SUPER_ADMIN') %}
                     <a class="btn btn-primary btn-sm pull-right" href="{{ path('admin_products_new') }}">Add Product</a>
                 {% endif %}
