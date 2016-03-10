@@ -34,11 +34,9 @@ class WCAPICommand extends ContainerAwareCommand
         $em = $this->getContainer()->get('doctrine')->getManager();
         $wcOrders = $client->getCompletedOrders();
         foreach ($wcOrders['orders'] as $wcOrder) {
-            $output->writeln($wcOrder['order_number'] . ":" . $wcOrder['payment_details']['paid']);
             if (true == $wcOrder['payment_details']['paid']) {
                 $order = $em->getRepository('MeVisaERPBundle:Orders')->findOneBy(array('wcId' => $wcOrder['order_number']));
                 if (!$order) {
-                    $output->writeln("Saving order " . $wcOrder['order_number']);
                     $order = $this->newOrder($em, $wcOrder);
                 }
                 $em->persist($order);
@@ -49,11 +47,9 @@ class WCAPICommand extends ContainerAwareCommand
 
         $wcOrders = $client->getCompletedOrdersSecondPage();
         foreach ($wcOrders['orders'] as $wcOrder) {
-            $output->writeln($wcOrder['order_number'] . ":" . $wcOrder['payment_details']['paid']);
             if (true == $wcOrder['payment_details']['paid']) {
                 $order = $em->getRepository('MeVisaERPBundle:Orders')->findOneBy(array('wcId' => $wcOrder['order_number']));
                 if (!$order) {
-                    $output->writeln("Saving order " . $wcOrder['order_number']);
                     $order = $this->newOrder($em, $wcOrder);
                 }
                 $em->persist($order);
