@@ -20,7 +20,10 @@ class OrdersType extends AbstractType
                     'placeholder' => 'State',
                     'choices' => array(
                         'pending' => 'Pending',
-                        'backoffice' => 'Back Office'),
+                        'backoffice' => 'Back Office',
+                        'document' => 'Document',
+                        'post' => 'Post',
+                    ),
                         )
                 )
                 ->add('productsTotal', 'money', array(
