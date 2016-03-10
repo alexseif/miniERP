@@ -57,22 +57,28 @@
                     </div>
                 </div>
                 <div class="panel-footer">
-                    <div class="clearfix">
-                        {% if order.invoices is not empty %}
-                            <a class="btn btn-primary" href="/invoices/mevisa-invoice-{{ order.number }}-{{ (order.invoices|last).id}}.pdf" target="_blank">Invoice</a>
-                        {% endif %}
-                        {% if is_granted('ROLE_SUPER_ADMIN') and order.updatedAt  %}
-                            <a class="btn btn-default" href="{{ path('orders_edit', { "id" : order.id }) }}">Edit</a>
-                        {% endif %}
-                        <div class="btn-toolbar pull-right" role="toolbar">
-                            {% if order.updatedAt %}
-                                {{ form_start(status_form) }}
-                                {% for btn in status_form %}
-                                    {{ form_widget(btn) }}
-                                {% endfor %}
-                                {{ form_end(status_form) }}
-                            {% else %}
-                                <a class="btn btn-default" href="{{ path('orders_edit', { "id" : order.id }) }}">Edit</a>
+                    <div class="row">
+                        <div class="col-sm-2">
+                            {% if order.invoices is not empty %}
+                                <a class="btn btn-primary" href="/invoices/mevisa-invoice-{{ order.number }}-{{ (order.invoices|last).id}}.pdf" target="_blank">Invoice</a>
+                            {% endif %}
+                        </div>
+                        <div class="col-sm-6 col-sm-offset-3">
+                            <div class="btn-toolbar pull-right" role="toolbar">
+                                {% if order.updatedAt or "POS" == order.channel %}
+                                    {{ form_start(status_form) }}
+                                    {% for btn in status_form %}
+                                        {{ form_widget(btn) }}
+                                    {% endfor %}
+                                    {{ form_end(status_form) }}
+                                {% else %}
+                                    <a class="btn btn-default" href="{{ path('orders_edit', { "id" : order.id }) }}">Edit</a>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="col-sm-1">
+                            {% if is_granted('ROLE_SUPER_ADMIN') and (order.updatedAt or "POS" == order.channel) %}
+                                <a class="btn btn-default pull-right" href="{{ path('orders_edit', { "id" : order.id }) }}">Edit</a>
                             {% endif %}
                         </div>
                     </div>
@@ -80,4 +86,5 @@
             </div>
         </div>
     </div>
+</div>
 {% endblock %}
