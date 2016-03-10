@@ -88,7 +88,7 @@ class OrdersType extends AbstractType
             'type' => new OrderCompanionsType(),
             'allow_add' => true,
             'allow_delete' => true,
-            'label' => false
+            'label' => false,
         ));
 
         $builder->add('orderPayments', 'collection', array(
