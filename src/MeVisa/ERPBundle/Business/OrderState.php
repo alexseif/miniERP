@@ -46,7 +46,9 @@ class OrderState
         $this->addChild('document', 'cancelled');
 
         $this->addChild('post', 'approved');
+        $this->addChild('approved', 'post');
         $this->addChild('post', 'rejected');
+        $this->addChild('rejected', 'post');
 
         //WooCommerce Status
         //Pending
@@ -56,6 +58,7 @@ class OrderState
         //Processing
         $this->addChild('processing', 'backoffice');
         $this->addChild('processing', 'cancelled');
+        
     }
 
     public function setState($key)
