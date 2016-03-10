@@ -10,11 +10,13 @@ class OrderService
 
     protected $em;
     protected $templating;
+    protected $securityContext;
 
-    public function __construct(EntityManager $em, EngineInterface $templating)
+    public function __construct(EntityManager $em, EngineInterface $templating, \Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage $securityContext)
     {
         $this->em = $em;
         $this->templating = $templating;
+        $this->securityContext = $securityContext;
     }
 
     public function getOrdersList()
@@ -55,23 +57,8 @@ class OrderService
 
     public function createNewPOSOrder($order)
     {
-        // TODO: State machine
-        // $order->setState('backoffice');
-        $order->setChannel('POS');
-        $order->setCreatedAt(new \DateTime("now"));
         $order->setNumber($this->generateNewPOSNumber());
 
-        $customer = $order->getCustomer();
-        if (!$customer->getId()) {
-            $this->em->persist($customer);
-            // TODO: Check new Customer
-            // TODO: add new customer
-        }
-        // $customerCheck = $em->getRepository('MeVisaCRMBundle:Customer')->find($order->getCustomer()->getId());
-        $customerCheck = true;
-        if (!$customerCheck) {
-            //  echo "Still no Customer <br/>";
-        }
         $this->setOrderDetails($order);
         $this->em->persist($order);
         $this->em->flush();
@@ -93,6 +80,8 @@ class OrderService
 
     public function setOrderDetails($order)
     {
+        /* Auto assign details */
+
         if ("approved" == $order->getState() || "rejected" == $order->getState()) {
             $order->setCompletedAt(new \DateTime());
         }
@@ -100,15 +89,25 @@ class OrderService
         if ("post" == $order->getState()) {
             $order->setPostedAt(new \DateTime());
         }
+//        $wcId;
+//        $updatedAt;
+//        $postedAt;
+//        $deletedAt;
+//        $completedAt;
 
-        $orderCompanions = $order->getOrderCompanions();
-        // TODO: Check Order Companions
-        foreach ($orderCompanions as $companion) {
-            if (empty($companion->getId())) {
-                $order->addOrderCompanion($companion);
-            }
-        }
+        /* Order Customer */
+        $this->setCustomer($order);
 
+        /* Order Details */
+        // TODO: State machine
+//        $productsTotal;
+//        $adjustmentTotal;
+//        $total;
+//        $people;
+//        $arrival;
+//        $departure;
+
+        /* Order Products */
         $orderProducts = $order->getOrderProducts();
         foreach ($orderProducts as $orderProduct) {
             // TODO: Check Order Product
@@ -118,28 +117,7 @@ class OrderService
             }
         }
 
-        $orderComments = $order->getOrderComments();
-        foreach ($orderComments as $comment) {
-            if (!$comment->getId()) {
-                if ("" == $comment->getComment()) {
-                    $order->removeOrderComment($comment);
-                } else {
-                    $this->getUser()->addComment($comment);
-                    $comment->setCreatedAt(new \DateTime());
-                    if (empty($comment->getId())) {
-                        $order->addOrderComment($comment);
-                    }
-                }
-            }
-        }
-
-        $invoices = $order->getInvoices();
-        foreach ($invoices as $invoice) {
-            if (empty($invoice->getId())) {
-                $order->addInvoice($invoice);
-            }
-        }
-
+        /* Order Payments */
         $orderPayments = $order->getOrderPayments();
         foreach ($orderPayments as $payment) {
             if ("paid" == $payment->getState()) {
@@ -150,15 +128,49 @@ class OrderService
             }
         }
 
+        /* Order Companions */
+        $orderCompanions = $order->getOrderCompanions();
+        // TODO: Check Order Companions
+        foreach ($orderCompanions as $companion) {
+            if (empty($companion->getId())) {
+                $order->addOrderCompanion($companion);
+            }
+        }
 
-        // TODO: Check Order
-        // TODO: Upload OrderDocuments then presist
+        /* Order Docs */
         $orderDocuments = $order->getOrderDocuments();
         foreach ($orderDocuments as $document) {
             if (empty($document->getId())) {
                 $order->addOrderDocument($document);
             }
         }
+
+        /* Order Notes */
+        $orderComments = $order->getOrderComments();
+        foreach ($orderComments as $comment) {
+            if (empty($comment->getId())) {
+                if (null == $comment->getComment() || "" == trim($comment->getComment())) {
+                    $order->removeOrderComment($comment);
+                    $this->em->remove($comment);
+                } else {
+                    $this->securityContext->getToken()->getUser()->addComment($comment);
+                    $comment->setCreatedAt(new \DateTime());
+                    if (empty($comment->getId())) {
+                        $order->addOrderComment($comment);
+                    }
+                }
+            }
+        }
+
+        /* Order Invoice */
+        $invoices = $order->getInvoices();
+        foreach ($invoices as $invoice) {
+            if (empty($invoice->getId())) {
+                $order->addInvoice($invoice);
+            }
+        }
+
+        /* Order Receipt */
     }
 
     public function generateInvoice($id)
@@ -216,6 +228,34 @@ class OrderService
         $mpdf->Output($invoicePath . $invoiceName, 'F');
 
         $this->em->flush();
+    }
+
+    public function setCustomer($order)
+    {
+        // Customer Exists By ID
+        if (empty($order->getCustomer()->getId())) {
+            // Customer Exists By Email
+            $customer = $this->em->getRepository('MeVisaCRMBundle:Customers')->findOneBy(array("email" => $order->getCustomer()->getEmail()));
+            if ($customer) {
+                if ($customer->getName() != $order->getCustomer()->getName()) {
+                    //TODO: do something
+                }
+                if ($customer->getPhone() != $order->getCustomer()->getPhone()) {
+                    //TODO: do something
+                }
+                $customer->addOrder($order);
+                $order->setCustomer($customer);
+            }
+        } else {
+            $customer = $this->em->getRepository('MeVisaCRMBundle:Customers')->find($order->getCustomer()->getId());
+        }
+        if (empty($customer)) {
+            // New Customer
+            $customer = $order->getCustomer();
+        }
+        $customer->addOrder($order);
+        
+        $this->em->persist($customer);
     }
 
 }

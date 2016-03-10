@@ -5,4 +5,4 @@ services:
 
     erp.order:
         class:  %order.class%
-        arguments: [ '@doctrine.orm.entity_manager', '@templating' ]
+        arguments: [ '@doctrine.orm.entity_manager', '@templating', '@security.token_storage' ]

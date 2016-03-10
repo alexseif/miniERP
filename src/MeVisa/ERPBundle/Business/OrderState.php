@@ -102,4 +102,9 @@ class OrderState
         $this->states[$parent]->addChild($this->getState($child));
     }
 
+    public function getStates()
+    {
+        return $this->states;
+    }
+
 }

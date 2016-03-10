@@ -73,30 +73,29 @@ class OrdersController extends Controller
     public function newAction(Request $request)
     {
         $order = new Orders();
-        $order->setState('backoffice');
         $order->setChannel('POS');
+        $order->setState('backoffice');
         $order->setCreatedAt(new \DateTime("now"));
 
+        //Generate Form
         $form = $this->createForm(new OrdersType(), $order, array(
             'action' => $this->generateUrl('orders_new'),
             'method' => 'POST',
         ));
-
         $form->add('save', 'submit', array(
             'label' => null,
             'attr' => array(
                 'class' => 'btn-success pull-right'
-        )));
+            )
+        ));
 
+        //Handle Form
         $form->handleRequest($request);
+
 // TODO: State buttons
-//        foreach ($order->getOrderState()->getCurrentState()->getChildren() as $state) {
-//            $form->add($state->getKey(), 'submit', array('attr' => array('class' => 'btn-toolbar btn-' . $state->getBootstrapClass())
-//            ));
-//        }
+
         if ($form->isSubmitted()) {
             if ($form->isValid()) {
-
                 $this->get('erp.order')->createNewPOSOrder($order);
 
                 return $this->redirect($this->generateUrl('orders_show', array('id' => $order->getId())));
