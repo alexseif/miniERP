@@ -50,19 +50,16 @@ class WCAPICommand extends ContainerAwareCommand
         $wcOrders = $client->getCompletedOrdersSecondPage();
         foreach ($wcOrders['orders'] as $wcOrder) {
             $output->writeln($wcOrder['order_number'] . ":" . $wcOrder['payment_details']['paid']);
-            $order = $em->getRepository('MeVisaERPBundle:Orders')->findOneBy(array('wcId' => $wcOrder['order_number']));
-            if (!$order) {
-                if (true == $wcOrder['payment_details']['paid']) {
+            if (true == $wcOrder['payment_details']['paid']) {
+                $order = $em->getRepository('MeVisaERPBundle:Orders')->findOneBy(array('wcId' => $wcOrder['order_number']));
+                if (!$order) {
                     $output->writeln("Saving order " . $wcOrder['order_number']);
                     $order = $this->newOrder($em, $wcOrder);
                 }
+                $em->persist($order);
             }
-            $wcOrderNotes = $client->getOrderNotes($wcOrder['order_number']);
-//            $this->updateOrderNotes($em, $order, $wcOrderNotes['order_notes']);
-            $em->persist($order);
         }
         $em->flush();
-        $output->writeln('complete');
     }
 
     public function newOrder($em, $wcOrder)
