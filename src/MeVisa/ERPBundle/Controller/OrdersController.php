@@ -214,47 +214,44 @@ class OrdersController extends Controller
      * Displays a form to edit an existing Orders entity.
      *
      * @Route("/{id}/companions", name="orders_edit_companions")
-     * @Method("GET")
+     * @Method({"GET", "PUT"})
      * @Template()
      */
-    public function orderEditCompanionsAction($id)
+    public function editCompanionsAction($id, Request $request)
     {
-        $em = $this->getDoctrine()->getManager();
-
-
-        $order = $em->getRepository('MeVisaERPBundle:Orders')->find($id);
+        $order = $this->get('erp.order')->getOrder($id);
         if (!$order) {
             throw $this->createNotFoundException('Unable to find Orders entity.');
         }
 
-        $state = $order->getState();
-        $order->startOrderStateEnginge();
-        $order->setState($state);
+        $form = $this->createForm(new \MeVisa\ERPBundle\Form\OrdersCompanionsType(), $order, array(
+            'action' => $this->generateUrl('orders_edit_companions', array('id' => $order->getId())),
+            'method' => 'PUT',
+        ));
+
+        $form->add('update', 'submit', array(
+            'label' => null,
+            'attr' => array(
+                'class' => 'btn-success pull-right'
+        )));
 
 
-        $editForm = $this->createEditForm($order);
-        $statusForm = $this->createStatusForm($order);
+        $form->handleRequest($request);
+        if ($form->isValid()) {
+            $this->get('erp.order')->updateOrder($order);
 
-        $productPrices = $em->getRepository('MeVisaERPBundle:ProductPrices')->findAll();
-
-        $orderDocuments = $order->getOrderDocuments();
-        foreach ($orderDocuments as $document) {
-            if (0 === strpos($document->getPath(), 'http://www.mevisa.ru/')) {
-                $parts = explode('/', $document->getPath());
-                $parts[count($parts) - 2] = 'thumbs';
-                $parts[count($parts) - 1] = $document->getName();
-                $document->thumbnail = implode('/', $parts);
-            } else {
-                $document->thumbnail = false;
-                $document->setPath($this->get('request')->getScheme() . '://' . $this->get('request')->getHttpHost() . $this->get('request')->getBasePath() . '/' . $document->getWebPath());
+            return $this->redirect($this->generateUrl('orders_show', array('id' => $order->getId())));
+        } else {
+            foreach ($form->getErrors() as $error) {
+                $this->addFlash('error', $error);
             }
         }
+
         return array(
             'order' => $order,
-            'productPrices' => $productPrices,
-            'documents' => $orderDocuments,
+            'documents' => $this->getThumbnails($order),
             'logs' => $this->get('erp.order')->getOrderLog($id),
-            'form' => $editForm->createView(),
+            'form' => $form->createView(),
         );
     }
 

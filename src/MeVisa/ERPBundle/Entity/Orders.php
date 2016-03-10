@@ -160,7 +160,7 @@ class Orders
     private $orderPayments;
 
     /**
-     * @ORM\OneToMany(targetEntity="OrderCompanions", mappedBy="orderRef", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="OrderCompanions", mappedBy="orderRef", cascade={"persist"}, orphanRemoval=true))
      * */
     private $orderCompanions;
 

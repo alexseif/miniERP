@@ -1,12 +1,18 @@
 {% extends ':default:admin.html.twig' %}
 
 {% block title %}Order # {{ order.number }}{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" type="text/css" href="/css/jquery-ui.min.css" />
+    <link rel="stylesheet" type="text/css" href="/css/jquery-ui.theme.min.css" />
+    <link rel="stylesheet" type="text/css" href="/css/chosen.min.css" />
+{% endblock %}
 {% block content %}
     <div class="row">
         <div class="col-md-12">
             <div class="panel panel-default">
                 <div class="panel-heading">                        
-                    <a class="btn btn-default" href="{{ path('dashboard') }}"><span class="glyphicon glyphicon-arrow-left"></span></a>
+                    <a class="btn btn-default" href="{{ path('orders_show', {"id":order.id}) }}"><span class="glyphicon glyphicon-arrow-left"></span></a>
                     <span class="panel-title">Order # {{ order.number }}</span>
                     <div class="pull-right">
                         &nbsp;<span class="label label-default">{{ order.channel|upper }}</span>
@@ -34,7 +40,7 @@
                             {% include 'MeVisaERPBundle:Orders:order_payments.html.twig' %}
                         </div>
                     </div>
-                    {% include 'MeVisaERPBundle:Orders:orderEditCompanions_form.html.twig' %}
+                    {% include 'MeVisaERPBundle:Orders:editCompanions_form.html.twig' %}
                     <div class="row">
                         <div class="col-sm-6">
                             {% include 'MeVisaERPBundle:Orders:order_documents.html.twig' %}
@@ -45,7 +51,7 @@
                     </div>
                     <div class="row">
                         <div class="col-sm-6">
-                            {#                             {% include 'MeVisaERPBundle:Orders:order_notes.html.twig' %}#}
+                            {% include 'MeVisaERPBundle:Orders:order_comments.html.twig' %}
                         </div>
                         <div class="col-sm-6">
                             {% include 'MeVisaERPBundle:Orders:order_logs.html.twig' %}
@@ -81,5 +87,5 @@
     {{ parent() }}
     <script type="text/javascript" src="/js/jquery-ui.min.js"></script>
     <script type="text/javascript" src="/js/chosen.jquery.min.js"></script>
-    <script type="text/javascript" src="/js/orders.js"></script>
+    <script type="text/javascript" src="/js/orderCompanions.js"></script>
 {% endblock %}

@@ -1,0 +1,17 @@
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <span class="panel-title">Notes</span>
+    </div>
+    <div class="panel-body order-comment">
+        <ul class="comments">
+            {%for comment in order.orderComments%}
+                <li class="clearfix">
+                    <div class="post-comments">
+                        <p class="meta">{{ comment.createdAt|localizeddate('short', 'short') }} <span class="pull-right">{{ comment.author }}</span></p>
+                        <p>{{ comment.comment }}</p>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>

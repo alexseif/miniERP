@@ -220,9 +220,7 @@ class OrderService
         $orderCompanions = $order->getOrderCompanions();
         // TODO: Check Order Companions
         foreach ($orderCompanions as $companion) {
-//            if (empty($companion->getId())) {
-                $order->addOrderCompanion($companion);
-//            }
+            $order->addOrderCompanion($companion);
         }
 
         /* Order Docs */
