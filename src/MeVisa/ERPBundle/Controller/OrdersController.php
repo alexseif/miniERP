@@ -100,10 +100,6 @@ class OrdersController extends Controller
                 $this->get('erp.order')->createNewPOSOrder($order);
 
                 return $this->redirect($this->generateUrl('orders_show', array('id' => $order->getId())));
-            } else {
-                foreach ($form->getErrors() as $error) {
-                    $this->addFlash('error', $error);
-                }
             }
         }
 
@@ -185,13 +181,11 @@ class OrdersController extends Controller
 
         $form = $this->createEditForm($order);
         $form->handleRequest($request);
-        if ($form->isValid()) {
-            $this->get('erp.order')->updateOrder($order);
+        if ($form->isSubmitted()) {
+            if ($form->isValid()) {
+                $this->get('erp.order')->updateOrder($order);
 
-            return $this->redirect($this->generateUrl('orders_show', array('id' => $order->getId())));
-        } else {
-            foreach ($form->getErrors() as $error) {
-                $this->addFlash('error', $error);
+                return $this->redirect($this->generateUrl('orders_show', array('id' => $order->getId())));
             }
         }
 
@@ -237,13 +231,11 @@ class OrdersController extends Controller
 
 
         $form->handleRequest($request);
-        if ($form->isValid()) {
-            $this->get('erp.order')->updateOrder($order);
+        if ($form->isSubmitted()) {
+            if ($form->isValid()) {
+                $this->get('erp.order')->updateOrder($order);
 
-            return $this->redirect($this->generateUrl('orders_show', array('id' => $order->getId())));
-        } else {
-            foreach ($form->getErrors() as $error) {
-                $this->addFlash('error', $error);
+                return $this->redirect($this->generateUrl('orders_show', array('id' => $order->getId())));
             }
         }
 

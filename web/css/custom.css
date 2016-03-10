@@ -94,3 +94,26 @@ tr.bg-success:focus {
 /* adjust as needed, taken from bootstrap.css */
 .panel-heading .accordion-toggle.collapsed:after {content: "\e080";}
 #order-log .list-group{padding: 15px 10px;max-height: 244px; overflow-y: scroll;} #order-log .badge{margin-top: 0px;}
+
+.alert-notice {
+    color: #8a6d3b;
+    background-color: #fcf8e3;
+    border-color: #faebcc;
+}
+.alert-notice hr {
+    border-top-color: #f7e1b5;
+}
+.alert-notice .alert-link {
+    color: #66512c;
+}
+.alert-error {
+    color: #a94442;
+    background-color: #f2dede;
+    border-color: #ebccd1;
+}
+.alert-error hr {
+    border-top-color: #e4b9c0;
+}
+.alert-error .alert-link {
+    color: #843534;
+}
