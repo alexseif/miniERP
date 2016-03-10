@@ -100,6 +100,8 @@ class OrdersType extends AbstractType
             'type' => new OrderCommentsType(),
             'allow_add' => true,
             'allow_delete' => false,
+            'delete_empty' =>true,
+            'required' => false,
             'label' => false
         ));
 

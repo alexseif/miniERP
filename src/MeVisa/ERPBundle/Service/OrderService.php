@@ -31,6 +31,9 @@ class OrderService
         if (!$order) {
             throw $this->createNotFoundException('Unable to find Orders entity.');
         }
+        $state = $order->getState();
+        $order->startOrderStateEnginge();
+        $order->setOrderState($state);
         return $order;
     }
 
@@ -64,7 +67,7 @@ class OrderService
         $this->em->flush();
     }
 
-    public function saveOrder($order)
+    public function updateOrder($order)
     {
         $this->setOrderDetails($order);
         if (empty($order->getUpdatedAt())) {
@@ -76,101 +79,6 @@ class OrderService
     public function addNewComment($comment)
     {
         
-    }
-
-    public function setOrderDetails($order)
-    {
-        /* Auto assign details */
-
-        if ("approved" == $order->getState() || "rejected" == $order->getState()) {
-            $order->setCompletedAt(new \DateTime());
-        }
-
-        if ("post" == $order->getState()) {
-            $order->setPostedAt(new \DateTime());
-        }
-//        $wcId;
-//        $updatedAt;
-//        $postedAt;
-//        $deletedAt;
-//        $completedAt;
-
-        /* Order Customer */
-        $this->setCustomer($order);
-
-        /* Order Details */
-        // TODO: State machine
-//        $productsTotal;
-//        $adjustmentTotal;
-//        $total;
-//        $people;
-//        $arrival;
-//        $departure;
-
-        /* Order Products */
-        $orderProducts = $order->getOrderProducts();
-        foreach ($orderProducts as $orderProduct) {
-            // TODO: Check Order Product
-            // TODO: Handle no proper products or disabled
-            if (empty($orderProduct->getId())) {
-                $order->addOrderProduct($orderProduct);
-            }
-        }
-
-        /* Order Payments */
-        $orderPayments = $order->getOrderPayments();
-        foreach ($orderPayments as $payment) {
-            if ("paid" == $payment->getState()) {
-                $payment->setCreatedAt(new \DateTime());
-            }
-            if (empty($payment->getId())) {
-                $order->addOrderPayment($payment);
-            }
-        }
-
-        /* Order Companions */
-        $orderCompanions = $order->getOrderCompanions();
-        // TODO: Check Order Companions
-        foreach ($orderCompanions as $companion) {
-            if (empty($companion->getId())) {
-                $order->addOrderCompanion($companion);
-            }
-        }
-
-        /* Order Docs */
-        $orderDocuments = $order->getOrderDocuments();
-        foreach ($orderDocuments as $document) {
-            if (empty($document->getId())) {
-                $order->addOrderDocument($document);
-            }
-        }
-
-        /* Order Notes */
-        $orderComments = $order->getOrderComments();
-        foreach ($orderComments as $comment) {
-            if (empty($comment->getId())) {
-                if (null == $comment->getComment() || "" == trim($comment->getComment())) {
-                    $order->removeOrderComment($comment);
-                    $this->em->remove($comment);
-                } else {
-                    $this->securityContext->getToken()->getUser()->addComment($comment);
-                    $comment->setCreatedAt(new \DateTime());
-                    if (empty($comment->getId())) {
-                        $order->addOrderComment($comment);
-                    }
-                }
-            }
-        }
-
-        /* Order Invoice */
-        $invoices = $order->getInvoices();
-        foreach ($invoices as $invoice) {
-            if (empty($invoice->getId())) {
-                $order->addInvoice($invoice);
-            }
-        }
-
-        /* Order Receipt */
     }
 
     public function generateInvoice($id)
@@ -254,8 +162,105 @@ class OrderService
             $customer = $order->getCustomer();
         }
         $customer->addOrder($order);
-        
+
         $this->em->persist($customer);
+    }
+
+    public function setOrderDetails($order)
+    {
+        /* Auto assign details */
+
+        if ("approved" == $order->getState() || "rejected" == $order->getState()) {
+            $order->setCompletedAt(new \DateTime());
+        }
+
+        if ("post" == $order->getState()) {
+            $order->setPostedAt(new \DateTime());
+        }
+//        $wcId;
+//        $updatedAt;
+//        $postedAt;
+//        $deletedAt;
+//        $completedAt;
+
+        /* Order Customer */
+        $this->setCustomer($order);
+
+        /* Order Details */
+        // TODO: State machine
+//        $productsTotal;
+//        $adjustmentTotal;
+//        $total;
+//        $people;
+//        $arrival;
+//        $departure;
+
+        /* Order Products */
+        $orderProducts = $order->getOrderProducts();
+        foreach ($orderProducts as $orderProduct) {
+            // TODO: Check Order Product
+            // TODO: Handle no proper products or disabled
+            if (empty($orderProduct->getId())) {
+                $order->addOrderProduct($orderProduct);
+            }
+        }
+
+        /* Order Payments */
+        $orderPayments = $order->getOrderPayments();
+        foreach ($orderPayments as $payment) {
+            if ("paid" == $payment->getState()) {
+                $payment->setCreatedAt(new \DateTime());
+            }
+            if (empty($payment->getId())) {
+                $order->addOrderPayment($payment);
+            }
+        }
+
+        /* Order Companions */
+        $orderCompanions = $order->getOrderCompanions();
+        // TODO: Check Order Companions
+        foreach ($orderCompanions as $companion) {
+            if (empty($companion->getId())) {
+                $order->addOrderCompanion($companion);
+            }
+        }
+
+        /* Order Docs */
+        $orderDocuments = $order->getOrderDocuments();
+        foreach ($orderDocuments as $document) {
+            if (empty($document->getId())) {
+                $order->addOrderDocument($document);
+            }
+        }
+
+        /* Order Notes */
+        $orderComments = $order->getOrderComments();
+        foreach ($orderComments as $comment) {
+            if (empty($comment->getId())) {
+                if (null == $comment->getComment() || "" == trim($comment->getComment())) {
+                    $order->removeOrderComment($comment);
+                    $this->em->remove($comment);
+                } else {
+                    $newComment = new \MeVisa\ERPBundle\Entity\OrderComments();
+                    $newComment->setCreatedAt(new \DateTime());
+                    $newComment->setComment($comment->getComment());
+                    $this->securityContext->getToken()->getUser()->addComment($newComment);
+                    $order->addOrderComment($newComment);
+                }
+            } else {
+                $this->em->refresh($comment);
+            }
+        }
+
+        /* Order Invoice */
+        $invoices = $order->getInvoices();
+        foreach ($invoices as $invoice) {
+            if (empty($invoice->getId())) {
+                $order->addInvoice($invoice);
+            }
+        }
+
+        /* Order Receipt */
     }
 
 }

@@ -43,6 +43,7 @@ class OrdersController extends Controller
      */
     public function createCommentAction(Request $request, $id)
     {
+        $em = $this->getDoctrine()->getManager();
         $order = $this->get('erp.order')->getOrder($id);
 
         $orderComment = new \MeVisa\ERPBundle\Entity\OrderComments();
@@ -147,19 +148,11 @@ class OrdersController extends Controller
      */
     public function showAction($id)
     {
-        $em = $this->getDoctrine()->getManager();
-
-        $order = $em->getRepository('MeVisaERPBundle:Orders')->find($id);
+        $order = $this->get('erp.order')->getOrder($id);
 
         if (!$order) {
             throw $this->createNotFoundException('Unable to find Orders entity.');
         }
-
-
-
-        $state = $order->getState();
-        $order->startOrderStateEnginge();
-        $order->setOrderState($state);
 
         $orderComment = new \MeVisa\ERPBundle\Entity\OrderComments();
         $orderComment->setOrderRef($order->getId());
@@ -167,23 +160,10 @@ class OrdersController extends Controller
         $commentForm = $this->createCommentForm($orderComment);
         $statusForm = $this->createStatusForm($order);
 
-        $orderDocuments = $order->getOrderDocuments();
-        foreach ($orderDocuments as $document) {
-            if (0 === strpos($document->getPath(), 'http://www.mevisa.ru/')) {
-                $parts = explode('/', $document->getPath());
-                $parts[count($parts) - 2] = 'thumbs';
-                $parts[count($parts) - 1] = $document->getName();
-                $document->thumbnail = implode('/', $parts);
-            } else {
-                $document->thumbnail = false;
-                $document->setPath($this->get('request')->getScheme() . '://' . $this->get('request')->getHttpHost() . $this->get('request')->getBasePath() . '/' . $document->getWebPath());
-            }
-        }
-
         return array(
             'order' => $order,
             'logs' => $this->get('erp.order')->getOrderLog($id),
-            'documents' => $orderDocuments,
+            'documents' => $this->getThumbnails($order),
             'status_form' => $statusForm->createView(),
             'comment_form' => $commentForm->createView(),
         );
@@ -193,46 +173,39 @@ class OrdersController extends Controller
      * Displays a form to edit an existing Orders entity.
      *
      * @Route("/{id}/edit", name="orders_edit")
-     * @Method("GET")
+     * @Method({"GET", "PUT"})
      * @Template()
      */
-    public function editAction($id)
+    public function editAction($id, Request $request)
     {
-        $em = $this->getDoctrine()->getManager();
-
-        $order = $em->getRepository('MeVisaERPBundle:Orders')->find($id);
-
-        $state = $order->getState();
-        $order->startOrderStateEnginge();
-        $order->setState($state);
-
+        $order = $this->get('erp.order')->getOrder($id);
         if (!$order) {
             throw $this->createNotFoundException('Unable to find Orders entity.');
         }
 
-        $editForm = $this->createEditForm($order);
-        $statusForm = $this->createStatusForm($order);
+        $form = $this->createEditForm($order);
+        $form->handleRequest($request);
+        if ($form->isValid()) {
+            $this->get('erp.order')->updateOrder($order);
 
-        $productPrices = $em->getRepository('MeVisaERPBundle:ProductPrices')->findAll();
-
-        $orderDocuments = $order->getOrderDocuments();
-        foreach ($orderDocuments as $document) {
-            if (0 === strpos($document->getPath(), 'http://www.mevisa.ru/')) {
-                $parts = explode('/', $document->getPath());
-                $parts[count($parts) - 2] = 'thumbs';
-                $parts[count($parts) - 1] = $document->getName();
-                $document->thumbnail = implode('/', $parts);
-            } else {
-                $document->thumbnail = false;
-                $document->setPath($this->get('request')->getScheme() . '://' . $this->get('request')->getHttpHost() . $this->get('request')->getBasePath() . '/' . $document->getWebPath());
+            return $this->redirect($this->generateUrl('orders_show', array('id' => $order->getId())));
+        } else {
+            foreach ($form->getErrors() as $error) {
+                $this->addFlash('error', $error);
             }
         }
+
+        $statusForm = $this->createStatusForm($order);
+
+        $em = $this->getDoctrine()->getManager();
+        $productPrices = $em->getRepository('MeVisaERPBundle:ProductPrices')->findAll();
+
         return array(
             'order' => $order,
             'productPrices' => $productPrices,
-            'documents' => $orderDocuments,
+            'documents' => $this->getThumbnails($order),
             'logs' => $this->get('erp.order')->getOrderLog($id),
-            'form' => $editForm->createView(),
+            'form' => $form->createView(),
             'status_form' => $statusForm->createView(),
         );
     }
@@ -295,7 +268,7 @@ class OrdersController extends Controller
     private function createEditForm(Orders $entity)
     {
         $form = $this->createForm(new OrdersType(), $entity, array(
-            'action' => $this->generateUrl('orders_update', array('id' => $entity->getId())),
+            'action' => $this->generateUrl('orders_edit', array('id' => $entity->getId())),
             'method' => 'PUT',
         ));
 
@@ -307,67 +280,6 @@ class OrdersController extends Controller
 
 
         return $form;
-    }
-
-    /**
-     * Edits an existing Orders entity.
-     *
-     * @Route("/{id}", name="orders_update")
-     * @Method("PUT")
-     * @Template("MeVisaERPBundle:Orders:edit.html.twig")
-     */
-    public function updateAction(Request $request, $id)
-    {
-        $em = $this->getDoctrine()->getManager();
-
-        $order = $em->getRepository('MeVisaERPBundle:Orders')->find($id);
-
-        if (!$order) {
-            throw $this->createNotFoundException('Unable to find Orders entity.');
-        }
-
-        $state = $order->getState();
-        $order->startOrderStateEnginge();
-        $order->setState($state);
-
-        $editForm = $this->createEditForm($order);
-
-        $editForm->handleRequest($request);
-
-        if ($editForm->isValid()) {
-
-            $this->get('erp.order')->saveOrder($order);
-
-            return $this->redirect($this->generateUrl('orders_show', array('id' => $order->getId())));
-        } else {
-            foreach ($form->getErrors() as $error) {
-                $this->addFlash('error', $error);
-            }
-        }
-
-        $statusForm = $this->createStatusForm($order);
-        $productPrices = $em->getRepository('MeVisaERPBundle:ProductPrices')->findAll();
-
-        $orderDocuments = $order->getOrderDocuments();
-        foreach ($orderDocuments as $document) {
-            if (0 === strpos($document->getPath(), 'http://www.mevisa.ru/')) {
-                $parts = explode('/', $document->getPath());
-                $parts[count($parts) - 2] = 'thumbs';
-                $parts[count($parts) - 1] = $document->getName();
-                $document->thumbnail = implode('/', $parts);
-            } else {
-                $document->thumbnail = false;
-                $document->setPath($this->get('request')->getScheme() . '://' . $this->get('request')->getHttpHost() . $this->get('request')->getBasePath() . '/' . $document->getWebPath());
-            }
-        }
-
-        return array(
-            'order' => $order,
-            'productPrices' => $productPrices,
-            'logs' => $this->get('erp.order')->getOrderLog($id),
-            'form' => $editForm->createView(),
-            'status_form' => $statusForm->createView(),
-        );
     }
 
     /**
@@ -541,6 +453,23 @@ class OrdersController extends Controller
 
         $this->addFlash('success', 'invoice generated');
         return $this->redirect($this->generateUrl('orders_show', array('id' => $id)));
+    }
+
+    public function getThumbnails($order)
+    {
+        $orderDocuments = $order->getOrderDocuments();
+        foreach ($orderDocuments as $document) {
+            if (0 === strpos($document->getPath(), 'http://www.mevisa.ru/')) {
+                $parts = explode('/', $document->getPath());
+                $parts[count($parts) - 2] = 'thumbs';
+                $parts[count($parts) - 1] = $document->getName();
+                $document->thumbnail = implode('/', $parts);
+            } else {
+                $document->thumbnail = false;
+                $document->setPath($this->get('request')->getScheme() . '://' . $this->get('request')->getHttpHost() . $this->get('request')->getBasePath() . '/' . $document->getWebPath());
+            }
+        }
+        return $orderDocuments;
     }
 
 }

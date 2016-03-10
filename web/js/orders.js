@@ -88,7 +88,7 @@ $(document).ready(function () {
 
     $('div.orderPayments').data('index', 0);
     $('div.invoice').data('index', 0);
-    $('div.orderComments').data('index', 0);
+    $('div.orderComments').data('index', $('.comments li').length);
 
 
     $addProductLink.on('click', function (e) {
