@@ -46,6 +46,7 @@ class WCAPICommand extends ContainerAwareCommand
 //            $wcOrderNotes = $client->getOrderNotes($wcOrder['order_number']);
 //            $this->updateOrderNotes($em, $order, $wcOrderNotes['order_notes']);
         }
+
         $wcOrders = $client->getCompletedOrdersSecondPage();
         foreach ($wcOrders['orders'] as $wcOrder) {
             $output->writeln($wcOrder['order_number'] . ":" . $wcOrder['payment_details']['paid']);
@@ -196,7 +197,24 @@ class WCAPICommand extends ContainerAwareCommand
         $order->setAdjustmentTotal($wcOrder['total_discount'] * 100);
         $order->setProductsTotal($wcOrder['subtotal'] * 100);
         $order->setTotal($wcOrder['total'] * 100);
-        $order->setState($wcOrder['status']);
+        switch ($wcOrder['status']) {
+            case "cancelled":
+            case "failed":
+                $state = "cancelled";
+                break;
+            case "refunded":
+                $state = "refunded";
+                break;
+            case "pending":
+            case "processing":
+            case "on-hold":
+            case "completed":
+            default:
+                $state = "backoffice";
+                break;
+        }
+        $order->setState($state)
+        ;
         $order->setCreatedAt(new \DateTime($wcOrder['created_at'], $timezone));
     }
 

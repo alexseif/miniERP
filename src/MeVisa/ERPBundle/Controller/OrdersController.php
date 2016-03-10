@@ -335,49 +335,39 @@ class OrdersController extends Controller
     public function updateStateAction(Request $request, $id)
     {
         $em = $this->getDoctrine()->getManager();
-
-        $order = $em->getRepository('MeVisaERPBundle:Orders')->find($id);
+        $order = $this->get('erp.order')->getOrder($id);
 
         if (!$order) {
             throw $this->createNotFoundException('Unable to find Orders entity.');
         }
 
-        $state = $order->getState();
-        $order->startOrderStateEnginge();
-        $order->setState($state);
-
         $statusForm = $this->createStatusForm($order);
 
         $statusForm->handleRequest($request);
 
-        if ($statusForm->isValid()) {
+        if ($statusForm->isSubmitted()) {
+            if ($statusForm->isValid()) {
 
-            $iterator = $statusForm->getIterator();
-            foreach ($iterator as $key => $value) {
-                if ($value->isClicked()) {
-                    $order->setState($key);
+                $iterator = $statusForm->getIterator();
+                foreach ($iterator as $key => $value) {
+                    if ($value->isClicked()) {
+                        $order->setState($key);
+                    }
                 }
-            }
-            if ("approved" == $order->getState() || "rejected" == $order->getState()) {
-                $order->setCompletedAt(new \DateTime());
-            }
 
-            if (empty($order->getUpdatedAt())) {
-                $order->setUpdatedAt(new \DateTime());
-            }
-            $em->flush();
+                if (empty($order->getUpdatedAt())) {
+                    $order->setUpdatedAt(new \DateTime());
+                }
+                $this->get('erp.order')->stateEffect($order);
 
-            return $this->redirect($this->generateUrl('orders_show', array('id' => $id)));
-        } else {
-            echo "Form not valid becuase:<br/>";
-            $formErrors = $statusForm->getErrors();
+
+                $em->flush();
+                return $this->redirect($this->generateUrl('orders_show', array('id' => $id)));
+            }
         }
-
-        $productPrices = $em->getRepository('MeVisaERPBundle:ProductPrices')->findAll();
 
         return array(
             'order' => $order,
-            'productPrices' => $productPrices,
             'status_form' => $statusForm->createView(),
         );
     }

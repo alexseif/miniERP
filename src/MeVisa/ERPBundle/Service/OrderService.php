@@ -29,7 +29,7 @@ class OrderService
         $order = $this->em->getRepository('MeVisaERPBundle:Orders')->find($id);
 
         if (!$order) {
-            throw $this->createNotFoundException('Unable to find Orders entity.');
+            return null;
         }
         $state = $order->getState();
         $order->startOrderStateEnginge();
@@ -166,17 +166,32 @@ class OrderService
         $this->em->persist($customer);
     }
 
+    public function stateEffect($order)
+    {
+        switch ($order->getState()) {
+            case "post":
+                $order->setPostedAt(new \DateTime());
+                $order->setCompletedAt(null);
+                break;
+            case "approved":
+            case "rejected":
+            case "cancelled":
+                $order->setCompletedAt(new \DateTime());
+                break;
+            default:
+                $order->setPostedAt(null);
+                $order->setCompletedAt(null);
+                break;
+        }
+        return $order;
+    }
+
     public function setOrderDetails($order)
     {
         /* Auto assign details */
 
-        if ("approved" == $order->getState() || "rejected" == $order->getState()) {
-            $order->setCompletedAt(new \DateTime());
-        }
+        $order = $this->stateEffect($order);
 
-        if ("post" == $order->getState()) {
-            $order->setPostedAt(new \DateTime());
-        }
 //        $wcId;
 //        $updatedAt;
 //        $postedAt;

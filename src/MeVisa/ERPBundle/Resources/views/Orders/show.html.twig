@@ -12,6 +12,12 @@
                         &nbsp;<span class="label label-default">{{ order.channel|upper }}</span>
                         &nbsp;<span class="label label-{{order.orderState.currentState.bootstrapClass}}">{{ order.stateName|upper }}</span>
                         &nbsp;<span class="label label-default"> {{ order.createdAt|localizeddate }}</span>
+                        {% if order.postedAt %}
+                            <span class="label label-{{order.orderState.state('post').bootstrapClass}}">Posted {{ order.postedAt|localizeddate }}</span>
+                        {% endif %}
+                        {% if order.postedAt %}
+                            <span class="label label-success">Completed {{ order.completedAt|localizeddate }}</span>
+                        {% endif %}
                     </div>
                 </div>
                 <div class="panel-body">

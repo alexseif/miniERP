@@ -15,15 +15,15 @@ class OrdersType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $availableStates = $options['data']->getOrderState()->getAvailableStates();
+        $states = array($options['data']->getOrderState()->getCurrentState()->getKey()=>$options['data']->getOrderState()->getCurrentState()->getName() );
+        foreach ($availableStates as $state) {
+            $states[$state->getKey()] = $state->getName();
+        }
         $builder
                 ->add('state', 'choice', array(
                     'placeholder' => 'State',
-                    'choices' => array(
-                        'pending' => 'Pending',
-                        'backoffice' => 'Back Office',
-                        'document' => 'Document',
-                        'post' => 'Post',
-                    ),
+                    'choices' => $states,
                         )
                 )
                 ->add('productsTotal', 'money', array(
@@ -70,10 +70,6 @@ class OrdersType extends AbstractType
                         'data-date-format' => 'dd.mm.yy',
                     ))
                 )
-//                ->add('createdAt', 'hidden')
-//                ->add('updatedAt', 'hidden', array('required' => false))
-//                ->add('deletedAt', 'hidden', array('required' => false))
-//                ->add('completedAt', 'hidden', array('required' => false))
         ;
         $builder->add('customer', new \MeVisa\CRMBundle\Form\CustomersType());
 
@@ -100,7 +96,7 @@ class OrdersType extends AbstractType
             'type' => new OrderCommentsType(),
             'allow_add' => true,
             'allow_delete' => false,
-            'delete_empty' =>true,
+            'delete_empty' => true,
             'required' => false,
             'label' => false
         ));

@@ -19,46 +19,32 @@ class OrderState
     {
         $this->states = array();
 
-        $this->addState('processing', 'Processing');
-        $this->addState('pending', 'Pending');
         $this->addState('backoffice', 'Back Office', 'info');
-        $this->addState('not_paid', 'Not Paid', 'danger');
-        $this->addState('paid', 'Paid', 'success');
         $this->addState('document', 'Document', 'warning');
-        $this->addState('post', 'Post', 'success');
+        $this->addState('post', 'Post', 'primary');
         $this->addState('approved', 'Approved', 'success');
         $this->addState('rejected', 'Rejected', 'danger');
-        $this->addState('refunded', 'Refunded', 'default');
+        $this->addState('refunded', 'Refunded', 'danger');
         $this->addState('cancelled', 'Cancelled', 'danger');
 
-        $this->addChild('backoffice', 'not_paid');
         $this->addChild('backoffice', 'document');
+        $this->addChild('document', 'backoffice');
         $this->addChild('backoffice', 'post');
+        $this->addChild('post', 'backoffice');
         $this->addChild('backoffice', 'cancelled');
+        $this->addChild('cancelled', 'backoffice');
         $this->addChild('backoffice', 'refunded');
-
-        $this->addChild('not_paid', 'paid');
-        $this->addChild('not_paid', 'document');
-        $this->addChild('not_paid', 'post');
-        $this->addChild('not_paid', 'cancelled');
+        $this->addChild('refunded', 'backoffice');
 
         $this->addChild('document', 'post');
+        $this->addChild('post', 'document');
         $this->addChild('document', 'cancelled');
+        $this->addChild('cancelled', 'document');
 
         $this->addChild('post', 'approved');
         $this->addChild('approved', 'post');
         $this->addChild('post', 'rejected');
         $this->addChild('rejected', 'post');
-
-        //WooCommerce Status
-        //Pending
-        $this->addChild('pending', 'backoffice');
-        $this->addChild('pending', 'cancelled');
-
-        //Processing
-        $this->addChild('processing', 'backoffice');
-        $this->addChild('processing', 'cancelled');
-        
     }
 
     public function setState($key)

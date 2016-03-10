@@ -1,5 +1,6 @@
 parameters:
     currency.class: AppBundle\Service\CurrencyService
+    statusCSS.class: AppBundle\Service\StatusCSSService
 
 services:
     onconnect.listener:
@@ -9,5 +10,7 @@ services:
 
     app.currency:
         class:  %currency.class%
-#        arguments: ['@doctrine.orm.default_entity_manager']
         arguments: [@doctrine.orm.entity_manager]
+
+    app.statusCSS:
+        class:  %statusCSS.class%

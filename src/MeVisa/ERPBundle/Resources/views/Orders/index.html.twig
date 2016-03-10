@@ -40,7 +40,7 @@
                                 <tr class="{{ highlight }}">
                                     <td class="text-center"><a class="btn btn-link" href="{{ path('orders_show', { 'id': order.id }) }}">{{ order.number }}</a></td>
                                     <td>
-                                        <span class="label {% if order.state == "backoffice" %}label-info{% elseif order.state == "post" %}label-primary{% elseif order.state == "document" %}label-warning{% elseif order.state == "rejected" %}label-danger{% elseif order.state == "approved" %}label-success{% else %}label-default{% endif %}">{{ order.state|upper }}</span>
+                                        <span class="label label-{{ statusCSS.css(order.state) }}">{{ order.state|upper }}</span>
                                         &nbsp;<span class="label {% if order.orderPayments|last.state == "paid" %}label-success{% else %}label-warning{% endif %}">{{ order.orderPayments|last.state|upper }}</span>
                                     </td>
                                     <td>{{ order.customer.name }}</td>

@@ -15,7 +15,7 @@
             <span class="panel-title">Edit Order # {{ order.number }}</span>
             <div class="pull-right">
                 <span class="label label-default">{{ order.channel|upper }}</span>
-                &nbsp;<span class="label label-info">{{ order.stateName|upper }}</span>
+                &nbsp;<span class="label label-{{order.orderState.currentState.bootstrapClass}}">{{ order.stateName|upper }}</span>
                 &nbsp;<span class="label label-default"> {{ order.createdAt|localizeddate }}</span>
             </div>
         </div>
