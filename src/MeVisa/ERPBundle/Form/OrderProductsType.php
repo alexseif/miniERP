@@ -21,7 +21,7 @@ class OrderProductsType extends AbstractType
                     'choice_label' => 'name',
                     'placeholder' => 'Select Product',
                     'query_builder' => function(\MeVisa\ERPBundle\Entity\ProductsRepository $pr) {
-                        return $pr->queryAllEnabledProducts();
+                        return $pr->queryAllEnabled();
                     },
                     'attr' => array(
                         'class' => 'product_id chosen-input',

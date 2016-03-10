@@ -11,15 +11,20 @@ use Doctrine\ORM\EntityRepository;
 class ProductsRepository extends EntityRepository
 {
 
-    public function queryAllEnabledProducts()
+    public function queryAllEnabled()
     {
         return $this->createQueryBuilder('p')
-                        ->where('p.enabled = true');
+                        ->Join('p.pricing', 'pp')
+                        ->where('p.enabled = true')
+                        ->orderBy('p.id ASC, pp.createdAt', 'DESC')
+                        ;
     }
 
-    public function getAllEnabledProducts()
+    public function findAllEnabled()
     {
-        return $this->queryAllEnabledProducts()->getResults();
+        return $this->queryAllEnabled()
+                        ->getQuery()
+                        ->getResult();
     }
 
 }

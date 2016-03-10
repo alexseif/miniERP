@@ -103,13 +103,9 @@ class OrdersController extends Controller
             }
         }
 
-        $em = $this->getDoctrine()->getManager();
-        //FIXME: Select with invalid product_prices produces errors
-        $productPrices = $em->getRepository('MeVisaERPBundle:ProductPrices')->findAll();
-
         return array(
             'order' => $order,
-            'productPrices' => $productPrices,
+            'productPrices' => $this->getAvailableProducts(),
             'form' => $form->createView(),
         );
     }
@@ -191,12 +187,10 @@ class OrdersController extends Controller
 
         $statusForm = $this->createStatusForm($order);
 
-        $em = $this->getDoctrine()->getManager();
-        $productPrices = $em->getRepository('MeVisaERPBundle:ProductPrices')->findAll();
 
         return array(
             'order' => $order,
-            'productPrices' => $productPrices,
+            'productPrices' => $this->getAvailableProducts(),
             'documents' => $this->getThumbnails($order),
             'logs' => $this->get('erp.order')->getOrderLog($id),
             'form' => $form->createView(),
@@ -449,6 +443,14 @@ class OrdersController extends Controller
             }
         }
         return $orderDocuments;
+    }
+
+    public function getAvailableProducts()
+    {
+        $em = $this->getDoctrine()->getManager();
+        //FIXME: Select with invalid product_prices produces errors
+        $productPrices = $em->getRepository('MeVisaERPBundle:ProductPrices')->findAll();
+        return $productPrices;
     }
 
 }
