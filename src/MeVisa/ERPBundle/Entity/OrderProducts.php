@@ -58,6 +58,14 @@ class OrderProducts
      * @var integer
      *
      * @Gedmo\Versioned
+     * @ORM\Column(name="unitCost", type="integer")
+     */
+    private $unitCost;
+
+    /**
+     * @var integer
+     *
+     * @Gedmo\Versioned
      * @ORM\Column(name="total", type="integer")
      */
     private $total;
@@ -187,4 +195,27 @@ class OrderProducts
         return $this->total;
     }
 
+
+    /**
+     * Set unitCost
+     *
+     * @param integer $unitCost
+     * @return OrderProducts
+     */
+    public function setUnitCost($unitCost)
+    {
+        $this->unitCost = $unitCost;
+
+        return $this;
+    }
+
+    /**
+     * Get unitCost
+     *
+     * @return integer 
+     */
+    public function getUnitCost()
+    {
+        return $this->unitCost;
+    }
 }

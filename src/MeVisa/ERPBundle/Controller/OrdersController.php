@@ -77,7 +77,6 @@ class OrdersController extends Controller
         $order->setChannel('POS');
         $order->setState('backoffice');
         $order->setCreatedAt(new \DateTime("now"));
-
         //Generate Form
         $form = $this->createForm(new OrdersType(), $order, array(
             'action' => $this->generateUrl('orders_new'),
@@ -93,10 +92,10 @@ class OrdersController extends Controller
         //Handle Form
         $form->handleRequest($request);
 
-// TODO: State buttons
-
         if ($form->isSubmitted()) {
             if ($form->isValid()) {
+                //Validations
+
                 $this->get('erp.order')->createNewPOSOrder($order);
 
                 return $this->redirect($this->generateUrl('orders_show', array('id' => $order->getId())));
@@ -180,7 +179,9 @@ class OrdersController extends Controller
         if ($form->isSubmitted()) {
             if ($form->isValid()) {
                 $this->get('erp.order')->updateOrder($order);
-
+                // TODO: Validations
+                // Check Order Product
+                //  Handle no proper products or disabled
                 return $this->redirect($this->generateUrl('orders_show', array('id' => $order->getId())));
             }
         }
@@ -549,7 +550,8 @@ class OrdersController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         //FIXME: Select with invalid product_prices produces errors
-        $productPrices = $em->getRepository('MeVisaERPBundle:ProductPrices')->findAll();
+
+        $productPrices = $em->getRepository('MeVisaERPBundle:ProductPrices')->findAllPrices();
         return $productPrices;
     }
 

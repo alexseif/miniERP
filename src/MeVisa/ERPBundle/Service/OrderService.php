@@ -211,8 +211,8 @@ class OrderService
         /* Order Products */
         $orderProducts = $order->getOrderProducts();
         foreach ($orderProducts as $orderProduct) {
-            // TODO: Check Order Product
-            // TODO: Handle no proper products or disabled
+            $orderProduct->setUnitCost($orderProduct->getProduct()->getCost());
+            
             if (empty($orderProduct->getId())) {
                 $order->addOrderProduct($orderProduct);
             }
