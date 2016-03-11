@@ -22,8 +22,10 @@ class OrdersType extends AbstractType
         }
         $builder
                 ->add('state', 'choice', array(
-                    'placeholder' => 'State',
+//                    'placeholder' => 'State',
                     'choices' => $states,
+                    'expanded'=> true,
+                    'attr' => array('class' => 'align-inline')
                         )
                 )
                 ->add('productsTotal', 'money', array(
