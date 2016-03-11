@@ -1,0 +1,15 @@
+<div class="panel-heading">
+    {% if app.request.get('_route') in ['orders_show', 'orders_new'] %}
+        <a class="btn btn-default" href="{{ path('dashboard') }}"><span class="glyphicon glyphicon-arrow-left"></span></a>
+        {% else %}
+        <a class="btn btn-default" href="{{ path('orders_show', {"id":order.id}) }}"><span class="glyphicon glyphicon-arrow-left"></span></a>
+        {% endif %}
+    <span class="panel-title"><strong>{{ order.number ? 'Order #' ~ order.number : 'New Order'}}</strong></span>
+    <div class="pull-right">
+        &nbsp;<span class="label label-default">{{ order.channel|upper }}</span>
+        &nbsp;<span class="label label-{{order.orderState.currentState.bootstrapClass}}">{{ order.stateName|upper }}</span>
+        &nbsp;<span class="label label-default"> {{ order.createdAt|localizeddate }}</span>
+            <span class="label label-{{order.orderState.state('post').bootstrapClass}}">{{ order.postedAt ? 'Posted '~order.postedAt|localizeddate }}</span>
+            <span class="label label-success">{{ order.completedAt ? 'Completed '~order.completedAt |localizeddate }}</span>
+    </div>
+</div>

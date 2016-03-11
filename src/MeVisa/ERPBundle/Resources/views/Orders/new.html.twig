@@ -11,14 +11,15 @@
     {{ form_row(form._token) }}
     {{ form_errors(form) }}
     <div class="panel panel-default">
-        <div class="panel-heading clearfix">
+        {#<div class="panel-heading">
             <span class="panel-title">New Order</span>
             <div class="pull-right">
                 <span class="label label-default">{{ order.channel|upper }}</span>
                 &nbsp;<span class="label label-info">{{ order.stateName|upper }}</span>
                 &nbsp;<span class="label label-default"> {{ order.createdAt|localizeddate }}</span>
             </div>
-        </div>
+        </div>#}
+        {% include 'MeVisaERPBundle:Orders:order_panel_heading.html.twig' %}
         <div class="panel-body">
             <div class="row">
                 <div class="col-sm-6">
