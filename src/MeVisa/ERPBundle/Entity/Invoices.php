@@ -94,27 +94,4 @@ class Invoices
         return $this->createdAt;
     }
 
-    /**
-     * Set customerSignature
-     *
-     * @param string $customerSignature
-     * @return Invoices
-     */
-    public function setCustomerSignature($customerSignature)
-    {
-        $this->customerSignature = $customerSignature;
-
-        return $this;
-    }
-
-    /**
-     * Get customerSignature
-     *
-     * @return string 
-     */
-    public function getCustomerSignature()
-    {
-        return $this->customerSignature;
-    }
-
 }

@@ -4,7 +4,7 @@
         {% else %}
         <a class="btn btn-default" href="{{ path('orders_show', {"id":order.id}) }}"><span class="glyphicon glyphicon-arrow-left"></span></a>
         {% endif %}
-    <span class="panel-title"><strong>{{ order.number ? 'Order #' ~ order.number : 'New Order'}}</strong></span>
+    <span class="panel-title"><strong style="margin-left: 5px;">{{ order.number ? 'Order #' ~ order.number : 'New Order'}}</strong></span>
     <div class="pull-right">
         &nbsp;<span class="label label-default">{{ order.channel|upper }}</span>
         &nbsp;<span class="label label-{{order.orderState.currentState.bootstrapClass}}">{{ order.stateName|upper }}</span>

@@ -45,11 +45,12 @@
                 </div>
                 <div class="panel-footer">
                     <div class="row">
-                        {% if is_granted('ROLE_SUPER_ADMIN') and (order.updatedAt or "POS" == order.channel) %}
-                            <div class="col-sm-6 col-sm-offset-3">
-                        {% else %}
-                            <div class="col-sm-6 col-sm-offset-4">
-                        {% endif %}
+                        <div class="col-sm-6">
+                            {% if is_granted('ROLE_SUPER_ADMIN') or not (order.updatedAt or "POS" == order.channel) %}
+                                <a class="btn btn-default" href="{{ path('orders_edit', { "id" : order.id }) }}">Edit</a>
+                            {% endif %}
+                        </div>
+                        <div class="col-sm-6">
                             <div class="btn-toolbar pull-right" role="toolbar">
                                 {% if order.updatedAt or "POS" == order.channel %}
                                     {{ form_start(status_form) }}
@@ -57,16 +58,10 @@
                                         {{ form_widget(btn) }}
                                     {% endfor %}
                                     {{ form_end(status_form) }}
-                                {% else %}
-                                    <a class="btn btn-default" href="{{ path('orders_edit', { "id" : order.id }) }}">Edit</a>
                                 {% endif %}
                             </div>
                         </div>
-                        {% if is_granted('ROLE_SUPER_ADMIN') and (order.updatedAt or "POS" == order.channel) %}
-                            <div class="col-sm-1">
-                                <a class="btn btn-default pull-right" href="{{ path('orders_edit', { "id" : order.id }) }}">Edit</a>
-                            </div>
-                        {% endif %}
+
                     </div>
                 </div>
             </div>

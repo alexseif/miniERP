@@ -430,24 +430,6 @@ class OrdersController extends Controller
     }
 
     /**
-     * Action to Preview  Invoice.
-     *
-     * @Route("/{id}/invoice", name="order_preview_invoice")
-     * @Method("GET")
-     * @Template()
-     */
-    public function previewInvoiceAction($id)
-    {
-        $order = $this->get('erp.order')->getOrder($id);
-        if (!$order) {
-            throw $this->createNotFoundException('Unable to find Orders entity.');
-        }
-        return array(
-            'order' => $order,
-        );
-    }
-
-    /**
      * Action to Preview Invoice.
      *
      * @Route("/{id}/invoice_preview", name="order_invoice_preview")
@@ -512,6 +494,7 @@ class OrdersController extends Controller
             'companySettings' => $CompanySettings
         );
     }
+
     /**
      * Action to Preview Invoice.
      *
