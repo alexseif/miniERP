@@ -15,7 +15,7 @@
                         {% if order.postedAt %}
                             <span class="label label-{{order.orderState.state('post').bootstrapClass}}">Posted {{ order.postedAt|localizeddate }}</span>
                         {% endif %}
-                        {% if order.postedAt %}
+                        {% if order.completedAt %}
                             <span class="label label-success">Completed {{ order.completedAt|localizeddate }}</span>
                         {% endif %}
                     </div>
