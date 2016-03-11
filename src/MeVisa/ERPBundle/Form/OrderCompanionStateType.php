@@ -6,7 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class OrdersCompanionsType extends AbstractType
+class OrderCompanionStateType extends AbstractType
 {
 
     /**
@@ -15,11 +15,14 @@ class OrdersCompanionsType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('orderCompanions', 'collection', array(
-            'type' => new OrderCompanionsType(),
-            'allow_add' => true,
-            'allow_delete' => true,
-            'label' => false,
+        $builder
+                ->add('state', 'choice', array(
+                    'choices' => array(
+                        "approved" => "Approved",
+                        "rejected" => "Rejected",
+                    ),
+                    'expanded' => true,
+                    'required' => false
         ));
     }
 
@@ -29,7 +32,7 @@ class OrdersCompanionsType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'MeVisa\ERPBundle\Entity\Orders'
+            'data_class' => 'MeVisa\ERPBundle\Entity\OrderCompanions'
         ));
     }
 
@@ -38,7 +41,7 @@ class OrdersCompanionsType extends AbstractType
      */
     public function getName()
     {
-        return 'mevisa_erpbundle_orders_companions';
+        return 'mevisa_erpbundle_ordercompanionstate';
     }
 
 }

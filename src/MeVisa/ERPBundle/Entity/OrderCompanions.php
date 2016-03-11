@@ -64,6 +64,14 @@ class OrderCompanions
     private $passportExpiry;
 
     /**
+     * @var string
+     *
+     * @Gedmo\Versioned
+     * @ORM\Column(name="state", type="string", length=255)
+     */
+    private $state;
+
+    /**
      * Get id
      *
      * @return integer 
@@ -188,4 +196,27 @@ class OrderCompanions
         return $this->nationality;
     }
 
+
+    /**
+     * Set state
+     *
+     * @param string $state
+     * @return OrderCompanions
+     */
+    public function setState($state)
+    {
+        $this->state = $state;
+
+        return $this;
+    }
+
+    /**
+     * Get state
+     *
+     * @return string 
+     */
+    public function getState()
+    {
+        return $this->state;
+    }
 }

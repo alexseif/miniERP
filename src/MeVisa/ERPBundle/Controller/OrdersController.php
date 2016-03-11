@@ -148,6 +148,26 @@ class OrdersController extends Controller
         $orderComment = new \MeVisa\ERPBundle\Entity\OrderComments();
         $orderComment->setOrderRef($order->getId());
 
+//        if ("post" == $order->getState()) {
+        $companion_form_builder = $this->createFormBuilder($order)
+                ->setAction($this->generateUrl('orders_comments_new', array('id' => $order->getId())))
+                ->setMethod('PUT');
+
+        $companion_form_builder->add('orderCompanions', 'collection', array(
+            'type' => new \MeVisa\ERPBundle\Form\OrderCompanionStateType(),
+            'allow_add' => false,
+            'allow_delete' => false,
+            'label' => false,
+        ));
+        $companion_form_builder->add('save', 'submit', array(
+            'label' => null,
+            'attr' => array(
+                'class' => 'btn-success pull-right'
+            )
+        ));
+        $companion_form = $companion_form_builder->getForm();
+//        }
+
         $commentForm = $this->createCommentForm($orderComment);
         $statusForm = $this->createStatusForm($order);
 
@@ -157,6 +177,7 @@ class OrdersController extends Controller
             'documents' => $this->getThumbnails($order),
             'status_form' => $statusForm->createView(),
             'comment_form' => $commentForm->createView(),
+            'companions_form' => $companion_form->createView(),
         );
     }
 
@@ -306,6 +327,7 @@ class OrdersController extends Controller
                 ->setMethod('PUT');
 
         $children = $order->getOrderState()->getAvailableStates();
+        $companionsCount = ($order->getOrderCompanions()->count() > 1) ? true : false;
         if (is_array($children)) {
             $postable = $this->isPostable($order->getId());
             foreach ($children as $key => $child) {
@@ -313,13 +335,25 @@ class OrdersController extends Controller
                     unset($child);
                     continue;
                 }
-                $form->add($child->getKey(), 'submit', array(
-                    'label' => $child->getName(),
-                    'attr' => array(
-                        'id' => 'state_' . $key,
-                        'class' => 'ml-5 btn-group btn-' . $child->getBootstrapClass(),
-                        'value' => $child->getKey(),
-                )));
+                if (("approved" == $child->getKey() || "rejected" == $child->getKey()) && $companionsCount) {
+                    $form->add($child->getKey(), 'button', array(
+                        'label' => $child->getName(),
+                        'attr' => array(
+                            'id' => 'state_' . $key,
+                            'class' => 'ml-5 btn-group btn-' . $child->getBootstrapClass(),
+                            'value' => $child->getKey(),
+                            'data-toggle' => "modal",
+                            'data-target' => "#approvalModal"
+                    )));
+                } else {
+                    $form->add($child->getKey(), 'submit', array(
+                        'label' => $child->getName(),
+                        'attr' => array(
+                            'id' => 'state_' . $key,
+                            'class' => 'ml-5 btn-group btn-' . $child->getBootstrapClass(),
+                            'value' => $child->getKey(),
+                    )));
+                }
             }
         }
 
