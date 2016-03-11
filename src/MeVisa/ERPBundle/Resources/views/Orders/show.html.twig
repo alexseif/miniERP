@@ -5,21 +5,6 @@
     <div class="row">
         <div class="col-md-12">
             <div class="panel panel-default">
-                {#<div class="panel-heading">                        
-                    <a class="btn btn-default" href="{{ path('dashboard') }}"><span class="glyphicon glyphicon-arrow-left"></span></a>
-                    <span class="panel-title">Order # {{ order.number }}</span>
-                    <div class="pull-right">
-                        &nbsp;<span class="label label-default">{{ order.channel|upper }}</span>
-                        &nbsp;<span class="label label-{{order.orderState.currentState.bootstrapClass}}">{{ order.stateName|upper }}</span>
-                        &nbsp;<span class="label label-default"> {{ order.createdAt|localizeddate }}</span>
-                        {% if order.postedAt %}
-                            <span class="label label-{{order.orderState.state('post').bootstrapClass}}">Posted {{ order.postedAt|localizeddate }}</span>
-                        {% endif %}
-                        {% if order.completedAt %}
-                            <span class="label label-success">Completed {{ order.completedAt|localizeddate }}</span>
-                        {% endif %}
-                    </div>
-                </div>#}
                     {% include 'MeVisaERPBundle:Orders:order_panel_heading.html.twig' %}
                 <div class="panel-body">
                     <div class="row">
