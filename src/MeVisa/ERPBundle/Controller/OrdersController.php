@@ -307,7 +307,12 @@ class OrdersController extends Controller
 
         $children = $order->getOrderState()->getAvailableStates();
         if (is_array($children)) {
+            $postable = $this->isPostable($order->getId());
             foreach ($children as $key => $child) {
+                if ("post" == $child->getKey() && false == $postable) {
+                    unset($child);
+                    continue;
+                }
                 $form->add($child->getKey(), 'submit', array(
                     'label' => $child->getName(),
                     'attr' => array(
@@ -553,6 +558,25 @@ class OrdersController extends Controller
 
         $productPrices = $em->getRepository('MeVisaERPBundle:ProductPrices')->findAllPrices();
         return $productPrices;
+    }
+
+    public function isPostable($id)
+    {
+        $order = $this->get('erp.order')->getOrder($id);
+        if (count($order->getOrderCompanions()) != $order->getPeople()) {
+            return false;
+        }
+        $orderPayment = $order->getOrderPayments()->last();
+        if ("paid" == $orderPayment->getState()) {
+            return true;
+        }
+        return false;
+    }
+
+    public function isInvoicable($id)
+    {
+        $order = $this->get('erp.order')->getOrder($id);
+        return true;
     }
 
 }

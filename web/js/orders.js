@@ -31,15 +31,17 @@ function updatePricesAndTotals() {
     }
 }
 
-function addProductForm() {
-//    var prototype = $productHolder.data('prototype');
-//    var index = $productHolder.data('index');
-//    var newForm = prototype.replace(/__name__/g, index);
-//    $productHolder.data('index', index + 1);
-//    var $newFormLi = $('<li></li>').append(newForm);
-//    $newProductLinkLi.before($newFormLi);
+function checkCompanions() {
+    if ($('tbody.companions tr').length < $('input[name="mevisa_erpbundle_orders[people]"]').val()) {
+        $('#companion-panel').addClass('panel-danger');
+        $('#companion-panel').removeClass('panel-default');
+    } else {
+        $('#companion-panel').addClass('panel-default');
+        $('#companion-panel').removeClass('panel-danger');
+    }
+}
 
-    // Order products
+function addProductForm() {
     addPrototypeForm('tbody.orderProducts', '<tr></tr>');
     $('select[name="mevisa_erpbundle_orders[orderProducts][' + index + '][product]"]').change(function () {
         updatePricesAndTotals();
@@ -47,35 +49,29 @@ function addProductForm() {
     $('input[name="mevisa_erpbundle_orders[orderProducts][' + index + '][quantity]"]').change(function () {
         updatePricesAndTotals();
     });
-
-//    if (index >= 1) {
-//        $qty = $('input[name="mevisa_erpbundle_orders[orderProducts][0][quantity]"]').val();
-//        $('input[name="mevisa_erpbundle_orders[orderProducts][' + index + '][quantity]"]').val($qty);
-//    }
     $('.remove_product_link').show();
     $('select[name="mevisa_erpbundle_orders[orderProducts][' + index + '][product]"]').focus();
     $('.chosen-input').chosen({no_results_text: "Add new", allow_single_deselect: true});
 }
 
 var $productHolder;
-
-//var $addProductLink = $('<a href="#" class="btn btn-primary  add_product_link pull-left"><span class="glyphicon glyphicon-plus-sign" title="Add another product"></span></a>');
-var $addProductLink = $('.add_product_link');
-//var $removeProductLink = $('<a href="#" class="btn btn-danger btn-sm remove_product_link pull-right" tabindex="-100"><span class="glyphicon glyphicon glyphicon-trash" title="Remove this product"></span></a>');
-var $removeProductLink = $('.remove_product_link');
-//var $newProductLinkLi = $('<li></li>').append($addProductLink);
-
+var $addProductLink;
+var $removeProductLink;
 var $companionHolder;
 
 $(document).ready(function () {
+
+
     $('input[name="mevisa_erpbundle_orders[adjustmentTotal]"]').change(function () {
         updatePricesAndTotals();
     });
 
+    $addProductLink = $('.add_product_link');
+    $removeProductLink = $('.remove_product_link');
+
     $productHolder = $('tbody.orderProducts');
-
-
     $productHolder.data('index', $('tbody.orderProducts tr').length);
+
     for (i = 0; i < $productHolder.data('index'); i++)
     {
         $('select[name="mevisa_erpbundle_orders[orderProducts][' + i + '][product]"]').change(function () {
@@ -101,15 +97,12 @@ $(document).ready(function () {
         if (index > 1) {
             $('tbody.orderProducts tr:last').remove();
             $('tbody.orderProducts').data('index', index - 1);
-            updatePricesAndTotals();
-        } else {
-//            $(this).hide();
         }
+        updatePricesAndTotals();
     });
 
     if ($productHolder.data('index') <= 0) {
         $addProductLink.click();
-
     }
 
     //Order Companions
@@ -124,21 +117,28 @@ $(document).ready(function () {
             $(this).parent().parent().remove();
         });
         $('.chosen-input').chosen({no_results_text: "Add new", allow_single_deselect: true});
+        checkCompanions();
     });
 
     $('input[name="mevisa_erpbundle_orders[people]"]').change(function () {
         var companionIndex = $companionHolder.data('index');
-        if (companionIndex <= 0) {
-            $noCompanions = $('input[name="mevisa_erpbundle_orders[people]"]').val();
+        $people = parseInt($('input[name="mevisa_erpbundle_orders[people]"]').val());
+        $noCompanions = $people - companionIndex;
+        if ($noCompanions > 0) {
             for (i = 0; i < $noCompanions; i++) {
                 $('.addCompanion').click();
+            }
+            if ("" === $('input[name="mevisa_erpbundle_orders[orderCompanions][0][name]"]').val()) {
                 $('input[name="mevisa_erpbundle_orders[orderCompanions][0][name]"]').val($('input[name="mevisa_erpbundle_orders[customer][name]"]').val());
             }
         }
+        checkCompanions();
     });
+
     $('.removeCompanion').on('click', function (e) {
         e.preventDefault();
         $(this).parent().parent().remove();
+        checkCompanions();
     });
 
     if ($('div.orderPayments').length) {

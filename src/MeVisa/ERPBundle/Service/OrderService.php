@@ -211,9 +211,9 @@ class OrderService
         /* Order Products */
         $orderProducts = $order->getOrderProducts();
         foreach ($orderProducts as $orderProduct) {
-            $orderProduct->setUnitCost($orderProduct->getProduct()->getCost());
-            
             if (empty($orderProduct->getId())) {
+                $productPrice = $orderProduct->getProduct()->getPricing()->last();
+                $orderProduct->setUnitCost($productPrice->getCost());
                 $order->addOrderProduct($orderProduct);
             }
         }
