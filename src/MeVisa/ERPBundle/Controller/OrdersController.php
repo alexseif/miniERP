@@ -303,7 +303,8 @@ class OrdersController extends Controller
         $form = $this->createFormBuilder()
                 ->setAction($this->generateUrl('orders_status_update', array('id' => $order->getId())))
                 ->setMethod('PUT');
-        $children = $order->getOrderState()->getCurrentState()->getChildren();
+
+        $children = $order->getOrderState()->getAvailableStates();
         if (is_array($children)) {
             foreach ($children as $key => $child) {
                 $form->add($child->getKey(), 'submit', array(
