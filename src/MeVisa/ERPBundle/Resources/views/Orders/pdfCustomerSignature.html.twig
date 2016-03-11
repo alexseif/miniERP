@@ -4,15 +4,11 @@
         <td><span class="bold">Заказчик: ФИО:</span> {{order.customer.name}}</td>
     </tr>
     <tr>
-        <td>
-            {{ companySettings.jsonValue['agreementSignature']|raw }}
-        </td>
-        <td style="vertical-align: top;">
-            {{ invoice.customerSignature|nl2br }}
-        </td>
+        <td style="vertical-align: top;">{{ companySettings.jsonValue['agreementSignature']|raw }}</td>
+        <td style="vertical-align: top;">Контактный телефон: {{order.customer.phone}}</td>
     </tr>
     <tr>
         <td><br/>_____________________________ <small>{{ companySettings.jsonValue['agreementSignatureName']|raw }}</small></td>
-        <td><br/>_____________________________  <small>/{{order.customer.name}}/</small></td>
+        <td><br/>_____________________________ <small>/{{order.customer.name}}/</small></td>
     </tr>
 </table>

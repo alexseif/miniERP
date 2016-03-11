@@ -87,7 +87,6 @@ $(document).ready(function () {
     }
 
     $('div.orderPayments').data('index', 0);
-    $('div.invoice').data('index', 0);
     $('div.orderComments').data('index', $('.comments li').length);
 
 
@@ -146,15 +145,6 @@ $(document).ready(function () {
         addPrototypeForm('div.orderPayments', '<div></div>');
     }
 
-    if ($('div.invoice').length) {
-        addPrototypeForm('div.invoice', '<div></div>');
-        $('div.invoice .col-sm-2').remove();
-        $('div.invoice .col-sm-10').addClass('col-sm-12');
-        $('div.invoice .col-sm-10').removeClass('col-sm-10');
-        if ($('#mevisa_erpbundle_orders_invoices_0_customerSignature').empty()) {
-            $('#mevisa_erpbundle_orders_invoices_0_customerSignature').val("Адрес: \nпаспорт: \nКонтактный телефон:");
-        }
-    }
     addPrototypeForm('div.orderComments', '<div></div>');
 
     $('#mevisa_erpbundle_orders_customer_name').focus();

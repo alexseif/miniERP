@@ -36,11 +36,6 @@
                     </div>
                     <div class="row">
                         <div class="col-sm-6">
-                            {% include 'MeVisaERPBundle:Orders:order_invoices.html.twig' %}
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-6">
                             {% include 'MeVisaERPBundle:Orders:comments_form.html.twig' %}
                         </div>
                         <div class="col-sm-6">
@@ -50,11 +45,6 @@
                 </div>
                 <div class="panel-footer">
                     <div class="row">
-                        <div class="col-sm-2">
-                            {% if order.invoices is not empty %}
-                                <a class="btn btn-primary" href="/invoices/mevisa-invoice-{{ order.number }}-{{ (order.invoices|last).id}}.pdf" target="_blank">Invoice</a>
-                            {% endif %}
-                        </div>
                         {% if is_granted('ROLE_SUPER_ADMIN') and (order.updatedAt or "POS" == order.channel) %}
                             <div class="col-sm-6 col-sm-offset-3">
                         {% else %}

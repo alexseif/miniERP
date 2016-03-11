@@ -84,15 +84,13 @@ class OrderService
     public function generateInvoice($id)
     {
         $order = $this->getOrder($id);
-        // FIXME: invoice id
         $CompanySettings = $this->em->getRepository('MeVisaERPBundle:CompanySettings')->find(1);
 
         $invoice = new \MeVisa\ERPBundle\Entity\Invoices();
-        $invoices = $order->getInvoices();
-        foreach ($invoices as $inv) {
-            $invoice = $inv;
-        }
         $invoice->setCreatedAt(new \DateTime());
+        $order->addInvoice($invoice);
+        $this->em->persist($invoice);
+        $this->em->flush();
 
         $products = $order->getOrderProducts();
         $productsLine = array();

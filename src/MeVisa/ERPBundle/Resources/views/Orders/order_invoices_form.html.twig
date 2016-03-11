@@ -11,8 +11,6 @@
                     <div class="invoice">{{form_widget(invoice,  { 'attr':{'disabled':true} }) }}</div>
                 {% endif %}
             {% endfor %}
-        {% else %}
-            <div class="invoice" data-prototype="{{ form_widget(form.invoices.vars.prototype)|e  }}"></div>
         {% endif %}
     </div>
 </div>

@@ -12,7 +12,7 @@
                 </tr>
                 {% if invoice.createdat %}
                     {% set send = true %}
-                    {% set invoicePath = '/invoices/mevisa-invoice-'~ order.number ~ '-' ~ invoice.id ~ '.pdf'%}
+                    {% set invoicePath = '/invoices/mevisa-invoice-'~ order.number ~ '-' ~ invoice.id ~ '.pdf' %}
                 {% endif %}
             {% endfor %}
         </table>

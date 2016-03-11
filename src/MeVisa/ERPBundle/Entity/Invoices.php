@@ -31,16 +31,9 @@ class Invoices
     private $orderRef;
 
     /**
-     * @var text
-     * @Gedmo\Versioned
-     * @ORM\Column(name="customer_signature", type="text", nullable=true)
-     */
-    private $customerSignature;
-
-    /**
      * @var \DateTime
      *
-     * @ORM\Column(name="createdAt", type="datetime", nullable=true)
+     * @ORM\Column(name="createdAt", type="datetime")
      */
     private $createdAt;
 

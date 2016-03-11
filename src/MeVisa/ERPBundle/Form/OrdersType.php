@@ -16,15 +16,14 @@ class OrdersType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $availableStates = $options['data']->getOrderState()->getAvailableStates();
-        $states = array($options['data']->getOrderState()->getCurrentState()->getKey()=>$options['data']->getOrderState()->getCurrentState()->getName() );
+        $states = array($options['data']->getOrderState()->getCurrentState()->getKey() => $options['data']->getOrderState()->getCurrentState()->getName());
         foreach ($availableStates as $state) {
             $states[$state->getKey()] = $state->getName();
         }
         $builder
                 ->add('state', 'choice', array(
-//                    'placeholder' => 'State',
                     'choices' => $states,
-                    'expanded'=> true,
+                    'expanded' => true,
                     'attr' => array('class' => 'align-inline')
                         )
                 )
@@ -107,12 +106,6 @@ class OrdersType extends AbstractType
             'multiple' => true,
             'data_class' => null,
             'required' => false,
-                )
-        );
-        $builder->add('invoices', 'collection', array(
-            'type' => new InvoicesType(),
-            'allow_add' => true,
-            'label' => false
                 )
         );
     }

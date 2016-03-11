@@ -429,6 +429,122 @@ class OrdersController extends Controller
         return $this->redirect($this->generateUrl('orders_show', array('id' => $id)));
     }
 
+    /**
+     * Action to Preview  Invoice.
+     *
+     * @Route("/{id}/invoice", name="order_preview_invoice")
+     * @Method("GET")
+     * @Template()
+     */
+    public function previewInvoiceAction($id)
+    {
+        $order = $this->get('erp.order')->getOrder($id);
+        if (!$order) {
+            throw $this->createNotFoundException('Unable to find Orders entity.');
+        }
+        return array(
+            'order' => $order,
+        );
+    }
+
+    /**
+     * Action to Preview Invoice.
+     *
+     * @Route("/{id}/invoice_preview", name="order_invoice_preview")
+     * @Method("GET")
+     * @Template("MeVisaERPBundle:Orders:pdfinvoice.html.twig")
+     */
+    public function invoicePreviewAction($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $order = $this->get('erp.order')->getOrder($id);
+
+        if (!$order) {
+            throw $this->createNotFoundException('Unable to find Orders entity.');
+        }
+
+        $CompanySettings = $em->getRepository('MeVisaERPBundle:CompanySettings')->find(1);
+        $products = $order->getOrderProducts();
+        $invoice = new Invoices();
+        $productsLine = array();
+        foreach ($products as $product) {
+            $productsLine[] = $product->getProduct()->getName();
+        }
+        $productsLine = implode(',', $productsLine);
+
+        return array(
+            'order' => $order,
+            'productsLine' => $productsLine,
+            'invoice' => $invoice,
+            'companySettings' => $CompanySettings
+        );
+    }
+
+    /**
+     * Action to Preview Invoice.
+     *
+     * @Route("/{id}/agreement_preview", name="order_agreement_preview")
+     * @Method("GET")
+     * @Template("MeVisaERPBundle:Orders:pdfagreement.html.twig")
+     */
+    public function agreementPreviewAction($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $order = $this->get('erp.order')->getOrder($id);
+
+        if (!$order) {
+            throw $this->createNotFoundException('Unable to find Orders entity.');
+        }
+
+        $CompanySettings = $em->getRepository('MeVisaERPBundle:CompanySettings')->find(1);
+        $products = $order->getOrderProducts();
+        $invoice = new Invoices();
+        $productsLine = array();
+        foreach ($products as $product) {
+            $productsLine[] = $product->getProduct()->getName();
+        }
+        $productsLine = implode(',', $productsLine);
+
+        return array(
+            'order' => $order,
+            'productsLine' => $productsLine,
+            'invoice' => $invoice,
+            'companySettings' => $CompanySettings
+        );
+    }
+    /**
+     * Action to Preview Invoice.
+     *
+     * @Route("/{id}/waiver_preview", name="order_waiver_preview")
+     * @Method("GET")
+     * @Template("MeVisaERPBundle:Orders:pdfwaiver.html.twig")
+     */
+    public function waiverPreviewAction($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $order = $this->get('erp.order')->getOrder($id);
+
+        if (!$order) {
+            throw $this->createNotFoundException('Unable to find Orders entity.');
+        }
+
+        $CompanySettings = $em->getRepository('MeVisaERPBundle:CompanySettings')->find(1);
+        $products = $order->getOrderProducts();
+        $invoice = new Invoices();
+        $productsLine = array();
+        foreach ($products as $product) {
+            $productsLine[] = $product->getProduct()->getName();
+        }
+        $productsLine = implode(',', $productsLine);
+
+        return array(
+            'order' => $order,
+            'productsLine' => $productsLine,
+            'invoice' => $invoice,
+            'companySettings' => $CompanySettings
+        );
+    }
+
     public function getThumbnails($order)
     {
         $orderDocuments = $order->getOrderDocuments();
