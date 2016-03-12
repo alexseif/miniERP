@@ -95,7 +95,6 @@ class OrdersController extends Controller
         if ($form->isSubmitted()) {
             if ($form->isValid()) {
                 //Validations
-
                 $this->get('erp.order')->createNewPOSOrder($order);
 
                 return $this->redirect($this->generateUrl('orders_show', array('id' => $order->getId())));
@@ -122,12 +121,7 @@ class OrdersController extends Controller
 
         $em = $this->getDoctrine()->getManager();
         $entities = $em->getRepository('MeVisaCRMBundle:Customers')->findLikeName($term);
-
         return new JsonResponse($entities);
-
-        return array(
-            'entities' => $entities,
-        );
     }
 
     /**
@@ -145,39 +139,20 @@ class OrdersController extends Controller
             throw $this->createNotFoundException('Unable to find Orders entity.');
         }
 
+        $companion_form = null;
+        if ("post" == $order->getState()) {
+            $companion_form = $this->createCompanionSatausForm($order)->createView();
+        }
         $orderComment = new \MeVisa\ERPBundle\Entity\OrderComments();
         $orderComment->setOrderRef($order->getId());
-
-//        if ("post" == $order->getState()) {
-        $companion_form_builder = $this->createFormBuilder($order)
-                ->setAction($this->generateUrl('orders_comments_new', array('id' => $order->getId())))
-                ->setMethod('PUT');
-
-        $companion_form_builder->add('orderCompanions', 'collection', array(
-            'type' => new \MeVisa\ERPBundle\Form\OrderCompanionStateType(),
-            'allow_add' => false,
-            'allow_delete' => false,
-            'label' => false,
-        ));
-        $companion_form_builder->add('save', 'submit', array(
-            'label' => null,
-            'attr' => array(
-                'class' => 'btn-success pull-right'
-            )
-        ));
-        $companion_form = $companion_form_builder->getForm();
-//        }
-
-        $commentForm = $this->createCommentForm($orderComment);
-        $statusForm = $this->createStatusForm($order);
 
         return array(
             'order' => $order,
             'logs' => $this->get('erp.order')->getOrderLog($id),
             'documents' => $this->getThumbnails($order),
-            'status_form' => $statusForm->createView(),
-            'comment_form' => $commentForm->createView(),
-            'companions_form' => $companion_form->createView(),
+            'status_form' => $this->createStatusForm($order)->createView(),
+            'comment_form' => $this->createCommentForm($orderComment)->createView(),
+            'companions_form' => $companion_form,
         );
     }
 
@@ -264,103 +239,6 @@ class OrdersController extends Controller
     }
 
     /**
-     * Creates a form to edit a Orders entity.
-     *
-     * @param Orders $entity The entity
-     *
-     * @return \Symfony\Component\Form\Form The form
-     */
-    private function createEditForm(Orders $entity)
-    {
-        $form = $this->createForm(new OrdersType(), $entity, array(
-            'action' => $this->generateUrl('orders_edit', array('id' => $entity->getId())),
-            'method' => 'PUT',
-        ));
-
-        $form->add('update', 'submit', array(
-            'label' => null,
-            'attr' => array(
-                'class' => 'btn-success pull-right'
-        )));
-
-
-        return $form;
-    }
-
-    /**
-     * Creates a form to update a Orders Status entity.
-     *
-     * @param Orders $entity The entity
-     *
-     * @return \Symfony\Component\Form\Form The form
-     */
-    private function createCommentForm(\MeVisa\ERPBundle\Entity\OrderComments $entity)
-    {
-        $form = $this->createFormBuilder()
-                ->setAction($this->generateUrl('orders_comments_new', array('id' => $entity->getOrderRef())))
-                ->setMethod('POST');
-
-        $form->add('comment', 'textarea', array(
-            'data' => $entity->getComment(),
-            'required' => true,
-            'label' => false
-        ));
-        $form->add('save', 'submit', array(
-            'label' => false,
-            'attr' => array('class' => 'pull-right btn-default')
-        ));
-
-        return $form->getForm();
-    }
-
-    /**
-     * Creates a form to update a Orders Status entity.
-     *
-     * @param Orders $order The entity
-     *
-     * @return \Symfony\Component\Form\Form The form
-     */
-    private function createStatusForm(Orders $order)
-    {
-        $form = $this->createFormBuilder()
-                ->setAction($this->generateUrl('orders_status_update', array('id' => $order->getId())))
-                ->setMethod('PUT');
-
-        $children = $order->getOrderState()->getAvailableStates();
-        $companionsCount = ($order->getOrderCompanions()->count() > 1) ? true : false;
-        if (is_array($children)) {
-            $postable = $this->isPostable($order->getId());
-            foreach ($children as $key => $child) {
-                if ("post" == $child->getKey() && false == $postable) {
-                    unset($child);
-                    continue;
-                }
-                if (("approved" == $child->getKey() || "rejected" == $child->getKey()) && $companionsCount) {
-                    $form->add($child->getKey(), 'button', array(
-                        'label' => $child->getName(),
-                        'attr' => array(
-                            'id' => 'state_' . $key,
-                            'class' => 'ml-5 btn-group btn-' . $child->getBootstrapClass(),
-                            'value' => $child->getKey(),
-                            'data-toggle' => "modal",
-                            'data-target' => "#approvalModal"
-                    )));
-                } else {
-                    $form->add($child->getKey(), 'submit', array(
-                        'label' => $child->getName(),
-                        'attr' => array(
-                            'id' => 'state_' . $key,
-                            'class' => 'ml-5 btn-group btn-' . $child->getBootstrapClass(),
-                            'value' => $child->getKey(),
-                    )));
-                }
-            }
-        }
-
-        return $form->getForm();
-    }
-
-    /**
      * Edits an existing Orders entity.
      *
      * @Route("/{id}/status", name="orders_status_update")
@@ -384,11 +262,7 @@ class OrdersController extends Controller
             if ($statusForm->isValid()) {
 
                 $iterator = $statusForm->getIterator();
-                foreach ($iterator as $key => $value) {
-                    if ($value->isClicked()) {
-                        $order->setState($key);
-                    }
-                }
+                $order->setState($statusForm->getClickedButton()->getName());
 
                 if (empty($order->getUpdatedAt())) {
                     $order->setUpdatedAt(new \DateTime());
@@ -404,6 +278,59 @@ class OrdersController extends Controller
         return array(
             'order' => $order,
             'status_form' => $statusForm->createView(),
+        );
+    }
+
+    /**
+     * Edits an existing Orders entity.
+     *
+     * @Route("/{id}/companion_status", name="orders_companion_status_update")
+     * @Method("PUT")
+     * @Template("MeVisaERPBundle:Orders:show.html.twig")
+     */
+    public function updateCompanionStateAction(Request $request, $id)
+    {
+        $order = $this->get('erp.order')->getOrder($id);
+        if (!$order) {
+            throw $this->createNotFoundException('Unable to find Orders entity.');
+        }
+        $em = $this->getDoctrine()->getManager();
+
+        $companionForm = $this->createCompanionSatausForm($order);
+        $companionForm->handleRequest($request);
+
+        if ($companionForm->isSubmitted()) {
+            if ($companionForm->isValid()) {
+                if (empty($order->getUpdatedAt())) {
+                    $order->setUpdatedAt(new \DateTime());
+                }
+                $orderComplete = true;
+                $companions = $order->getOrderCompanions();
+                foreach ($companions as $companion) {
+                    if (!$companion->getState()) {
+                        $orderComplete = false;
+                    }
+                }
+                if ($orderComplete) {
+                    $order->setState($order->getOrderCompanions()->first()->getState());
+                }
+                $this->get('erp.order')->stateEffect($order);
+
+                $em->flush();
+                return $this->redirect($this->generateUrl('orders_show', array('id' => $id)));
+            }
+        }
+
+        $orderComment = new \MeVisa\ERPBundle\Entity\OrderComments();
+        $orderComment->setOrderRef($order->getId());
+
+        return array(
+            'order' => $order,
+            'logs' => $this->get('erp.order')->getOrderLog($id),
+            'documents' => $this->getThumbnails($order),
+            'status_form' => $this->createStatusForm($order)->createView(),
+            'comment_form' => $this->createCommentForm($orderComment)->createView(),
+            'companions_form' => $companionForm->createView(),
         );
     }
 
@@ -568,7 +495,7 @@ class OrdersController extends Controller
         );
     }
 
-    public function getThumbnails($order)
+    private function getThumbnails($order)
     {
         $orderDocuments = $order->getOrderDocuments();
         foreach ($orderDocuments as $document) {
@@ -585,7 +512,7 @@ class OrdersController extends Controller
         return $orderDocuments;
     }
 
-    public function getAvailableProducts()
+    private function getAvailableProducts()
     {
         $em = $this->getDoctrine()->getManager();
         //FIXME: Select with invalid product_prices produces errors
@@ -594,9 +521,12 @@ class OrdersController extends Controller
         return $productPrices;
     }
 
-    public function isPostable($id)
+    private function isPostable($id)
     {
         $order = $this->get('erp.order')->getOrder($id);
+        if (!empty($order->getCompletedAt())) {
+            return true;
+        }
         if (count($order->getOrderCompanions()) != $order->getPeople()) {
             return false;
         }
@@ -607,10 +537,136 @@ class OrdersController extends Controller
         return false;
     }
 
-    public function isInvoicable($id)
+    private function isInvoicable($id)
     {
         $order = $this->get('erp.order')->getOrder($id);
         return true;
+    }
+
+    /**
+     * Creates a form to update a Orders Status entity.
+     *
+     * @param Orders $order The entity
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
+    private function createStatusForm(Orders $order)
+    {
+        $form = $this->createFormBuilder()
+                ->setAction($this->generateUrl('orders_status_update', array('id' => $order->getId())))
+                ->setMethod('PUT');
+
+        $children = $order->getOrderState()->getAvailableStates();
+        $companionsCount = ($order->getOrderCompanions()->count() > 1) ? true : false;
+        if (is_array($children)) {
+            $postable = $this->isPostable($order->getId());
+            foreach ($children as $key => $child) {
+                if ("post" == $child->getKey() && false == $postable) {
+                    unset($child);
+                    continue;
+                }
+                if (("approved" == $child->getKey() || "rejected" == $child->getKey()) && $companionsCount) {
+                    $form->add($child->getKey(), 'button', array(
+                        'label' => $child->getName(),
+                        'attr' => array(
+                            'id' => 'state_' . $key,
+                            'class' => 'ml-5 btn-group btn-' . $child->getBootstrapClass(),
+                            'value' => $child->getKey(),
+                            'data-toggle' => "modal",
+                            'data-target' => "#approvalModal"
+                    )));
+                } else {
+                    $form->add($child->getKey(), 'submit', array(
+                        'label' => $child->getName(),
+                        'attr' => array(
+                            'id' => 'state_' . $key,
+                            'class' => 'ml-5 btn-group btn-' . $child->getBootstrapClass(),
+                            'value' => $child->getKey(),
+                    )));
+                }
+            }
+        }
+
+        return $form->getForm();
+    }
+
+    /**
+     * Creates a form to update a Orders Status entity.
+     *
+     * @param Orders $entity The entity
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
+    private function createCommentForm(\MeVisa\ERPBundle\Entity\OrderComments $entity)
+    {
+        $form = $this->createFormBuilder()
+                ->setAction($this->generateUrl('orders_comments_new', array('id' => $entity->getOrderRef())))
+                ->setMethod('POST');
+
+        $form->add('comment', 'textarea', array(
+            'data' => $entity->getComment(),
+            'required' => true,
+            'label' => false
+        ));
+        $form->add('save', 'submit', array(
+            'label' => false,
+            'attr' => array('class' => 'pull-right btn-default')
+        ));
+
+        return $form->getForm();
+    }
+
+    /**
+     * Creates a form to edit a Orders entity.
+     *
+     * @param Orders $entity The entity
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
+    private function createEditForm(Orders $entity)
+    {
+        $form = $this->createForm(new OrdersType(), $entity, array(
+            'action' => $this->generateUrl('orders_edit', array('id' => $entity->getId())),
+            'method' => 'PUT',
+        ));
+
+        $form->add('update', 'submit', array(
+            'label' => null,
+            'attr' => array(
+                'class' => 'btn-success pull-right'
+        )));
+
+
+        return $form;
+    }
+
+    /**
+     * Creates a form to update a Orders companions status.
+     *
+     * @param Orders $entity The entity
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
+    private function createCompanionSatausForm(Orders $order)
+    {
+        $companion_form_builder = $this->createFormBuilder($order)
+                ->setAction($this->generateUrl('orders_companion_status_update', array('id' => $order->getId())))
+                ->setMethod('PUT');
+
+        $companion_form_builder->add('orderCompanions', 'collection', array(
+            'type' => new \MeVisa\ERPBundle\Form\OrderCompanionStateType(),
+            'allow_add' => false,
+            'allow_delete' => false,
+            'label' => false,
+        ));
+        $companion_form_builder->add('save', 'submit', array(
+            'label' => null,
+            'attr' => array(
+                'class' => 'btn-success pull-right'
+            )
+        ));
+
+        return $companion_form_builder->getForm();
     }
 
 }

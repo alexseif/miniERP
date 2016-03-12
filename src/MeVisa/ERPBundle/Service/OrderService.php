@@ -173,6 +173,12 @@ class OrderService
                 break;
             case "approved":
             case "rejected":
+                if ($order->getOrderCompanions()->count() == 1) {
+                    $companions = $order->getOrderCompanions();
+                    foreach ($companions as $companion) {
+                        $companion->setState($order->getState());
+                    }
+                }
             case "cancelled":
                 $order->setCompletedAt(new \DateTime());
                 break;

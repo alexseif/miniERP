@@ -7,6 +7,7 @@
         <!-- Modal content-->
         <div class="modal-content">
             {{ form_start(companions_form) }}
+            {{form_row(companions_form._token)}}
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                 <h4 class="modal-title">Approvals</h4>
@@ -24,7 +25,7 @@
                                     {% for state in companion.state %}
                                         <div class="radio radio-inline">
                                             <label class="label label-{{ (state.vars.value == "approved") ? 'success' : (state.vars.value == "rejected") ? 'danger' : 'default'}}">
-                                                <input type="radio" value="{{state.vars.value}}" name="{{state.vars.full_name}}" id="{{state.vars.id}}"/>
+                                                <input type="radio" value="{{state.vars.value}}" name="{{state.vars.full_name}}" id="{{state.vars.id}}" {{(state.vars.checked)?"checked"}} />
                                                 {{ state.vars.label }}
                                             </label>
                                         </div>

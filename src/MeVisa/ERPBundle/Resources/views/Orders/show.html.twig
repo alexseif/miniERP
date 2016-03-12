@@ -2,6 +2,7 @@
 {% block title %}Order # {{ order.number }}{% endblock %}
 {% block adminPanelTitle %}Order # {{ order.number }}{% endblock %}
 {% block adminPanelBody %}
+    {{ (companions_form)?form_errors(companions_form) }}
     <div class="panel-body">
         <div class="row">
             <div class="col-sm-4">
@@ -64,5 +65,7 @@
 {% endblock %}
 {% block content %}
     {{ parent() }}
-    {% include 'MeVisaERPBundle:Orders:form/approval_modal.html.twig' %}
+    {% if ("post" == order.state) %}
+        {% include 'MeVisaERPBundle:Orders:form/approval_modal.html.twig' %}
+    {% endif %}
 {% endblock %}

@@ -67,7 +67,7 @@ class OrderCompanions
      * @var string
      *
      * @Gedmo\Versioned
-     * @ORM\Column(name="state", type="string", length=255)
+     * @ORM\Column(name="state", type="string", length=255, nullable=true)
      */
     private $state;
 
