@@ -261,7 +261,6 @@ class OrdersController extends Controller
         if ($statusForm->isSubmitted()) {
             if ($statusForm->isValid()) {
 
-                $iterator = $statusForm->getIterator();
                 $order->setState($statusForm->getClickedButton()->getName());
 
                 if (empty($order->getUpdatedAt())) {
