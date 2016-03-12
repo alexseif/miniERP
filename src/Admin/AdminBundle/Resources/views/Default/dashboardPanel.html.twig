@@ -4,10 +4,10 @@
         <span class="badge pull-right">{{ orders|length }}</span>
     </div>
     <div class="table-responsive dashboard">
-        <table class="table table-bordered table-striped {{ panelTitle != 'Backoffice Orders' ? 'table-condensed' : '' }} records_list">
+        <table class="table table-bordered table-striped {{ panelTitle != 'Backoffice Orders' ? 'table-condensed' }} records_list">
             <tbody>
                 {% for order in orders %}
-                {% set highlight = ''%}
+                    {% set highlight = ''%}
                     {% if order.state == "post" %}
                         {% if  (date(order.postedAt) < date('-2days')) and order.postedAt.timestamp is defined %}
                             {% set highlight = 'highlight' %}
@@ -21,26 +21,13 @@
                     <tr class="{{ highlight }}">
                         <td><a class="btn btn-link" href="{{ path('orders_show', { 'id': order.id }) }}">{{ order.number }}</a></td>
                         <td>{{ order.customer.name }}</td>
-                        <td class="text-right">
-                            {{ (order.total/100)|localizedcurrency('RUB') }}
-                        </td>
-                        {#                        <td>{{ order.createdAt|localizeddate('short', 'short') }}</td>#}
+                        <td class="text-right">{{ (order.total/100)|localizedcurrency('RUB') }}</td>
                         <td>{{ order.createdAt|ago }}</td>
                         <td class="text-right">
-                            {#<span class="label
-                                  {% if (order.orderPayments|last).state == "paid" %}label-success
-                                  {% else %}label-warning
-                                  {% endif %}
-                                  ">{{ (order.orderPayments|last).state|upper }}</span>#}
-                            <span class="label
-                                  {% if order.state == "backoffice" %}label-info                                                      
-                                  {% elseif order.state == "post" %}label-primary
-                                  {% elseif order.state == "document" %}label-warning
-                                  {% elseif order.state == "approved" %}label-success
-                                  {% elseif order.state == "rejected" %}label-danger
-                                  {% else %}label-default
-                                  {% endif %}
-                                  ">{{ order.state|upper }}</span>
+                            {% if order.state == "backoffice" %}
+                                <span class="label label-{{ statusCSS.css(order.orderPayments|last.state) }}">{{ order.orderPayments|last.state|upper }}</span>
+                            {% endif %}
+                            <span class="label label-{{ statusCSS.css(order.state) }}">{{ order.state|upper }}</span>
                         </td>
                     </tr>
                 {% endfor %}

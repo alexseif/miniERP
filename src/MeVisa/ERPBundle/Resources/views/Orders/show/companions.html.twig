@@ -21,7 +21,7 @@
                         <td>{{companion.passportNumber}}</td>
                         <td>{{companion.passportExpiry|date('d-m-Y')}}</td>
                         <td>{{companion.nationality}}</td>
-                        <td>{{ (companion.state) ?: "n/a"}}</td>
+                        <td><label class='label label-{{ statusCSS.css(companion.state) }}'>{{ (companion.state)?: "none"}}</label></td>
                     </tr>
                 {% endfor %}
             </tbody>

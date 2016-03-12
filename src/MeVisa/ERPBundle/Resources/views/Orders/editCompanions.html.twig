@@ -1,59 +1,45 @@
-{% extends ':default:admin.html.twig' %}
-
+{% extends 'MeVisaERPBundle:Orders:defaultLayout.html.twig' %}
 {% block title %}Order # {{ order.number }}{% endblock %}
-{% block stylesheets %}
-    {{ parent() }}
-    <link rel="stylesheet" type="text/css" href="/css/jquery-ui.min.css" />
-    <link rel="stylesheet" type="text/css" href="/css/jquery-ui.theme.min.css" />
-    <link rel="stylesheet" type="text/css" href="/css/chosen.min.css" />
-{% endblock %}
-{% block content %}
-    <div class="row">
-        <div class="col-md-12">
-            <div class="panel panel-default">
-                {% include 'MeVisaERPBundle:Orders:order_panel_heading.html.twig' %}
-                <div class="panel-body">
-                    <div class="row">
-                        <div class="col-sm-4">
-                            {% include 'MeVisaERPBundle:Orders:order_customer.html.twig' %}
-                        </div>
-                        <div class="col-sm-4">
-                            {% include 'MeVisaERPBundle:Orders:order_details.html.twig' %}
-                        </div>
-                        <div class="col-sm-4">
-                            {% include 'MeVisaERPBundle:Orders:order_totals.html.twig' %}
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-6">
-                            {% include 'MeVisaERPBundle:Orders:order_products.html.twig' %}
-                        </div>
-                        <div class="col-sm-6">
-                            {% include 'MeVisaERPBundle:Orders:order_payments.html.twig' %}
-                        </div>
-                    </div>
-                    {% include 'MeVisaERPBundle:Orders:editCompanions_form.html.twig' %}
-                    <div class="row">
-                        <div class="col-sm-6">
-                            {% include 'MeVisaERPBundle:Orders:order_documents.html.twig' %}
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-6">
-                            {% include 'MeVisaERPBundle:Orders:order_comments.html.twig' %}
-                        </div>
-                        <div class="col-sm-6">
-                            {% include 'MeVisaERPBundle:Orders:order_logs.html.twig' %}
-                        </div>
-                    </div>
-                </div>
+{% block adminPanelTitle %}Order # {{ order.number }}{% endblock %}
+{% block adminPanelBody %}
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-sm-4">
+                {% include 'MeVisaERPBundle:Orders:show/customer.html.twig' %}
+            </div>
+            <div class="col-sm-4">
+                {% include 'MeVisaERPBundle:Orders:show/details.html.twig' %}
+            </div>
+            <div class="col-sm-4">
+                {% include 'MeVisaERPBundle:Orders:show/totals.html.twig' %}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                {% include 'MeVisaERPBundle:Orders:show/products.html.twig' %}
+            </div>
+            <div class="col-sm-6">
+                {% include 'MeVisaERPBundle:Orders:show/payments.html.twig' %}
+            </div>
+        </div>
+        {% include 'MeVisaERPBundle:Orders:form/companions_form.html.twig' %}
+        <div class="row">
+            <div class="col-sm-6">
+                {% include 'MeVisaERPBundle:Orders:show/documents.html.twig' %}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                {% include 'MeVisaERPBundle:Orders:show/comments.html.twig' %}
+            </div>
+            <div class="col-sm-6">
+                {% include 'MeVisaERPBundle:Orders:show/logs.html.twig' %}
             </div>
         </div>
     </div>
 {% endblock %}
+{% block adminPanelFooter %}{% endblock %}
 {% block javascripts %}
     {{ parent() }}
-    <script type="text/javascript" src="/js/jquery-ui.min.js"></script>
-    <script type="text/javascript" src="/js/chosen.jquery.min.js"></script>
     <script type="text/javascript" src="/js/orderCompanions.js"></script>
 {% endblock %}

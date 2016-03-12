@@ -1,0 +1,126 @@
+{% extends ':default:admin.html.twig' %}
+
+{% block title %}Order # {{ order.number }}{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                {% include 'MeVisaERPBundle:Orders:show/order_panel_heading.html.twig' %}
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-sm-4">
+                            {% include 'MeVisaERPBundle:Orders:show/order_customer.html.twig' %}
+                        </div>
+                        <div class="col-sm-4">
+                            {% include 'MeVisaERPBundle:Orders:show/order_details.html.twig' %}
+                        </div>
+                        <div class="col-sm-4">
+                            {% include 'MeVisaERPBundle:Orders:show/order_totals.html.twig' %}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            {% include 'MeVisaERPBundle:Orders:show/order_products.html.twig' %}
+                        </div>
+                        <div class="col-sm-6">
+                            {% include 'MeVisaERPBundle:Orders:show/order_payments.html.twig' %}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            {% include 'MeVisaERPBundle:Orders:show/order_companions.html.twig' %}
+                        </div>
+                        <div class="col-sm-6">
+                            {% include 'MeVisaERPBundle:Orders:show/order_documents.html.twig' %}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            {% include 'MeVisaERPBundle:Orders:form/comments_form.html.twig' %}
+                        </div>
+                        <div class="col-sm-6">
+                            {% include 'MeVisaERPBundle:Orders:show/order_logs.html.twig' %}
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-footer">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            {% if is_granted('ROLE_SUPER_ADMIN') or not (order.updatedAt or "POS" == order.channel) %}
+                                <a class="btn btn-default" href="{{ path('orders_edit', { "id" : order.id }) }}">Edit</a>
+                            {% endif %}
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="btn-toolbar pull-right" role="toolbar">
+                                {% if order.updatedAt or "POS" == order.channel %}
+                                    {{ form_start(status_form) }}
+                                    {% for btn in status_form %}
+                                        {{ form_widget(btn) }}
+                                    {% endfor %}
+                                    {{ form_end(status_form) }}
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal -->
+    <div id="approvalModal" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <!-- Modal content-->
+            <div class="modal-content">
+                {{ form_start(companions_form) }}
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Approvals</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="panel panel-default">
+                    <div class="table-responsive">
+                        <table class="table table-condensed table-striped records_list">
+                            <tbody>
+                                {% for companion in companions_form.orderCompanions %}
+                                    <tr>
+                                        <td>{{companion.vars.value.name }}</td>
+                                        <td>{{companion.vars.value.passportNumber}}</td>
+                                        <td>{{companion.vars.value.passportExpiry|date('d-m-Y')}}</td>
+                                        <td>{{companion.vars.value.nationality}}</td>
+                                        <td>
+                                            {% for state in companion.state %}
+                                                <div class="radio radio-inline">
+                                                    <label class="label label-{{ (state.vars.value == "approved") ? 'success' : (state.vars.value == "rejected") ? 'danger' : 'default'}}">
+                                                        <input type="radio" value="{{state.vars.value}}" name="{{state.vars.full_name}}" id="{{state.vars.id}}"/>
+                                                        {{ state.vars.label }}
+                                                    </label>
+                                                </div>
+                                            {% endfor %}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    </div>
+                    {#<div class="checkbox pull-right">
+                        <label class="label label-default">
+                            <input type="checkbox" /> Send to {{order.customer.email}} 
+                        </label>
+                    </div>#}
+                    <p>
+                        Уважаемый {{order.customer.name}},<br/>
+                        В приложении готовая виза в ОАЭ.
+                        Вам необходимо ее распечатать и предъявить на стойке регистрации перед посадкой в самолет, а также на стойке паспортного контроля в ОАЭ.
+                        Спасибо, что воспользовались услугами нашей компании 
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default ml-5" data-dismiss="modal">Close</button>
+                    {{ form_widget(companions_form.save) }}
+                </div>
+                {{ form_end(companions_form, {'render_rest': false}) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

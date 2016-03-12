@@ -1,62 +1,55 @@
-{% extends ':default:admin.html.twig' %}
-
-{% block content %}
+{% extends 'MeVisaERPBundle:Orders:defaultLayout.html.twig' %}
+{% block pageActions %}
     {% include 'AdminAdminBundle:Default:quickActions.html.twig' %}
-    <!-- page content -->
-    <div class="row">
-        <div class="col-md-12">
-            <div class="panel panel-default">
-                <div class="panel-heading clearfix">                    
-                    <span class="panel-title">Orders</span>
-                    <span class="badge">{{ orders|length }} </span>
-                </div>
-                <div class="table-responsive">
-                    <table class="table table-bordered table-striped  records_list">
-                        <thead>
-                            <tr>
-                                <th>Order #</th>
-                                <th>State</th>
-                                <th>Customer</th>
-                                <th>Channel</th>
-                                    {# <th>Subtotal</th>#}
-                                <th>Adjustment</th>
-                                <th>Total</th>
-                                <th colspan="2">Created</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for order in orders %}
-                                {% set highlight = ''%}
-                                {% if order.state == "post" %}
-                                    {% if  (date(order.postedAt) < date('-2days')) and order.postedAt.timestamp is defined %}
-                                        {% set highlight = 'highlight' %}
-                                    {% endif %}
-                                {% endif %}
-                                {% if order.state == "backoffice" %}
-                                    {% if  (date(order.createdAt) < date('-2days')) %}
-                                        {% set highlight = 'highlight' %}
-                                    {% endif %}
-                                {% endif %}
-                                <tr class="{{ highlight }}">
-                                    <td class="text-center"><a class="btn btn-link" href="{{ path('orders_show', { 'id': order.id }) }}">{{ order.number }}</a></td>
-                                    <td>
-                                        <span class="label label-{{ statusCSS.css(order.state) }}">{{ order.state|upper }}</span>
-                                        &nbsp;<span class="label {% if order.orderPayments|last.state == "paid" %}label-success{% else %}label-warning{% endif %}">{{ order.orderPayments|last.state|upper }}</span>
-                                    </td>
-                                    <td>{{ order.customer.name }}</td>
-                                    <td>{{ order.channel }}</td>
-                                    {# <td class="text-right">{{ (order.productsTotal/100)|localizedcurrency('RUB') }}</td>#}
-                                    <td class="text-right">{{ (order.adjustmentTotal/100)|localizedcurrency('RUB') }}</td>
-                                    <td class="text-right">{{ (order.total/100)|localizedcurrency('RUB') }}</td>
-                                    <td>{% if order.createdAt %}{{ order.createdAt|localizeddate('medium', 'short') }}{% endif %}</td>
-                                    <td><a class="btn btn-primary btn-sm" href="{{ path('orders_show', { 'id': order.id }) }}">Open</a></td>
-                                </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
+{% endblock %}
+
+{% block adminPanelHeadingRight %}<span class="badge">{{ orders|length }}</span>{% endblock %}
+{% block adminPanelBody %}
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped table-hover records_list">
+            <thead>
+                <tr>
+                    <th>Order #</th>
+                    <th>State</th>
+                    <th>Customer</th>
+                    <th>Channel</th>
+                        {# <th>Subtotal</th>#}
+                    <th>Adjustment</th>
+                    <th>Total</th>
+                    <th colspan="2">Created</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for order in orders %}
+                    {% set highlight = ''%}
+                    {% if order.state == "post" %}
+                        {% if  (date(order.postedAt) < date('-2days')) and order.postedAt.timestamp is defined %}
+                            {% set highlight = 'highlight' %}
+                        {% endif %}
+                    {% endif %}
+                    {% if order.state == "backoffice" %}
+                        {% if  (date(order.createdAt) < date('-2days')) %}
+                            {% set highlight = 'highlight' %}
+                        {% endif %}
+                    {% endif %}
+                    <tr class="{{ highlight }}">
+                        <td class="text-center"><a class="btn btn-link" href="{{ path('orders_show', { 'id': order.id }) }}">{{ order.number }}</a></td>
+                        <td>
+                            <span class="label label-{{ statusCSS.css(order.state) }}">{{ order.state|upper }}</span>
+                            &nbsp;<span class="label label-{{ statusCSS.css(order.orderPayments|last.state) }}">{{ order.orderPayments|last.state|upper }}</span>
+                        </td>
+                        <td>{{ order.customer.name }}</td>
+                        <td>{{ order.channel }}</td>
+                        {# <td class="text-right">{{ (order.productsTotal/100)|localizedcurrency('RUB') }}</td>#}
+                        <td class="text-right">{{ (order.adjustmentTotal/100)|localizedcurrency('RUB') }}</td>
+                        <td class="text-right">{{ (order.total/100)|localizedcurrency('RUB') }}</td>
+                        <td>{% if order.createdAt %}{{ order.createdAt|localizeddate('medium', 'short') }}{% endif %}</td>
+                        <td><a class="btn btn-primary btn-sm" href="{{ path('orders_show', { 'id': order.id }) }}">Open</a></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
-    <!-- /.row -->
+{% endblock %}
+{% block adminPanelFooter %}
 {% endblock %}

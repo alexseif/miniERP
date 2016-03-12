@@ -16,7 +16,9 @@ class StatusCSSService
             'approved' => 'success',
             'rejected' => 'danger',
             'refunded' => 'danger',
-            'cancelled' => 'danger'
+            'cancelled' => 'danger',
+            'paid' => 'success',
+            'not_paid' => 'danger',
         );
     }
 

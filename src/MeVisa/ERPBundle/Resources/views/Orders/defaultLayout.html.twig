@@ -1,0 +1,34 @@
+{% extends 'AdminAdminBundle:Default:adminLayout.html.twig' %}
+
+{% block title %}Orders{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" type="text/css" href="/css/jquery-ui.min.css" />
+    <link rel="stylesheet" type="text/css" href="/css/jquery-ui.theme.min.css" />
+    <link rel="stylesheet" type="text/css" href="/css/chosen.min.css" />
+{% endblock %}
+{% block adminPanelTitle %}Orders{% endblock %}
+{% block backLink %}
+    {% if app.request.get('_route') in ['orders_show', 'orders_new', 'orders'] %}
+        {{ path('dashboard') }}
+    {% else %}
+        {{ path('orders_show', {"id":order.id}) }}
+    {% endif %}
+{% endblock %}
+{% block adminPanelHeadingRight %}
+    &nbsp;<span class="label label-default">{{ order.channel|upper }}</span>
+    &nbsp;<span class="label label-{{order.orderState.currentState.bootstrapClass}}">{{ order.stateName|upper }}</span>
+    &nbsp;<span class="label label-default"> {{ order.createdAt|localizeddate }}</span>
+    <span class="label label-{{order.orderState.state('post').bootstrapClass}}">{{ order.postedAt ? 'Posted '~order.postedAt|localizeddate }}</span>
+    <span class="label label-success">{{ order.completedAt ? 'Completed '~order.completedAt |localizeddate }}</span>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="/js/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="/js/chosen.jquery.min.js"></script>
+    <script type="text/javascript">
+        $('.datepicker').datepicker({
+            dateFormat: "dd.mm.yy"
+        });
+    </script>
+{% endblock %}

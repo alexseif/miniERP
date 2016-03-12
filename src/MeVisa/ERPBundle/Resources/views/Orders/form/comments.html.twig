@@ -16,11 +16,6 @@
                 </li>
             {% endfor %}
         </ul>
-        {#        <div class="hidden">#}
-        {#        {% for comment in form.orderComments %}#}
-        {#            {{ form_widget(comment) }}#}
-        {#        {% endfor %}#}
-        {#        </div>#}
         <div class="orderComments" data-prototype="{{ form_widget(form.orderComments.vars.prototype.comment)|e }}"></div>
     </div>
 </div>
