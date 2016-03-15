@@ -30,10 +30,10 @@ class CustomersController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entities = $em->getRepository('MeVisaCRMBundle:Customers')->findAll();
+        $customers = $em->getRepository('MeVisaCRMBundle:Customers')->findAll();
 
         return array(
-            'entities' => $entities,
+            'customers' => $customers,
         );
     }
 
@@ -46,36 +46,38 @@ class CustomersController extends Controller
      */
     public function createAction(Request $request)
     {
-        $entity = new Customers();
-        $form = $this->createCreateForm($entity);
+        $customer = new Customers();
+        $form = $this->createCreateForm($customer);
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
+        if ($form->isSubmitted()) {
+            if ($form->isValid()) {
 
-            $validator = $this->get('validator');
-            $errors = $validator->validate($entity);
+                $validator = $this->get('validator');
+                $errors = $validator->validate($customer);
 
-            if (count($errors) > 0) {
-                /*
-                 * Uses a __toString method on the $errors variable which is a
-                 * ConstraintViolationList object. This gives us a nice string
-                 * for debugging.
-                 */
-                $errorsString = (string) $errors;
+                if (count($errors) > 0) {
+                    /*
+                     * Uses a __toString method on the $errors variable which is a
+                     * ConstraintViolationList object. This gives us a nice string
+                     * for debugging.
+                     */
+                    $errorsString = (string) $errors;
 
-                return new Response($errorsString);
+                    return new Response($errorsString);
+                }
+
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($customer);
+                $em->flush();
+
+                return $this->redirect($this->generateUrl('customers_show', array('id' => $customer->getId())));
             }
-
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($entity);
-            $em->flush();
-
-            return $this->redirect($this->generateUrl('customers_show', array('id' => $entity->getId())));
         }
 
         return array(
-            'entity' => $entity,
-            'form' => $form->createView(),
+            'customer' => $customer,
+            'customer_form' => $form->createView(),
         );
     }
 
@@ -97,7 +99,12 @@ class CustomersController extends Controller
                 'required' => false,
             ));
         }
-        $form->add('submit', 'submit', array('label' => 'Create'));
+        $form->add('submit', 'submit', array(
+            'label' => 'Create',
+            'attr' => array(
+                'class' => 'btn-success pull-right'
+            )
+        ));
 
         return $form;
     }
@@ -111,12 +118,12 @@ class CustomersController extends Controller
      */
     public function newAction()
     {
-        $entity = new Customers();
-        $form = $this->createCreateForm($entity);
+        $customer = new Customers();
+        $form = $this->createCreateForm($customer);
 
         return array(
-            'entity' => $entity,
-            'form' => $form->createView(),
+            'customer' => $customer,
+            'customer_form' => $form->createView(),
         );
     }
 
@@ -156,19 +163,17 @@ class CustomersController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('MeVisaCRMBundle:Customers')->find($id);
+        $customer = $em->getRepository('MeVisaCRMBundle:Customers')->find($id);
 
-        if (!$entity) {
+        if (!$customer) {
             throw $this->createNotFoundException('Unable to find Customers entity.');
         }
 
-        $editForm = $this->createEditForm($entity);
-        $deleteForm = $this->createDeleteForm($id);
+        $editForm = $this->createEditForm($customer);
 
         return array(
-            'entity' => $entity,
-            'edit_form' => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
+            'customer' => $customer,
+            'customer_form' => $editForm->createView(),
         );
     }
 
@@ -185,8 +190,17 @@ class CustomersController extends Controller
             'action' => $this->generateUrl('customers_update', array('id' => $entity->getId())),
             'method' => 'PUT',
         ));
-
-        $form->add('submit', 'submit', array('label' => 'Update'));
+        if ($this->isGranted('ROLE_SUPER_ADMIN')) {
+            $form->add('agent', 'checkbox', array(
+                'required' => false,
+            ));
+        }
+        $form->add('submit', 'submit', array(
+            'label' => 'Update',
+            'attr' => array(
+                'class' => 'btn-success pull-right'
+            )
+        ));
 
         return $form;
     }
@@ -202,26 +216,23 @@ class CustomersController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('MeVisaCRMBundle:Customers')->find($id);
+        $customer = $em->getRepository('MeVisaCRMBundle:Customers')->find($id);
 
-        if (!$entity) {
+        if (!$customer) {
             throw $this->createNotFoundException('Unable to find Customers entity.');
         }
 
-        $deleteForm = $this->createDeleteForm($id);
-        $editForm = $this->createEditForm($entity);
+        $editForm = $this->createEditForm($customer);
         $editForm->handleRequest($request);
 
         if ($editForm->isValid()) {
             $em->flush();
-
-            return $this->redirect($this->generateUrl('customers_edit', array('id' => $id)));
+            return $this->redirect($this->generateUrl('customers_show', array('id' => $id)));
         }
 
         return array(
-            'entity' => $entity,
-            'edit_form' => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
+            'customer' => $customer,
+            'customer_form' => $editForm->createView(),
         );
     }
 

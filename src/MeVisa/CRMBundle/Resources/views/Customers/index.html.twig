@@ -1,38 +1,34 @@
-{% extends ':default:admin.html.twig' %}
-
-{% block content %}
-    {% include 'AdminAdminBundle:Default:quickActions.html.twig' %}
-    <!-- page content -->
-    <div class="panel panel-default">
-        <div class="panel-heading clearfix">
-            <span class="panel-title">Customers</span>
-            <span class="badge">{{ entities|length }} </span>
-        </div>
-        <div class="table-responsive">
-            <table class="table table-bordered table-hover table-striped records_list" id="customers-list">
-                <thead>
+{% extends 'AdminAdminBundle:Default:adminLayout.html.twig' %}
+{% block adminPanelTitle %}Customers{% endblock %}
+{% block adminPanelTitleBadge %}{{ customers|length }}{% endblock %}
+{% block adminPanelHeadingRight %}<a href="{{ path('customers_new')}}" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span> </a>{% endblock %}
+{% block adminPanelBody %}
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover table-striped records_list" id="customers-list">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Agent</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for customer in customers %}
                     <tr>
-                        <th>Name</th>
-                        <th>Email</th>
-                        <th>Phone</th>
-                            {#<th></th>#}
+                        <td><a class="" href="{{ path('customers_show', { 'id': customer.id }) }}">{{ customer.name }}</a></td>
+                        <td>{{ customer.email }}</td>
+                        <td>{{ customer.phone }}</td>
+                        <td>{{ (customer.agent)? 'Yes':'No' }}</td>
+                        <td>
+                            {% if(is_granted('ROLE_SUPER_ADMIN')) %}
+                                <a class="btn btn-primary btn-sm" href="{{ path('customers_edit', { 'id': customer.id }) }}">edit</a>
+                            {% endif %}
+                            <a class="btn btn-primary btn-sm" href="{{ path('customers_show', { 'id': customer.id }) }}">show</a>
+                        </td>
                     </tr>
-                </thead>
-                <tbody>
-                    {% for entity in entities %}
-                        <tr>
-                            <td><a class="" href="{{ path('customers_show', { 'id': entity.id }) }}">{{ entity.name }}</a></td>
-                            <td>{{ entity.email }}</td>
-                            <td>{{ entity.phone }}</td>
-                            {# <td>
-                                 <a class="btn btn-primary" href="{{ path('customers_show', { 'id': entity.id }) }}">show</a>
-                                 {# TODO: Show for management #}
-                            {#<a class="btn btn-primary" href="{{ path('customers_edit', { 'id': entity.id }) }}">edit</a>#}
-                            {# </td>#}
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
 {% endblock %}

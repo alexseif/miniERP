@@ -1,28 +1,23 @@
-{% extends ':default:admin.html.twig' %}
-
-{% block content %}
-    <!-- Page Heading -->
-    <div class="row">
-        <div class="col-md-12">
-            <h3 class="page-header">
-                Customers <small> {{ entity.name }} </small>
-            </h3>
-        </div>
-    </div>
-    <!-- /.row -->
-    <div class="row">
-        <div class="col-md-12">
-            <div class="panel panel-default">
-                <div class="panel-body">
-                    {{ form(edit_form) }}
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- /.row -->
-    <div class="row">
-        <div class="col-md-11">{{ form(delete_form) }}</div>
-        <div class="col-md-1"><a class="btn btn-warning" href="{{ path('customers') }}">Back</a></div>
-    </div>
-    <!-- /.row -->
+{% extends 'AdminAdminBundle:Default:adminLayout.html.twig' %}
+{% block backLink %}{{ path('customers_show', {'id': customer.id}) }}{% endblock %}
+{% block adminPanelFormStart %}
+    {{ form_start(customer_form) }}
+    {{ form_errors(customer_form) }}
+    {{ form_row(customer_form._token) }}
 {% endblock %}
+{% block adminPanelTitle %}Customer{% endblock %}
+{% block adminPanelTitleSmall %}{{ customer.name }}{% endblock %}
+{% block adminPanelBody %}
+    <div class="panel-body">
+        {{ form_row(customer_form.name) }}
+        {{ form_row(customer_form.email) }}
+        {{ form_row(customer_form.phone) }}
+        {{ (customer_form.agent)?form_row(customer_form.agent) }}
+    </div>
+{% endblock %}
+{% block adminPanelFooter %}
+    <div class="panel-footer">
+        {{ form_row(customer_form.submit) }}
+    </div>
+{% endblock %}
+{% block adminPanelFormEnd %}{{ form_end(customer_form) }}{% endblock %}

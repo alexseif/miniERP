@@ -1,33 +1,30 @@
 {% extends ':default:admin.html.twig' %}
 
 {% block content %}
-    {% block pageActions %}
-    {% endblock %}
+    {% block pageActions %}{% endblock %}
     <div class="row">
         <div class="col-sm-12">
-        {% block adminPanelFormStart %}{% endblock %}
-        {% block adminPanel %}
-            <div class="panel {% block adminPanelClass %}panel-default{% endblock %}">
-                <div class="panel-heading">
-                    {% block adminPanelHeading %}
-                        <a class="btn btn-default ml-5" href="{% block backLink %}{{ path('dashboard') }}{% endblock %}">{% block backLinkAnchor %}<span class="glyphicon glyphicon-arrow-left"></span>{% endblock %}</a>
-                        <span class="panel-title"><strong>{% block adminPanelTitle %}Title{% endblock %}</strong></span>
-                        <div class="pull-right">
-                        {% block adminPanelHeadingRight %}{% endblock %}
+            {% block adminPanelFormStart %}{% endblock %}
+            {% block adminPanel %}
+                <div class="panel {% block adminPanelClass %}panel-default{% endblock %}">
+                    <div class="panel-heading">
+                        {% block adminPanelHeading %}
+                            <a class="btn btn-default ml-5" href="{% block backLink %}{{ path('dashboard') }}{% endblock %}">{% block backLinkAnchor %}<span class="glyphicon glyphicon-arrow-left"></span>{% endblock %}</a>
+                            <span class="panel-title">
+                                <strong>{% block adminPanelTitle %}Title{% endblock %}</strong>
+                                <small>{% block adminPanelTitleSmall %}{% endblock %}</small>
+                                <span class="badge">{% block adminPanelTitleBadge %}{% endblock %}</span>
+                            </span>
+                            <div class="pull-right">
+                                {% block adminPanelHeadingRight %}{% endblock %}
+                            </div>
+                        {% endblock %}
                     </div>
-                {% endblock %}
-            </div>
-            {% block adminPanelBody %}
-                <div class="panel-body">
+                    {% block adminPanelBody %}{% endblock %}
+                    {% block adminPanelFooter %}{% endblock %}
                 </div>
             {% endblock %}
-            {% block adminPanelFooter %}
-                <div class="panel-footer">
-                </div>
-            {% endblock %}
+            {% block adminPanelFormEnd %}{% endblock %}
         </div>
-    {% endblock %}
-{% block adminPanelFormEnd %}{% endblock %}
-</div>
-</div>
+    </div>
 {% endblock %}
