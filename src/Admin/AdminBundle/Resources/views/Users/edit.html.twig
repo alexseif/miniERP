@@ -1,0 +1,22 @@
+{% extends 'AdminAdminBundle:Default:adminLayout.html.twig' %}
+{% block backLink %}{{ path('users_show', {'id': user.id}) }}{% endblock %}
+{% block adminPanelFormStart %}
+    {{ form_start(user_form) }}
+    {{ form_errors(user_form) }}
+    {{ form_row(user_form._token) }}
+{% endblock %}
+{% block adminPanelTitle %}User{% endblock %}
+{% block adminPanelTitleSmall %}{{ user.username }}{% endblock %}
+{% block adminPanelBody %}
+    <div class="panel-body">
+        {{ form_row(user_form.username) }}
+        {{ form_row(user_form.email) }}
+        {{ form_row(user_form.roles) }}
+    </div>
+{% endblock %}
+{% block adminPanelFooter %}
+    <div class="panel-footer">
+        {{ form_row(user_form.submit) }}
+    </div>
+{% endblock %}
+{% block adminPanelFormEnd %}{{ form_end(user_form) }}{% endblock %}

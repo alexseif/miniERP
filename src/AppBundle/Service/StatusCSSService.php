@@ -19,6 +19,11 @@ class StatusCSSService
             'cancelled' => 'danger',
             'paid' => 'success',
             'not_paid' => 'danger',
+            'ROLE_SUPER_ADMIN' => 'danger',
+            'ROLE_ACCOUNTANT' => 'success',
+            'ROLE_POST' => 'primary',
+            'ROLE_ADMIN' => 'info',
+            'ROLE_USER' => 'info',
         );
     }
 
