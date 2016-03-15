@@ -52,26 +52,31 @@ class CustomersController extends Controller
 
         if ($form->isSubmitted()) {
             if ($form->isValid()) {
-
-                $validator = $this->get('validator');
-                $errors = $validator->validate($customer);
-
-                if (count($errors) > 0) {
-                    /*
-                     * Uses a __toString method on the $errors variable which is a
-                     * ConstraintViolationList object. This gives us a nice string
-                     * for debugging.
-                     */
-                    $errorsString = (string) $errors;
-
-                    return new Response($errorsString);
-                }
-
                 $em = $this->getDoctrine()->getManager();
-                $em->persist($customer);
-                $em->flush();
 
-                return $this->redirect($this->generateUrl('customers_show', array('id' => $customer->getId())));
+                $customerExists = $em->getRepository('MeVisaCRMBundle:Customers')->findOneBy(array("email" => $customer->getEmail()));
+                if ($customerExists) {
+                    $this->addFlash('error_raw', 'Customer email exist: <a class="btn btn-danger" href="' . $this->generateUrl('customers_show', array('id' => $customerExists->getId())) . '">' . $customerExists->getName() . '</a>');
+                } else {
+                    $validator = $this->get('validator');
+                    $errors = $validator->validate($customer);
+
+                    if (count($errors) > 0) {
+                        /*
+                         * Uses a __toString method on the $errors variable which is a
+                         * ConstraintViolationList object. This gives us a nice string
+                         * for debugging.
+                         */
+                        $errorsString = (string) $errors;
+
+                        return new Response($errorsString);
+                    }
+
+                    $em->persist($customer);
+                    $em->flush();
+
+                    return $this->redirect($this->generateUrl('customers_show', array('id' => $customer->getId())));
+                }
             }
         }
 
