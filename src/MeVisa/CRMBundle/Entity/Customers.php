@@ -54,7 +54,7 @@ class Customers
     /**
      * @var boolean
      *
-     * @ORM\Column(name="agent", type="boolean")
+     * @ORM\Column(name="agent", type="boolean", nullable=true)
      */
     private $agent;
     /**
