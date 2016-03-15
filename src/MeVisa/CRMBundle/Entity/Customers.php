@@ -52,6 +52,12 @@ class Customers
     private $phone;
 
     /**
+     * @var boolean
+     *
+     * @ORM\Column(name="agent", type="boolean")
+     */
+    private $agent;
+    /**
      *
      * @ORM\OneToMany(targetEntity="MeVisa\ERPBundle\Entity\Orders", mappedBy="customer", cascade={"persist"})
      */
@@ -177,4 +183,27 @@ class Customers
         return $this->orders;
     }
 
+
+    /**
+     * Set agent
+     *
+     * @param boolean $agent
+     * @return Customers
+     */
+    public function setAgent($agent)
+    {
+        $this->agent = $agent;
+
+        return $this;
+    }
+
+    /**
+     * Get agent
+     *
+     * @return boolean 
+     */
+    public function getAgent()
+    {
+        return $this->agent;
+    }
 }

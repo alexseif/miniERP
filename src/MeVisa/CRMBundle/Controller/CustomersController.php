@@ -92,7 +92,11 @@ class CustomersController extends Controller
             'action' => $this->generateUrl('customers_create'),
             'method' => 'POST',
         ));
-
+        if ($this->isGranted('ROLE_SUPER_ADMIN')) {
+            $form->add('agent', 'checkbox', array(
+                'required' => false,
+            ));
+        }
         $form->add('submit', 'submit', array('label' => 'Create'));
 
         return $form;
