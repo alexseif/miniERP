@@ -22,8 +22,6 @@ class UsersType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        dump($this->roles);
-
         $builder
                 ->add('username', 'text', array(
                     'attr' => array(
@@ -39,6 +37,9 @@ class UsersType extends AbstractType
                     'choices' => $this->roles,
                     'expanded' => true,
                     'multiple' => true,
+                    'required' => false
+                ))
+                ->add('enabled', 'checkbox', array(
                     'required' => false
                 ))
         ;

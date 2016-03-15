@@ -9,9 +9,16 @@
 {% block adminPanelTitleSmall %}{{ user.username }}{% endblock %}
 {% block adminPanelBody %}
     <div class="panel-body">
-        {{ form_row(user_form.username) }}
-        {{ form_row(user_form.email) }}
-        {{ form_row(user_form.roles) }}
+        <div class="row">
+            <div class="col-sm-6">
+                {{ form_row(user_form.username) }}
+                {{ form_row(user_form.email) }}
+                {{ form_row(user_form.enabled) }}
+            </div>
+            <div class="col-sm-4">
+                {{ form_row(user_form.roles) }}
+            </div>
+        </div>
     </div>
 {% endblock %}
 {% block adminPanelFooter %}
