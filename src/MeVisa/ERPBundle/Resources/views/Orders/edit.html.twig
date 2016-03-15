@@ -68,6 +68,7 @@
     {{ parent() }}
     <script type="text/javascript" src="/js/orders.js"></script>
     <script type="text/javascript">
+        $agent = {{ (order.customer.agent) ? 'true' : 'false' }};
         var productPrices = new Array();
         {% for price in productPrices %}
             productPrices[{{ price.product.id }}] = {{price.price/100}};

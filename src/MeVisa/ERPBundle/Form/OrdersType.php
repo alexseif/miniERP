@@ -73,9 +73,12 @@ class OrdersType extends AbstractType
                 )
         ;
         $builder->add('customer', new \MeVisa\CRMBundle\Form\CustomersType());
-
+        $agent = false;
+        if ($options['data']->getCustomer()) {
+            $agent = $options['data']->getCustomer()->getAgent();
+        }
         $builder->add('orderProducts', 'collection', array(
-            'type' => new OrderProductsType(),
+            'type' => new OrderProductsType($agent),
             'allow_add' => true,
             'allow_delete' => true,
             'label' => false,

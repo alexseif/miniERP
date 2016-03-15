@@ -4,7 +4,13 @@
     </div>
     <table class="table table-condensed table-hover no-border">
         <tbody>
-            <tr><td>{{ form_label(form.customer.name)}}</td><td>{{ form_widget(form.customer.name)}}</td></tr>
+            <tr>
+                <td>{{ form_label(form.customer.name)}}</td>
+                <td style="position: relative;">
+                    {{ form_widget(form.customer.name)}} 
+                    <label class="label label-primary" style="position: absolute;top: 12px; right: 12px;" id="customer_agent">{% if(order.customer) %}{% if(order.customer.agent) %}Agent{% endif %}{% endif %}</label>
+                </td>
+            </tr>
             <tr><td>{{ form_label(form.customer.email)}}</td><td>{{ form_widget(form.customer.email)}}</td></tr>
             <tr><td>{{ form_label(form.customer.phone)}}</td><td>{{ form_widget(form.customer.phone)}}</td></tr>
         </tbody>

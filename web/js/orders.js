@@ -30,6 +30,17 @@ function updatePricesAndTotals() {
         $('input[name="mevisa_erpbundle_orders[orderPayments][0][amount]"]').val(total);
     }
 }
+function agentPrices() {
+    if ($agent) {
+        $('#customer_agent').text('Agent');
+    } else {
+        $('#customer_agent').text('');
+    }
+    var index = $productHolder.data('index');
+    for (i = 0; i < index; i++) {
+        $('input[name="mevisa_erpbundle_orders[orderProducts][' + i + '][unitPrice]"]').attr('readonly', !$agent);
+    }
+}
 
 function checkCompanions() {
     if ($('tbody.companions tr').length < $('input[name="mevisa_erpbundle_orders[people]"]').val()) {
@@ -50,6 +61,7 @@ function addProductForm() {
         updatePricesAndTotals();
     });
     $('.remove_product_link').show();
+    $('input[name="mevisa_erpbundle_orders[orderProducts][' + index + '][unitPrice]"]').attr('readonly', !$agent);
     $('select[name="mevisa_erpbundle_orders[orderProducts][' + index + '][product]"]').focus();
     $('.chosen-input').chosen({no_results_text: "Add new", allow_single_deselect: true});
 }
@@ -58,6 +70,7 @@ var $productHolder;
 var $addProductLink;
 var $removeProductLink;
 var $companionHolder;
+var $agent = false;
 
 $(document).ready(function () {
 
@@ -158,6 +171,8 @@ $(document).ready(function () {
         select: function (event, ui) {
             $('#mevisa_erpbundle_orders_customer_email').val(ui.item[0].email);
             $('#mevisa_erpbundle_orders_customer_phone').val(ui.item[0].phone);
+            $agent = ui.item[0].agent;
+            agentPrices();
         }
     });
 

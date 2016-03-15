@@ -9,6 +9,13 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 class OrderProductsType extends AbstractType
 {
 
+    private $agent;
+
+    function __construct($agent = false)
+    {
+        $this->agent = $agent;
+    }
+
     /**
      * @param FormBuilderInterface $builder
      * @param array $options
@@ -30,16 +37,16 @@ class OrderProductsType extends AbstractType
                 ->add('quantity', 'integer', array(
                     'attr' => array('min' => 1)
                 ))
-                ->add('unitPrice', 'money', array(
-                    'currency' => 'RUB',
-                    'divisor' => 100,
-                    'label' => 'Price',
-                    'read_only' => true
-                ))
                 ->add('total', 'money', array(
                     'currency' => 'RUB',
                     'divisor' => 100,
                     'read_only' => true
+        ));
+        $builder->add('unitPrice', 'money', array(
+            'currency' => 'RUB',
+            'divisor' => 100,
+            'label' => 'Price',
+            'read_only' => !$this->agent
         ));
     }
 
