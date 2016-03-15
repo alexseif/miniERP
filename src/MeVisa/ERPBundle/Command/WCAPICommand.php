@@ -15,6 +15,7 @@ use MeVisa\ERPBundle\Entity\OrderComments;
 use MeVisa\ERPBundle\Entity\Products;
 use MeVisa\ERPBundle\Entity\ProductPrices;
 use MeVisa\CRMBundle\Entity\Customers;
+use WC_API_Client_HTTP_Exception;
 
 class WCAPICommand extends ContainerAwareCommand
 {
@@ -28,31 +29,39 @@ class WCAPICommand extends ContainerAwareCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-
-        $client = new RESTAPI();
-
-        $em = $this->getContainer()->get('doctrine')->getManager();
-        $wcOrders = $client->getCompletedOrders();
-        foreach ($wcOrders['orders'] as $wcOrder) {
-            if (true == $wcOrder['payment_details']['paid']) {
-                $order = $em->getRepository('MeVisaERPBundle:Orders')->findOneBy(array('wcId' => $wcOrder['order_number']));
-                if (!$order) {
-                    $order = $this->newOrder($em, $wcOrder);
-                }
-                $em->persist($order);
-            }
-//            $wcOrderNotes = $client->getOrderNotes($wcOrder['order_number']);
-//            $this->updateOrderNotes($em, $order, $wcOrderNotes['order_notes']);
+        $wcOrdersSecondPage = $wcOrders = null;
+        try {
+            $client = new RESTAPI();
+            $wcOrders = $client->getCompletedOrders();
+            $wcOrdersSecondPage = $client->getCompletedOrdersSecondPage();
+        } catch (WC_API_Client_HTTP_Exception $exc) {
+            //TODO: do something
         }
 
-        $wcOrders = $client->getCompletedOrdersSecondPage();
-        foreach ($wcOrders['orders'] as $wcOrder) {
-            if (true == $wcOrder['payment_details']['paid']) {
-                $order = $em->getRepository('MeVisaERPBundle:Orders')->findOneBy(array('wcId' => $wcOrder['order_number']));
-                if (!$order) {
-                    $order = $this->newOrder($em, $wcOrder);
+        $em = $this->getContainer()->get('doctrine')->getManager();
+        if ($wcOrders) {
+            foreach ($wcOrders['orders'] as $wcOrder) {
+                if (true == $wcOrder['payment_details']['paid']) {
+                    $order = $em->getRepository('MeVisaERPBundle:Orders')->findOneBy(array('wcId' => $wcOrder['order_number']));
+                    if (!$order) {
+                        $order = $this->newOrder($em, $wcOrder);
+                    }
+                    $em->persist($order);
                 }
-                $em->persist($order);
+//            $wcOrderNotes = $client->getOrderNotes($wcOrder['order_number']);
+//            $this->updateOrderNotes($em, $order, $wcOrderNotes['order_notes']);
+            }
+        }
+
+        if ($wcOrdersSecondPage) {
+            foreach ($wcOrdersSecondPage['orders'] as $wcOrder) {
+                if (true == $wcOrder['payment_details']['paid']) {
+                    $order = $em->getRepository('MeVisaERPBundle:Orders')->findOneBy(array('wcId' => $wcOrder['order_number']));
+                    if (!$order) {
+                        $order = $this->newOrder($em, $wcOrder);
+                    }
+                    $em->persist($order);
+                }
             }
         }
         $em->flush();
