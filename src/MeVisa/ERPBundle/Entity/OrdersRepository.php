@@ -33,6 +33,9 @@ class OrdersRepository extends EntityRepository
     public function findAll()
     {
         return $this->createQueryBuilder('o')
+                        ->select('o, c, opa')
+                        ->leftJoin('o.customer', 'c')
+                        ->leftJoin('o.orderPayments', 'opa')
                         ->orderBy("o.createdAt, o.wcId")
                         ->getQuery()
                         ->getResult();
@@ -41,7 +44,7 @@ class OrdersRepository extends EntityRepository
     public function findAllByState($state)
     {
         return $this->createQueryBuilder('o')
-                        ->select('o, c')
+                        ->select('o, c, opa')
                         ->leftJoin('o.customer', 'c')
                         ->leftJoin('o.orderPayments', 'opa')
                         ->where("o.state = ?1")
