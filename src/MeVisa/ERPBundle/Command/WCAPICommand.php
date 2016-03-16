@@ -87,12 +87,17 @@ class WCAPICommand extends ContainerAwareCommand
             $order->setCustomer($customerExists);
             $orderCommentText = '';
             // Emails do not match
+            if ($customer->getName() != $customerExists->getName()) {
+                //TODO: do something
+                //$customerExists->setName($customer->getName());
+            }
             if ($customer->getEmail() != $customerExists->getEmail()) {
-                $orderCommentText .= 'Email do not match, new email: ' . $customer->getEmail();
+                //TODO: do something
             }
             // Phones do not match
             if ($customer->getPhone() != $customerExists->getPhone()) {
-                $orderCommentText .='Phone do not match, new phone: ' . $customer->getPhone();
+                //TODO: do something
+                $customerExists->setPhone($customer->getPhone());
             }
             if ('' != $orderCommentText) {
                 $orderComment = new OrderComments();
