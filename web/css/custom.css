@@ -80,9 +80,9 @@ tr.bg-success:focus {
 .no-border > tbody > tr > td, .no-border > tbody > tr > th, .no-border > tfoot > tr > td, .no-border > tfoot > tr > th, .no-border > thead > tr > td, .no-border > thead > tr > th 
 {border: none;}
 .ui-datepicker {z-index: 10 !important;}
-#order-docs a{word-wrap: break-word;height: 120px; overflow: hidden;}
+#order-docs .thumbnail{word-wrap: break-word;height: 120px; overflow: hidden;text-align: center;}
 #order-docs a:hover{overflow: visible;}
-#order-docs a span.glyphicon{font-size: 2.5em;}
+/*#order-docs a span.glyphicon{font-size: 2.5em;}*/
 .panel-heading .accordion-toggle:after {
     /* symbol for "opening" panels */
     font-family: 'Glyphicons Halflings';  /* essential for enabling glyphicon */

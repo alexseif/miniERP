@@ -1,20 +1,25 @@
 <div class="panel panel-default" id="order-docs">
     <div class="panel-heading">
-        <span class="panel-title">Order Documents</span>
+        <span class="panel-title">Documents</span>
     </div>
     <div class="panel-body">
         {# FIXME: Delete links for files#}
         <div class="row">
             {%for document in order.orderDocuments%}
                 <div class="col-xs-12 col-md-4">
-                    <a href="{{ document.path}}" class="thumbnail text-center" target="_blank">
-                        {% if document.path ends with 'pdf' %}
-                            <span class="glyphicon glyphicon-file"></span>
-                        {% else %}
-                            <img src="{{ document.thumbnail ? document.thumbnail : document.path }}" alt="{{ document.name }}"/>
-                        {% endif %}
-                        <span>{{ document.name }}</span>
-                    </a>
+                    <div class="thumbnail">
+                        <a href="#" class="docs-link" data-link="{{ document.path}}" >
+                            {% if document.path ends with 'pdf' %}
+                                <span class="glyphicon glyphicon-file"></span>
+                            {% else %}
+                                <img src="{{ document.thumbnail ? document.thumbnail : document.path }}" alt="{{ document.name }}"/>
+                            {% endif %}
+                        </a>
+                        <a href="{{ document.path}}" class="btn-sm" target="_blank">
+                            <span>{{ document.name }}</span>
+                            <span class="glyphicon glyphicon-new-window"></span>
+                        </a>
+                    </div>
                 </div>
             {% endfor %}
         </div>
