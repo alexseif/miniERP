@@ -71,7 +71,7 @@ tr.bg-success:focus {
 .panel-body label{font-weight: 550}
 .panel .control-label{padding-left: 5px; padding-right: 5px;}
 .orderProducts li{margin-top: 5px;}
-.list-group-item{padding-top: 2px;padding-bottom: 2px}
+/*.list-group-item{padding-top: 2px;padding-bottom: 2px}*/
 /*TODO: Remember why you needed this*/
 /*.badge{margin-top: 5px;}*/
 .table > tbody > tr > td, .table > tbody > tr > th, .table > tfoot > tr > td, .table > tfoot > tr > th, .table > thead > tr > td, .table > thead > tr > th {
@@ -93,7 +93,7 @@ tr.bg-success:focus {
 /* symbol for "collapsed" panels */
 /* adjust as needed, taken from bootstrap.css */
 .panel-heading .accordion-toggle.collapsed:after {content: "\e080";}
-#order-log .list-group{padding: 15px 10px;max-height: 244px; overflow-y: scroll;} #order-log .badge{margin-top: 0px;}
+#log .list-group, #order-log .list-group{padding: 15px 10px;max-height: 244px; overflow-y: scroll;} #order-log .badge{margin-top: 0px;}
 
 .alert-notice {
     color: #8a6d3b;

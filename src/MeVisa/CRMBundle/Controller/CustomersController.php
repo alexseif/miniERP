@@ -143,17 +143,16 @@ class CustomersController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('MeVisaCRMBundle:Customers')->find($id);
+        $customer = $em->getRepository('MeVisaCRMBundle:Customers')->find($id);
 
-        if (!$entity) {
+        if (!$customer) {
             throw $this->createNotFoundException('Unable to find Customers entity.');
         }
 
-        $deleteForm = $this->createDeleteForm($id);
 
         return array(
-            'entity' => $entity,
-            'delete_form' => $deleteForm->createView(),
+            'customer' => $customer,
+            'logs' => $this->getCustomerLog($id)
         );
     }
 
@@ -282,6 +281,15 @@ class CustomersController extends Controller
                         ->add('submit', 'submit', array('label' => 'Delete'))
                         ->getForm()
         ;
+    }
+
+    public function getCustomerLog($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $logRepo = $em->getRepository('Gedmo\Loggable\Entity\LogEntry');
+        $customerLog = $em->find('MeVisa\CRMBundle\Entity\Customers', $id);
+        return $logRepo->getLogEntries($customerLog);
     }
 
 }
