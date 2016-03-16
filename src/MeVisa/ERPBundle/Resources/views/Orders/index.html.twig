@@ -2,7 +2,6 @@
 {% block pageActions %}
     {% include 'AdminAdminBundle:Default:quickActions.html.twig' %}
 {% endblock %}
-
 {% block adminPanelHeadingRight %}<span class="badge">{{ orders|length }}</span>{% endblock %}
 {% block adminPanelBody %}
     <div class="table-responsive">
@@ -50,6 +49,4 @@
             </tbody>
         </table>
     </div>
-{% endblock %}
-{% block adminPanelFooter %}
 {% endblock %}

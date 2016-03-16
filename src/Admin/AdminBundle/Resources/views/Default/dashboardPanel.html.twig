@@ -24,9 +24,6 @@
                         <td class="text-right">{{ (order.total/100)|localizedcurrency('RUB') }}</td>
                         <td>{{ order.createdAt|ago }}</td>
                         <td class="text-right">
-                            {% if order.state == "backoffice" %}
-                                <span class="label label-{{ statusCSS.css(order.orderPayments|last.state) }}">{{ order.orderPayments|last.state|upper }}</span>
-                            {% endif %}
                             <span class="label label-{{ statusCSS.css(order.state) }}">{{ order.state|upper }}</span>
                         </td>
                     </tr>

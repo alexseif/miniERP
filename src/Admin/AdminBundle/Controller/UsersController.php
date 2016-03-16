@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Admin\AdminBundle\Entity\User;
 use Admin\AdminBundle\Form\UsersType;
 
@@ -14,6 +15,7 @@ use Admin\AdminBundle\Form\UsersType;
  * Users controller.
  *
  * @Route("/users")
+ * @Security("has_role('ROLE_SUPER_ADMIN')")
  */
 class UsersController extends Controller
 {

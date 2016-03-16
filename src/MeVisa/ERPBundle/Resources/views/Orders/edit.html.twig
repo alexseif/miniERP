@@ -68,12 +68,12 @@
     {{ parent() }}
     <script type="text/javascript" src="/js/orders.js"></script>
     <script type="text/javascript">
+        var selectCustomer = '{{ path('select_customer') }}';
+        var $agent = {{ (order.customer.agent) ? 'true' : 'false' }};
+        var productPrices = new Array();
         var $image = $('<img />');
         var $imageClose = $('<button>Close</button>');
         var $imageDiv = $('<div style="display:inline-block"></div>');
-        var productPrices = new Array();
-        var $agent = {{ (order.customer.agent) ? 'true' : 'false' }};
-
         $('.docs-link').click(function () {
             $image.remove();
             $imageClose.remove();
