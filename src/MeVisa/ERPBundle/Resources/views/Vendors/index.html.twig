@@ -1,54 +1,29 @@
-{% extends ':default:admin.html.twig' %}
-
-{% block content %}
-    <!-- Page Heading -->
-    <div class="row">
-        <div class="col-md-12">
-            {#            <h3 class="page-header">#}
-            <h3 class="page-header">
-                Vendors <small> {{ entities|length }} </small>
-            </h3>
-            <!-- breadcrumb -->
-            {#<ol class="breadcrumb">
-                <li class="active">
-                    <i class="fa fa-dashboard"></i> Dashboard
-                </li>
-            </ol>#}
-        </div>
+{% extends 'AdminAdminBundle:Default:adminLayout.html.twig' %}
+{% block adminPanelTitle %}Vendors{% endblock %}
+{% block adminPanelTitleBadge %}{{ vendors|length }}{% endblock %}
+{% block adminPanelHeadingRight %}<a href="{{ path('vendors_new')}}" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span> </a>{% endblock %}
+{% block adminPanelBody %}
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover table-striped records_list">
+            <thead>
+                <tr>
+                    <th>Code</th>
+                    <th>Name</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for vendor in vendors %}
+                    <tr>
+                        <td>{{ vendor.code }}</td>
+                        <td>{{ vendor.name }}</td>
+                        <td>
+                            <a class="btn btn-primary" href="{{ path('vendors_show', { 'id': vendor.id }) }}">Show</a>
+                            <a class="btn btn-primary" href="{{ path('vendors_edit', { 'id': vendor.id }) }}">Edit</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
-    <!-- /.row -->
-    <!-- page content -->
-    <div class="row">
-        <div class="col-md-12">
-            <div class="panel panel-default">
-                <div class="panel-body">
-                    <div class="table-responsive">
-                        <table class="table table-bordered table-hover table-striped records_list">
-                            <thead>
-                                <tr>
-                                    <th>Code</th>
-                                    <th>Name</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for entity in entities %}
-                                    <tr>
-                                        <td>{{ entity.code }}</td>
-                                        <td>{{ entity.name }}</td>
-                                        <td>
-                                            <a class="btn btn-primary" href="{{ path('admin_vendors_show', { 'id': entity.id }) }}">show</a>
-                                            <a class="btn btn-primary" href="{{ path('admin_vendors_edit', { 'id': entity.id }) }}">edit</a>
-                                        </td>
-                                    </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- /.row -->
-    <a class="btn btn-primary" href="{{ path('admin_vendors_new') }}">Add Vendor</a>
 {% endblock %}

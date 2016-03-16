@@ -1,42 +1,29 @@
-{% extends ':default:admin.html.twig' %}
-
-{% block content %}
-    <!-- Page Heading -->
-    <div class="row">
-        <div class="col-md-12">
-            <h3 class="page-header">
-                Vendor <small> {{ entity.name }} </small>
-            </h3>
+{% extends 'AdminAdminBundle:Default:adminLayout.html.twig' %}
+{% block backLink %}{{ path('vendors') }}{% endblock %}
+{% block adminPanelTitle %}Vendor{% endblock %}
+{% block adminPanelTitleSmall %}{{ vendor.name }}{% endblock %}
+{% block adminPanelBody %}
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover table-striped records_list">
+            <tbody>
+                <tr>
+                    <th>Name</th>
+                    <td>{{ vendor.name }}</td>
+                </tr>
+                <tr>
+                    <th>Code</th>
+                    <td>{{ vendor.code }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
+{% block adminPanelFooter %}
+    <div class="panel-footer">
+        <div class='clearfix'>
+            {% if(is_granted('ROLE_SUPER_ADMIN')) %}
+                <a class="btn btn-primary pull-right" href="{{ path('vendors_edit', { 'id': vendor.id }) }}">Edit</a>
+            {% endif %}
         </div>
     </div>
-    <!-- /.row -->
-    <div class="row">
-        <div class="col-md-12">
-            <div class="panel panel-default">
-                <div class="panel-body">
-                    <div class="table-responsive">
-                        <table class="table table-bordered table-hover table-striped records_list">
-                            <tbody>
-                                <tr>
-                                    <th>Name</th>
-                                    <td>{{ entity.name }}</td>
-                                </tr>
-                                <tr>
-                                    <th>Code</th>
-                                    <td>{{ entity.code }}</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <a class="btn btn-primary" href="{{ path('admin_vendors_edit', { 'id': entity.id }) }}">Edit</a>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- /.row -->
-    <div class="row">
-        <div class="col-md-11">{{ form(delete_form) }}</div>
-        <div class="col-md-1"><a class="btn btn-warning" href="{{ path('admin_vendors') }}">Back</a></div>
-    </div>
-    <!-- /.row -->
 {% endblock %}

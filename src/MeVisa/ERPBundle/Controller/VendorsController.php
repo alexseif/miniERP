@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use MeVisa\ERPBundle\Entity\Vendors;
 use MeVisa\ERPBundle\Form\VendorsType;
 
@@ -21,7 +22,7 @@ class VendorsController extends Controller
     /**
      * Lists all Vendors entities.
      *
-     * @Route("/", name="admin_vendors")
+     * @Route("/", name="vendors")
      * @Method("GET")
      * @Template()
      */
@@ -29,36 +30,38 @@ class VendorsController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entities = $em->getRepository('MeVisaERPBundle:Vendors')->findAll();
+        $vendors = $em->getRepository('MeVisaERPBundle:Vendors')->findAll();
 
         return array(
-            'entities' => $entities,
+            'vendors' => $vendors,
         );
     }
+
     /**
      * Creates a new Vendors entity.
      *
-     * @Route("/", name="admin_vendors_create")
+     * @Security("has_role('ROLE_SUPER_ADMIN')")
+     * @Route("/", name="vendors_create")
      * @Method("POST")
      * @Template("MeVisaERPBundle:Vendors:new.html.twig")
      */
     public function createAction(Request $request)
     {
-        $entity = new Vendors();
-        $form = $this->createCreateForm($entity);
+        $vendor = new Vendors();
+        $form = $this->createCreateForm($vendor);
         $form->handleRequest($request);
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $em->persist($entity);
+            $em->persist($vendor);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('admin_vendors_show', array('id' => $entity->getId())));
+            return $this->redirect($this->generateUrl('vendors_show', array('id' => $vendor->getId())));
         }
 
         return array(
-            'entity' => $entity,
-            'form'   => $form->createView(),
+            'vendor' => $vendor,
+            'vendor_form' => $form->createView(),
         );
     }
 
@@ -72,11 +75,16 @@ class VendorsController extends Controller
     private function createCreateForm(Vendors $entity)
     {
         $form = $this->createForm(new VendorsType(), $entity, array(
-            'action' => $this->generateUrl('admin_vendors_create'),
+            'action' => $this->generateUrl('vendors_create'),
             'method' => 'POST',
         ));
 
-        $form->add('submit', 'submit', array('label' => 'Create'));
+        $form->add('submit', 'submit', array(
+            'label' => 'Save',
+            'attr' => array(
+                'class' => 'btn-success pull-right',
+            )
+        ));
 
         return $form;
     }
@@ -84,25 +92,26 @@ class VendorsController extends Controller
     /**
      * Displays a form to create a new Vendors entity.
      *
-     * @Route("/new", name="admin_vendors_new")
+     * @Security("has_role('ROLE_SUPER_ADMIN')")
+     * @Route("/new", name="vendors_new")
      * @Method("GET")
      * @Template()
      */
     public function newAction()
     {
-        $entity = new Vendors();
-        $form   = $this->createCreateForm($entity);
+        $vendor = new Vendors();
+        $form = $this->createCreateForm($vendor);
 
         return array(
-            'entity' => $entity,
-            'form'   => $form->createView(),
+            'vendor' => $vendor,
+            'vendor_form' => $form->createView(),
         );
     }
 
     /**
      * Finds and displays a Vendors entity.
      *
-     * @Route("/{id}", name="admin_vendors_show")
+     * @Route("/{id}", name="vendors_show")
      * @Method("GET")
      * @Template()
      */
@@ -110,24 +119,22 @@ class VendorsController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('MeVisaERPBundle:Vendors')->find($id);
+        $vendor = $em->getRepository('MeVisaERPBundle:Vendors')->find($id);
 
-        if (!$entity) {
+        if (!$vendor) {
             throw $this->createNotFoundException('Unable to find Vendors entity.');
         }
 
-        $deleteForm = $this->createDeleteForm($id);
-
         return array(
-            'entity'      => $entity,
-            'delete_form' => $deleteForm->createView(),
+            'vendor' => $vendor,
         );
     }
 
     /**
      * Displays a form to edit an existing Vendors entity.
      *
-     * @Route("/{id}/edit", name="admin_vendors_edit")
+     * @Security("has_role('ROLE_SUPER_ADMIN')")
+     * @Route("/{id}/edit", name="vendors_edit")
      * @Method("GET")
      * @Template()
      */
@@ -135,44 +142,48 @@ class VendorsController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('MeVisaERPBundle:Vendors')->find($id);
+        $vendor = $em->getRepository('MeVisaERPBundle:Vendors')->find($id);
 
-        if (!$entity) {
+        if (!$vendor) {
             throw $this->createNotFoundException('Unable to find Vendors entity.');
         }
 
-        $editForm = $this->createEditForm($entity);
-        $deleteForm = $this->createDeleteForm($id);
+        $editForm = $this->createEditForm($vendor);
 
         return array(
-            'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
+            'vendor' => $vendor,
+            'vendor_form' => $editForm->createView(),
         );
     }
 
     /**
-    * Creates a form to edit a Vendors entity.
-    *
-    * @param Vendors $entity The entity
-    *
-    * @return \Symfony\Component\Form\Form The form
-    */
+     * Creates a form to edit a Vendors entity.
+     *
+     * @param Vendors $entity The entity
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
     private function createEditForm(Vendors $entity)
     {
         $form = $this->createForm(new VendorsType(), $entity, array(
-            'action' => $this->generateUrl('admin_vendors_update', array('id' => $entity->getId())),
+            'action' => $this->generateUrl('vendors_update', array('id' => $entity->getId())),
             'method' => 'PUT',
         ));
 
-        $form->add('submit', 'submit', array('label' => 'Update'));
+        $form->add('submit', 'submit', array('label' => 'Update',
+            'attr' => array(
+                'class' => 'btn-success pull-right',
+            )
+        ));
 
         return $form;
     }
+
     /**
      * Edits an existing Vendors entity.
      *
-     * @Route("/{id}", name="admin_vendors_update")
+     * @Security("has_role('ROLE_SUPER_ADMIN')")
+     * @Route("/{id}", name="vendors_update")
      * @Method("PUT")
      * @Template("MeVisaERPBundle:Vendors:edit.html.twig")
      */
@@ -180,32 +191,32 @@ class VendorsController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('MeVisaERPBundle:Vendors')->find($id);
+        $vendor = $em->getRepository('MeVisaERPBundle:Vendors')->find($id);
 
-        if (!$entity) {
+        if (!$vendor) {
             throw $this->createNotFoundException('Unable to find Vendors entity.');
         }
 
-        $deleteForm = $this->createDeleteForm($id);
-        $editForm = $this->createEditForm($entity);
+        $editForm = $this->createEditForm($vendor);
         $editForm->handleRequest($request);
 
         if ($editForm->isValid()) {
             $em->flush();
 
-            return $this->redirect($this->generateUrl('admin_vendors_edit', array('id' => $id)));
+            return $this->redirect($this->generateUrl('vendors_edit', array('id' => $id)));
         }
 
         return array(
-            'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
+            'vendor' => $vendor,
+            'vendor_form' => $editForm->createView(),
         );
     }
+
     /**
      * Deletes a Vendors entity.
      *
-     * @Route("/{id}", name="admin_vendors_delete")
+     * @Security("has_role('ROLE_SUPER_ADMIN')")
+     * @Route("/{id}", name="vendors_delete")
      * @Method("DELETE")
      */
     public function deleteAction(Request $request, $id)
@@ -225,7 +236,7 @@ class VendorsController extends Controller
             $em->flush();
         }
 
-        return $this->redirect($this->generateUrl('admin_vendors'));
+        return $this->redirect($this->generateUrl('vendors'));
     }
 
     /**
@@ -238,10 +249,11 @@ class VendorsController extends Controller
     private function createDeleteForm($id)
     {
         return $this->createFormBuilder()
-            ->setAction($this->generateUrl('admin_vendors_delete', array('id' => $id)))
-            ->setMethod('DELETE')
-            ->add('submit', 'submit', array('label' => 'Delete'))
-            ->getForm()
+                        ->setAction($this->generateUrl('vendors_delete', array('id' => $id)))
+                        ->setMethod('DELETE')
+                        ->add('submit', 'submit', array('label' => 'Delete'))
+                        ->getForm()
         ;
     }
+
 }

@@ -1,28 +1,20 @@
-{% extends ':default:admin.html.twig' %}
-
-{% block content %}
-    <!-- Page Heading -->
-    <div class="row">
-        <div class="col-md-12">
-            <h3 class="page-header">
-                New Vendor
-            </h3>
-        </div>
-    </div>
-    <!-- /.row -->
-    <div class="row">
-        <div class="col-md-12">
-            <div class="panel panel-default">
-                <div class="panel-body">
-                    {{ form(form) }}
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- /.row -->
-    <div class="row">
-        <div class="col-md-11"></div>
-        <div class="col-md-1"><a class="btn btn-warning" href="{{ path('admin_vendors') }}">Back</a></div>
-    </div>
-    <!-- /.row -->
+{% extends 'AdminAdminBundle:Default:adminLayout.html.twig' %}
+{% block backLink %}{{ path('vendors') }}{% endblock %}
+{% block adminPanelFormStart %}
+    {{ form_start(vendor_form) }}
+    {{ form_errors(vendor_form) }}
+    {{ form_row(vendor_form._token) }}
 {% endblock %}
+{% block adminPanelTitle %}Vendor{% endblock %}
+{% block adminPanelBody %}
+    <div class="panel-body">
+        {{ form_row(vendor_form.name) }}
+        {{ form_row(vendor_form.code) }}
+    </div>
+{% endblock %}
+{% block adminPanelFooter %}
+    <div class="panel-footer">
+        {{ form_row(vendor_form.submit) }}
+    </div>
+{% endblock %}
+{% block adminPanelFormEnd %}{{ form_end(vendor_form) }}{% endblock %}
