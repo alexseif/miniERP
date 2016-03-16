@@ -27,8 +27,11 @@
                                         {# <li><a href="{{ path('admin_vendors') }}">Vendors</a></li> #}
                                     <li><a href="{{ path('admin_products') }}">Products</a></li>
                                         {# <li class="divider"></li> #}
-                                        {% if is_granted('ROLE_SUPER_ADMIN') %}<li><a href="{{ path('companysettings_show', {"id":1}) }}">MeVisa Settings</a></li>{% endif %}
-                                        {# <li class="divider"></li> #}
+                                        {% if is_granted('ROLE_SUPER_ADMIN') %}
+                                            <li><a href="{{ path('companysettings_show', {"id":1}) }}">MeVisa Settings</a></li>
+                                            <li class="divider"></li> 
+                                            <li><a href="{{ path('users') }}">Users</a></li>
+                                        {% endif %}
                                         {# <li><a href="#">Invoices</a></li> #}
                                 </ul>
                             </li>
@@ -62,7 +65,7 @@
                     {% for type, flashMessages in app.session.flashbag.all %}
                         {% if(typeCheck != type and typeCheck != '' ) %}</div>{% endif %}
                         {% if(typeCheck != type ) %}
-                            <div class="flash_{{ type }}">
+                        <div class="flash_{{ type }}">
                             {% set typeCheck = type %}
                         {% endif %}
                         {% for message in flashMessages %}
@@ -76,10 +79,10 @@
                             </div>
                         {% endfor %}
                     {% endfor %}
-                    </div>
-                {% endif %}
-                {% block content %}{% endblock %}
-            </div>
-        </div>
-    {% endblock %}
+                </div>
+            {% endif %}
+        {% block content %}{% endblock %}
+    </div>
+</div>
+{% endblock %}
 {% endblock %}
