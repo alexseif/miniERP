@@ -86,6 +86,10 @@ class UsersController extends Controller
         if ($user_form->isSubmitted()) {
             if ($user_form->isValid()) {
 
+                if ($user == $this->getUser()) {
+                    $this->get('session')->set('_locale', $user->getLocale());
+                }
+
                 $em->flush();
                 return $this->redirect($this->generateUrl('users_show', array('id' => $user->getId())));
             }

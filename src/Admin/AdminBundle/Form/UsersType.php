@@ -42,6 +42,12 @@ class UsersType extends AbstractType
                 ->add('enabled', 'checkbox', array(
                     'required' => false
                 ))
+                ->add('locale', 'locale', array(
+                    'choices' => array('English' => 'en', 'Russian' => 'ru'),
+                    'attr' => array(
+                        'class' => 'chosen'
+                    )
+                ))
         ;
     }
 

@@ -7,6 +7,9 @@
         {% block stylesheets %}
             {% stylesheets
                 'css/bootstrap.min.css'
+                'css/jquery-ui.min.css'
+                'css/jquery-ui.theme.min.css'
+                'css/chosen.min.css'
                 'css/custom.css'
                 filter='cssrewrite' output='css/compiled/app.css' %}
             <link rel="stylesheet" type="text/css" href="{{ asset_url }}" />
@@ -20,10 +23,17 @@
         {% block javascripts %}
             {% javascripts
             'js/jquery-2.1.4.min.js'
+            'js/jquery-ui.min.js'
+            'js/chosen.jquery.min.js'
             'js/bootstrap.min.js'
             'js/prototypeForms.js'
             output='js/compiled/app.js' %}
             <script type="text/javascript" src="{{ asset_url }}"></script>
+            <script type="text/javascript">
+                $(document).ready(function () {
+                    $('.chosen').chosen();
+                });
+            </script>
              {% if app.environment == 'prod' %}
                 <script>
                     (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){

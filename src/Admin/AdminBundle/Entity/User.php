@@ -20,6 +20,11 @@ class User extends BaseUser
     protected $id;
 
     /**
+     * @ORM\Column(type="string", length=20, options={"default" = "ru"})
+     */
+    protected $locale;
+
+    /**
      * @ORM\OneToMany(targetEntity="MeVisa\ERPBundle\Entity\OrderComments", mappedBy="author", cascade={"persist"})
      * */
     protected $comments;
@@ -27,7 +32,7 @@ class User extends BaseUser
     public function __construct()
     {
         parent::__construct();
-// your own logic
+        $this->locale = 'ru';
     }
 
     /**
@@ -64,4 +69,27 @@ class User extends BaseUser
         return $this->comments;
     }
 
+
+    /**
+     * Set locale
+     *
+     * @param string $locale
+     * @return User
+     */
+    public function setLocale($locale)
+    {
+        $this->locale = $locale;
+
+        return $this;
+    }
+
+    /**
+     * Get locale
+     *
+     * @return string 
+     */
+    public function getLocale()
+    {
+        return $this->locale;
+    }
 }
