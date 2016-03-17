@@ -109,4 +109,12 @@ class OrdersRepository extends EntityRepository
                         ->getResult();
     }
 
+    public function findWC()
+    {
+        return $this->createQueryBuilder("o")
+                        ->where("o.wcId is not null")
+                        ->getQuery()
+                        ->getResult();
+    }
+
 }

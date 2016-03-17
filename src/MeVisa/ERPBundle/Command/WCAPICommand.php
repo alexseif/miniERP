@@ -140,28 +140,28 @@ class WCAPICommand extends ContainerAwareCommand
 
             $order->setPeople($lineItem['meta'][0]['value']);
 
-            $departureOffset = 4;
-            $arrivalOffset = 5;
+            $arrivalOffset = 4;
+            $departureOffset = 5;
             $documentsOffset = 6;
-            if ("Дата вылета" == $lineItem['meta'][$departureOffset]['key']) {
-                $departure = \DateTime::createFromFormat("d/m/Y", $lineItem['meta'][$departureOffset]['value'], $timezone);
-                if (FALSE === $departure) {
-                    --$arrivalOffset;
-                    --$documentsOffset;
-                } else {
-                    $order->setDeparture($departure);
-                }
-            } else {
-                --$arrivalOffset;
-                --$documentsOffset;
-            }
-
-            if ("Дата возврата" == $lineItem['meta'][$arrivalOffset]['key']) {
+            if ("Дата вылета" == $lineItem['meta'][$arrivalOffset]['key']) {
                 $arrival = \DateTime::createFromFormat("d/m/Y", $lineItem['meta'][$arrivalOffset]['value'], $timezone);
                 if (FALSE === $arrival) {
+                    --$departureOffset;
                     --$documentsOffset;
                 } else {
                     $order->setArrival($arrival);
+                }
+            } else {
+                --$departureOffset;
+                --$documentsOffset;
+            }
+
+            if ("Дата возврата" == $lineItem['meta'][$departureOffset]['key']) {
+                $departure = \DateTime::createFromFormat("d/m/Y", $lineItem['meta'][$departureOffset]['value'], $timezone);
+                if (FALSE === $departure) {
+                    --$documentsOffset;
+                } else {
+                    $order->setDeparture($departure);
                 }
             } else {
                 --$documentsOffset;
