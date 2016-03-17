@@ -42,16 +42,6 @@ function agentPrices() {
     }
 }
 
-function checkCompanions() {
-    if ($('tbody.companions tr').length < $('input[name="mevisa_erpbundle_orders[people]"]').val()) {
-        $('#companion-panel').addClass('panel-danger');
-        $('#companion-panel').removeClass('panel-default');
-    } else {
-        $('#companion-panel').addClass('panel-default');
-        $('#companion-panel').removeClass('panel-danger');
-    }
-}
-
 function addProductForm() {
     addPrototypeForm('tbody.orderProducts', '<tr></tr>');
     $('select[name="mevisa_erpbundle_orders[orderProducts][' + index + '][product]"]').change(function () {
@@ -66,6 +56,35 @@ function addProductForm() {
     $('.chosen-input').chosen({no_results_text: "Add new", allow_single_deselect: true});
 }
 
+function addCompanions() {
+    if (checkCompanions(true)) {
+        addPrototypeForm('tbody.companions', '<tr></tr>');
+        $('.removeCompanion').on('click', function (e) {
+            e.preventDefault();
+            $(this).parent().parent().remove();
+            checkCompanions();
+        });
+        $('.chosen-input').chosen({no_results_text: "Add new", allow_single_deselect: true});
+        checkCompanions();
+    }
+}
+
+function checkCompanions(alrt) {
+    companionsCount = $('tbody.companions tr').length;
+    if (companionsCount < PAX) {
+        $('#companion-panel').addClass('panel-danger');
+        $('#companion-panel').removeClass('panel-default');
+        return true;
+    } else {
+        if (alrt) {
+            $('#companion-panel').before('<div class="alert alert-dismissible alert-error"><button type="button" class="close" data-dismiss="alert">×</button>You cannot add more companions</div>');
+        }
+        $('#companion-panel').addClass('panel-default');
+        $('#companion-panel').removeClass('panel-danger');
+        return false;
+    }
+}
+
 var $productHolder;
 var $addProductLink;
 var $removeProductLink;
@@ -73,8 +92,6 @@ var $companionHolder;
 var $agent = false;
 
 $(document).ready(function () {
-
-
     $('input[name="mevisa_erpbundle_orders[adjustmentTotal]"]').change(function () {
         updatePricesAndTotals();
     });
@@ -124,34 +141,23 @@ $(document).ready(function () {
 
     $('.addCompanion').on('click', function (e) {
         e.preventDefault();
-        addPrototypeForm('tbody.companions', '<tr></tr>');
-        $('.removeCompanion').on('click', function (e) {
-            e.preventDefault();
-            $(this).parent().parent().remove();
-        });
-        $('.chosen-input').chosen({no_results_text: "Add new", allow_single_deselect: true});
-        checkCompanions();
+        addCompanions();
     });
-
-    $('input[name="mevisa_erpbundle_orders[people]"]').change(function () {
-        var companionIndex = $companionHolder.data('index');
-        $people = parseInt($('input[name="mevisa_erpbundle_orders[people]"]').val());
-        $noCompanions = $people - companionIndex;
-        if ($noCompanions > 0) {
-            for (i = 0; i < $noCompanions; i++) {
-                $('.addCompanion').click();
-            }
-            if ("" === $('input[name="mevisa_erpbundle_orders[orderCompanions][0][name]"]').val()) {
-                $('input[name="mevisa_erpbundle_orders[orderCompanions][0][name]"]').val($('input[name="mevisa_erpbundle_orders[customer][name]"]').val());
-            }
-        }
-        checkCompanions();
-    });
-
     $('.removeCompanion').on('click', function (e) {
         e.preventDefault();
         $(this).parent().parent().remove();
         checkCompanions();
+    });
+
+    $('input[name="mevisa_erpbundle_orders[people]"]').change(function () {
+        PAX = $(this).val();
+        companionsRem = PAX - $('tbody.companions tr').length;
+        for (i = 0; i < companionsRem; i++) {
+            $('.addCompanion').click();
+        }
+        if ("" === $('input[name="mevisa_erpbundle_orders[orderCompanions][0][name]"]').val()) {
+            $('input[name="mevisa_erpbundle_orders[orderCompanions][0][name]"]').val($('input[name="mevisa_erpbundle_orders[customer][name]"]').val());
+        }
     });
 
     if ($('div.orderPayments').length) {

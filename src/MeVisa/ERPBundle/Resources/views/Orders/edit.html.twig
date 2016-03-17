@@ -69,12 +69,14 @@
     <script type="text/javascript" src="/js/orders.js"></script>
     <script type="text/javascript">
         var selectCustomer = '{{ path('select_customer') }}';
-        var $agent = {{ (order.customer.agent) ? 'true' : 'false' }};
-        var productPrices = new Array();
+                var PAX = {{ (order.people)?:0 }};
+                var $agent = {{ (order.customer.agent) ? 'true' : 'false' }};
+                var productPrices = new Array();
         var $image = $('<img />');
         var $imageClose = $('<button>Close</button>');
         var $imageDiv = $('<div style="display:inline-block"></div>');
-        $('.docs-link').click(function () {
+        $('.docs-link').click(function (e) {
+            e.preventDefault();
             $image.remove();
             $imageClose.remove();
             $imageDiv.remove();
@@ -82,7 +84,12 @@
             $imageDiv.append($imageClose);
             $imageDiv.append($image);
             $(this).after($imageDiv);
-            $image.resizable();
+            $image.css({"max-width": 800, "height": "auto"});
+            $image.resizable({
+                maxWidth: 800,
+                minWidth: 80,
+                aspectRatio: true
+            });
             $imageDiv.draggable({cursor: "move", zIndex: 10});
             $imageDiv.css("zIndex", 1);
             $imageDiv.css("cursor", "move");

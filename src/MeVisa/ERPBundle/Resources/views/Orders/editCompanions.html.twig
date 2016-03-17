@@ -41,5 +41,8 @@
 {% block adminPanelFooter %}{% endblock %}
 {% block javascripts %}
     {{ parent() }}
+    <script type="text/javascript">
+        var PAX = {{ (order.people)?:0 }};
+    </script>
     <script type="text/javascript" src="/js/orderCompanions.js"></script>
 {% endblock %}
