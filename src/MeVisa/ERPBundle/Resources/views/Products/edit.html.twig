@@ -1,49 +1,44 @@
-{% extends ':default:admin.html.twig' %}
-
-{% block content %}
-    <div class="row">
-        <div class="col-md-12">
-            {{ form_start(form) }}
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <span class="panel-title">Edit Product <small>{{ entity.name }}</small></span>
-                </div>
-                <div class="panel-body">
-                    <div class="row">
-                        <div class="col-sm-8">
-                            {{ form_row(form.name) }}
-                            {{ form_row(form.requiredDocuments) }}
-                            {{ form_row(form.vendor) }}              
-                            {{ form_row(form.enabled) }}
-                        </div>
-                        <div class="col-sm-4">
-                            <ul class="list-group">
-                                <li class="list-group-item">
-                                    <label>Price</label>
-                                    {{ (entity.pricing|last.price/100)|localizedcurrency('RUB') }}
-                                </li>
-                                <li class="list-group-item">
-                                    <label>Cost</label>
-                                    {{ (entity.pricing|last.cost/100)|localizedcurrency('RUB') }}
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="panel-footer">
-                    <div class="row">
-                        <div class="col-md-10"><a class="btn btn-warning" href="{{ path('admin_products') }}">Back</a></div>
-                        <div class="col-sm-2">
-                            {{ form_widget(form.submit) }}
-                        </div>
-                    </div>
-                </div>
+{% extends 'AdminAdminBundle:Default:adminLayout.html.twig' %}
+{% block backLink %}{{ path('admin_products_show', {'id': entity.id}) }}{% endblock %}
+{% block adminPanelFormStart %}
+    {{ form_start(form) }}
+    {{ form_errors(form) }}
+    {{ form_row(form._token) }}
+{% endblock %}
+{% block adminPanelTitle %}Edit Product{% endblock %}
+{% block adminPanelTitleSmall %}{{ entity.name }}{% endblock %}
+{% block adminPanelBody %}
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-sm-8">
+                {{ form_row(form.name) }}
+                {{ form_row(form.requiredDocuments) }}
+                {{ form_row(form.vendor) }}              
+                {{ form_row(form.enabled) }}
             </div>
-            {{ form(form) }}
+            <div class="col-sm-4">
+                <ul class="list-group">
+                    <li class="list-group-item">
+                        <label>Price</label>
+                        {{ (entity.pricing|last)?(entity.pricing|last.price/100)|localizedcurrency('RUB') }}
+                    </li>
+                    <li class="list-group-item">
+                        <label>Cost</label>
+                        {{ (entity.pricing|last)?(entity.pricing|last.cost/100)|localizedcurrency('RUB') }}
+                    </li>
+                </ul>
+            </div>
         </div>
     </div>
-    <!-- /.row -->
 {% endblock %}
+{% block adminPanelFooter %}
+    <div class="panel-footer">
+        <div class="clearfix">
+            {{ form_widget(form.submit) }}
+        </div>
+    </div>
+{% endblock %}
+{% block adminPanelFormEnd %}{{ form_end(form) }}{% endblock %}
 {% block javascripts %}
     {{ parent() }}
     <script type="text/javascript" src="/js/chosen.jquery.min.js"></script>

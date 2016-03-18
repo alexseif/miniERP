@@ -22,16 +22,16 @@
                                         {% filter upper %}{{ req }}{% endfilter %}<br/>
                                     {% endfor %}
                                 </li>
-                                <li class="list-group-item clearfix"><label class="col-sm-4">Vendor</label> {{ entity.vendor }}</li>
+                                <li class="list-group-item clearfix"><label class="col-sm-4">Vendor</label> {{ entity.vendor.name }}</li>
                             </ul>
                         </div>
                         <div class="col-sm-6">
                             <ul class="list-group">
                                 <li class="list-group-item clearfix">
                                     <label class="col-sm-4">Price</label> 
-                                    {{ (entity.pricing|last.price/100)|localizedcurrency('RUB') }}
+                                    {{ (entity.pricing|last)?(entity.pricing|last.price/100)|localizedcurrency('RUB') }}
                                 </li>
-                                <li class="list-group-item clearfix"><label class="col-sm-4">Cost</label> {{ (entity.pricing|last.cost/100)|localizedcurrency('RUB') }}</li>
+                                <li class="list-group-item clearfix"><label class="col-sm-4">Cost</label> {{ (entity.pricing|last)?(entity.pricing|last.cost/100)|localizedcurrency('RUB') }}</li>
                             </ul>
                         </div>
                     </div>
