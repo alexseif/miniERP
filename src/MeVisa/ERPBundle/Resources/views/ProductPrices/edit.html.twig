@@ -1,35 +1,26 @@
-{% extends ':default:admin.html.twig' %}
-
-{% block content %}
-    <!-- Page Heading -->
-    <div class="row">
-        <div class="col-md-12">
-            <h3 class="page-header">
-                {{entity.product.name}} <small> Pricing </small>
-            </h3>
-        </div>
-    </div>
-    <!-- /.row -->
-    <div class="row">
-        <div class="col-md-12">
-            <div class="panel panel-default">
-                <div class="panel-body">
-                    {#                    {{ form(edit_form) }}#}
-                    <div class="row">
-                        {{ form_start(edit_form) }}
-                        <div class="hidden">{{ form_widget(edit_form.product) }}</div>
-                        <div class="col-md-4">{{ form_row(edit_form.cost) }}</div>
-                        <div class="col-md-4">{{ form_row(edit_form.price) }}</div>
-                        <div class="col-md-2"><br/>{{ form_end(edit_form) }}</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- /.row -->
-    <div class="row">
-        <div class="col-md-11">{{ form(delete_form) }}</div>
-        <div class="col-md-1"><a class="btn btn-warning" href="{{ path('admin_pricing', { 'product_id': entity.product.id }) }}">Back</a></div>
-    </div>
-    <!-- /.row -->
+{% extends 'AdminAdminBundle:Default:adminLayout.html.twig' %}
+{% block backLink %}{{ path('pricing', { 'product_id': entity.product.id }) }}{% endblock %}
+{% block adminPanelFormStart %}
+    {{ form_start(edit_form) }}
+    {{ form_errors(edit_form) }}
+    {{ form_row(edit_form._token) }}
 {% endblock %}
+{% block adminPanelTitle %}Pricing{% endblock %}
+{% block adminPanelTitleSmall %}{{entity.product.name}}{% endblock %}
+{% block adminPanelBody %}
+    <div class="panel-body">
+        <div class="row">
+            <div class="hidden">{{ form_widget(edit_form.product) }}</div>
+            <div class="col-md-4">{{ form_row(edit_form.cost) }}</div>
+            <div class="col-md-4">{{ form_row(edit_form.price) }}</div>
+        </div>
+    </div>
+{% endblock %}
+{% block adminPanelFooter %}
+    <div class="panel-footer">
+        <div class="clearfix">
+            {{ form_widget(edit_form.submit) }}
+        </div>
+    </div>
+{% endblock %}
+{% block adminPanelFormEnd %}{{ form_end(edit_form) }}{% endblock %}

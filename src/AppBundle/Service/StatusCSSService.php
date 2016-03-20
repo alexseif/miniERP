@@ -24,6 +24,8 @@ class StatusCSSService
             'ROLE_POST' => 'primary',
             'ROLE_ADMIN' => 'info',
             'ROLE_USER' => 'info',
+            'enabled' => 'success',
+            'disabled' => 'danger',
         );
     }
 

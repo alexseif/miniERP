@@ -195,7 +195,7 @@ class Products
     public function addPricing(\MeVisa\ERPBundle\Entity\ProductPrices $pricing)
     {
         $this->pricing[] = $pricing;
-
+        $pricing->setProduct($this);
         return $this;
     }
 

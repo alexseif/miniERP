@@ -23,9 +23,9 @@ class ProductsController extends Controller
 {
 
     /**
-     * Lists all Products entities.
+     * Lists all Products products.
      *
-     * @Route("/", name="admin_products")
+     * @Route("/", name="products")
      * @Method("GET")
      * @Template()
      */
@@ -38,62 +38,29 @@ class ProductsController extends Controller
 
         $em = $this->getDoctrine()->getManager();
 
-        $entities = $em->getRepository('MeVisaERPBundle:Products')->findAll();
-        foreach ($entities as $entity) {
-            if (!is_array($entity->getRequiredDocuments())) {
-                $entity->setRequiredDocuments($serializer->decode($entity->getRequiredDocuments(), 'json'));
+        $products = $em->getRepository('MeVisaERPBundle:Products')->findAll();
+        foreach ($products as $product) {
+            if (!is_array($product->getRequiredDocuments())) {
+                $product->setRequiredDocuments($serializer->decode($product->getRequiredDocuments(), 'json'));
             }
         }
 
         return array(
-            'entities' => $entities,
+            'products' => $products,
         );
     }
 
     /**
-     * Creates a new Products entity.
+     * Creates a form to create a Products product.
      *
-     * @Route("/", name="admin_products_create")
-     * @Method("POST")
-     * @Template("MeVisaERPBundle:Products:new.html.twig")
-     */
-    public function createAction(Request $request)
-    {
-        $entity = new Products();
-        $form = $this->createCreateForm($entity);
-        $form->handleRequest($request);
-
-        if ($form->isValid()) {
-            $encoders = array(new XmlEncoder(), new JsonEncoder());
-            $normalizers = array(new ObjectNormalizer());
-            $serializer = new Serializer($normalizers, $encoders);
-
-            $entity->setRequiredDocuments($serializer->serialize($entity->getRequiredDocuments(), 'json'));
-
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($entity);
-            $em->flush();
-
-            return $this->redirect($this->generateUrl('admin_products_show', array('id' => $entity->getId())));
-        }
-
-        return array(
-            'entity' => $entity,
-            'form' => $form->createView(),
-        );
-    }
-
-    /**
-     * Creates a form to create a Products entity.
-     *
-     * @param Products $entity The entity
+     * @param Products $product The product
      *
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createCreateForm(Products $entity)
+    private function createCreateForm(Products $product)
     {
-        $form = $this->createForm(new ProductsType(), $entity, array(
-            'action' => $this->generateUrl('admin_products_create'),
+        $form = $this->createForm(new ProductsType(), $product, array(
+            'action' => $this->generateUrl('products_new'),
             'method' => 'POST',
         ));
 
@@ -106,27 +73,51 @@ class ProductsController extends Controller
     }
 
     /**
-     * Displays a form to create a new Products entity.
+     * Displays a form to create a new Products product.
      *
-     * @Route("/new", name="admin_products_new")
-     * @Method("GET")
+     * @Route("/new", name="products_new")
+     * @Method({"GET", "POST"})
      * @Template()
      */
-    public function newAction()
+    public function newAction(Request $request)
     {
-        $entity = new Products();
-        $form = $this->createCreateForm($entity);
+        $product = new Products();
+        $product->setEnabled(true);
+        $form = $this->createCreateForm($product);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted()) {
+            if ($form->isValid()) {
+                $encoders = array(new XmlEncoder(), new JsonEncoder());
+                $normalizers = array(new ObjectNormalizer());
+                $serializer = new Serializer($normalizers, $encoders);
+                $product->setRequiredDocuments($serializer->serialize($product->getRequiredDocuments(), 'json'));
+
+                $pricing = $product->getPricing();
+                foreach ($pricing as $price) {
+                    if (empty($price->getId())) {
+                        $product->addPricing($price);
+                    }
+                }
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($product);
+                $em->flush();
+
+                return $this->redirect($this->generateUrl('products_show', array('id' => $product->getId())));
+            }
+        }
 
         return array(
-            'entity' => $entity,
-            'form' => $form->createView(),
+            'product' => $product,
+            'product_form' => $form->createView(),
         );
     }
 
     /**
-     * Finds and displays a Products entity.
+     * Finds and displays a Products product.
      *
-     * @Route("/{id}", name="admin_products_show")
+     * @Route("/{id}", name="products_show")
      * @Method("GET")
      * @Template()
      */
@@ -134,71 +125,82 @@ class ProductsController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('MeVisaERPBundle:Products')->find($id);
+        $product = $em->getRepository('MeVisaERPBundle:Products')->find($id);
 
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Products entity.');
+        if (!$product) {
+            throw $this->createNotFoundException('Unable to find Products product.');
         }
-        if (!is_array($entity->getRequiredDocuments())) {
+        if (!is_array($product->getRequiredDocuments())) {
             $encoders = array(new XmlEncoder(), new JsonEncoder());
             $normalizers = array(new ObjectNormalizer());
             $serializer = new Serializer($normalizers, $encoders);
-            $entity->setRequiredDocuments($serializer->decode($entity->getRequiredDocuments(), 'json'));
+            $product->setRequiredDocuments($serializer->decode($product->getRequiredDocuments(), 'json'));
         }
 
-        $deleteForm = $this->createDeleteForm($id);
 
         return array(
-            'entity' => $entity,
-            'delete_form' => $deleteForm->createView(),
+            'product' => $product,
         );
     }
 
     /**
-     * Displays a form to edit an existing Products entity.
+     * Displays a form to edit an existing Products product.
      *
-     * @Route("/{id}/edit", name="admin_products_edit")
-     * @Method("GET")
+     * @Route("/{id}/edit", name="products_edit")
+     * @Method({"GET", "PUT"})
      * @Template()
      */
-    public function editAction($id)
+    public function editAction(Request $request, $id)
     {
         $em = $this->getDoctrine()->getManager();
+        $product = $em->getRepository('MeVisaERPBundle:Products')->find($id);
 
-        $entity = $em->getRepository('MeVisaERPBundle:Products')->find($id);
+        if (!$product) {
+            throw $this->createNotFoundException('Unable to find Products product.');
+        }
 
-        if (!is_array($entity->getRequiredDocuments())) {
+        if (!is_array($product->getRequiredDocuments())) {
             $encoders = array(new XmlEncoder(), new JsonEncoder());
             $normalizers = array(new ObjectNormalizer());
             $serializer = new Serializer($normalizers, $encoders);
-            $entity->setRequiredDocuments($serializer->decode($entity->getRequiredDocuments(), 'json'));
+            $product->setRequiredDocuments($serializer->decode($product->getRequiredDocuments(), 'json'));
         }
 
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Products entity.');
-        }
+        $editForm = $this->createEditForm($product);
+        $editForm->handleRequest($request);
 
-        $editForm = $this->createEditForm($entity);
-        $deleteForm = $this->createDeleteForm($id);
+        if ($editForm->isSubmitted()) {
+            if ($editForm->isValid()) {
+                $productPrices = $product->getPricing();
+                foreach ($productPrices as $price) {
+                    if (empty($price->getId())) {
+                        $product->addPricing($price);
+                    } else {
+                        $em->refresh($price);
+                    }
+                }
+                $em->flush();
+                return $this->redirect($this->generateUrl('products_show', array('id' => $id)));
+            }
+        }
 
         return array(
-            'entity' => $entity,
-            'form' => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
+            'product' => $product,
+            'product_form' => $editForm->createView(),
         );
     }
 
     /**
-     * Creates a form to edit a Products entity.
+     * Creates a form to edit a Products product.
      *
-     * @param Products $entity The entity
+     * @param Products $product The product
      *
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createEditForm(Products $entity)
+    private function createEditForm(Products $product)
     {
-        $form = $this->createForm(new ProductsType(), $entity, array(
-            'action' => $this->generateUrl('admin_products_update', array('id' => $entity->getId())),
+        $form = $this->createForm(new ProductsType(), $product, array(
+            'action' => $this->generateUrl('products_edit', array('id' => $product->getId())),
             'method' => 'PUT',
         ));
 
@@ -208,92 +210,6 @@ class ProductsController extends Controller
         ));
 
         return $form;
-    }
-
-    /**
-     * Edits an existing Products entity.
-     *
-     * @Route("/{id}", name="admin_products_update")
-     * @Method("PUT")
-     * @Template("MeVisaERPBundle:Products:edit.html.twig")
-     */
-    public function updateAction(Request $request, $id)
-    {
-        $em = $this->getDoctrine()->getManager();
-
-        $entity = $em->getRepository('MeVisaERPBundle:Products')->find($id);
-
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Products entity.');
-        }
-
-        $deleteForm = $this->createDeleteForm($id);
-
-        if (!is_array($entity->getRequiredDocuments())) {
-            $encoders = array(new XmlEncoder(), new JsonEncoder());
-            $normalizers = array(new ObjectNormalizer());
-            $serializer = new Serializer($normalizers, $encoders);
-            $entity->setRequiredDocuments($serializer->decode($entity->getRequiredDocuments(), 'json'));
-        }
-
-        $editForm = $this->createEditForm($entity);
-
-        $editForm->handleRequest($request);
-
-        if ($editForm->isValid()) {
-            $em->flush();
-
-            return $this->redirect($this->generateUrl('admin_products_edit', array('id' => $id)));
-        }
-
-        return array(
-            'entity' => $entity,
-            'form' => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
-        );
-    }
-
-    /**
-     * Deletes a Products entity.
-     *
-     * @Route("/{id}", name="admin_products_delete")
-     * @Method("DELETE")
-     */
-    public function deleteAction(Request $request, $id)
-    {
-        $form = $this->createDeleteForm($id);
-        $form->handleRequest($request);
-
-        if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $entity = $em->getRepository('MeVisaERPBundle:Products')->find($id);
-
-            if (!$entity) {
-                throw $this->createNotFoundException('Unable to find Products entity.');
-            }
-
-            $em->remove($entity);
-            $em->flush();
-        }
-
-        return $this->redirect($this->generateUrl('admin_products'));
-    }
-
-    /**
-     * Creates a form to delete a Products entity by id.
-     *
-     * @param mixed $id The entity id
-     *
-     * @return \Symfony\Component\Form\Form The form
-     */
-    private function createDeleteForm($id)
-    {
-        return $this->createFormBuilder()
-                        ->setAction($this->generateUrl('admin_products_delete', array('id' => $id)))
-                        ->setMethod('DELETE')
-                        ->add('submit', 'submit', array('label' => 'Delete'))
-                        ->getForm()
-        ;
     }
 
 }

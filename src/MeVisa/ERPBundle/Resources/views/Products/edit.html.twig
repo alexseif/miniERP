@@ -1,50 +1,50 @@
 {% extends 'AdminAdminBundle:Default:adminLayout.html.twig' %}
-{% block backLink %}{{ path('admin_products_show', {'id': entity.id}) }}{% endblock %}
+{% block backLink %}{{ path('products') }}{% endblock %}
 {% block adminPanelFormStart %}
-    {{ form_start(form) }}
-    {{ form_errors(form) }}
-    {{ form_row(form._token) }}
+    {{ form_start(product_form) }}
+    {{ form_errors(product_form) }}
+    {{ form_row(product_form._token) }}
 {% endblock %}
-{% block adminPanelTitle %}Edit Product{% endblock %}
-{% block adminPanelTitleSmall %}{{ entity.name }}{% endblock %}
+{% block adminPanelTitle %}Product{% endblock %}
+{% block adminPanelTitleSmall %}{{product.name}}{% endblock %}
 {% block adminPanelBody %}
-    <div class="panel-body">
-        <div class="row">
-            <div class="col-sm-8">
-                {{ form_row(form.name) }}
-                {{ form_row(form.requiredDocuments) }}
-                {{ form_row(form.vendor) }}              
-                {{ form_row(form.enabled) }}
-            </div>
-            <div class="col-sm-4">
-                <ul class="list-group">
-                    <li class="list-group-item">
-                        <label>Price</label>
-                        {{ (entity.pricing|last)?(entity.pricing|last.price/100)|localizedcurrency('RUB') }}
-                    </li>
-                    <li class="list-group-item">
-                        <label>Cost</label>
-                        {{ (entity.pricing|last)?(entity.pricing|last.cost/100)|localizedcurrency('RUB') }}
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </div>
+    <table class="table table-condensed table-bordered">
+        <tr>
+            <td>
+                {{ form_row(product_form.name) }}
+                {{ form_row(product_form.vendor) }}
+            </td>
+            <td rowspan="2">
+                <table class="table table-condensed">
+                    <thead>
+                        <tr><th>{{ form_row(product_form.enabled) }}</th></tr>
+                        <tr><th>{{ form_label(product_form.requiredDocuments) }}</th></tr>
+                    </thead>
+                    <tbody><tr><td>{{ form_widget(product_form.requiredDocuments) }}</td></tr></tbody>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div class="pricing" data-index="{{product.pricing|length}}" data-prototype="{{
+form_row(product_form.pricing.vars.prototype.cost, {'value' : (product.pricing|last)?product.pricing|last.cost/100} ) 
+~ form_row(product_form.pricing.vars.prototype.price, {'value' : (product.pricing|last)?product.pricing|last.price/100} )}}"></div>
+            </td>
+        </tr>
+    </table>
 {% endblock %}
 {% block adminPanelFooter %}
     <div class="panel-footer">
-        <div class="clearfix">
-            {{ form_widget(form.submit) }}
-        </div>
+        <div class="clearfix">{{ form_widget(product_form.submit) }}</div>
     </div>
 {% endblock %}
-{% block adminPanelFormEnd %}{{ form_end(form) }}{% endblock %}
+{% block adminPanelFormEnd %}{{ form_end(product_form, {"render_rest": false}) }}{% endblock %}
 {% block javascripts %}
     {{ parent() }}
-    <script type="text/javascript" src="/js/chosen.jquery.min.js"></script>
     <script type="text/javascript">
         $(document).ready(function () {
-            $('.chosen-input').chosen({no_results_text: "Add new", allow_single_deselect: true});
+            addPrototypeForm('div.pricing', '<div></div>');
         });
     </script>
 {% endblock %}
+

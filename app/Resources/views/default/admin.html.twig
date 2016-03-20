@@ -25,7 +25,7 @@
                                 <ul class="dropdown-menu" role="menu">
                                     {% if is_granted('ROLE_SUPER_ADMIN') %}<li><a href="{{ path('admin_currency') }}">Currency</a></li>{% endif %}
                                     <li class="divider"></li> 
-                                    <li><a href="{{ path('admin_products') }}">Products</a></li>
+                                    <li><a href="{{ path('products') }}">Products</a></li>
                                         {% if is_granted('ROLE_SUPER_ADMIN') %}
                                         <li><a href="{{ path('vendors') }}">Vendors</a></li>
                                         {% endif %}

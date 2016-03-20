@@ -1,35 +1,26 @@
-{% extends ':default:admin.html.twig' %}
-
-{% block content %}
-    <!-- Page Heading -->
-    <div class="row">
-        <div class="col-md-12">
-            <h3 class="page-header">
-                {{product.name}} <small>New Pricing </small>
-            </h3>
-        </div>
-    </div>
-    <!-- /.row -->
-    <div class="row">
-        <div class="col-md-12">
-            <div class="panel panel-default">
-                <div class="panel-body">
-                    {#                    {{ form(form) }}#}
-                    {{ form_start(form) }}
-                    <div class="row">
-                        <div class="hidden">{{ form_widget(form.product) }}</div>
-                        <div class="col-md-4">{{ form_row(form.cost) }}</div>
-                        <div class="col-md-4">{{ form_row(form.price) }}</div>
-                    </div>
-                    {{ form_end(form) }}
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- /.row -->
-    <div class="row">
-        <div class="col-md-11"></div>
-        <div class="col-md-1"><a class="btn btn-warning" href="{{ path('admin_pricing', { 'product_id': product.id }) }}">Back</a></div>
-    </div>
-    <!-- /.row -->
+{% extends 'AdminAdminBundle:Default:adminLayout.html.twig' %}
+{% block backLink %}{{ path('pricing', { 'product_id': entity.product.id }) }}{% endblock %}
+{% block adminPanelFormStart %}
+    {{ form_start(form) }}
+    {{ form_errors(form) }}
+    {{ form_row(form._token) }}
 {% endblock %}
+{% block adminPanelTitle %}Pricing{% endblock %}
+{% block adminPanelTitleSmall %}{{entity.product.name}}{% endblock %}
+{% block adminPanelBody %}
+    <div class="panel-body">
+        <div class="row">
+            <div class="hidden">{{ form_widget(form.product) }}</div>
+            <div class="col-md-4">{{ form_row(form.cost) }}</div>
+            <div class="col-md-4">{{ form_row(form.price) }}</div>
+        </div>
+    </div>
+{% endblock %}
+{% block adminPanelFooter %}
+    <div class="panel-footer">
+        <div class="clearfix">
+            {{ form_widget(form.submit) }}
+        </div>
+    </div>
+{% endblock %}
+{% block adminPanelFormEnd %}{{ form_end(form) }}{% endblock %}

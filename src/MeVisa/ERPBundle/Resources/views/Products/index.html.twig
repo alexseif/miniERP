@@ -1,40 +1,45 @@
 {% extends 'AdminAdminBundle:Default:adminLayout.html.twig' %}
 {% block adminPanelTitle %}Products{% endblock %}
-{% block adminPanelTitleBadge %}{{ entities|length }}{% endblock %}
+{% block adminPanelTitleBadge %}{{ products|length }}{% endblock %}
 {% block adminPanelHeadingRight %}
     {% if is_granted('ROLE_SUPER_ADMIN') %}
-        <a href="{{ path('admin_products_new')}}" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span> </a>
-    {% endif %}
-{% endblock %}
-{% block adminPanelBody %}
+        <a href="{{ path('products_new')}}" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span></a>
+        {% endif %}
+    {% endblock %}
+    {% block adminPanelBody %}
     <div class="table-responsive">
         <table class="table table-bordered table-hover table-striped records_list">
             <thead>
                 <tr>
                     <th>Name</th>
-                    <th>Required Documents</th>
-                    <th>Status</th>
                     <th>Price</th>
-                    <th>Actions</th>
+                        {% if is_granted('ROLE_SUPER_ADMIN') %}
+                        <th>Cost</th>
+                        {% endif %}
+                    <th>Required Documents</th>
                 </tr>
             </thead>
             <tbody>
-                {% for entity in entities %}
+                {% for product in products %}
                     <tr>
-                        <td>{{ entity.name }}</td>
+                        <td>{{ product.name }}
+                            <span class="pull-right label label-{{ statusCSS.css((product.enabled)? "enabled": "disabled") }}">{{ (product.enabled)? "Enabled": "Disabled" }}</span>
+                        </td>
+                        <td class="text-right">{{ (product.pricing|last)?(product.pricing|last.price/100)|localizedcurrency('RUB') }}</td>
+                        {% if is_granted('ROLE_ACCOUNTANT') %}
+                            <td class="text-right">{{ (product.pricing|last)?(product.pricing|last.cost/100)|localizedcurrency('RUB') }}</td>
+                        {% endif %}
                         <td> 
-                            {% for req in entity.requiredDocuments %}
+                            {% for req in product.requiredDocuments %}
                                 {% filter upper %}{{ req }}{% endfilter %} ;
                             {% endfor %}
                         </td>
-                        <td>{% if entity.enabled %}Enabled{% else %}Disabled{% endif %}</td>
-                        <td class="text-right">{{ (entity.pricing|last)?(entity.pricing|last.price/100)|localizedcurrency('RUB') }}</td>
                         <td>
-                            <a class="btn btn-primary btn-sm" href="{{ path('admin_products_show', { 'id': entity.id }) }}">show</a>
+                            <a class="btn btn-primary btn-sm" href="{{ path('products_show', { 'id': product.id }) }}">Show</a>
                             {% if is_granted('ROLE_SUPER_ADMIN') %}
-                                <a class="btn btn-primary btn-sm" href="{{ path('admin_products_edit', { 'id': entity.id }) }}">edit</a>
+                                <a class="btn btn-primary btn-sm" href="{{ path('products_edit', { 'id': product.id }) }}">Edit</a>
                             {% endif %}
-                            <a class="btn btn-primary btn-sm" href="{{ path('admin_pricing', { 'product_id': entity.id }) }}">Pricing</a>
+                            <a class="btn btn-default btn-sm" href="{{ path('products_show', { 'id': product.id }) }}">Orders</a>
                         </td>
                     </tr>
                 {% endfor %}

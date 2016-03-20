@@ -17,6 +17,16 @@ class ProductsType extends AbstractType
     {
         $builder
                 ->add('name')
+                ->add('vendor', 'entity', array(
+                    'class' => 'MeVisaERPBundle:Vendors',
+                    'choice_label' => 'name',
+                    'attr' => array('class' => 'chosen')
+                ))
+                ->add('enabled', 'checkbox', array(
+                    'required' => false,
+                    'attr' => array(
+                    ),
+                ))
                 ->add('requiredDocuments', 'choice', array(
                     'choices' => array(
                         'passport' => 'Passport Copy',
@@ -25,15 +35,18 @@ class ProductsType extends AbstractType
                     ),
                     'multiple' => true,
                     'expanded' => true,
+                    'label_attr' => array(
+                    ),
+                    'attr' => array(
+                        'class' => 'col-sm-12'
+                    )
                 ))
-                ->add('enabled', 'checkbox', array(
-                    'required' => false,
-                    'attr' => array('checked' => 'checked'),
-                ))
-                ->add('vendor', 'entity', array(
-                    'class' => 'MeVisaERPBundle:Vendors',
-                    'choice_label' => 'name',
-                    'attr' => array('class' => 'chosen-input')
+                ->add('pricing', 'collection', array(
+                    'type' => new ProductPricesType(),
+                    'allow_add' => true,
+                    'attr' => array(
+                        'class' => 'pricing'
+                    )
                 ))
         ;
     }

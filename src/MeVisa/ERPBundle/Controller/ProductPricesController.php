@@ -21,7 +21,7 @@ class ProductPricesController extends Controller
     /**
      * Lists all ProductPrices entities.
      *
-     * @Route("/", name="admin_pricing")
+     * @Route("/", name="pricing")
      * @Method("GET")
      * @Template()
      */
@@ -44,7 +44,7 @@ class ProductPricesController extends Controller
     /**
      * Creates a new ProductPrices entity.
      *
-     * @Route("/", name="admin_pricing_create")
+     * @Route("/", name="pricing_create")
      * @Method("POST")
      * @Template("MeVisaERPBundle:ProductPrices:new.html.twig")
      */
@@ -70,7 +70,7 @@ class ProductPricesController extends Controller
 //            die();
             $em->flush();
 
-            return $this->redirect($this->generateUrl('admin_pricing', array('product_id' => $entity->getProduct()->getId())));
+            return $this->redirect($this->generateUrl('pricing', array('product_id' => $entity->getProduct()->getId())));
         }
 
         return array(
@@ -90,11 +90,14 @@ class ProductPricesController extends Controller
     {
 //var_dump($entity);die();
         $form = $this->createForm(new ProductPricesType(), $entity, array(
-            'action' => $this->generateUrl('admin_pricing_create', array('product_id' => $entity->getProduct()->getId())),
+            'action' => $this->generateUrl('pricing_create', array('product_id' => $entity->getProduct()->getId())),
             'method' => 'POST',
         ));
 
-        $form->add('submit', 'submit', array('label' => 'Create'));
+        $form->add('submit', 'submit', array(
+            'label' => 'Create',
+            'attr' => array('class' => 'btn-success pull-right')
+        ));
 
         return $form;
     }
@@ -102,7 +105,7 @@ class ProductPricesController extends Controller
     /**
      * Displays a form to create a new ProductPrices entity.
      *
-     * @Route("/new", name="admin_pricing_new")
+     * @Route("/new", name="pricing_new")
      * @Method("GET")
      * @Template()
      */
@@ -128,7 +131,7 @@ class ProductPricesController extends Controller
     /**
      * Finds and displays a ProductPrices entity.
      *
-     * @Route("/{id}", name="admin_pricing_show")
+     * @Route("/{id}", name="pricing_show")
      * @Method("GET")
      * @Template()
      */
@@ -153,7 +156,7 @@ class ProductPricesController extends Controller
     /**
      * Displays a form to edit an existing ProductPrices entity.
      *
-     * @Route("/{id}/edit", name="admin_pricing_edit")
+     * @Route("/{id}/edit", name="pricing_edit")
      * @Method("GET")
      * @Template()
      */
@@ -188,11 +191,14 @@ class ProductPricesController extends Controller
     private function createEditForm(ProductPrices $entity)
     {
         $form = $this->createForm(new ProductPricesType(), $entity, array(
-            'action' => $this->generateUrl('admin_pricing_update', array('id' => $entity->getId())),
+            'action' => $this->generateUrl('pricing_update', array('id' => $entity->getId())),
             'method' => 'PUT',
         ));
 
-        $form->add('submit', 'submit', array('label' => 'Update'));
+        $form->add('submit', 'submit', array(
+            'label' => 'Update',
+            'attr' => array('class' => 'btn-success pull-right')
+        ));
 
         return $form;
     }
@@ -200,7 +206,7 @@ class ProductPricesController extends Controller
     /**
      * Edits an existing ProductPrices entity.
      *
-     * @Route("/{id}", name="admin_pricing_update")
+     * @Route("/{id}", name="pricing_update")
      * @Method("PUT")
      * @Template("MeVisaERPBundle:ProductPrices:edit.html.twig")
      */
@@ -221,7 +227,7 @@ class ProductPricesController extends Controller
         if ($editForm->isValid()) {
             $em->flush();
 
-            return $this->redirect($this->generateUrl('admin_pricing_edit', array('id' => $id)));
+            return $this->redirect($this->generateUrl('pricing_edit', array('id' => $id)));
         }
 
         return array(
@@ -234,7 +240,7 @@ class ProductPricesController extends Controller
     /**
      * Deletes a ProductPrices entity.
      *
-     * @Route("/{id}", name="admin_pricing_delete")
+     * @Route("/{id}", name="pricing_delete")
      * @Method("DELETE")
      */
     public function deleteAction(Request $request, $id)
@@ -254,7 +260,7 @@ class ProductPricesController extends Controller
             $em->flush();
         }
 
-        return $this->redirect($this->generateUrl('admin_pricing'));
+        return $this->redirect($this->generateUrl('pricing'));
     }
 
     /**
@@ -267,7 +273,7 @@ class ProductPricesController extends Controller
     private function createDeleteForm($id)
     {
         return $this->createFormBuilder()
-                        ->setAction($this->generateUrl('admin_pricing_delete', array('id' => $id)))
+                        ->setAction($this->generateUrl('pricing_delete', array('id' => $id)))
                         ->setMethod('DELETE')
                         ->add('submit', 'submit', array('label' => 'Delete'))
                         ->getForm()

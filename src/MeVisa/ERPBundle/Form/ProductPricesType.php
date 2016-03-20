@@ -22,10 +22,6 @@ class ProductPricesType extends AbstractType {
                     'currency' => 'RUB',
                     'divisor' => 100
                 ))
-                ->add('product', 'entity', array(
-                    'class' => 'MeVisaERPBundle:Products',
-                    'choice_label' => 'name',
-                ))
         ;
     }
 

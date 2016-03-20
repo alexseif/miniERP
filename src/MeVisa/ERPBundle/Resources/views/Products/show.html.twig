@@ -1,53 +1,65 @@
-{% extends ':default:admin.html.twig' %}
-
-{% block content %}
-    <div class="row">
-        <div class="col-md-12">
-            <div class="panel panel-info">
-                <div class="panel-heading">
-                    <span class="panel-title">Product <small> {{ entity.name }} </small></span>
-                    <span class="label label-{% if entity.enabled %}success{% else %}danger{% endif %} pull-right">{% if entity.enabled %}Enabled{% else %}Disabled{% endif %}</span>
+{% extends 'AdminAdminBundle:Default:adminLayout.html.twig' %}
+{% block backLink %}{{ path('products') }}{% endblock %}
+{% block adminPanelTitle %}Product{% endblock %}
+{% block adminPanelTitleSmall %}{{ product.name }}{% endblock %}
+{% block adminPanelHeadingRight %}<span class="label label-{% if product.enabled %}success{% else %}danger{% endif %} pull-right">{% if product.enabled %}Enabled{% else %}Disabled{% endif %}</span>{% endblock %}
+{% block adminPanelBody %}
+    <style type="text/css">
+        #productPrice tbody tr:first-child{background-color: #5cb85c;color: #fff;font-weight: bold;}
+    </style>
+    <table class="table table-condensed table-bordered">
+        <tr>
+            <td>
+                <div class="row">
+                    <label class="col-sm-2 col-sm-offset-1">Name</label><span class="col-sm-8">{{ product.name }}</span>
                 </div>
-                <div class="panel-body">
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <ul class="list-group">
-                                <li class="list-group-item clearfix">
-                                    <label class="col-sm-4">Name</label> 
-                                    {{ entity.name }}
-                                </li>
-                                <li class="list-group-item clearfix">
-                                    <label class="col-sm-12">Required Documents</label>
-                                    {% for req in entity.requiredDocuments%}
-                                        {% filter upper %}{{ req }}{% endfilter %}<br/>
-                                    {% endfor %}
-                                </li>
-                                <li class="list-group-item clearfix"><label class="col-sm-4">Vendor</label> {{ entity.vendor.name }}</li>
-                            </ul>
-                        </div>
-                        <div class="col-sm-6">
-                            <ul class="list-group">
-                                <li class="list-group-item clearfix">
-                                    <label class="col-sm-4">Price</label> 
-                                    {{ (entity.pricing|last)?(entity.pricing|last.price/100)|localizedcurrency('RUB') }}
-                                </li>
-                                <li class="list-group-item clearfix"><label class="col-sm-4">Cost</label> {{ (entity.pricing|last)?(entity.pricing|last.cost/100)|localizedcurrency('RUB') }}</li>
-                            </ul>
-                        </div>
-                    </div>
+                <div class="row">
+                    <label class="col-sm-2 col-sm-offset-1">Vendor</label><span class="col-sm-8">{{ (product.vendor)?product.vendor.name }}</span>
                 </div>
-                <div class="panel-footer">
-                    <div class="row">
-                        <div class="col-sm-10">
-                            <a class="btn btn-warning " href="{{ path('admin_products') }}">Back</a>
-                        </div>
-                        <div class="col-sm-2">
-                            <a class="btn btn-primary pull-right" href="{{ path('admin_products_edit', { 'id': entity.id }) }}">Edit</a>
-                        </div>
-                    </div>
+            </td>
+            <td rowspan="2">
+                <div class="table-responsive">
+                    <table class="table table-condensed">
+                        <thead><tr><th>Required Documents</th></tr></thead>
+                        <tbody>
+                            {% for req in product.requiredDocuments%}
+                                <tr><td>{% filter upper %}{{ req }}{% endfilter %}</td></tr>
+                            {% endfor %}    
+                        </tbody>
+                    </table>
                 </div>
-            </div>
+            </td>
+        </tr>
+        <tr>
+            <td style="padding: 0px 20px;">
+                <table class="table table-condensed" id="productPrice">
+                    <thead>
+                        <tr><th>Price</th>
+                            {% if is_granted('ROLE_ACCOUNTANT') %}
+                                <th>Cost</th>
+                            {% endif %}
+                            <th class="col-sm-3"></th></tr>
+                    </thead>
+                    <tbody>
+                        {% for key,price in product.pricing|reverse %}
+                            <tr><td>{{ (price.price/100)|localizedcurrency('RUB') }}</td>
+                            {% if is_granted('ROLE_ACCOUNTANT') %}
+                                <td>{{ (price.cost/100)|localizedcurrency('RUB') }}</td>
+                            {% endif %}
+                                <td>{{ price.createdAt|localizeddate }}</td></tr>
+                            {% endfor %}
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+    </table>
+{% endblock %}
+{% block adminPanelFooter %}
+    <div class="panel-footer">
+        <div class='clearfix'>
+            {% if(is_granted('ROLE_SUPER_ADMIN')) %}
+                <a class="btn btn-primary pull-right" href="{{ path('products_edit', { 'id': product.id }) }}">Edit</a>
+            {% endif %}
         </div>
     </div>
-    <!-- /.row -->
 {% endblock %}

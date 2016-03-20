@@ -1,51 +1,35 @@
-{% extends ':default:admin.html.twig' %}
-
-{% block content %}
-    <!-- Page Heading -->
-    <div class="row">
-        <div class="col-md-12">
-            <h3 class="page-header">
-                {{ product.name }} <small> Pricing  </small>
-            </h3>
-        </div>
-    </div>
-    <!-- /.row -->
-    <!-- page content -->
-    <div class="row">
-        <div class="col-md-12">
-            <div class="panel panel-default">
-                <div class="panel-body">
-                    <div class="table-responsive">
-                        <table class="table table-bordered table-hover table-striped records_list">
-                            <thead>
-                                <tr>
-                                    {% if is_granted('ROLE_ACCOUNTANT') %}<th>Cost</th>{% endif %}
-                                    <th>Price</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for entity in entities %}
-                                    <tr>
-                                        {% if is_granted('ROLE_ACCOUNTANT') %}<td>{{ (entity.cost/100)|localizedcurrency('RUB') }}</td>{% endif %}
-                                        <td>{{ (entity.price/100)|localizedcurrency('RUB') }}</td>
-                                        <td>
-                                            {% if is_granted('ROLE_SUPER_ADMIN') %}
-                                                <a class="btn btn-primary" href="{{ path('admin_pricing_edit', { 'id': entity.id }) }}">edit</a>
-                                            {% endif %}
-                                        </td>
-                                    </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- /.row -->
+{% extends 'AdminAdminBundle:Default:adminLayout.html.twig' %}
+{% block backLink %}{{ path('products') }}{% endblock %}
+{% block adminPanelTitle %}{{ product.name }}{% endblock %}
+{% block adminPanelTitleSmall %}Pricing{% endblock %}
+{% block adminPanelHeadingRight %}
     {% if is_granted('ROLE_SUPER_ADMIN') %}
-        <a class="btn btn-primary" href="{{ path('admin_pricing_new', { 'product_id': product.id }) }}">Add Product Pricing</a>
+        <a class="btn btn-primary" href="{{ path('pricing_new', { 'product_id': product.id }) }}"><span class="glyphicon glyphicon-plus"></span></a>
     {% endif %}
-    <a class="btn btn-warning pull-right" href="{{ path('admin_products') }}">Back</a>
+{% endblock %}
+{% block adminPanelBody %}
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover table-striped records_list">
+            <thead>
+                <tr>
+                    {% if is_granted('ROLE_ACCOUNTANT') %}<th>Cost</th>{% endif %}
+                    <th>Price</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for entity in entities %}
+                    <tr>
+                        {% if is_granted('ROLE_ACCOUNTANT') %}<td>{{ (entity.cost/100)|localizedcurrency('RUB') }}</td>{% endif %}
+                        <td>{{ (entity.price/100)|localizedcurrency('RUB') }}</td>
+                        <td>
+                            {% if is_granted('ROLE_SUPER_ADMIN') %}
+                                <a class="btn btn-primary" href="{{ path('pricing_edit', { 'id': entity.id }) }}">edit</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 {% endblock %}
