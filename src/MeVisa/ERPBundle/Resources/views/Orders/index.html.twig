@@ -1,21 +1,53 @@
+
 {% extends 'MeVisaERPBundle:Orders:defaultLayout.html.twig' %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" type="text/css" href="/css/dataTables.bootstrap.min.css" />
+    <style type="text/css">
+        table.dataTable{margin: 0 !important;}
+        div.dataTables_wrapper div.dataTables_paginate{text-align: center;}
+    </style>
+{% endblock %}
 {% block pageActions %}
     {% include 'AdminAdminBundle:Default:quickActions.html.twig' %}
 {% endblock %}
-{% block adminPanelHeadingRight %}<span class="badge">{{ orders|length }}</span>{% endblock %}
+{% block adminPanelHeading %}
+    <div class="row">
+        <div class="col-sm-2">
+            <a class="btn btn-default ml-5" href="{{ path('dashboard') }}"><span class="glyphicon glyphicon-arrow-left"></span></a>
+            <span class="panel-title"><strong>Orders</strong><span class="badge">{{ orders|length }}</span></span>
+        </div>
+        <div class="col-sm-10">
+            <div id="datatable-options" class="form-horizontal">
+                <div class="row">
+                    <div class="col-sm-2">
+                        <div id="search-state"></div>
+                        <div id="search-pay"></div>
+                    </div>
+                    <div class="col-sm-6"><input type="search" id="datatable-search" class="form-control" placeholder="Search" aria-controls="datatable"></div>
+                    <div class="col-sm-2 text-center text-muted" id="datatable-info"></div>
+                    <div class="col-sm-2">
+                        <select name="datatable_length" id="datatable-length" aria-controls="datatable" class="form-control input-sm chosen"><option value="10">10</option><option value="25">25</option><option value="50">50</option><option value="100">100</option></select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
 {% block adminPanelBody %}
     <div class="table-responsive">
-        <table class="table table-bordered table-striped table-hover records_list">
+        <table class="table table-bordered table-striped table-hover records_list" id="datatable" cellspacing="0">
             <thead>
                 <tr>
                     <th>Order #</th>
                     <th>State</th>
-                    <th>Customer</th>
+                    <th>Payment State</th>
+                    <th data-orderable="false">Customer</th>
                     <th>Channel</th>
-                        {# <th>Subtotal</th>#}
                     <th>Adjustment</th>
                     <th>Total</th>
-                    <th colspan="2">Created</th>
+                    <th>Created</th>
+                    <th data-orderable="false"></th>
                 </tr>
             </thead>
             <tbody>
@@ -32,21 +64,92 @@
                         {% endif %}
                     {% endif %}
                     <tr class="{{ highlight }}">
-                        <td class="text-center"><a class="btn btn-link" href="{{ path('orders_show', { 'id': order.id }) }}">{{ order.number }}</a></td>
-                        <td>
+                        <td class="text-center col-sm-1"><a class="btn btn-link" href="{{ path('orders_show', { 'id': order.id }) }}">{{ order.number }}</a></td>
+                        <td class="col-sm-1" data-state="{{order.state}}">
                             <span class="label label-{{ statusCSS.css(order.state) }}">{{ order.state|upper }}</span>
-                            &nbsp;<span class="label label-{{ statusCSS.css(order.orderPayments|last.state) }}">{{ order.orderPayments|last.state|upper }}</span>
                         </td>
-                        <td>{{ order.customer.name }}</td>
-                        <td>{{ order.channel }}</td>
-                        {# <td class="text-right">{{ (order.productsTotal/100)|localizedcurrency('RUB') }}</td>#}
-                        <td class="text-right">{{ (order.adjustmentTotal/100)|localizedcurrency('RUB') }}</td>
-                        <td class="text-right">{{ (order.total/100)|localizedcurrency('RUB') }}</td>
-                        <td>{% if order.createdAt %}{{ order.createdAt|localizeddate('medium', 'short') }}{% endif %}</td>
-                        <td><a class="btn btn-primary btn-sm" href="{{ path('orders_show', { 'id': order.id }) }}">Open</a></td>
+                        <td class="col-sm-1">
+                            <span class="label label-{{ statusCSS.css(order.orderPayments|last.state) }}">{{ order.orderPayments|last.state|replace('_',' ')|upper }}</span>
+                        </td>
+                        <td class="col-sm-2">{{ order.customer.name }}</td>
+                        <td class="col-sm-1">{{ order.channel }}</td>
+                        <td class="text-right col-sm-1">{{ (order.adjustmentTotal/100)|localizedcurrency('RUB') }}</td>
+                        <td class="text-right col-sm-2">{{ (order.total/100)|localizedcurrency('RUB') }}</td>
+                        <td class="col-sm-2">{% if order.createdAt %}{{ order.createdAt|localizeddate('medium', 'short') }}{% endif %}</td>
+                        <td class="col-sm-1"><a class="btn btn-primary btn-sm" href="{{ path('orders_show', { 'id': order.id }) }}">Open</a></td>
                     </tr>
                 {% endfor %}
             </tbody>
         </table>
     </div>
+{% endblock %}
+{% block adminPanelFooter %}
+    <div class="panel-footer">
+        <div id="datatable-pagination" class="dataTables_wrapper">
+
+        </div>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script src="/js/datatables.min.js"></script>
+    {#    <script src="/js/dataTables.bootstrap.min.js"></script>#}
+    <script type="text/javascript">
+        var table;
+        $(document).ready(function () {
+            table = $('#datatable').DataTable({
+                initComplete: function () {
+                    this.api().columns(1).every(function () {
+                        var column = this;
+                        var select = $('<select><option value="">All</option></select>')
+                                .appendTo($('#search-state').empty())
+                                .on('change', function () {
+                                    var val = $.fn.dataTable.util.escapeRegex(
+                                            $(this).val()
+                                            );
+                                    column
+                                            .search(val ? '^' + val + '$' : '', true, false)
+                                            .draw();
+                                });
+
+                        column.data().unique().sort().each(function (d, j) {
+                            d = $(d).text();
+                            select.append('<option value="' + d + '">' + d + '</option>')
+                        });
+                    });
+                    this.api().columns(2).every(function () {
+                        var column = this;
+                        var select = $('<select><option value="">All</option></select>')
+                                .appendTo($('#search-pay').empty())
+                                .on('change', function () {
+                                    var val = $.fn.dataTable.util.escapeRegex(
+                                            $(this).val()
+                                            );
+                                    column
+                                            .search(val ? '^' + val + '$' : '', true, false)
+                                            .draw();
+                                });
+
+                        column.data().unique().sort().each(function (d, j) {
+                            d = $(d).text();
+                            select.append('<option value="' + d + '">' + d + '</option>')
+                        });
+                    });
+                },
+                "dom": '<bottom p>'
+            });
+            $('#datatable-info').html("Showing " + table.page.info().start + " to " + table.page.info().end + " of " + table.page.info().recordsDisplay);
+            $('#datatable').on('draw.dt', function () {
+                $('#datatable-info').html("Showing " + table.page.info().start + " to " + table.page.info().end + " of " + table.page.info().recordsDisplay);
+            });
+            $('#datatable-search').keyup(function () {
+                table.search($(this).val()).draw();
+            });
+            $('#datatable-length').change(function () {
+                table.page.len($(this).val()).draw();
+            });
+            $('#datatable-pagination').html($('#datatable_paginate'));
+
+        });
+    </script>
 {% endblock %}
