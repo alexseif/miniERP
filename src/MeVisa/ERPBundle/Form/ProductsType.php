@@ -24,8 +24,9 @@ class ProductsType extends AbstractType
                 ))
                 ->add('enabled', 'checkbox', array(
                     'required' => false,
-                    'attr' => array(
-                    ),
+                ))
+                ->add('urgent', 'checkbox', array(
+                    'required' => false,
                 ))
                 ->add('requiredDocuments', 'choice', array(
                     'choices' => array(

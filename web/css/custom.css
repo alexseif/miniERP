@@ -23,7 +23,6 @@ tr.bg-success:focus {
     display: table;
     clear: both;
 }
-
 .order-comment{
     font-size: 14px;
     background:#eee;
@@ -64,6 +63,8 @@ tr.bg-success:focus {
 .dashboard{max-height: 250px;}
 .dashboard a{padding-top: 0px;padding-bottom: 0px;}
 .highlight {background-color: #f2dede;font-weight: bold;}
+.urgent > td:first-child{background-color: #9585bf!important;font-weight: bold;color: #fff;}
+.urgent .btn-link{background-color: #9585bf;font-weight: bold;color: #fff;width: 100%;}
 .table-striped > tbody > tr:nth-child(odd).highlight > td {background-color: #f2dede;}
 .records_list tbody tr td{vertical-align: middle;}
 .panel .form-group{ margin-bottom: 5px;}
@@ -117,3 +118,4 @@ tr.bg-success:focus {
 .alert-error .alert-link {
     color: #843534;
 }
+.label-purple, .badge-purple { background-color: #9585bf!important }

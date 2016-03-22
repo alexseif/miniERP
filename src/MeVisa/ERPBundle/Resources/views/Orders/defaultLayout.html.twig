@@ -10,6 +10,11 @@
     {% endif %}
 {% endblock %}
 {% block adminPanelHeadingRight %}
+    {% for product in order.orderProducts %}
+        {% if (product.product.urgent) %}
+            <span class="label label-purple">Urgent</span>
+        {% endif %}
+    {% endfor %}
     &nbsp;<span class="label label-default">{{ order.channel|upper }}</span>
     &nbsp;<span class="label label-{{order.orderState.currentState.bootstrapClass}}">{{ order.stateName|upper }}</span>
     &nbsp;<span class="label label-default"> {{ order.createdAt|localizeddate }}</span>

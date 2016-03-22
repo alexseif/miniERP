@@ -2,7 +2,12 @@
 {% block backLink %}{{ path('products') }}{% endblock %}
 {% block adminPanelTitle %}Product{% endblock %}
 {% block adminPanelTitleSmall %}{{ product.name }}{% endblock %}
-{% block adminPanelHeadingRight %}<span class="label label-{% if product.enabled %}success{% else %}danger{% endif %} pull-right">{% if product.enabled %}Enabled{% else %}Disabled{% endif %}</span>{% endblock %}
+{% block adminPanelHeadingRight %}
+    {% if product.urgent %}
+        <span class="label label-purple">Urgent</span>
+    {% endif %}
+    <span class="label label-{{ statusCSS.css((product.enabled ? "enabled":"disabled"))}}">{{ (product.enabled ? "Enabled":"Disabled") }}</span>
+{% endblock %}
 {% block adminPanelBody %}
     <style type="text/css">
         #productPrice tbody tr:first-child{background-color: #5cb85c;color: #fff;font-weight: bold;}
@@ -35,17 +40,17 @@
                 <table class="table table-condensed" id="productPrice">
                     <thead>
                         <tr><th>Price</th>
-                            {% if is_granted('ROLE_ACCOUNTANT') %}
+                                {% if is_granted('ROLE_ACCOUNTANT') %}
                                 <th>Cost</th>
-                            {% endif %}
+                                {% endif %}
                             <th class="col-sm-3"></th></tr>
                     </thead>
                     <tbody>
                         {% for key,price in product.pricing|reverse %}
                             <tr><td>{{ (price.price/100)|localizedcurrency('RUB') }}</td>
-                            {% if is_granted('ROLE_ACCOUNTANT') %}
-                                <td>{{ (price.cost/100)|localizedcurrency('RUB') }}</td>
-                            {% endif %}
+                                {% if is_granted('ROLE_ACCOUNTANT') %}
+                                    <td>{{ (price.cost/100)|localizedcurrency('RUB') }}</td>
+                                {% endif %}
                                 <td>{{ price.createdAt|localizeddate }}</td></tr>
                             {% endfor %}
                     </tbody>

@@ -23,7 +23,12 @@
                 {% for product in products %}
                     <tr>
                         <td>{{ product.name }}
-                            <span class="pull-right label label-{{ statusCSS.css((product.enabled)? "enabled": "disabled") }}">{{ (product.enabled)? "Enabled": "Disabled" }}</span>
+                            <div class="pull-right">
+                                {% if product.urgent %}
+                                    <span class="label label-purple">Urgent</span>
+                                {% endif %}
+                                <span class="label label-{{ statusCSS.css((product.enabled)? "enabled": "disabled") }}">{{ (product.enabled)? "Enabled": "Disabled" }}</span>
+                            </div>
                         </td>
                         <td class="text-right">{{ (product.pricing|last)?(product.pricing|last.price/100)|localizedcurrency('RUB') }}</td>
                         {% if is_granted('ROLE_ACCOUNTANT') %}

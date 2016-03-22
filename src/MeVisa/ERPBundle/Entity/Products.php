@@ -51,6 +51,12 @@ class Products
      * @ORM\Column(name="enabled", type="boolean")
      */
     private $enabled;
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="urgent", type="boolean")
+     */
+    private $urgent;
 
     /**
      * @ORM\ManyToOne(targetEntity="Vendors", inversedBy="products")
@@ -219,4 +225,60 @@ class Products
         return $this->pricing;
     }
 
+
+    /**
+     * Set urgent
+     *
+     * @param boolean $urgent
+     * @return Products
+     */
+    public function setUrgent($urgent)
+    {
+        $this->urgent = $urgent;
+
+        return $this;
+    }
+
+    /**
+     * Get urgent
+     *
+     * @return boolean 
+     */
+    public function getUrgent()
+    {
+        return $this->urgent;
+    }
+
+    /**
+     * Add orderProducts
+     *
+     * @param \MeVisa\ERPBundle\Entity\OrderProducts $orderProducts
+     * @return Products
+     */
+    public function addOrderProduct(\MeVisa\ERPBundle\Entity\OrderProducts $orderProducts)
+    {
+        $this->orderProducts[] = $orderProducts;
+
+        return $this;
+    }
+
+    /**
+     * Remove orderProducts
+     *
+     * @param \MeVisa\ERPBundle\Entity\OrderProducts $orderProducts
+     */
+    public function removeOrderProduct(\MeVisa\ERPBundle\Entity\OrderProducts $orderProducts)
+    {
+        $this->orderProducts->removeElement($orderProducts);
+    }
+
+    /**
+     * Get orderProducts
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getOrderProducts()
+    {
+        return $this->orderProducts;
+    }
 }

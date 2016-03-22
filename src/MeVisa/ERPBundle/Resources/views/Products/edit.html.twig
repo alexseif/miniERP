@@ -11,8 +11,19 @@
     <table class="table table-condensed table-bordered">
         <tr>
             <td>
-                {{ form_row(product_form.name) }}
+                <div class="row">
+                    <div class="col-sm-10">
+                        {{ form_row(product_form.name) }}
+                    </div>
+                    <div class="col-sm-2">
+                        {{ form_row(product_form.urgent) }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-10">
                 {{ form_row(product_form.vendor) }}
+                    </div>
+                </div>
             </td>
             <td rowspan="2">
                 <table class="table table-condensed">

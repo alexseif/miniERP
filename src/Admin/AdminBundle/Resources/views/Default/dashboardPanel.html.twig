@@ -8,6 +8,7 @@
             <tbody>
                 {% for order in orders %}
                     {% set highlight = ''%}
+                    {% set urgent = ''%}
                     {% if order.state == "post" %}
                         {% if  (date(order.postedAt) < date('-3days')) and order.postedAt.timestamp is defined %}
                             {% set highlight = 'highlight' %}
@@ -18,8 +19,15 @@
                             {% set highlight = 'highlight' %}
                         {% endif %}
                     {% endif %}
-                    <tr class="{{ highlight }}">
-                        <td><a class="btn btn-link" href="{{ path('orders_show', { 'id': order.id }) }}">{{ order.number }}</a></td>
+                    {% for product in order.orderProducts %}
+                        {% if (product.product.urgent) %}
+                            {% set urgent='urgent' %}
+                        {% endif %}
+                    {% endfor %}
+                    <tr class="{{ highlight }} {{urgent}}">
+                        <td>
+                            <a class="btn btn-link" href="{{ path('orders_show', { 'id': order.id }) }}">{{ order.number }}</a>
+                        </td>
                         <td>{{ order.customer.name }}</td>
                         <td class="text-right">{{ (order.total/100)|localizedcurrency('RUB') }}</td>
                         {% if order.state == "post" %}
