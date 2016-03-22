@@ -66,6 +66,18 @@ class OrdersRepository extends EntityRepository
                         ->getResult();
     }
 
+    public function findAllNotPaid()
+    {
+        return $this->createQueryBuilder('o')
+                        ->select('o, c')
+                        ->leftJoin('o.customer', 'c')
+                        ->leftJoin('o.orderPayments', 'opa')
+                        ->Where("opa.state != 'paid'")
+                        ->orderBy("o.createdAt, o.wcId")
+                        ->getQuery()
+                        ->getResult();
+    }
+
     public function findAllPending()
     {
         return $this->createQueryBuilder('o')

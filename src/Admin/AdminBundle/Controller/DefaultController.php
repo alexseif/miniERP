@@ -23,12 +23,14 @@ class DefaultController extends Controller
         $document = $em->getRepository('MeVisaERPBundle:Orders')->findAllByState("document");
         $post = $em->getRepository('MeVisaERPBundle:Orders')->findAllByState("post");
         $completed = $em->getRepository('MeVisaERPBundle:Orders')->findAllComplete();
+        $notPaid = $em->getRepository('MeVisaERPBundle:Orders')->findAllNotPaid();
 
         return array(
             "backoffice" => $backoffice,
             "document" => $document,
             "post" => $post,
             "completed" => $completed,
+            "not_paid" => $notPaid,
         );
     }
 
