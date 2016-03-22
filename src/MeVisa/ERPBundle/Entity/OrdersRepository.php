@@ -33,9 +33,10 @@ class OrdersRepository extends EntityRepository
     public function findAll()
     {
         return $this->createQueryBuilder('o')
-                        ->select('o, c, opa')
+                        ->select('o, c, opa, opr')
                         ->leftJoin('o.customer', 'c')
                         ->leftJoin('o.orderPayments', 'opa')
+                        ->leftJoin('o.orderProducts', 'opr')
                         ->orderBy("o.createdAt, o.wcId")
                         ->getQuery()
                         ->getResult();
@@ -44,11 +45,13 @@ class OrdersRepository extends EntityRepository
     public function findCurrentOrdersList()
     {
         $today = new \DateTime("-7 days");
-        
+
         return $this->createQueryBuilder('o')
-                        ->select('o, c, opa')
+                        ->select('o, c, opa, opr, p')
                         ->leftJoin('o.customer', 'c')
                         ->leftJoin('o.orderPayments', 'opa')
+                        ->leftJoin('o.orderProducts', 'opr')
+                        ->leftJoin('opr.product', 'p')
                         ->where('o.completedAt <= ?1')
                         ->setParameter('1', $today)
                         ->orWhere('o.completedAt is null')
@@ -56,14 +59,17 @@ class OrdersRepository extends EntityRepository
                         ->getQuery()
                         ->getResult();
     }
+
     public function findArchivedOrdersList()
     {
         $today = new \DateTime("-7 days");
-        
+
         return $this->createQueryBuilder('o')
-                        ->select('o, c, opa')
+                        ->select('o, c, opa, opr, p')
                         ->leftJoin('o.customer', 'c')
                         ->leftJoin('o.orderPayments', 'opa')
+                        ->leftJoin('o.orderProducts', 'opr')
+                        ->leftJoin('opr.product', 'p')
                         ->where('o.completedAt > ?1')
                         ->setParameter('1', $today)
                         ->orderBy("o.createdAt, o.wcId")
@@ -74,9 +80,11 @@ class OrdersRepository extends EntityRepository
     public function findAllByState($state)
     {
         return $this->createQueryBuilder('o')
-                        ->select('o, c, opa')
+                        ->select('o, c, opa, opr, p')
                         ->leftJoin('o.customer', 'c')
                         ->leftJoin('o.orderPayments', 'opa')
+                        ->leftJoin('o.orderProducts', 'opr')
+                        ->leftJoin('opr.product', 'p')
                         ->where("o.state = ?1")
                         ->andWhere("opa.state = 'paid'")
                         ->setParameter('1', $state)
@@ -88,8 +96,11 @@ class OrdersRepository extends EntityRepository
     public function findAllComplete()
     {
         return $this->createQueryBuilder('o')
-                        ->select('o, c')
+                        ->select('o, c, opa, opr, p')
                         ->leftJoin('o.customer', 'c')
+                        ->leftJoin('o.orderPayments', 'opa')
+                        ->leftJoin('o.orderProducts', 'opr')
+                        ->leftJoin('opr.product', 'p')
                         ->Where("DATE_DIFF(o.completedAt, CURRENT_DATE()) = 0")
                         ->orderBy("o.createdAt, o.wcId")
                         ->getQuery()
@@ -99,9 +110,11 @@ class OrdersRepository extends EntityRepository
     public function findAllNotPaid()
     {
         return $this->createQueryBuilder('o')
-                        ->select('o, c')
+                        ->select('o, c, opa, opr, p')
                         ->leftJoin('o.customer', 'c')
                         ->leftJoin('o.orderPayments', 'opa')
+                        ->leftJoin('o.orderProducts', 'opr')
+                        ->leftJoin('opr.product', 'p')
                         ->Where("opa.state != 'paid'")
                         ->orderBy("o.createdAt, o.wcId")
                         ->getQuery()
@@ -111,8 +124,11 @@ class OrdersRepository extends EntityRepository
     public function findAllPending()
     {
         return $this->createQueryBuilder('o')
-                        ->select('o, c')
+                        ->select('o, c, opa, opr, p')
                         ->leftJoin('o.customer', 'c')
+                        ->leftJoin('o.orderPayments', 'opa')
+                        ->leftJoin('o.orderProducts', 'opr')
+                        ->leftJoin('opr.product', 'p')
                         ->where("o.state = ?1")
                         ->orWhere("o.state = ?2")
                         ->setParameter('1', 'pending')
