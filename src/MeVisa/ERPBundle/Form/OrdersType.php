@@ -71,6 +71,9 @@ class OrdersType extends AbstractType
                         'data-date-format' => 'dd.mm.yy',
                     ))
                 )
+                ->add('ticketRequired', 'checkbox', array(
+                    'required' => false,
+                ))
         ;
         $builder->add('customer', new \MeVisa\CRMBundle\Form\CustomersType());
         $agent = false;

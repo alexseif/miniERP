@@ -25,7 +25,7 @@
                         {% endif %}
                     {% endfor %}
                     <tr class="{{ highlight }} {{urgent}}">
-                        <td>
+                        <td class="text-center">
                             <a class="btn btn-link" href="{{ path('orders_show', { 'id': order.id }) }}">{{ order.number }}</a>
                         </td>
                         <td>{{ order.customer.name }}</td>

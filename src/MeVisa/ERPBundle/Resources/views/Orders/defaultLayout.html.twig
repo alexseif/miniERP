@@ -1,6 +1,6 @@
 {% extends 'AdminAdminBundle:Default:adminLayout.html.twig' %}
-
 {% block title %}Orders{% endblock %}
+{% block adminPanelClass %} {{(order.ticketRequired)?'panel-warning':'panel-default'}}{% endblock %}
 {% block adminPanelTitle %}Orders{% endblock %}
 {% block backLink %}
     {% if app.request.get('_route') in ['orders_show', 'orders_new', 'orders'] %}
@@ -15,6 +15,9 @@
             <span class="label label-purple">Urgent</span>
         {% endif %}
     {% endfor %}
+    {% if (order.ticketRequired) %}
+        <span class="label label-warning">Ticket Required</span>
+    {% endif %}
     &nbsp;<span class="label label-default">{{ order.channel|upper }}</span>
     &nbsp;<span class="label label-{{order.orderState.currentState.bootstrapClass}}">{{ order.stateName|upper }}</span>
     &nbsp;<span class="label label-default"> {{ order.createdAt|localizeddate }}</span>

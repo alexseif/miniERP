@@ -115,6 +115,13 @@ class Orders
     private $departure;
 
     /**
+     * @var boolean
+     *
+     * @ORM\Column(name="ticket_required", type="boolean")
+     */
+    private $ticketRequired;
+
+    /**
      * @var \DateTime
      *
      * @ORM\Column(name="createdAt", type="datetime")
@@ -814,4 +821,27 @@ class Orders
         return $this->postedAt;
     }
 
+
+    /**
+     * Set ticketRequired
+     *
+     * @param boolean $ticketRequired
+     * @return Orders
+     */
+    public function setTicketRequired($ticketRequired)
+    {
+        $this->ticketRequired = $ticketRequired;
+
+        return $this;
+    }
+
+    /**
+     * Get ticketRequired
+     *
+     * @return boolean 
+     */
+    public function getTicketRequired()
+    {
+        return $this->ticketRequired;
+    }
 }
