@@ -34,6 +34,19 @@ class OrdersController extends Controller
             'orders' => $this->get('erp.order')->getOrdersList(),
         );
     }
+    /**
+     * Lists all Orders entities.
+     *
+     * @Route("/archive", name="orders_archive")
+     * @Method("GET")
+     * @Template("MeVisaERPBundle:Orders:index.html.twig")
+     */
+    public function archiveAction()
+    {
+        return array(
+            'orders' => $this->get('erp.order')->getArchivedOrdersList(),
+        );
+    }
 
     /**
      * Creates a new Orders entity.

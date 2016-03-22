@@ -21,7 +21,12 @@ class OrderService
 
     public function getOrdersList()
     {
-        return $this->em->getRepository('MeVisaERPBundle:Orders')->findAll();
+        return $this->em->getRepository('MeVisaERPBundle:Orders')->findCurrentOrdersList();
+    }
+
+    public function getArchivedOrdersList()
+    {
+        return $this->em->getRepository('MeVisaERPBundle:Orders')->findArchivedOrdersList();
     }
 
     public function getOrder($id)

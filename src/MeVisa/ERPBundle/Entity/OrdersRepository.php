@@ -41,6 +41,36 @@ class OrdersRepository extends EntityRepository
                         ->getResult();
     }
 
+    public function findCurrentOrdersList()
+    {
+        $today = new \DateTime("-7 days");
+        
+        return $this->createQueryBuilder('o')
+                        ->select('o, c, opa')
+                        ->leftJoin('o.customer', 'c')
+                        ->leftJoin('o.orderPayments', 'opa')
+                        ->where('o.completedAt <= ?1')
+                        ->setParameter('1', $today)
+                        ->orWhere('o.completedAt is null')
+                        ->orderBy("o.createdAt, o.wcId")
+                        ->getQuery()
+                        ->getResult();
+    }
+    public function findArchivedOrdersList()
+    {
+        $today = new \DateTime("-7 days");
+        
+        return $this->createQueryBuilder('o')
+                        ->select('o, c, opa')
+                        ->leftJoin('o.customer', 'c')
+                        ->leftJoin('o.orderPayments', 'opa')
+                        ->where('o.completedAt > ?1')
+                        ->setParameter('1', $today)
+                        ->orderBy("o.createdAt, o.wcId")
+                        ->getQuery()
+                        ->getResult();
+    }
+
     public function findAllByState($state)
     {
         return $this->createQueryBuilder('o')
