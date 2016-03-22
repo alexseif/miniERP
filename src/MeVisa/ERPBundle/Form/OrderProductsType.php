@@ -41,13 +41,19 @@ class OrderProductsType extends AbstractType
                     'currency' => 'RUB',
                     'divisor' => 100,
                     'read_only' => true
-        ));
-        $builder->add('unitPrice', 'money', array(
-            'currency' => 'RUB',
-            'divisor' => 100,
-            'label' => 'Price',
-            'read_only' => !$this->agent
-        ));
+                ))
+                ->add('unitPrice', 'money', array(
+                    'currency' => 'RUB',
+                    'divisor' => 100,
+                    'label' => 'Price',
+                    'read_only' => !$this->agent
+                ))
+                ->add('vendor', 'entity', array(
+                    'class' => 'MeVisaERPBundle:Vendors',
+                    'choice_label' => 'name',
+                    'attr' => array('class' => 'chosen')
+                ))
+        ;
     }
 
     /**

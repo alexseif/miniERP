@@ -40,6 +40,10 @@ class Vendors
      * @ORM\OneToMany(targetEntity="Products", mappedBy="vendor")
      */
     protected $products;
+    /**
+     * @ORM\OneToMany(targetEntity="Orders", mappedBy="vendor")
+     */
+    protected $orders;
 
     public function __construct()
     {

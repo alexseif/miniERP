@@ -71,6 +71,12 @@ class OrderProducts
     private $total;
 
     /**
+     * @ORM\ManyToOne(targetEntity="Vendors", inversedBy="orders")
+     * @ORM\JoinColumn(name="vendor_id", referencedColumnName="id")
+     */
+    protected $vendor;
+
+    /**
      * Get id
      *
      * @return integer 
@@ -195,7 +201,6 @@ class OrderProducts
         return $this->total;
     }
 
-
     /**
      * Set unitCost
      *
@@ -217,5 +222,29 @@ class OrderProducts
     public function getUnitCost()
     {
         return $this->unitCost;
+    }
+
+
+    /**
+     * Set vendor
+     *
+     * @param \MeVisa\ERPBundle\Entity\Vendors $vendor
+     * @return OrderProducts
+     */
+    public function setVendor(\MeVisa\ERPBundle\Entity\Vendors $vendor = null)
+    {
+        $this->vendor = $vendor;
+
+        return $this;
+    }
+
+    /**
+     * Get vendor
+     *
+     * @return \MeVisa\ERPBundle\Entity\Vendors 
+     */
+    public function getVendor()
+    {
+        return $this->vendor;
     }
 }

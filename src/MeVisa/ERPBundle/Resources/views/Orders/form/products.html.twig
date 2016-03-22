@@ -6,7 +6,8 @@
     <table class="table table-hover table-condensed table-striped order-products-form">
         <thead>
             <tr>
-                <th>{{ form_label(form.orderProducts.vars.prototype.product) }}</th>
+                <th class="col-sm-3">{{ form_label(form.orderProducts.vars.prototype.product) }}</th>
+                <th>{{ form_label(form.orderProducts.vars.prototype.vendor) }}</th>
                 <th>{{ form_label(form.orderProducts.vars.prototype.quantity) }}</th>
                 <th>{{ form_label(form.orderProducts.vars.prototype.unitPrice) }}</th>
                 <th>{{ form_label(form.orderProducts.vars.prototype.total) }}</th>
@@ -21,6 +22,7 @@
             {% for product in form.orderProducts %}
                 <tr>
                     <td>{{form_widget(product.product)}}</td>
+                    <td>{{form_widget(product.vendor)}}</td>
                     <td>{{form_widget(product.quantity)}}</td>
                     <td>{{form_widget(product.unitPrice)}}</td>
                     <td>{{form_widget(product.total)}}</td>
