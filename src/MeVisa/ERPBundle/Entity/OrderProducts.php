@@ -71,7 +71,7 @@ class OrderProducts
     private $total;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Vendors", inversedBy="orders")
+     * @ORM\ManyToOne(targetEntity="Vendors", inversedBy="orderProducts")
      * @ORM\JoinColumn(name="vendor_id", referencedColumnName="id")
      */
     protected $vendor;

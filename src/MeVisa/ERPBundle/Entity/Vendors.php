@@ -40,10 +40,11 @@ class Vendors
      * @ORM\OneToMany(targetEntity="Products", mappedBy="vendor")
      */
     protected $products;
+    
     /**
-     * @ORM\OneToMany(targetEntity="Orders", mappedBy="vendor")
+     * @ORM\OneToMany(targetEntity="OrderProducts", mappedBy="vendor")
      */
-    protected $orders;
+    protected $orderProducts;
 
     public function __construct()
     {

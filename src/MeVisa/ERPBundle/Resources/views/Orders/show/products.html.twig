@@ -4,6 +4,7 @@
             <thead>
                 <tr>
                     <th>Product</th>
+                    <th>Vendor</th>
                     <th>Qty.</th>
                     <th>Unit Price</th>
                     <th>Total</th>
@@ -13,6 +14,7 @@
                 {%for product in order.orderProducts %}
                     <tr>
                         <td>{{ product.product.name }}</td>
+                        <td>{{ (product.vendor)?product.vendor.name }}</td>
                         <td>{{ product.quantity }}</td>
                         <td>{{ (product.unitPrice/100)|localizedcurrency('RUB') }}</td>
                         <td>{{ (product.total/100)|localizedcurrency('RUB') }}</td>

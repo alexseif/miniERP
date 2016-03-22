@@ -1,20 +1,20 @@
 <div class="panel panel-default">
-    <div class='panel-heading'>
-        <span class="panel-title">Products</span>
-        <a href="#" class="btn text-primary add_product_link btn-xs pull-right"><span class="glyphicon glyphicon-plus-sign" title="Add another product"></span> Add another product</a>
-    </div>
-    <table class="table table-hover table-condensed table-striped order-products-form">
+
+    <table class="table table-hover table-condensed order-products-form">
         <thead>
-            <tr>
-                <th class="col-sm-3">{{ form_label(form.orderProducts.vars.prototype.product) }}</th>
-                <th>{{ form_label(form.orderProducts.vars.prototype.vendor) }}</th>
-                <th>{{ form_label(form.orderProducts.vars.prototype.quantity) }}</th>
-                <th>{{ form_label(form.orderProducts.vars.prototype.unitPrice) }}</th>
-                <th>{{ form_label(form.orderProducts.vars.prototype.total) }}</th>
+            <tr class="panel-heading">
+                <th style="width: 40%;">{{ form_label(form.orderProducts.vars.prototype.product) }}</th>
+                <th style="width: 14%;">{{ form_label(form.orderProducts.vars.prototype.vendor) }}</th>
+                <th style="width: 10%;">{{ form_label(form.orderProducts.vars.prototype.quantity) }}</th>
+                <th style="width: 18%;">{{ form_label(form.orderProducts.vars.prototype.unitPrice) }}</th>
+                <th style="width: 18%;">{{ form_label(form.orderProducts.vars.prototype.total) }}                    
+                    <a href="#" class="btn text-primary add_product_link btn-xs pull-right"><span class="glyphicon glyphicon-plus-sign" title="Add another product"></span> Add another product</a>
+                </th>
             </tr>
         </thead>
         <tbody class="orderProducts" data-prototype="{{
 '<td>' ~ form_widget(form.orderProducts.vars.prototype.product) ~ '</td>'
+ ~ '<td>' ~ form_widget(form.orderProducts.vars.prototype.vendor) ~ '</td>'
  ~ '<td>' ~ form_widget(form.orderProducts.vars.prototype.quantity) ~ '</td>'
  ~ '<td>' ~ form_widget(form.orderProducts.vars.prototype.unitPrice) ~ '</td>'
  ~ '<td>' ~ form_widget(form.orderProducts.vars.prototype.total) ~ '</td>'
@@ -31,8 +31,8 @@
         </tbody>
         <tfoot>
             <tr>
-                <td colspan="4" class='text-center'>
-                    <a href="#" class="btn text-danger btn-xs remove_product_link" tabindex="-100"><span class="glyphicon glyphicon-trash" title="Remove last product"></span> Remove last product</a>
+                <td colspan="5">
+                    <a href="#" class="btn text-danger btn-xs remove_product_link pull-right" tabindex="-100"><span class="glyphicon glyphicon-trash" title="Remove last product"></span> Remove last product</a>
                 </td>
             </tr>
         </tfoot>
@@ -52,7 +52,11 @@
                     <label class="control-label">Order Total</label>
                     <div class="col-sm-10">
                         <div class="input-group">
-                            <input type="text" class="form-control" disabled="disabled" name="order_total" ><span class="input-group-addon"> руб.</span>
+                            {% if ("ru" == app.request.locale) %}
+                                <input type="text" class="form-control" disabled="disabled" name="order_total" ><span class="input-group-addon"> руб.</span>
+                            {% else %}
+                                <span class="input-group-addon">RUB</span><input type="text" class="form-control" disabled="disabled" name="order_total" >
+                            {% endif %}
                         </div>
                     </div>
                 </div>
