@@ -31,7 +31,6 @@ class Customers
      * @Gedmo\Versioned
      * @ORM\Column(name="name", type="string", length=255)
      * @Assert\NotBlank()
-     * @Assert\Regex("/^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$/u")
      */
     private $name;
 
