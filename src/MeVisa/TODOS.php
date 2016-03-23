@@ -5,8 +5,6 @@
 // TODO: Save product name in orderProducts
 // TODO: ProductPrices.updatedAt
 // TODO: Concatenate product & pricing
-// TODO: Save messages
-
 
 // http://stackoverflow.com/questions/28218580/woocommerce-hook-for-after-payment-complete-actions
 // https://github.com/eclipse/egit-github/blob/master/org.eclipse.egit.github.core/src/org/eclipse/egit/github/core/client/PageLinks.java#L43-75

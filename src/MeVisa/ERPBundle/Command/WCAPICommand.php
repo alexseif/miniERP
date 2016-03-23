@@ -127,13 +127,13 @@ class WCAPICommand extends ContainerAwareCommand
                 $em->persist($product);
             }
 
-
             $productPrice = $product->getPricing()->last();
             $orderProduct = new OrderProducts();
             $orderProduct->setProduct($product);
             $orderProduct->setQuantity($lineItem['quantity']);
             $orderProduct->setUnitPrice($lineItem['price'] * 100);
             $orderProduct->setUnitCost($productPrice->getCost());
+            $orderProduct->setVendor($product->getVendor());
             $orderProduct->setTotal($lineItem['total'] * 100);
 
             $order->addOrderProduct($orderProduct);
@@ -221,8 +221,8 @@ class WCAPICommand extends ContainerAwareCommand
                 $state = "backoffice";
                 break;
         }
-        $order->setState($state)
-        ;
+        $order->setState($state);
+        $order->setTicketRequired(false);
         $order->setCreatedAt(new \DateTime($wcOrder['created_at'], $timezone));
     }
 
