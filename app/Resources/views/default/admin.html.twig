@@ -62,30 +62,12 @@
     {% endblock %}
     {% block wrapper %}
         <div id="page-wrapper">
+            {% block beforeContent %}{% endblock %}
             <div class="container">
-                {% if app.session.flashbag.peekAll|length > 0 %}
-                    {% set typeCheck = '' %}
-                    {% for type, flashMessages in app.session.flashbag.all %}
-                        {% if(typeCheck != type and typeCheck != '' ) %}</div>{% endif %}
-                        {% if(typeCheck != type ) %}
-                        <div class="flash_{{ type }}">
-                            {% set typeCheck = type %}
-                        {% endif %}
-                        {% for message in flashMessages %}
-                            <div class="alert alert-dismissible alert-{{ (type|trim('raw'))|trim('_') }}">
-                                <button type="button" class="close" data-dismiss="alert">×</button>
-                                {% if type in ['error_raw', 'success_raw', 'warning_raw'] %}
-                                    {{ message|raw }}
-                                {% else %}
-                                    {{ message }}
-                                {% endif %}
-                            </div>
-                        {% endfor %}
-                    {% endfor %}
-                </div>
-            {% endif %}
-        {% block content %}{% endblock %}
-    </div>
-    {#</div>#}
-    {% endblock %}
+                {% include ':default:flashMessages.html.twig' %}
+                {% block content %}{% endblock %}
+            </div>
+            {% block afterContent %}{% endblock %}
+        </div>
+{% endblock %}
 {% endblock %}

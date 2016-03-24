@@ -64,15 +64,78 @@
 {% block adminPanelFormEnd %}
     {{ form_end(form, {'render_rest': false}) }}
 {% endblock %}
+{% block afterContent  %}
+    {#    {{ dump(order) }}#}
+    <style type="text/css">
+        .table.order-info td{
+            font-weight: bold;
+            {#            color: #fff;#}
+        }
+        .table.order-info th{
+            {#            color: #fff;#}
+        }
+    </style>
+    <nav class="navbar navbar-default" id="nav" style="display: none;">
+        <div class="container-fluid">
+            <table class="table table-condensed order-info" style="margin-bottom: 0px;">
+                <tr>
+                    <th>Number</th>
+                    <th>
+                        {% for product in order.orderProducts %}
+                            {% if (product.product.urgent) %}
+                                <span class="label label-purple">Urgent</span>
+                            {% endif %}
+                        {% endfor %}
+                        <span class="label label-default">{{ order.channel|upper }}</span>
+                    </th>
+                    <th>Customer</th>
+                    <th>Total</th>
+                    <th>PAX</th>
+                    <th>Departure</th>
+                    <th>Arrival</th>
+                </tr>
+                <tr>
+                    <td>{{order.number}}</td>
+                    <td>
+                        {% if (order.ticketRequired) %}
+                            <span class="label label-warning">Ticket Required</span>
+                        {% endif %}
+                        <label class="label label-{{ statusCSS.css(order.state) }}">{{ order.state|upper }}</label>
+                    </td>
+                    <td>{{ order.customer.name }}</td>
+                    <td>{{ (order.total/100)|localizedcurrency('RUB') }}</td>
+                    <td>{{ order.people }}</td>
+                    <td>{{ order.departure|localizeddate('short', 'short')}}</td>
+                    <td>{{ order.arrival|localizeddate('short', 'short')}}</td>
+                </tr>
+            </table>
+        </div>
+    </nav>
+{% endblock %}
 {% block javascripts %}
     {{ parent() }}
     <script type="text/javascript" src="/js/orders.js"></script>
     <script type="text/javascript" src="/js/orderDocuments.js"></script>
     <script type="text/javascript">
         var selectCustomer = '{{ path('select_customer') }}';
-        var PAX = {{ (order.people)?:0 }};
-        var $agent = {{ (order.customer.agent) ? 'true' : 'false' }};
-        var productPrices = new Array();
+                var PAX = {{ (order.people)?:0 }};
+                var $agent = {{ (order.customer.agent) ? 'true' : 'false' }};
+                var productPrices = new Array();
+
+        $(document).ready(function () {
+            // Fixa navbar ao ultrapassa-lo
+            var navbar = $('#nav'),
+                    distance = navbar.offset().top,
+                    $window = $(window);
+
+            $window.scroll(function () {
+                if ($window.scrollTop() >= 200) {
+                    navbar.fadeIn();
+                } else {
+                    navbar.fadeOut();
+                    }
+                });
+            });
 
         {% for price in productPrices %}
             productPrices[{{ price.product.id }}] = {{price.price/100}};
