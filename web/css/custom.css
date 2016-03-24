@@ -81,7 +81,8 @@ tr.bg-success:focus {
 .no-border > tbody > tr > td, .no-border > tbody > tr > th, .no-border > tfoot > tr > td, .no-border > tfoot > tr > th, .no-border > thead > tr > td, .no-border > thead > tr > th 
 {border: none;}
 .ui-datepicker {z-index: 10 !important;}
-#order-docs .thumbnail{word-wrap: break-word;height: 120px; overflow: hidden;text-align: center;}
+#order-docs .thumbnail{word-wrap: break-word;max-width:120px; height: auto; overflow: hidden;text-align: center;display: inline-block; margin-left: 10px;vertical-align: top;}
+/*#order-docs .thumbnail a > img{max-height: 83%;width: auto;}*/
 #order-docs a:hover{overflow: visible;}
 /*#order-docs a span.glyphicon{font-size: 2.5em;}*/
 .panel-heading .accordion-toggle:after {
@@ -119,3 +120,6 @@ tr.bg-success:focus {
     color: #843534;
 }
 .label-purple, .badge-purple { background-color: #9585bf!important }
+.moving-box{
+    display:inline-block; background-color: rgba(255,255,255,0.9);border: 3px solid #ccc; border-radius:4px;padding:10px;cursor: move;
+}

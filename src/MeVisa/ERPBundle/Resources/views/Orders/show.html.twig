@@ -69,3 +69,7 @@
         {% include 'MeVisaERPBundle:Orders:form/approval_modal.html.twig' %}
     {% endif %}
 {% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="/js/orderDocuments.js"></script>
+{% endblock %}

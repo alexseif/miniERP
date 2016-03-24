@@ -3,24 +3,19 @@
         <span class="panel-title">Documents</span>
     </div>
     <div class="panel-body">
-        <div class="row">
-            {%for document in documents%}
-                <div class="col-xs-12 col-md-4">
-                    <div class="thumbnail">
-                        <a href="#" class="docs-link" data-link="{{ document.path}}" >
-                            {% if document.path ends with 'pdf' %}
-                                <span class="glyphicon glyphicon-file"></span>
-                            {% else %}
-                                <img src="{{ document.thumbnail ? document.thumbnail : document.path }}" alt="{{ document.name }}"/>
-                            {% endif %}
-                        </a>
-                        <a href="{{ document.path}}" class="btn-sm" target="_blank">
-                            <span>{{ document.name }}</span>
-                            <span class="glyphicon glyphicon-new-window"></span>
-                        </a>
-                    </div>
-                </div>
-            {% endfor %}
-        </div>
+        {%for document in documents%}
+            <div class="thumbnail">
+                {% if document.path ends with 'pdf' %}
+                    <a href="{{ document.path }}" target="_blank">
+                        <span class="glyphicon glyphicon-file"></span> <span>{{ document.name }}</span>
+                    </a>
+                {% else %}
+                    <img class="docs-link" src="{{ document.thumbnail ? document.thumbnail : document.path }}" data-url="{{ document.path}}" alt="{{ document.name }}"/>
+                    <a href="{{ document.path}}" class="btn-sm" target="_blank">
+                        <span>{{ document.name }}</span> <span class="glyphicon glyphicon-new-window"></span>
+                    </a>
+                {% endif %}
+            </div>
+        {% endfor %}
     </div>
 </div>

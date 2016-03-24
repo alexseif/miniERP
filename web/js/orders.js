@@ -180,6 +180,5 @@ $(document).ready(function () {
             agentPrices();
         }
     });
-
-    $('.chosen-input').chosen({no_results_text: "Add new", allow_single_deselect: true});
+    $('.datepicker').datepicker({dateFormat: "dd.mm.yy"});
 });

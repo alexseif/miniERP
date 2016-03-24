@@ -67,39 +67,12 @@
 {% block javascripts %}
     {{ parent() }}
     <script type="text/javascript" src="/js/orders.js"></script>
+    <script type="text/javascript" src="/js/orderDocuments.js"></script>
     <script type="text/javascript">
         var selectCustomer = '{{ path('select_customer') }}';
-                var PAX = {{ (order.people)?:0 }};
-                var $agent = {{ (order.customer.agent) ? 'true' : 'false' }};
-                var productPrices = new Array();
-        var $image = $('<img />');
-        var $imageClose = $('<button>Close</button>');
-        var $imageDiv = $('<div style="display:inline-block"></div>');
-        $('.docs-link').click(function (e) {
-            e.preventDefault();
-            $image.remove();
-            $imageClose.remove();
-            $imageDiv.remove();
-            $image = $('<img src="' + $(this).data('link') + '" />');
-            $imageDiv.append($imageClose);
-            $imageDiv.append($image);
-            $(this).after($imageDiv);
-            $image.css({"max-width": 800, "height": "auto"});
-            $image.resizable({
-                maxWidth: 800,
-                minWidth: 80,
-                aspectRatio: true
-            });
-            $imageDiv.draggable({cursor: "move", zIndex: 10});
-            $imageDiv.css("zIndex", 1);
-            $imageDiv.css("cursor", "move");
-            $imageDiv.css('position', 'absolute');
-            $('#companion-panel').css("zIndex", ($imageDiv.zIndex() + 1));
-            $imageClose.click(function () {
-                $image.remove();
-                $imageDiv.remove();
-            });
-        });
+        var PAX = {{ (order.people)?:0 }};
+        var $agent = {{ (order.customer.agent) ? 'true' : 'false' }};
+        var productPrices = new Array();
 
         {% for price in productPrices %}
             productPrices[{{ price.product.id }}] = {{price.price/100}};
