@@ -65,45 +65,46 @@
     {{ form_end(form, {'render_rest': false}) }}
 {% endblock %}
 {% block afterContent  %}
-    {#    {{ dump(order) }}#}
     <style type="text/css">
-        .table.order-info td{
-            font-weight: bold;
-        }
+        .table.order-info td{color:#fff;font-weight: bold;}
     </style>
-    <nav class="navbar navbar-default" id="nav" style="display: none;">
-        <div class="container-fluid">
+    <nav class="navbar navbar-inverse navbar-fixed-bottom" id="nav" style="display: none;margin-bottom: 0px;">
+        <div class="container">
             <table class="table table-condensed order-info" style="margin-bottom: 0px;">
-                <tr>
-                    <th>Number</th>
-                    <th>
-                        {% for product in order.orderProducts %}
-                            {% if (product.product.urgent) %}
-                                <span class="label label-purple">Urgent</span>
+                <thead class="text-muted">
+                    <tr>
+                        <th>Number</th>
+                        <th>
+                            {% for product in order.orderProducts %}
+                                {% if (product.product.urgent) %}
+                                    <span class="label label-purple">Urgent</span>
+                                {% endif %}
+                            {% endfor %}
+                            <span class="label label-default">{{ order.channel|upper }}</span>
+                        </th>
+                        <th>Customer</th>
+                        <th>Total</th>
+                        <th>PAX</th>
+                        <th>Departure</th>
+                        <th>Arrival</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>{{order.number}}</td>
+                        <td>
+                            {% if (order.ticketRequired) %}
+                                <span class="label label-warning">Ticket Required</span>
                             {% endif %}
-                        {% endfor %}
-                        <span class="label label-default">{{ order.channel|upper }}</span>
-                    </th>
-                    <th>Customer</th>
-                    <th>Total</th>
-                    <th>PAX</th>
-                    <th>Departure</th>
-                    <th>Arrival</th>
-                </tr>
-                <tr>
-                    <td>{{order.number}}</td>
-                    <td>
-                        {% if (order.ticketRequired) %}
-                            <span class="label label-warning">Ticket Required</span>
-                        {% endif %}
-                        <label class="label label-{{ statusCSS.css(order.state) }}">{{ order.state|upper }}</label>
-                    </td>
-                    <td>{{ order.customer.name }}</td>
-                    <td>{{ (order.total/100)|localizedcurrency('RUB') }}</td>
-                    <td>{{ order.people }}</td>
-                    <td>{{ order.departure|localizeddate('short', 'short')}}</td>
-                    <td>{{ order.arrival|localizeddate('short', 'short')}}</td>
-                </tr>
+                            <label class="label label-{{ statusCSS.css(order.state) }}">{{ order.state|upper }}</label>
+                        </td>
+                        <td>{{ order.customer.name }}</td>
+                        <td>{{ (order.total/100)|localizedcurrency('RUB') }}</td>
+                        <td>{{ order.people }}</td>
+                        <td>{{ order.departure|localizeddate('short', 'none')}}</td>
+                        <td>{{ order.arrival|localizeddate('short', 'none')}}</td>
+                    </tr>
+                </tbody>
             </table>
         </div>
     </nav>
@@ -117,21 +118,30 @@
                 var PAX = {{ (order.people)?:0 }};
                 var $agent = {{ (order.customer.agent) ? 'true' : 'false' }};
                 var productPrices = new Array();
-
-       {# $(document).ready(function () {
+        var distance;
+        $(document).ready(function () {
             // Fixa navbar ao ultrapassa-lo
-            var navbar = $('#nav'),
-                    distance = navbar.offset().top,
-                    $window = $(window);
+            var navbar = $('#nav');
+            distance = $('.order-products-form').offset().top;
+            var $window = $(window);
 
+            if ($window.scrollTop() >= distance) {
+                navbar.fadeIn();
+                $('body').css('padding-bottom', '70px');
+            } else {
+                $('body').css('padding-bottom', '0');
+                navbar.fadeOut();
+            }
             $window.scroll(function () {
-                if ($window.scrollTop() >= 200) {
+                if ($window.scrollTop() >= distance) {
                     navbar.fadeIn();
+                    $('body').css('padding-bottom', '70px');
                 } else {
+                    $('body').css('padding-bottom', '0');
                     navbar.fadeOut();
-                    }
-                });
-            });#}
+                }
+            });
+        });
 
         {% for price in productPrices %}
             productPrices[{{ price.product.id }}] = {{price.price/100}};
