@@ -51,6 +51,13 @@ class OrdersCommand extends ContainerAwareCommand
         );
         $orders = $ordersRepo->findBy($findBy);
         $this->fixDates($orders, $output);
+        
+        $findBy = array(
+            'state' => 'post',
+            'postedAt' => NULL
+        );
+        $orders = $ordersRepo->findBy($findBy);
+        $this->fixDates($orders, $output);
 
         $em->flush();
         $output->writeln('complete');
