@@ -44,7 +44,7 @@ class OrdersRepository extends EntityRepository
 
     public function findCurrentOrdersList()
     {
-        $today = new \DateTime("-7 days");
+        $today = new \DateTime("7 days ago");
 
         return $this->createQueryBuilder('o')
                         ->select('o, c, opa, opr, p')
@@ -52,8 +52,8 @@ class OrdersRepository extends EntityRepository
                         ->leftJoin('o.orderPayments', 'opa')
                         ->leftJoin('o.orderProducts', 'opr')
                         ->leftJoin('opr.product', 'p')
-                        ->where('o.completedAt <= ?1')
-                        ->setParameter('1', $today)
+                        ->where('o.completedAt >= ?1')
+                        ->setParameter('1', $today->format('Y-m-d'))
                         ->orWhere('o.completedAt is null')
                         ->orderBy("o.createdAt, o.wcId")
                         ->getQuery()
@@ -62,7 +62,7 @@ class OrdersRepository extends EntityRepository
 
     public function findArchivedOrdersList()
     {
-        $today = new \DateTime("-7 days");
+        $today = new \DateTime("7 days ago");
 
         return $this->createQueryBuilder('o')
                         ->select('o, c, opa, opr, p')
@@ -70,8 +70,8 @@ class OrdersRepository extends EntityRepository
                         ->leftJoin('o.orderPayments', 'opa')
                         ->leftJoin('o.orderProducts', 'opr')
                         ->leftJoin('opr.product', 'p')
-                        ->where('o.completedAt > ?1')
-                        ->setParameter('1', $today)
+                        ->where('o.completedAt < ?1')
+                        ->setParameter('1', $today->format('Y-m-d'))
                         ->orderBy("o.createdAt, o.wcId")
                         ->getQuery()
                         ->getResult();
