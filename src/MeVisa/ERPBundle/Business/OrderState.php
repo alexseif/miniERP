@@ -19,12 +19,14 @@ class OrderState
     {
         $this->states = array();
 
+        $this->addState('refunded', 'Refunded', 'danger');
+        $this->addState('processing', 'Processing', 'default');
+        
         $this->addState('backoffice', 'Back Office', 'info');
         $this->addState('document', 'Document', 'warning');
         $this->addState('post', 'Post', 'primary');
         $this->addState('approved', 'Approved', 'success');
         $this->addState('rejected', 'Rejected', 'danger');
-//        $this->addState('refunded', 'Refunded', 'danger');
         $this->addState('cancelled', 'Cancelled', 'danger');
 
         $this->addChild('backoffice', 'document');
@@ -34,7 +36,8 @@ class OrderState
         $this->addChild('backoffice', 'cancelled');
         $this->addChild('cancelled', 'backoffice');
 //        $this->addChild('backoffice', 'refunded');
-//        $this->addChild('refunded', 'backoffice');
+        $this->addChild('refunded', 'backoffice');
+        $this->addChild('processing', 'backoffice');
 
         $this->addChild('document', 'post');
         $this->addChild('post', 'document');
