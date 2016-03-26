@@ -120,7 +120,7 @@
                 var productPrices = new Array();
         var distance;
         $(document).ready(function () {
-            // Fixa navbar ao ultrapassa-lo
+           {# // Fixa navbar ao ultrapassa-lo
             var navbar = $('#nav');
             distance = $('.order-products-form').offset().top;
             var $window = $(window);
@@ -140,7 +140,7 @@
                     $('body').css('padding-bottom', '0');
                     navbar.fadeOut();
                 }
-            });
+            });#}
         });
 
         {% for price in productPrices %}
