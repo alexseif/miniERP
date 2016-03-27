@@ -98,7 +98,7 @@ stof_doctrine_extensions:
 swiftmailer:
     transport: %mailer_transport%
     encryption: tls
-    auth_mode:  %mailer_auth_mode%
+    auth_mode:  login
     host:      %mailer_host%
     username:  %mailer_user%
     password:  %mailer_password%
