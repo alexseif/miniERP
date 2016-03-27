@@ -31,7 +31,7 @@ monolog:
             type:    buffer
             handler: swift
         swift:
-            type:       swift_mailer
+            type:       smtp
             from_email: 'postmaster@visallc.nichost.ru'
             to_email:   'me@alexseif.com'
             subject:    'An Error Occurred on visallc.nichost.ru!'

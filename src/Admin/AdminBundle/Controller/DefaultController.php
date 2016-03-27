@@ -79,4 +79,22 @@ class DefaultController extends Controller
         );
     }
 
+    /**
+     * @Route("/send", name="send")
+     * @Template()
+     */
+    public function sendAction(Request $request)
+    {
+        $message = \Swift_Message::newInstance()
+                ->setSubject('Hello Email')
+                ->setFrom('zakaz@mevisa.ru')
+                ->setTo('alex.seif@gmail.com')
+                ->setBody('You should see me from the profiler!')
+        ;
+
+        $this->get('mailer')->send($message);
+
+        return array();
+    }
+
 }
