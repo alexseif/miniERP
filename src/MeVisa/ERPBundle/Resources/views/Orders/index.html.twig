@@ -39,7 +39,7 @@
                 <tr>
                     <th>Order #</th>
                     <th>State</th>
-                    <th>Payment State</th>
+                    <th>Payment</th>
                     <th data-orderable="false">Customer</th>
                     <th>Channel</th>
                     <th>Adjustment</th>
@@ -71,7 +71,10 @@
                     <tr class="{{ highlight }} {{ urgent }}">
                         <td class="text-center col-sm-1"><a class="btn btn-link" href="{{ path('orders_show', { 'id': order.id }) }}">{{ order.number }}</a></td>
                         <td class="col-sm-1"><span class="label label-{{ statusCSS.css(order.state) }}">{{ order.state|upper }}</span></td>
-                        <td class="col-sm-1"><span class="label label-{{ statusCSS.css(order.orderPayments|last.state) }}">{{ order.orderPayments|last.state|replace('_',' ')|upper }}</span></td>
+                        <td class="col-sm-1 payment" data-search="{{ order.orderPayments|last.state|replace('_',' ')|upper }} {{ order.orderPayments|last.method|replace('_',' ')|upper }}">
+                            <span class="label label-{{ statusCSS.css(order.orderPayments|last.state) }}">{{ order.orderPayments|last.state|replace('_',' ')|upper }}</span>
+                {{ order.orderPayments|last.method|replace('_',' ')|upper }}
+                        </td>
                         <td class="col-sm-2">{{ order.customer.name }}</td>
                         <td class="col-sm-1">{{ order.channel }}</td>
                         <td class="text-right col-sm-1">{{ (order.adjustmentTotal/100)|localizedcurrency('RUB') }}</td>
@@ -98,6 +101,13 @@
         var table;
         var products = [];
         $(document).ready(function () {
+            var states = [];
+            $('#datatable .payment').each(function () {
+                state = $(this).data('search');
+                if (state && (-1 == states.indexOf(state))) {
+                    states.push(state);
+                }
+            });
             table = $('#datatable').DataTable({
                 initComplete: function () {
                     this.api().columns(1).every(function () {
@@ -130,11 +140,10 @@
                                             .search(val ? '^' + val + '$' : '', true, false)
                                             .draw();
                                 });
+                        for (var s in states) {
+                            select.append('<option value="' + states[s] + '">' + states[s] + '</option>');
 
-                        column.data().unique().sort().each(function (d, j) {
-                            d = $(d).text();
-                            select.append('<option value="' + d + '">' + d + '</option>')
-                        });
+                        }
                     });
                     this.api().columns(8).every(function () {
                         var column = this;
