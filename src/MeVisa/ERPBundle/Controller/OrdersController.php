@@ -108,6 +108,16 @@ class OrdersController extends Controller
         if ($form->isSubmitted()) {
             if ($form->isValid()) {
                 //Validations
+                // Arrival & Departure
+                // Post & arrival
+                // at least1 Order Product
+                $orderProducts = $order->getOrderProducts();
+                if ($orderProducts->count() < 1) {
+                    $this->addFlash('error', 'Order must have at least 1 product');
+                }
+
+                // 1 Person travelling
+
                 $this->get('erp.order')->createNewPOSOrder($order);
 
                 return $this->redirect($this->generateUrl('orders_show', array('id' => $order->getId())));
