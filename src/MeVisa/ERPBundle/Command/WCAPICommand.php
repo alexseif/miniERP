@@ -112,6 +112,30 @@ class WCAPICommand extends ContainerAwareCommand
 
     protected function setOrderDetails($wcOrder, $order, $timezone, $em)
     {
+        $order->setWcId($wcOrder['order_number']);
+        $order->setNumber($wcOrder['order_number']);
+        $order->setCreatedAt(new \DateTime($wcOrder['created_at'], $timezone));
+        switch ($wcOrder['status']) {
+            case "cancelled":
+            case "failed":
+                $state = "cancelled";
+                break;
+            case "refunded":
+                $state = "refunded";
+                break;
+            case "pending":
+            case "processing":
+            case "on-hold":
+            case "completed":
+            default:
+                $state = "backoffice";
+                break;
+        }
+
+        $order->setState($state);
+        $order->setTotal($wcOrder['total'] * 100);
+        $order->setProductsTotal($wcOrder['subtotal'] * 100);
+        $order->setPeople(0);
         foreach ($wcOrder['line_items'] as $lineItem) {
             $product = $em->getRepository('MeVisaERPBundle:Products')->findOneBy(array('wcId' => $lineItem['product_id']));
             if (!$product) {
@@ -138,46 +162,36 @@ class WCAPICommand extends ContainerAwareCommand
 
             $order->addOrderProduct($orderProduct);
 
-            $order->setPeople($lineItem['meta'][0]['value']);
-
-            $arrivalOffset = 4;
-            $departureOffset = 5;
-            $documentsOffset = 6;
-            if ("Дата вылета" == $lineItem['meta'][$arrivalOffset]['key']) {
-                $arrival = \DateTime::createFromFormat("d/m/Y", $lineItem['meta'][$arrivalOffset]['value'], $timezone);
-                if (FALSE === $arrival) {
-                    --$departureOffset;
-                    --$documentsOffset;
-                } else {
-                    $order->setArrival($arrival);
-                }
-            } else {
-                --$departureOffset;
-                --$documentsOffset;
-            }
-
-            if ("Дата возврата" == $lineItem['meta'][$departureOffset]['key']) {
-                $departure = \DateTime::createFromFormat("d/m/Y", $lineItem['meta'][$departureOffset]['value'], $timezone);
-                if (FALSE === $departure) {
-                    --$documentsOffset;
-                } else {
-                    $order->setDeparture($departure);
-                }
-            } else {
-                --$documentsOffset;
-            }
-            if ("Прикрепите копию паспорта и фото (для всех туристов)" == $lineItem['meta'][$documentsOffset]['key']) {
-                $docs = explode(',', $lineItem['meta'][$documentsOffset]['value']);
-                foreach ($docs as $doc) {
-                    $document = new \MeVisa\ERPBundle\Entity\OrderDocuments();
-                    $document->setName($doc);
-                    // http://www.mevisa.ru/wp-content/uploads/product_files/confirmed/3975-915-img_9996.jpg
-                    $document->setPath('http://www.mevisa.ru/wp-content/uploads/product_files/confirmed/' . $wcOrder['order_number'] . '-' . $lineItem['product_id'] . '-' . $doc);
-                    $order->addOrderDocument($document);
+            foreach ($lineItem['meta'] as $key => $meta) {
+                switch ($meta['key']) {
+                    case'Кол-во человек':
+                        $order->setPeople($order->getPeople() + $meta['value']);
+                        break;
+                    case'Дата вылета':
+                        $arrival = \DateTime::createFromFormat("d/m/Y", $meta['value'], $timezone);
+                        $order->setArrival($arrival);
+                        break;
+                    case'Дата возврата':
+                        $departure = \DateTime::createFromFormat("d/m/Y", $meta['value'], $timezone);
+                        $order->setDeparture($departure);
+                        break;
+                    case'Прикрепите копию паспорта и фото (для всех туристов)':
+                        $docs = explode(',', $meta['value']);
+                        foreach ($docs as $doc) {
+                            $document = new \MeVisa\ERPBundle\Entity\OrderDocuments();
+                            $document->setName($doc);
+                            // http://www.mevisa.ru/wp-content/uploads/product_files/confirmed/3975-915-img_9996.jpg
+                            $document->setPath('http://www.mevisa.ru/wp-content/uploads/product_files/confirmed/' . $wcOrder['order_number'] . '-' . $lineItem['product_id'] . '-' . $doc);
+                            $order->addOrderDocument($document);
+                        }
+                        break;
+                    default :
+                        break;
                 }
             }
         }
 
+        $order->setAdjustmentTotal($wcOrder['total_discount'] * 100);
         $orderPayment = new OrderPayments();
         // method_id method_title
         $orderPayment->setMethod($wcOrder['payment_details']['method_id']);
@@ -197,33 +211,11 @@ class WCAPICommand extends ContainerAwareCommand
             $order->addOrderComment($orderComment);
         }
 
-        $order->setNumber($wcOrder['order_number']);
-        $order->setWcId($wcOrder['order_number']);
         //FIXME: Dynamic channel
         $order->setChannel("MeVisa.ru");
 
-        $order->setAdjustmentTotal($wcOrder['total_discount'] * 100);
-        $order->setProductsTotal($wcOrder['subtotal'] * 100);
-        $order->setTotal($wcOrder['total'] * 100);
-        switch ($wcOrder['status']) {
-            case "cancelled":
-            case "failed":
-                $state = "cancelled";
-                break;
-            case "refunded":
-                $state = "refunded";
-                break;
-            case "pending":
-            case "processing":
-            case "on-hold":
-            case "completed":
-            default:
-                $state = "backoffice";
-                break;
-        }
-        $order->setState($state);
+
         $order->setTicketRequired(false);
-        $order->setCreatedAt(new \DateTime($wcOrder['created_at'], $timezone));
     }
 
     public function updateOrderNotes($em, $order, $wcOrderNotes)
