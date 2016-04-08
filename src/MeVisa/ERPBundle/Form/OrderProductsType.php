@@ -31,7 +31,7 @@ class OrderProductsType extends AbstractType
                         return $pr->queryAllEnabled();
                     },
                     'attr' => array(
-                        'class' => 'product_id chosen',
+                        'class' => 'product_id',
                     )
                 ))
                 ->add('quantity', 'integer', array(
