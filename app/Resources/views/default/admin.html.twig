@@ -26,16 +26,12 @@
                                     {% if is_granted('ROLE_SUPER_ADMIN') %}<li><a href="{{ path('admin_currency') }}">Currency</a></li>{% endif %}
                                     <li class="divider"></li> 
                                     <li><a href="{{ path('products') }}">Products</a></li>
-                                        {% if is_granted('ROLE_SUPER_ADMIN') %}
+                                    {% if is_granted('ROLE_SUPER_ADMIN') %}
                                         <li><a href="{{ path('vendors') }}">Vendors</a></li>
-                                        {% endif %}
-                                        {# <li class="divider"></li> #}
-                                        {% if is_granted('ROLE_SUPER_ADMIN') %}
                                         <li class="divider"></li> 
                                         <li><a href="{{ path('users') }}">Users</a></li>
                                         <li><a href="{{ path('companysettings_show', {"id":1}) }}">MeVisa Settings</a></li>
-                                        {% endif %}
-                                        {# <li><a href="#">Invoices</a></li> #}
+                                    {% endif %}
                                 </ul>
                             </li>
                         </ul>
@@ -69,5 +65,5 @@
             </div>
             {% block afterContent %}{% endblock %}
         </div>
-{% endblock %}
+    {% endblock %}
 {% endblock %}
