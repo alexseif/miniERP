@@ -41,7 +41,7 @@ class OrdersController extends Controller
      * @Method("GET")
      * @Template("MeVisaERPBundle:Orders:index.html.twig")
      */
-    public function archiveAction()
+    public function archiveListAction()
     {
         return array(
             'orders' => $this->get('erp.order')->getArchivedOrdersList(),
