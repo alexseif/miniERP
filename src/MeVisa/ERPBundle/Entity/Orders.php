@@ -821,7 +821,6 @@ class Orders
         return $this->postedAt;
     }
 
-
     /**
      * Set ticketRequired
      *
@@ -844,4 +843,19 @@ class Orders
     {
         return $this->ticketRequired;
     }
+
+    public function isSendable()
+    {
+        if ("approved" == $this->getState()) {
+            return true;
+        }
+        $orderCompanions = $this->getOrderCompanions();
+        foreach ($orderCompanions as $companion) {
+            if ("approved" == $companion->getState()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }

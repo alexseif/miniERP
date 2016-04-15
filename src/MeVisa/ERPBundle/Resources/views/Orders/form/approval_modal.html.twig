@@ -50,12 +50,6 @@
                 </p>
             </div>
             <div class="modal-footer">
-                <a href="mailto:{{order.customer.email}}?{{ {'subject': 'В приложении готовая виза в ОАЭ.',
- 'body': 'Уважаемый '~order.customer.name~',
-В приложении готовая виза в ОАЭ.
-Вам необходимо ее распечатать и предъявить на стойке регистрации перед посадкой в самолет, а также на стойке паспортного контроля в ОАЭ.
-Спасибо, что воспользовались услугами нашей компании'}|url_encode }}" target="_top" class="btn btn-primary pull-left"><span class="glyphicon glyphicon-send"></span></a>
-                <button type="button" class="btn btn-default ml-5" data-dismiss="modal">Close</button>
                 {{ form_widget(companions_form.save) }}
             </div>
             {{ form_end(companions_form, {'render_rest': false}) }}

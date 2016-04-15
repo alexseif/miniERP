@@ -44,9 +44,19 @@
 {% block adminPanelFooter %}
     <div class="panel-footer">
         <div class="row">
-            <div class="col-sm-6">
+            <div class="col-sm-5">
                 {% if is_granted('ROLE_SUPER_ADMIN') or not (order.updatedAt or "POS" == order.channel) %}
                     <a class="btn btn-default" href="{{ path('orders_edit', { "id" : order.id }) }}">Edit</a>
+                {% endif %}
+            </div>
+            <div class="col-sm-1">
+                {% if order.sendable %}
+                    <a href="mailto:{{order.customer.email}}?{{ {'subject': 'В приложении готовая виза в ОАЭ.',
+ 'body': 'Уважаемый '~order.customer.name~',
+В приложении готовая виза в ОАЭ.
+Вам необходимо ее распечатать и предъявить на стойке регистрации перед посадкой в самолет, а также на стойке паспортного контроля в ОАЭ.
+Спасибо, что воспользовались услугами нашей компании'}|url_encode }}" target="_top" class="btn btn-primary btn-block"><span class="glyphicon glyphicon-send"></span></a>
+
                 {% endif %}
             </div>
             <div class="col-sm-6">
