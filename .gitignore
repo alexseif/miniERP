@@ -46,3 +46,4 @@ docs.old/
 errordocs/
 logs/
 stat/
+/app/config/parameters.yml.bak
