@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="UTF-8" />
-        <title>{% block title %}Welcome!{% endblock %}</title>
+        <title>{% block title %} {{ app.request.attributes.get("_template").get("controller")|capitalize }} {{ app.request.attributes.get("_template").get("name")|capitalize }} {% endblock %} - ВИЗА</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">  
         {% block stylesheets %}
             {% stylesheets
