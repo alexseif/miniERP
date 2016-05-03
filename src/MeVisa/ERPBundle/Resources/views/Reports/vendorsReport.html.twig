@@ -1,5 +1,5 @@
 {% extends ':default:admin.html.twig' %}
-{% block title %}Report for {{ month }} {{ year }} {% endblock %}
+{% block title %}{{ (vendor? vendor.name : "NO VENDOR") }} Report for {{ month }} {{ year }} {% endblock %}
 {% block stylesheets %}
     {{ parent() }}
     <link rel="stylesheet" type="text/css" href="/css/dataTables.bootstrap.min.css" />
@@ -12,7 +12,7 @@
 {% block wrapper %}
     <div class="container-fluid">
         <a class="btn btn-default ml-5" href="{{ path('reports_vendors') }}"><span class="glyphicon glyphicon-arrow-left"></span></a>
-        <strong>Report for {{ month }} {{ year }} </strong>
+        <strong>{{ (vendor? vendor.name : "NO VENDOR") }}</strong> Report for <strong>{{ month }} {{ year }} </strong>
         <hr/>
         <table class="table table-condensed records_list" id="datatable" cellspacing="0">
             <thead>

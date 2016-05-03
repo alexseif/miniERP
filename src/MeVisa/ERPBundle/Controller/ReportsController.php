@@ -82,34 +82,41 @@ class ReportsController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $reports = $em->getRepository('MeVisaERPBundle:Orders')->findAllGroupByMonthAndYear();
+        $reports = $em->getRepository('MeVisaERPBundle:Orders')->findAllGroupByMonthAndYearAndVendor();
 
         return array(
             'reports' => $reports,
         );
     }
 
-     /**
+    /**
      * Finds and displays a Reports entity.
      *
-     * @Route("/vendors/{year}/{month}", name="reports_vendors_show")
+     * @Route("/vendors/{year}/{month}/{vendor_id}",  defaults={"vendor_id" = null}, name="reports_vendors_show")
      * @Method("GET")
      * @Template()
      */
-    public function vendorsReportAction($month, $year)
+    public function vendorsReportAction($month, $year, $vendor_id)
     {
 //TODO: Validate get
         $em = $this->getDoctrine()->getManager();
-
-        $orders = $em->getRepository('MeVisaERPBundle:Orders')->findByMonthAndYear($month, $year);
+        $vendor = null;
+        if ($vendor_id) {
+            $vendor = $em->getRepository('MeVisaERPBundle:Vendors')->find($vendor_id);
+            $orders = $em->getRepository('MeVisaERPBundle:Orders')->findByMonthAndYearAndVendor($month, $year, $vendor_id);
+        } else {
+            $orders = $em->getRepository('MeVisaERPBundle:Orders')->findByMonthAndYearAndNoVendor($month, $year);
+        }
 //        if (!$orders) {
 //            throw $this->createNotFoundException('Unable to find Reports entity.');
 //        }
 
         return array(
+            'vendor' => $vendor,
             'month' => $month,
             'year' => $year,
             'orders' => $orders,
         );
     }
+
 }

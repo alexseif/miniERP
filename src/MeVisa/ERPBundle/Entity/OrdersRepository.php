@@ -204,4 +204,57 @@ class OrdersRepository extends EntityRepository
                         ->getResult();
     }
 
+    public function findAllGroupByMonthAndYearAndVendor()
+    {
+        return $this->createQueryBuilder('o')
+                        ->select('v.id as vendor_id, v.name as vendor_name, YEAR(o.createdAt) as gBYear, MONTHNAME(o.createdAt) as gBMonth ')
+                        ->leftJoin('o.orderProducts', 'opr')
+                        ->leftJoin('opr.vendor', 'v')
+                        ->orderBy("o.createdAt, o.wcId")
+                        ->groupBy('opr.vendor')
+                        ->addGroupBy('gBYear')
+                        ->addGroupBy('gBMonth')
+                        ->getQuery()
+                        ->getResult();
+    }
+
+    public function findByMonthAndYearAndVendor($month, $year, $vendor_id)
+    {
+        return $this->createQueryBuilder('o')
+                        ->select('o, c, opa, opr')
+                        ->leftJoin('o.customer', 'c')
+                        ->leftJoin('o.orderPayments', 'opa')
+                        ->leftJoin('o.orderProducts', 'opr')
+                        ->where('opa.state = ?3 ')
+                        ->andWhere('MONTHNAME(o.createdAt) = ?1')
+                        ->andWhere('YEAR(o.createdAt) = ?2')
+                        ->andWhere('opr.vendor = ?4')
+                        ->orderBy('o.createdAt, o.wcId')
+                        ->setParameter('1', $month)
+                        ->setParameter('2', $year)
+                        ->setParameter('3', "PAID")
+                        ->setParameter('4', $vendor_id)
+                        ->getQuery()
+                        ->getResult();
+    }
+
+    public function findByMonthAndYearAndNoVendor($month, $year)
+    {
+        return $this->createQueryBuilder('o')
+                        ->select('o, c, opa, opr')
+                        ->leftJoin('o.customer', 'c')
+                        ->leftJoin('o.orderPayments', 'opa')
+                        ->leftJoin('o.orderProducts', 'opr')
+                        ->where('opa.state = ?3 ')
+                        ->andWhere('MONTHNAME(o.createdAt) = ?1')
+                        ->andWhere('YEAR(o.createdAt) = ?2')
+                        ->andWhere('opr.vendor IS NULL')
+                        ->orderBy('o.createdAt, o.wcId')
+                        ->setParameter('1', $month)
+                        ->setParameter('2', $year)
+                        ->setParameter('3', "PAID")
+                        ->getQuery()
+                        ->getResult();
+    }
+
 }
