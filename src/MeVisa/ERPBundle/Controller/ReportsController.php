@@ -26,6 +26,18 @@ class ReportsController extends Controller
      */
     public function indexAction()
     {
+        return array();
+    }
+
+    /**
+     * Lists all Accoungting Reports
+     *
+     * @Route("/accounting", name="reports_accounting")
+     * @Method("GET")
+     * @Template()
+     */
+    public function accountingAction()
+    {
         $em = $this->getDoctrine()->getManager();
 
         $reports = $em->getRepository('MeVisaERPBundle:Orders')->findAllGroupByMonthAndYear();
@@ -38,11 +50,11 @@ class ReportsController extends Controller
     /**
      * Finds and displays a Reports entity.
      *
-     * @Route("/{year}/{month}", name="reports_show")
+     * @Route("/accounting/{year}/{month}", name="reports_accounting_show")
      * @Method("GET")
      * @Template()
      */
-    public function showAction($month, $year)
+    public function accountingReportAction($month, $year)
     {
 //TODO: Validate get
         $em = $this->getDoctrine()->getManager();
@@ -59,4 +71,45 @@ class ReportsController extends Controller
         );
     }
 
+    /**
+     * Lists all Reports
+     *
+     * @Route("/vendors", name="reports_vendors")
+     * @Method("GET")
+     * @Template()
+     */
+    public function vendorsAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $reports = $em->getRepository('MeVisaERPBundle:Orders')->findAllGroupByMonthAndYear();
+
+        return array(
+            'reports' => $reports,
+        );
+    }
+
+     /**
+     * Finds and displays a Reports entity.
+     *
+     * @Route("/vendors/{year}/{month}", name="reports_vendors_show")
+     * @Method("GET")
+     * @Template()
+     */
+    public function vendorsReportAction($month, $year)
+    {
+//TODO: Validate get
+        $em = $this->getDoctrine()->getManager();
+
+        $orders = $em->getRepository('MeVisaERPBundle:Orders')->findByMonthAndYear($month, $year);
+//        if (!$orders) {
+//            throw $this->createNotFoundException('Unable to find Reports entity.');
+//        }
+
+        return array(
+            'month' => $month,
+            'year' => $year,
+            'orders' => $orders,
+        );
+    }
 }
