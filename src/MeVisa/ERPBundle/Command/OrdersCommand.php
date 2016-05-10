@@ -22,6 +22,9 @@ class OrdersCommand extends ContainerAwareCommand
     {
         $em = $this->getContainer()->get('doctrine')->getManager();
 
+        //TODO: 1) Select products
+        //TODO: 2) Get all orders with this problem
+        //TODO: 3) Recalculate order cost
         $ordersRepo = $em->getRepository('MeVisaERPBundle:Orders');
 
         $findBy = array(

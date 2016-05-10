@@ -151,6 +151,9 @@ class WCAPICommand extends ContainerAwareCommand
                 $em->persist($product);
             }
 
+            //TODO: 1) Check product cost structure
+            //TODO: 2) Recalculate cost
+
             $productPrice = $product->getPricing()->last();
             $orderProduct = new OrderProducts();
             $orderProduct->setProduct($product);
