@@ -28,6 +28,9 @@ class ProductsType extends AbstractType
                 ->add('urgent', 'checkbox', array(
                     'required' => false,
                 ))
+                ->add('wcCalc', 'checkbox', array(
+                    'required' => false,
+                ))
                 ->add('requiredDocuments', 'choice', array(
                     'choices' => array(
                         'passport' => 'Passport Copy',

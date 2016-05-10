@@ -51,6 +51,14 @@ class Products
      * @ORM\Column(name="enabled", type="boolean")
      */
     private $enabled;
+    
+    /**
+     * @var boolean
+     * this indicates if the quantity should be taken into consideration, 
+     * or should be ignored and calculated based on the stored cost
+     * @ORM\Column(name="wc_calc", type="boolean")
+     */
+    private $wcCalc = false;
     /**
      * @var boolean
      *
@@ -280,5 +288,28 @@ class Products
     public function getOrderProducts()
     {
         return $this->orderProducts;
+    }
+
+    /**
+     * Set wcCalc
+     *
+     * @param boolean $wcCalc
+     * @return Products
+     */
+    public function setWcCalc($wcCalc)
+    {
+        $this->wcCalc = $wcCalc;
+
+        return $this;
+    }
+
+    /**
+     * Get wcCalc
+     *
+     * @return boolean 
+     */
+    public function getWcCalc()
+    {
+        return $this->wcCalc;
     }
 }
