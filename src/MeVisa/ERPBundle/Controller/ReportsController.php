@@ -119,4 +119,70 @@ class ReportsController extends Controller
         );
     }
 
+    /**
+     * Finds and displays a Reports entity.
+     *
+     * @Route("/products",  name="reports_products_cost")
+     * @Method("GET")
+     * @Template()
+     */
+    public function productsReportAction()
+    {
+//TODO: Validate get
+        $em = $this->getDoctrine()->getManager();
+        $orderProducts = $em->getRepository('MeVisaERPBundle:OrderProducts')->findingNemo();
+//        if (!$orders) {
+//            throw $this->createNotFoundException('Unable to find Reports entity.');
+//        }
+        $badOrders = array();
+
+        foreach ($orderProducts as $key => $op) {
+
+            $badOrders[$op->getId()] = array();
+            $problems = array();
+            
+            $price = $op->getProduct()->getPricing()->last()->getPrice();
+            $qty = $op->getTotal() / $price;
+
+            // Qty Prob
+            if ($price * $op->getQuantity() != $op->getTotal()) {
+                if (is_int($qty)) {
+                    $problems['qty'] = 'qty=' . $qty;
+                    $problems['price'] = 'price=' . $price;
+                    ;
+                } else {
+                    $pricing = $op->getProduct()->getPricing();
+                    $notFound = true;
+                    foreach ($pricing as $p) {
+                        $nqty = $op->getTotal() / $p->getPrice();
+                        if (is_int($nqty)) {
+                            $problems["qty"] = 'qty=' . $nqty;
+                            $problems["price"] = 'price=' . $p->getPrice();
+                            if ($op->getUnitCost() != $p->getCost())
+                                $problems["cost"] = 'cost=' . $p->getCost();
+                            $notFound = false;
+                            break;
+                        }
+                    }
+
+                    // Bad Price
+                    if ($notFound) {
+                        $problems[] = "Can't find Price";
+                    }
+                }
+            }
+
+            // Zero Cost
+            if ((0 == $op->getUnitCost()) & !key_exists("cost", $badOrders[$op->getId()])) {
+                $problems["cost"] = 'cost=' . $op->getProduct()->getPricing()->last()->getCost();
+            }
+            $badOrders[$op->getId()] = implode("<br/>", $problems);
+        }
+
+        return array(
+            'ops' => $orderProducts,
+            'badOrders' => $badOrders,
+        );
+    }
+
 }

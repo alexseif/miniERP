@@ -12,5 +12,18 @@ use Doctrine\ORM\EntityRepository;
  */
 class OrderProductsRepository extends EntityRepository
 {
-    
+
+    public function findingNemo()
+    {
+        return $this->createQueryBuilder('opr')
+                        ->select('opr, o, p')
+                        ->leftJoin('opr.orderRef', 'o')
+                        ->leftJoin('opr.product', 'p')
+                        ->where("o.wcId IS NOT NULL")
+                        ->orderBy('o.id', 'ASC')
+//                        ->setMaxResults(100)
+                        ->getQuery()
+                        ->getResult();
+    }
+
 }

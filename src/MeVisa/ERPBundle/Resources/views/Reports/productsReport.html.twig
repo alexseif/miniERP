@@ -1,0 +1,94 @@
+{% extends ':default:admin.html.twig' %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" type="text/css" href="/css/dataTables.bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="/css/buttons.dataTables.min.css"/>
+    <style type="text/css">
+        table.dataTable{margin: 0 !important;}
+        div.dataTables_wrapper div.dataTables_paginate{text-align: center;}
+    </style>
+{% endblock %}
+{% block wrapper %}
+    <div class="container-fluid">
+        <table class="table table-bordered records_list" id="datatable">
+            <thead>
+                <tr>
+                    <th>Order #</th>
+                    <th>Date</th>
+                    <th>People</th>
+                    <th>Qty</th>
+                    <th>Product</th>
+                    <th>Order Cost</th>
+                    <th>Product Cost</th>
+                    <th>Order Price</th>
+                    <th>Product Price</th>
+                    <th>Subtotal</th>
+                    <th>Adjustment</th>
+                    <th>Order Total</th>
+                    <th>Reason</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for op in ops %}
+                    {% set qtyDiff = 0 %}
+                    {% set pplDiff = 0 %}
+                    {% set qtyDiff = (op.total/op.product.pricing|last.price) - op.quantity %} 
+                    {% set pplDiff = (op.total/op.product.pricing|last.price) - op.orderRef.people %} 
+                    <tr class="{{ (qtyDiff and pplDiff) ? "bg-warning" }}">                   
+                        <td><a class="btn btn-link" href="{{ path('orders_show', { 'id': op.orderRef.id }) }}">{{ op.orderRef.number }}</a></td>
+                        <td>{{op.orderRef.createdAt|localizeddate('short', 'none')}}</td>
+                        <td class="{{ (pplDiff) ? "bg-danger" }}">{{ op.orderRef.people }}</td>
+                        <td class="{{ (qtyDiff) ? "bg-danger" }}">{{ op.quantity }}</td>
+                        <td><a class="btn btn-link" href="{{ path('products_show', { 'id': op.product.id }) }}">{{ op.product.name }}</a></td>
+                        <td>{{ op.unitCost }}</td>
+                        <td>{{ op.product.pricing|last.cost }}</td>
+                        <td>{{ op.unitPrice }}</td>
+                        <td>{{ op.product.pricing|last.price }}</td>
+                        <td>{{ op.total }}</td>
+                        <td>{{ op.orderRef.adjustmentTotal}}</td>
+                        <td>{{ op.orderRef.total}}</td>
+                        <td>{{ badOrders[op.id]|raw }} </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+            {#<tfoot>
+            <th>Zero Cost</th>
+            <th>{{ zeroCost|length}}</th>
+            <th>Qty Prob</th>
+            <th>{{ qtyProb|length}}</th>
+            <th>Bad Price</th>
+            <th>{{ badPrice|length}}</th>
+            <th>Rest</th>
+            <th>{{ rest|length}}</th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            </tfoot>
+        </table>#}
+    </div>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script src="/js/datatables.min.js"></script>
+    <script src="/js/dataTables.buttons.min.js"></script>
+    <script src="/js/buttons.flash.min.js"></script>
+    <script src="/js/jszip.min.js"></script>
+    <script src="/js/pdfmake.min.js"></script>
+    <script src="/js/vfs_fonts.js"></script>
+    <script src="/js/buttons.html5.min.js"></script>
+    <script src="/js/buttons.print.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#datatable').DataTable({
+                "ordering": false,{#                "pageLength": 25,#}
+                dom: "<'row'<'col-sm-8'B><'col-sm-2 text-right'l><'col-sm-2'f>>tip",
+                buttons: [
+                    'copy', 'csv', 'excel', 'pdf', 'print'
+                ]
+            });
+        });
+    </script>
+
+{% endblock %}
