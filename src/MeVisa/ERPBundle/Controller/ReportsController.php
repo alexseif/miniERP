@@ -130,17 +130,27 @@ class ReportsController extends Controller
     {
 //TODO: Validate get
         $em = $this->getDoctrine()->getManager();
-        $orderProducts = $em->getRepository('MeVisaERPBundle:OrderProducts')->findingNemo();
+        $orderProducts = array();
+//        $orderProducts = $em->getRepository('MeVisaERPBundle:OrderProducts')->findingNemo();
 //        if (!$orders) {
 //            throw $this->createNotFoundException('Unable to find Reports entity.');
 //        }
+
+        //TODO: get all WC orders
+        $orders = $em->getRepository('MeVisaERPBundle:Orders')->findAll();
+
+        $WCO = new \MeVisa\ERPBundle\Business\WCOrder();
+        foreach ($orders as $order) {
+            $WCO->checkOrder($order);
+        }
+
         $badOrders = array();
 
         foreach ($orderProducts as $key => $op) {
 
             $badOrders[$op->getId()] = array();
             $problems = array();
-            
+
             $price = $op->getProduct()->getPricing()->last()->getPrice();
             $qty = $op->getTotal() / $price;
 
@@ -149,7 +159,6 @@ class ReportsController extends Controller
                 if (is_int($qty)) {
                     $problems['qty'] = 'qty=' . $qty;
                     $problems['price'] = 'price=' . $price;
-                    ;
                 } else {
                     $pricing = $op->getProduct()->getPricing();
                     $notFound = true;
