@@ -116,6 +116,7 @@ class OrdersRepository extends EntityRepository
                         ->leftJoin('o.orderProducts', 'opr')
                         ->leftJoin('opr.product', 'p')
                         ->Where("opa.state != 'paid'")
+                        ->andWhere("o.completedAt is NULL")
                         ->orderBy("o.createdAt, o.wcId")
                         ->getQuery()
                         ->getResult();
