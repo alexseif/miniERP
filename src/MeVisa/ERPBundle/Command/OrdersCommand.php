@@ -21,78 +21,13 @@ class OrdersCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $em = $this->getContainer()->get('doctrine')->getManager();
-
-        //TODO: 1) Select products
-        //TODO: 2) Get all orders with this problem
-        //TODO: 3) Recalculate order cost
-        $ordersRepo = $em->getRepository('MeVisaERPBundle:Orders');
-
-        $findBy = array(
-            'state' => 'rejected',
-            'completedAt' => NULL
-        );
-        $orders = $ordersRepo->findBy($findBy);
-        $this->fixDates($orders, $output);
-        
-        $findBy = array(
-            'state' => 'rejected',
-            'postedAt' => NULL
-        );
-        $orders = $ordersRepo->findBy($findBy);
-        $this->fixDates($orders, $output);
-        
-        $findBy = array(
-            'state' => 'approved',
-            'completedAt' => NULL
-        );
-        $orders = $ordersRepo->findBy($findBy);
-        $this->fixDates($orders, $output);
-        
-        $findBy = array(
-            'state' => 'approved',
-            'postedAt' => NULL
-        );
-        $orders = $ordersRepo->findBy($findBy);
-        $this->fixDates($orders, $output);
-        
-        $findBy = array(
-            'state' => 'post',
-            'postedAt' => NULL
-        );
-        $orders = $ordersRepo->findBy($findBy);
-        $this->fixDates($orders, $output);
-
-        $em->flush();
-        $output->writeln('complete');
-    }
-
-    protected function fixDates($orders, $output)
-    {
+        $wcos = $this->getContainer()->get('erp.wcorder');
+        $orders = $em->getRepository('MeVisaERPBundle:Orders')->findWC();
         foreach ($orders as $order) {
-            $output->writeln('Order: ' . $order->getId() . ' State: ' . $order->getState());
-            $orderLog = $this->getContainer()->get('erp.order')->getOrderLog($order->getId());
-            foreach ($orderLog as $log) {
-                $data = $log->getData();
-                if (key_exists('state', $data)) {
-                    if ('post' == $data['state']) {
-                        if (empty($order->getPostedAt())) {
-                            $order->setPostedAt($log->getLoggedAt());
-                            $output->writeln('  Updated postedAt to: ' . $order->getPostedAt()->format('Y-m-d H:i:s'));
-                        } else {
-                            $output->writeln('  Neglecting: ' . $log->getLoggedAt()->format('Y-m-d H:i:s'));
-                        }
-                    } elseif ('approved' == $data['state'] || 'rejected' == $data['state']) {
-                        if (empty($order->getCompletedAt())) {
-                            $order->setCompletedAt($log->getLoggedAt());
-                            $output->writeln('  Updated completedAt to: ' . $order->getCompletedAt()->format('Y-m-d H:i:s'));
-                        } else {
-                            $output->writeln('  Neglecting: ' . $log->getLoggedAt()->format('Y-m-d H:i:s'));
-                        }
-                    }
-                }
-            }
+            $wcos->fixOrder($order);
+            $em->persist($order);
         }
-        $output->writeln('Found: ' . count($orders));
+        $em->flush();
     }
 
 }

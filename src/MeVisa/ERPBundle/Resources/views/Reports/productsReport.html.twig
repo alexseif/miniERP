@@ -10,7 +10,7 @@
 {% endblock %}
 {% block wrapper %}
     <div class="container-fluid">
-        <table class="table table-bordered records_list" id="datatable">
+        <table class="table table-bordered table-condensed records_list" id="datatable">
             <thead>
                 <tr>
                     <th>Order #</th>
@@ -25,11 +25,12 @@
                     <th>Subtotal</th>
                     <th>Adjustment</th>
                     <th>Order Total</th>
-                    <th>Reason</th>
+                    <th>Messages</th>
                 </tr>
             </thead>
             <tbody>
-                {% for op in ops %}
+                {#                {% for o in orders %}#}
+                {% for op in orderProducts %}
                     {% set qtyDiff = 0 %}
                     {% set pplDiff = 0 %}
                     {% set qtyDiff = (op.total/op.product.pricing|last.price) - op.quantity %} 
@@ -40,16 +41,25 @@
                         <td class="{{ (pplDiff) ? "bg-danger" }}">{{ op.orderRef.people }}</td>
                         <td class="{{ (qtyDiff) ? "bg-danger" }}">{{ op.quantity }}</td>
                         <td><a class="btn btn-link" href="{{ path('products_show', { 'id': op.product.id }) }}">{{ op.product.name }}</a></td>
-                        <td>{{ op.unitCost }}</td>
-                        <td>{{ op.product.pricing|last.cost }}</td>
-                        <td>{{ op.unitPrice }}</td>
-                        <td>{{ op.product.pricing|last.price }}</td>
-                        <td>{{ op.total }}</td>
-                        <td>{{ op.orderRef.adjustmentTotal}}</td>
-                        <td>{{ op.orderRef.total}}</td>
-                        <td>{{ badOrders[op.id]|raw }} </td>
+                        <td>{{ op.unitCost/100 }}</td>
+                        <td>{{ op.product.pricing|last.cost/100 }}</td>
+                        <td>{{ op.unitPrice/100 }}</td>
+                        <td>{{ op.product.pricing|last.price/100 }}</td>
+                        <td>{{ op.total/100 }}</td>
+                        <td>{{ op.orderRef.adjustmentTotal/100 }}</td>
+                        <td>{{ op.orderRef.total/100 }}</td>
+                        <td>
+                            <ul class="list-group">
+                                {%  for msg in op.messages %}
+                                    <li class="list-group-item list-group-item-{{ (msg.type == "ERROR") ? "danger" : (msg.type == "NOTICE") ? "warning" : "info" }}">
+                                        {{msg.message}}
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </td>
                     </tr>
                 {% endfor %}
+                {#                {% endfor %}#}
             </tbody>
             {#<tfoot>
             <th>Zero Cost</th>
@@ -65,8 +75,8 @@
             <th></th>
             <th></th>
             <th></th>
-            </tfoot>
-        </table>#}
+            </tfoot>#}
+        </table>
     </div>
 {% endblock %}
 {% block javascripts %}

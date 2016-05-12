@@ -189,6 +189,11 @@ class Orders
     private $orderDocuments;
 
     /**
+     * @ORM\OneToMany(targetEntity="OrderMessages", mappedBy="orderRef", cascade={"persist"})
+     * */
+    private $messages;
+
+    /**
      * @var ArrayCollection
      */
     private $uploadedFiles;
@@ -208,6 +213,7 @@ class Orders
         $this->orderDocuments = new ArrayCollection();
         $this->invoices = new ArrayCollection();
         $this->uploadedFiles = new ArrayCollection();
+        $this->messages = new ArrayCollection();
     }
 
     /**
@@ -857,4 +863,39 @@ class Orders
         }
         return false;
     }
+
+    /**
+     * Add orderMessages
+     *
+     * @param \MeVisa\ERPBundle\Entity\OrderMessages $orderMessages
+     * @return Orders
+     */
+    public function addMessage(\MeVisa\ERPBundle\Entity\OrderMessages $orderMessages)
+    {
+        $this->messages[] = $orderMessages;
+        $orderMessages->setOrderRef($this);
+
+        return $this;
+    }
+
+    /**
+     * Remove orderMessages
+     *
+     * @param \MeVisa\ERPBundle\Entity\OrderMessages $orderMessages
+     */
+    public function removeMessage(\MeVisa\ERPBundle\Entity\OrderMessages $orderMessages)
+    {
+        $this->messages->removeElement($orderMessages);
+    }
+
+    /**
+     * Get orderMessages
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getMessages()
+    {
+        return $this->messages;
+    }
+
 }

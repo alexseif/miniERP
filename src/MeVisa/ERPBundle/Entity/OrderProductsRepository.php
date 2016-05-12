@@ -12,18 +12,14 @@ use Doctrine\ORM\EntityRepository;
  */
 class OrderProductsRepository extends EntityRepository
 {
-
-    public function findingNemo()
+    public function findWithMessages()
     {
-        return $this->createQueryBuilder('opr')
-                        ->select('opr, o, p')
-                        ->leftJoin('opr.orderRef', 'o')
-                        ->leftJoin('opr.product', 'p')
-                        ->where("o.wcId IS NOT NULL")
-                        ->orderBy('o.id', 'ASC')
-//                        ->setMaxResults(100)
+        return $this->createQueryBuilder("op")
+                        ->select("op, om, o")
+                        ->join('op.messages', 'om')
+                        ->join('op.orderRef', 'o')
+                        ->orderBy('o.number', 'ASC')
                         ->getQuery()
                         ->getResult();
     }
-
 }
