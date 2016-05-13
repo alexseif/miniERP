@@ -1,0 +1,40 @@
+<div class="panel panel-default">
+    <table class="table-condensed order-products-form">
+        <thead>
+            <tr class="panel-heading">
+                <th style="width: 20%;">{{ form_label(form.orderProducts[0].product) }}</th>
+                <th style="width: 1%;"></th>
+                <th style="width: 15%;">{{ form_label(form.orderProducts[0].vendor) }}</th>
+                <th style="width: 5%;">{{ form_label(form.orderProducts[0].quantity) }}</th>
+                <th style="width: 15%;">{{ form_label(form.orderProducts[0].unitCost) }}</th>
+                <th style="width: 15%;">{{ form_label(form.orderProducts[0].unitPrice) }}</th>
+                <th style="width: 20%;">{{ form_label(form.orderProducts[0].total) }}</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody class="orderProducts">
+            {% for product in form.orderProducts %}
+                <tr>
+                    <td>
+                        {{form_widget(product.product)}} 
+                    </td>
+                    <td>
+                        <a href="#" data-toggle="popover" 
+                           data-content="Cost:  Price:" >
+                            <span class="glyphicon glyphicon-info-sign"></span>
+                        </a>
+                    </td>
+                    <td>{{form_widget(product.vendor)}}</td>
+                    <td>{{form_widget(product.quantity)}}</td>
+                    <td>{{form_widget(product.unitCost)}}</td>
+                    <td>{{form_widget(product.unitPrice)}}</td>
+                    <td>{{form_widget(product.total)}}</td>
+                    <td><button class="btn btn-primary autofill" type="button" >Autofill</button></td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <div class='panel-footer clearfix'>
+        <div class="pull-right"> {{ form_row(form.productsTotal) }}</div>
+    </div>
+</div>

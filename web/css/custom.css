@@ -123,3 +123,9 @@ tr.bg-success:focus {
 .moving-box{
     display:inline-block; background-color: rgba(255,255,255,0.9);border: 3px solid #ccc; border-radius:4px;padding:10px;cursor: move;
 }
+@media (min-width: 768px) {
+    .modal-xl {
+        width: 90%;
+        max-width:1200px;
+    }
+}

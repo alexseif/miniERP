@@ -12,6 +12,7 @@ use Doctrine\ORM\EntityRepository;
  */
 class OrderProductsRepository extends EntityRepository
 {
+
     public function findWithMessages()
     {
         return $this->createQueryBuilder("op")
@@ -22,4 +23,5 @@ class OrderProductsRepository extends EntityRepository
                         ->getQuery()
                         ->getResult();
     }
+
 }

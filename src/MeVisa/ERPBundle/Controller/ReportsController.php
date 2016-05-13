@@ -8,6 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use MeVisa\ERPBundle\Form\OrderProductsFixType;
 
 /**
  * Reports controller.
@@ -131,10 +132,50 @@ class ReportsController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $orderProducts = $em->getRepository('MeVisaERPBundle:OrderProducts')->findWithMessages();
-       
-//TODO: make order edit form for order products
+
         return array(
             'orderProducts' => $orderProducts,
+        );
+    }
+
+    /**
+     * Displays a form to fix an existing Orders entity.
+     *
+     * @Route("/{id}/edit", name="reports_products_fix")
+     * @Method({"GET", "PUT"})
+     * @Template()
+     */
+    public function productsReportFormAction($id, Request $request)
+    {
+        $order = $this->get('erp.order')->getOrder($id);
+        if (!$order) {
+            throw $this->createNotFoundException('Unable to find Orders entity.');
+        }
+
+        $form = $this->createForm(new OrderProductsFixType(), $order, array(
+            'action' => $this->generateUrl('reports_products_fix', array('id' => $order->getId())),
+            'method' => 'PUT',
+        ));
+
+        $form->add('update', 'submit', array(
+            'label' => null,
+            'attr' => array(
+                'class' => 'btn-success pull-right'
+        )));
+        $form->handleRequest($request);
+        if ($form->isSubmitted()) {
+            if ($form->isValid()) {
+                $this->get('erp.order')->updateOrder($order);
+                // TODO: Validations
+                // Check Order Product
+                //  Handle no proper products or disabled
+//                return $this->redirect($this->generateUrl('orders_show', array('id' => $order->getId())));
+            }
+        }
+
+        return array(
+            'order' => $order,
+            'form' => $form->createView(),
         );
     }
 
