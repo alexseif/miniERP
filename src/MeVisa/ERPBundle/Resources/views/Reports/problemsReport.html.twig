@@ -27,6 +27,7 @@
                     <th>Adjustment</th>
                     <th>Order Total</th>
                     <th>Messages</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -53,15 +54,19 @@
                                 {%  for msg in op.messages %}
                                     <li class="list-group-item list-group-item-{{ (msg.type == "ERROR") ? "danger" : (msg.type == "NOTICE") ? "warning" : "info" }}">
                                         {{msg.message}}
-                                        <a href="#" class="pull-right text-danger"><span class="glyphicon glyphicon-trash"></span></a>
+                                        <button data-id="{{msg.id}}" data-target="{{ path('reports_problems_delete', { 'id': msg.id }) }}" class="pull-right clearmsg"><span class="glyphicon glyphicon-eye-open"></span></button>
                                     </li>
                                 {% endfor %}
                             </ul>
-                            <div class="btn-group">
-                                <button type="button" class="btn btn-success" data-toggle="ajax-modal" data-target="{{ path('reports_products_fix', { 'id': op.orderRef.id }) }}">Fix</button>
-                                <button type="button" class="btn btn-primary autofill">Autofill</button>
-                                <button type="button" class="btn btn-info clearmsg"><span class="glyphicon glyphicon-repeat"></span> Recheck</button>
-                                <button type="button" class="btn btn-danger clearmsg"><span class="glyphicon glyphicon-trash"></span> Messages</button>
+                        </td>
+                        <td>
+                            <div class="text-center">
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-success" data-toggle="ajax-modal" data-target="{{ path('reports_problems_fix', { 'id': op.orderRef.id }) }}"><span class="glyphicon glyphicon-fullscreen"></span></button>
+                                        {# <button type="button" class="btn btn-primary autofix">Autofix</button>#}
+                                        {# <button type="button" class="btn btn-info recheck"><span class="glyphicon glyphicon-repeat"></span> Recheck</button>#}
+                                    <button type="button" class="btn btn-primary clearmsgs" data-id="{{op.id}}"  data-target="{{ path('reports_problems_delete_all', { 'id': op.id }) }}"><span class="glyphicon glyphicon-eye-open"></span></button>
+                                </div>
                             </div>
                         </td>
                     </tr>
@@ -96,8 +101,31 @@
                     });
                 }
             });
-            
-                //TODO: save table state
+
+            $('.clearmsg').click(function () {
+                var clicked = $(this);
+                $.ajax({
+                    url: clicked.data('target'),
+                    type: 'DELETE',
+                    success: function (result) {
+                        clicked.closest('li').remove();
+                    }
+                });
+            });
+
+            $('.clearmsgs').click(function () {
+                var clicked = $(this);
+                $.ajax({
+                    url: clicked.data('target'),
+                    type: 'DELETE',
+                    success: function (result) {
+                        clicked.closest('tr').remove();
+                    }
+                });
+            });
+
+
+            //TODO: save table state
             $('#datatable').DataTable({
                 "ordering": false,
                 dom: "<'row'<'col-sm-8'B><'col-sm-2 text-right'l><'col-sm-2'f>>tip",
@@ -105,6 +133,7 @@
                     'copy', 'csv', 'excel', 'pdf', 'print'
                 ]
             });
+
 
         });
     </script>

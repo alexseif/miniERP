@@ -58,8 +58,8 @@ class WCOrderService
 
             // Check Price
             if (($orderProduct->getUnitPrice() != $productPrice->getPrice()) && $qtyValid) {
-                $orderProduct->newMessage("NOTICE", "Price updated from " . $orderProduct->getUnitPrice() / 100 . " to " . $productPrice->getPrice() / 100);
                 $orderProduct->setUnitPrice($productPrice->getPrice());
+                $orderProduct->newMessage("NOTICE", "Price updated from " . $orderProduct->getUnitPrice() / 100 . " to " . $productPrice->getPrice() / 100);
             }
 
             // Check Cost

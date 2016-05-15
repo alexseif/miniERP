@@ -20,7 +20,7 @@
                 <span class="label label-{{order.orderState.state('post').bootstrapClass}}">{{ order.postedAt ? 'Posted '~order.postedAt|localizeddate }}</span>
                 <span class="label label-success">{{ order.completedAt ? 'Completed '~order.completedAt |localizeddate }}</span>
             </div>
-                <h4 class="modal-title">Order# <a class="btn btn-link" href="{{ path('orders_show', { 'id': order.id }) }}" target="_blank">{{ order.number }}</a></h4>
+            <h4 class="modal-title">Order# <a class="btn btn-link" href="{{ path('orders_show', { 'id': order.id }) }}" target="_blank">{{ order.number }}</a></h4>
         </div>
         <div class="modal-body">
             <div class="row">
@@ -47,7 +47,7 @@
             <!-- Order Companions -->
             <div class="row">
                 <div class="col-sm-6">
-                    {% include 'MeVisaERPBundle:Orders:show/companions.html.twig' %}
+                    {% include 'MeVisaERPBundle:Reports:show/companions.html.twig' %}
                 </div>
                 <div class="col-sm-6">
                     <!-- Order Comments -->

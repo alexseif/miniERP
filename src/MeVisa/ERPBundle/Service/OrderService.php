@@ -81,11 +81,6 @@ class OrderService
         $this->em->flush();
     }
 
-    public function addNewComment($comment)
-    {
-        
-    }
-
     public function generateInvoice($id)
     {
         $order = $this->getOrder($id);
