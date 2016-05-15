@@ -1,8 +1,9 @@
-parameters:
-    order.class: MeVisa\ERPBundle\Service\OrderService
-
 services:
 
     erp.order:
-        class:  %order.class%
+        class:  MeVisa\ERPBundle\Service\OrderService
         arguments: [ '@doctrine.orm.entity_manager', '@templating', '@security.token_storage' ]
+
+    erp.wcorder:
+        class:  MeVisa\ERPBundle\Service\WCOrderService
+        arguments: [ '@doctrine.orm.entity_manager' ]

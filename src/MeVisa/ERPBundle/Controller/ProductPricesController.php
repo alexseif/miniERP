@@ -66,8 +66,6 @@ class ProductPricesController extends Controller
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($entity);
-//            var_dump($entity);
-//            die();
             $em->flush();
 
             return $this->redirect($this->generateUrl('pricing', array('product_id' => $entity->getProduct()->getId())));
@@ -88,7 +86,6 @@ class ProductPricesController extends Controller
      */
     private function createCreateForm(ProductPrices $entity)
     {
-//var_dump($entity);die();
         $form = $this->createForm(new ProductPricesType(), $entity, array(
             'action' => $this->generateUrl('pricing_create', array('product_id' => $entity->getProduct()->getId())),
             'method' => 'POST',

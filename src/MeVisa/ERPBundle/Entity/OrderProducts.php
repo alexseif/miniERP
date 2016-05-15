@@ -77,6 +77,19 @@ class OrderProducts
     protected $vendor;
 
     /**
+     * @ORM\OneToMany(targetEntity="OrderMessages", mappedBy="orderProduct", cascade={"persist"})
+     * */
+    private $messages;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->messages = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
      * Get id
      *
      * @return integer 
@@ -224,7 +237,6 @@ class OrderProducts
         return $this->unitCost;
     }
 
-
     /**
      * Set vendor
      *
@@ -247,4 +259,51 @@ class OrderProducts
     {
         return $this->vendor;
     }
+
+    /**
+     * Add orderMessages
+     *
+     * @param \MeVisa\ERPBundle\Entity\OrderMessages $orderMessages
+     * @return OrderProducts
+     */
+    public function addMessage(\MeVisa\ERPBundle\Entity\OrderMessages $orderMessages)
+    {
+        $this->messages[] = $orderMessages;
+        $orderMessages->setOrderProduct($this);
+
+        return $this;
+    }
+
+    /**
+     * Remove orderMessages
+     *
+     * @param \MeVisa\ERPBundle\Entity\OrderMessages $orderMessages
+     */
+    public function removeMessage(\MeVisa\ERPBundle\Entity\OrderMessages $orderMessages)
+    {
+        $this->messages->removeElement($orderMessages);
+    }
+
+    /**
+     * Get orderMessages
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getMessages()
+    {
+        return $this->messages;
+    }
+
+    public function newMessage($type, $message)
+    {
+        $msg = new OrderMessages($type, $message);
+        $this->addMessage($msg);
+        $this->getOrderRef()->addMessage($msg);
+    }
+
+    public function hasMessages()
+    {
+        return !$this->getMessages()->isEmpty();
+    }
+
 }

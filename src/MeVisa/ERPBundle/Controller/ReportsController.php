@@ -8,6 +8,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Symfony\Component\HttpFoundation\Response;
+use MeVisa\ERPBundle\Form\OrderProductsFixType;
 
 /**
  * Reports controller.
@@ -122,67 +124,107 @@ class ReportsController extends Controller
     /**
      * Finds and displays a Reports entity.
      *
-     * @Route("/products",  name="reports_products_cost")
+     * @Route("/problems",  name="reports_problems")
      * @Method("GET")
      * @Template()
      */
-    public function productsReportAction()
+    public function problemsReportAction()
     {
-//TODO: Validate get
         $em = $this->getDoctrine()->getManager();
-        $orderProducts = $em->getRepository('MeVisaERPBundle:OrderProducts')->findingNemo();
-//        if (!$orders) {
-//            throw $this->createNotFoundException('Unable to find Reports entity.');
-//        }
-        $badOrders = array();
 
-        foreach ($orderProducts as $key => $op) {
+        $orderProducts = $em->getRepository('MeVisaERPBundle:OrderProducts')->findWithMessages();
 
-            $badOrders[$op->getId()] = array();
-            $problems = array();
-            
-            $price = $op->getProduct()->getPricing()->last()->getPrice();
-            $qty = $op->getTotal() / $price;
+        return array(
+            'orderProducts' => $orderProducts,
+        );
+    }
 
-            // Qty Prob
-            if ($price * $op->getQuantity() != $op->getTotal()) {
-                if (is_int($qty)) {
-                    $problems['qty'] = 'qty=' . $qty;
-                    $problems['price'] = 'price=' . $price;
-                    ;
-                } else {
-                    $pricing = $op->getProduct()->getPricing();
-                    $notFound = true;
-                    foreach ($pricing as $p) {
-                        $nqty = $op->getTotal() / $p->getPrice();
-                        if (is_int($nqty)) {
-                            $problems["qty"] = 'qty=' . $nqty;
-                            $problems["price"] = 'price=' . $p->getPrice();
-                            if ($op->getUnitCost() != $p->getCost())
-                                $problems["cost"] = 'cost=' . $p->getCost();
-                            $notFound = false;
-                            break;
-                        }
+    /**
+     * Displays a form to fix an existing Orders entity.
+     *
+     * @Route("/problems/{id}/edit", name="reports_problems_fix")
+     * @Method({"GET", "PUT"})
+     * @Template()
+     */
+    public function problemsReportFormAction($id, Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $order = $this->get('erp.order')->getOrder($id);
+        if (!$order) {
+            throw $this->createNotFoundException('Unable to find Orders entity.');
+        }
+
+        $form = $this->createForm(new OrderProductsFixType(), $order, array(
+            'action' => $this->generateUrl('reports_problems_fix', array('id' => $order->getId())),
+            'method' => 'PUT',
+        ));
+
+        $form->add('update', 'submit', array(
+            'label' => null,
+            'attr' => array(
+                'class' => 'btn-success pull-right'
+        )));
+        $form->handleRequest($request);
+        if ($form->isSubmitted()) {
+            if ($form->isValid()) {
+                $this->get('erp.order')->updateOrder($order);
+
+                $messages = $em->getRepository('MeVisaERPBundle:OrderMessages')->findBy(array("orderRef" => $order->getId()));
+                if ($messages) {
+                    foreach ($messages as $message) {
+                        $em->remove($message);
                     }
-
-                    // Bad Price
-                    if ($notFound) {
-                        $problems[] = "Can't find Price";
-                    }
+                    $em->flush();
                 }
+                return $this->redirect($this->generateUrl('reports_problems'));
             }
-
-            // Zero Cost
-            if ((0 == $op->getUnitCost()) & !key_exists("cost", $badOrders[$op->getId()])) {
-                $problems["cost"] = 'cost=' . $op->getProduct()->getPricing()->last()->getCost();
-            }
-            $badOrders[$op->getId()] = implode("<br/>", $problems);
         }
 
         return array(
-            'ops' => $orderProducts,
-            'badOrders' => $badOrders,
+            'order' => $order,
+            'productPrices' => $em->getRepository('MeVisaERPBundle:ProductPrices')->findAllPrices(),
+            'form' => $form->createView(),
         );
+    }
+
+    /**
+     * Displays a form to fix an existing Orders entity.
+     *
+     * @Route("/problems/{id}/delete", name="reports_problems_delete")
+     * @Method("DELETE")
+     */
+    public function deleteMessage($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $message = $em->getRepository('MeVisaERPBundle:OrderMessages')->find($id);
+        if (!$message) {
+            throw $this->createNotFoundException('Unable to find Message.');
+        }
+        $em->remove($message);
+        $em->flush();
+
+        return new Response();
+    }
+
+    /**
+     * Displays a form to fix an existing Orders entity.
+     *
+     * @Route("/problems/{id}/deleteall", name="reports_problems_delete_all")
+     * @Method("DELETE")
+     */
+    public function deleteAllMessage($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $messages = $em->getRepository('MeVisaERPBundle:OrderMessages')->findBy(array("orderProduct" => $id));
+        if (!$messages) {
+            throw $this->createNotFoundException('Unable to find Message.');
+        }
+        foreach ($messages as $message) {
+            $em->remove($message);
+        }
+        $em->flush();
+
+        return new Response();
     }
 
 }

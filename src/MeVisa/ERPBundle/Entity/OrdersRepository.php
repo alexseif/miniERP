@@ -172,6 +172,7 @@ class OrdersRepository extends EntityRepository
     {
         return $this->createQueryBuilder("o")
                         ->where("o.wcId is not null")
+                        ->orderBy('o.number', 'ASC')
                         ->getQuery()
                         ->getResult();
     }
