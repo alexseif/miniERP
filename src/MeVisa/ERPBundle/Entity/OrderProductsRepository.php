@@ -24,4 +24,16 @@ class OrderProductsRepository extends EntityRepository
                 ->getResult();
     }
 
+    public function findRevenue()
+    {
+        return $this->createQueryBuilder('op')
+                ->select('op, o, p, SUM(op.total) as sTotal')
+                ->leftJoin('op.orderRef', 'o')
+                ->leftJoin('op.product', 'p')
+                ->Where("o.state = 'approved' OR o.state = 'rejected'")
+                ->groupBy('op.product')
+                ->orderBy("p.id")
+                ->getQuery()
+                ->getResult();
+    }
 }
