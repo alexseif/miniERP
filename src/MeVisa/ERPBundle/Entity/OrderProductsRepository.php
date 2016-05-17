@@ -24,15 +24,4 @@ class OrderProductsRepository extends EntityRepository
                 ->getResult();
     }
 
-    public function getReport()
-    {
-        return $this->createQueryBuilder("op")
-                ->select('op, SUM(op.total) as sTotal, YEAR(o.createdAt) as gYear, MONTH(o.createdAt) as gMonth, DAY(o.createdAt) as gDay, o.createdAt')
-                ->join('op.orderRef', 'o')
-                ->groupBy('gYear')
-                ->addGroupBy('gMonth')
-                ->addGroupBy('gDay')
-                ->getQuery()
-                ->getResult();
-    }
 }

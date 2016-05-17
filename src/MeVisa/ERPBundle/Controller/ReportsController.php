@@ -230,23 +230,22 @@ class ReportsController extends Controller
  /**
      * Finds and displays a Reports entity.
      *
-     * @Route("/products", name="reports_products")
+     * @Route("/products", name="reports_revenue")
      * @Method("GET")
      * @Template()
      */
-    public function productsReportAction()
+    public function revenueReportAction()
     {
 //TODO: Validate get
         $em = $this->getDoctrine()->getManager();
 
-        $orderProducts = $em->getRepository('MeVisaERPBundle:OrderProducts')->getReport();
+        $orders = $em->getRepository('MeVisaERPBundle:Orders')->findRevenue();
 //        if (!$orders) {
 //            throw $this->createNotFoundException('Unable to find Reports entity.');
 //        }
 
         return array(
-            'products' => $em->getRepository('MeVisaERPBundle:Products')->findAll(),
-            'ops' => $orderProducts,
+            'os' => $orders,
         );
         //TODO: pie chart per month for product income
     }

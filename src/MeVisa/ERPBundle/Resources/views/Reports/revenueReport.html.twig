@@ -6,7 +6,7 @@
 {% endblock %}
 {% block wrapper %}
     <div class="container-fluid">
-        <a class="btn btn-default ml-5" href="{{ path('reports_accounting') }}"><span class="glyphicon glyphicon-arrow-left"></span></a>
+        <a class="btn btn-default ml-5" href="{{ path('reports') }}"><span class="glyphicon glyphicon-arrow-left"></span></a>
         Report for
         <hr/>
         <div id="chart_div" style="width: 100%; height: 500px"></div>
@@ -56,16 +56,15 @@
             data.addColumn('date', 'Date');
             data.addColumn('number', 'Revenue');
             data.addRows([
-        {% for op in ops %}
-                    [new Date({{op.gYear}},{{op.gMonth}} , {{op.gDay}}),{{op.sTotal/100}} ],
+        {% for o in os %}
+                    [new Date({{o.createdAt.timestamp*1000}} ),{{o.total/100}} ],
         {% endfor %}
                 ]);
                 // Set chart options
                 var options = {
                     displayAnnotations: true,
                     displayAnnotationsFilter: true,
-                    legendPosition: 'newRow',
-                    fill: 100
+                    fill: 60
 
                 };
 
