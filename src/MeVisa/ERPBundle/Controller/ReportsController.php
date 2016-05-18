@@ -277,7 +277,46 @@ class ReportsController extends Controller
             'year' => $year,
             'month' => $month
         );
-        //TODO: pie chart per month for product income
+    }
+
+    /**
+     * Finds and displays a Reports entity.
+     *
+     * @Route("/employees/{year}/{month}", defaults={"year" = null, "month" = null}, name="reports_employees")
+     * @Method("GET")
+     * @Template()
+     */
+    public function employeesReportAction($year, $month)
+    {
+//TODO: Validate get
+        $em = $this->getDoctrine()->getManager();
+        $reports = $em->getRepository('MeVisaERPBundle:Orders')->findAllGroupByMonthAndYear();
+        $logRepo = $em->getRepository('AppBundle:LogEntryCustom');
+
+        if (is_null($year) || is_null($month)) {
+            $userLog = $logRepo->findGroupByUsername();
+        } else {
+            $userLog = $logRepo->findGroupByUsername();
+        }
+        /**
+         * SELECT 
+          COUNT(DATE(logged_at)),
+          DATE(logged_at),
+          MIN(TIME(logged_at)),
+          MAX(TIME(logged_at)),
+          (TIMEDIFF(MAX(TIME(logged_at)),
+          MIN(TIME(logged_at)))),
+          ele.username
+          FROM
+          ext_log_entries ele
+          GROUP BY DATE(logged_at) , ele.username
+         */
+        return array(
+            'userLog' => $userLog,
+            'reports' => $reports,
+            'year' => $year,
+            'month' => $month
+        );
     }
 
 }
