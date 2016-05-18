@@ -180,7 +180,7 @@ class OrdersRepository extends EntityRepository
     public function findAllGroupByMonthAndYear()
     {
         return $this->createQueryBuilder('o')
-                ->select(' YEAR(o.createdAt) as gBYear, MONTHNAME(o.createdAt) as gBMonth ')
+                ->select(' YEAR(o.createdAt) as gBYear, MONTHNAME(o.createdAt) as gBMonth, MONTH(o.createdAt) as gMonth ')
                 ->orderBy("o.createdAt, o.wcId")
                 ->groupBy('gBYear')
                 ->addGroupBy('gBMonth')
@@ -209,7 +209,7 @@ class OrdersRepository extends EntityRepository
     public function findAllGroupByMonthAndYearAndVendor()
     {
         return $this->createQueryBuilder('o')
-                ->select('v.id as vendor_id, v.name as vendor_name, YEAR(o.createdAt) as gBYear, MONTHNAME(o.createdAt) as gBMonth ')
+                ->select('v.id as vendor_id, v.name as vendor_name, YEAR(o.createdAt) as gBYear, MONTHNAME(o.createdAt) as gBMonth, MONTH(o.createdAt) as gMonth ')
                 ->leftJoin('o.orderProducts', 'opr')
                 ->leftJoin('opr.vendor', 'v')
                 ->orderBy("o.createdAt, o.wcId")

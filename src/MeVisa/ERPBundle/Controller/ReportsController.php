@@ -227,7 +227,7 @@ class ReportsController extends Controller
         return new Response();
     }
 
- /**
+    /**
      * Finds and displays a Reports entity.
      *
      * @Route("/revenue", name="reports_revenue")
@@ -248,26 +248,36 @@ class ReportsController extends Controller
             'os' => $orders,
         );
     }
- /**
+
+    /**
      * Finds and displays a Reports entity.
      *
-     * @Route("/products", name="reports_products")
+     * @Route("/products/{year}/{month}", defaults={"year" = null, "month" = null}, name="reports_products")
      * @Method("GET")
      * @Template()
      */
-    public function productsReportAction()
+    public function productsReportAction($year, $month)
     {
 //TODO: Validate get
         $em = $this->getDoctrine()->getManager();
+        $reports = $em->getRepository('MeVisaERPBundle:Orders')->findAllGroupByMonthAndYear();
 
-        $orderProducts = $em->getRepository('MeVisaERPBundle:OrderProducts')->findRevenue();
+        if (is_null($year) || is_null($month)) {
+            $orderProducts = $em->getRepository('MeVisaERPBundle:OrderProducts')->findRevenue();
+        } else {
+            $orderProducts = $em->getRepository('MeVisaERPBundle:OrderProducts')->findRevenueByMonthAndYear($month, $year);
+        }
 //        if (!$orders) {
 //            throw $this->createNotFoundException('Unable to find Reports entity.');
 //        }
 
         return array(
             'ops' => $orderProducts,
+            'reports' => $reports,
+            'year' => $year,
+            'month' => $month
         );
         //TODO: pie chart per month for product income
     }
+
 }
