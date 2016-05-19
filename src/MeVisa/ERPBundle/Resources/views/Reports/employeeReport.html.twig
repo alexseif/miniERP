@@ -21,7 +21,7 @@
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
                                 <li><a href="{{ path('reports_employees') }}">All</a></li>
                                     {% for user in users %}
-                                    <li><a href="{{ path('reports_employee', {username: user.username}) }}">{{ user.username }}</a></li>
+                                    <li><a href="{{ path('reports_employees', {username: user.username}) }}">{{ user.username }}</a></li>
                                     {% endfor %}
                             </ul>
                         </div>
