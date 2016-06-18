@@ -50,10 +50,18 @@ class OrderMessages
      */
     private $message;
 
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="read_message", type="boolean")
+     */
+    private $read;
+
     public function __construct($type, $message)
     {
         $this->type = $type;
         $this->message = $message;
+        $this->read = FALSE;
     }
 
     /**
@@ -156,6 +164,29 @@ class OrderMessages
     public function getOrderProduct()
     {
         return $this->orderProduct;
+    }
+
+    /**
+     * Set read
+     *
+     * @param boolean $read
+     * @return OrderMessages
+     */
+    public function setRead($read)
+    {
+        $this->read = $read;
+
+        return $this;
+    }
+
+    /**
+     * Get read
+     *
+     * @return boolean 
+     */
+    public function getRead()
+    {
+        return $this->read;
     }
 
 }

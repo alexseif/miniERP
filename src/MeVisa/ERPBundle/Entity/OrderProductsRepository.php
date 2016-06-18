@@ -19,6 +19,7 @@ class OrderProductsRepository extends EntityRepository
                         ->select("op, om, o")
                         ->join('op.messages', 'om')
                         ->join('op.orderRef', 'o')
+                        ->where('om.read = FALSE')
                         ->orderBy('o.number', 'ASC')
                         ->getQuery()
                         ->getResult();

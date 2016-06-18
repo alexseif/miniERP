@@ -25,7 +25,6 @@ class WCOrderService
     public function fixOrder($order)
     {
 
-
         $orderProducts = $order->getOrderProducts();
         foreach ($orderProducts as $orderProduct) {
             $qtyValid = true;

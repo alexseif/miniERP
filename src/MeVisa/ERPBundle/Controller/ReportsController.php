@@ -200,7 +200,7 @@ class ReportsController extends Controller
         if (!$message) {
             throw $this->createNotFoundException('Unable to find Message.');
         }
-        $em->remove($message);
+        $message->setRead(TRUE);
         $em->flush();
 
         return new Response();
@@ -220,7 +220,7 @@ class ReportsController extends Controller
             throw $this->createNotFoundException('Unable to find Message.');
         }
         foreach ($messages as $message) {
-            $em->remove($message);
+            $message->setRead(TRUE);
         }
         $em->flush();
 
