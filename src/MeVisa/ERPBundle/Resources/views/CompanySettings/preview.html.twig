@@ -17,11 +17,11 @@
                 <div class="clearfix">
                     <div style="float:right; text-align: right; vertical-align: bottom;"><img src="{{ absolute_url(asset('images/visa_logo.png?v=1')) }}" height="80" /></div>
                     <div>
-                        <span style="font-weight: bold; font-size: 14pt;">{{companySettings.jsonValue['name']}}</span><br/>
-                        {{include(template_from_string(companySettings.jsonValue['address']))}}
+                        <span style="font-weight: bold; font-size: 14pt;">{{companySettings.jsonValue['name']|raw}}</span><br/>
+                        {{ companySettings.jsonValue['address']|raw }}
                     </div>
                 </div>
-
+                <hr/>
                 <div class="row">
                     <div class="col-xs-12">
                         <h1 class="text-center">Счет № {{ invoice.id }}  от {{ "now" | format_date(null, 'ru', 'Europe/Moscow', constant('IntlDateFormatter::LONG')) }}</h1>
@@ -31,8 +31,8 @@
                     <div class="col-xs-6 col-xs-offset-3">
                         <table class="table tb">
                             <tr>
-                                <td style="width: 50%;"><b>ИНН:</b> 7701375794</td>
-                                <td class="lb"><b>КПП:</b> 770101001</td>
+                                <td style="width: 50%;"><b>ИНН:</b> 7734380567</td>
+                                <td class="lb"><b>КПП:</b> 773401001</td>
                             </tr>
                         </table>
                     </div>
@@ -43,14 +43,14 @@
                             <tr>
                                 <td style="width: 50%;vertical-align: top;">
                                     <p class="bold">Получатель</p>
-                                    ООО "ВИЗА"<br/>
-                                    Счет №: 40702810738000007699
+                                    <p>{{companySettings.jsonValue['name']|raw}}</p>
+                                    {{companySettings.jsonValue['bank']|raw}}
                                 </td>
-                                <td class="lb">
+                                <td class="lb small">
                                     <p class="bold">Банк получателя</p>
-                                    Банк: АО "АЛЬФА-БАНК" Г. МОСКВА<br/>
-                                    БИК: 044525593<br/>
-                                    Корр. счет: 30101810200000000593<br/>
+                                    Филиал "Бизнес онлайн" ПАО "ХАНТЫ-МАНСИЙСКИЙ БАНК ОТКРЫТИЕ"<br/>
+                                    БИК: 044583999<br/>
+                                    Корр. счет: 30101810600000000999<br/>
                                 </td>
                             </tr>
                         </table>
@@ -90,12 +90,9 @@
                     </tfoot>
                 </table>
                 <br/><br/>
-                <table class="table">
-                    <tr>
-                        <td style="widht:50%;">
+                <table class="table"><tr><td style="widht:50%;">
                             {{companySettings.jsonValue['invoiceSignature1']|raw}}<br/>
-                            <p>_____________________________</p>
-                        </td>
+                            <p>_____________________________</p></td>
                         <td>
                             {{companySettings.jsonValue['invoiceSignature2']|raw}}<br/>
                             <p>_____________________________</p>
