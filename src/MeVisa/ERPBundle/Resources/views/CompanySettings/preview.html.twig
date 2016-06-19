@@ -15,7 +15,7 @@
         <div class="panel panel-default tab-pane fade in active" id="invoice">
             <div class="panel-body">
                 <div class="clearfix">
-                    <div style="float:right; width: 80; height: 80; text-align: right; vertical-align: bottom;"><img src="{{ absolute_url(asset('images/visa_logo.png')) }}" height="80" /></div>
+                    <div style="float:right; text-align: right; vertical-align: bottom;"><img src="{{ absolute_url(asset('images/visa_logo.png?v=1')) }}" height="80" /></div>
                     <div>
                         <span style="font-weight: bold; font-size: 14pt;">{{companySettings.jsonValue['name']}}</span><br/>
                         {{include(template_from_string(companySettings.jsonValue['address']))}}
