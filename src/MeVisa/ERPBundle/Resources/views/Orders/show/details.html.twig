@@ -3,8 +3,8 @@
         <table class="table table-condensed table-hover text-right">
             <tbody>
                 <tr><th>Pax No.</th><td>{{ order.people }}</td></tr>
-                <tr><th>Departure</th><td>{{ order.departure|localizeddate('medium', 'none') }}</td></tr>
                 <tr><th>Arrival</th><td>{{ order.arrival|localizeddate('medium', 'none') }}</td></tr>
+                <tr><th>Departure</th><td>{{ order.departure|localizeddate('medium', 'none') }}</td></tr>
             </tbody>
         </table>
     </div>
