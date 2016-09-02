@@ -15,6 +15,7 @@ use MeVisa\ERPBundle\Form\OrderProductsFixType;
  * Reports controller.
  *
  * @Route("/reports")
+ * @Security("has_role('ROLE_ACCOUNTANT')")
  */
 class ReportsController extends Controller
 {
@@ -23,11 +24,13 @@ class ReportsController extends Controller
      * Lists all Reports
      *
      * @Route("/", name="reports")
+
      * @Method("GET")
      * @Template()
      */
     public function indexAction()
     {
+        // is_granted('ROLE_ACCOUNTANT');
         return array();
     }
 
