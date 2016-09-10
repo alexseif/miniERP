@@ -34,6 +34,7 @@ class UsersType extends AbstractType
             'placeholder' => 'Email'
           )
         ))
+        ->add('password')
         ->add('roles', 'choice', array(
           'choices' => $this->roles,
           'expanded' => true,
