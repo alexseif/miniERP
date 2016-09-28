@@ -43,7 +43,7 @@ class OrderCompanions
      * @var string
      *
      * @Gedmo\Versioned
-     * @ORM\Column(name="nationality", type="string", length=255)
+     * @ORM\Column(name="nationality", type="string", length=255, nullable=true)
      */
     private $nationality;
 
@@ -51,7 +51,7 @@ class OrderCompanions
      * @var string
      *
      * @Gedmo\Versioned
-     * @ORM\Column(name="passport_number", type="string", length=255)
+     * @ORM\Column(name="passport_number", type="string", length=255, nullable=true)
      */
     private $passportNumber;
 
@@ -59,7 +59,7 @@ class OrderCompanions
      * @var \DateTime
      *
      * @Gedmo\Versioned
-     * @ORM\Column(name="passport_expiry", type="datetime")
+     * @ORM\Column(name="passport_expiry", type="datetime", nullable=true)
      */
     private $passportExpiry;
 
