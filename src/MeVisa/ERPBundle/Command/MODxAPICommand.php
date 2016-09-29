@@ -170,7 +170,7 @@ class MODxAPICommand extends ContainerAwareCommand
 
     $orderPayment = new OrderPayments();
     // method_id method_title
-    $orderPayment->setMethod('');
+    $orderPayment->setMethod('payu');
     $orderPayment->setAmount($modxOrder['cost'] * 100);
     $orderPayment->setCreatedAt(new \DateTime($modxOrder['editedon'], $timezone));
     if (1 == $modxOrder['active']) {
