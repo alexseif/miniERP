@@ -2,11 +2,12 @@
 {% block adminPanelTitle %}Reports{% endblock %}
 {% block adminPanelBody %}
     <ul class="list-group">
-        <li class="list-group-item">
+        {#<li class="list-group-item">
             <a href="{{ path('reports_problems') }} ">Problems</a>
-        </li>
+        </li>#}
         <li class="list-group-item">
-            <a href="{{ path('reports_accounting') }} ">Financial</a>
+            <a href="{{ path('reports_financial') }} ">Financial</a>
+            <a href="{{ path('reports_accounting') }}" class="pull-right">Accounting</a>
         </li>
         <li class="list-group-item">
             <a href="{{ path('reports_vendors') }} ">Vendors accounts</a>

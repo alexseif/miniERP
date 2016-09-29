@@ -206,6 +206,25 @@ class OrdersRepository extends EntityRepository
             ->getResult();
   }
 
+  public function findByMonthAndYearNoCash($month, $year)
+  {
+    return $this->createQueryBuilder('o')
+            ->select('o, c, opa, opr')
+            ->leftJoin('o.customer', 'c')
+            ->leftJoin('o.orderPayments', 'opa')
+            ->leftJoin('o.orderProducts', 'opr')
+            ->where('opa.state = ?3 ')
+            ->andWhere('MONTHNAME(o.createdAt) = ?1')
+            ->andWhere('YEAR(o.createdAt) = ?2')
+            ->andWhere("opa.method != 'cash'")
+            ->orderBy('o.createdAt, o.wcId')
+            ->setParameter('1', $month)
+            ->setParameter('2', $year)
+            ->setParameter('3', "PAID")
+            ->getQuery()
+            ->getResult();
+  }
+
   public function findAllGroupByMonthAndYearAndVendor()
   {
     return $this->createQueryBuilder('o')

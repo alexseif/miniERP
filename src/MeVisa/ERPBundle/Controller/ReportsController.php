@@ -35,7 +35,48 @@ class ReportsController extends Controller
     }
 
     /**
-     * Lists all Accoungting Reports
+     * Lists all Financial Reports
+     *
+     * @Route("/financial", name="reports_financial")
+     * @Method("GET")
+     * @Template()
+     */
+    public function financialAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $reports = $em->getRepository('MeVisaERPBundle:Orders')->findAllGroupByMonthAndYear();
+
+        return array(
+            'reports' => $reports,
+        );
+    }
+
+    /**
+     * Finds and displays a Reports entity.
+     *
+     * @Route("/financial/{year}/{month}", name="reports_financial_show")
+     * @Method("GET")
+     * @Template()
+     */
+    public function financialReportAction($month, $year)
+    {
+//TODO: Validate get
+        $em = $this->getDoctrine()->getManager();
+
+        $orders = $em->getRepository('MeVisaERPBundle:Orders')->findByMonthAndYear($month, $year);
+//        if (!$orders) {
+//            throw $this->createNotFoundException('Unable to find Reports entity.');
+//        }
+
+        return array(
+            'month' => $month,
+            'year' => $year,
+            'orders' => $orders,
+        );
+    }
+    /**
+     * Lists all Accounting Reports
      *
      * @Route("/accounting", name="reports_accounting")
      * @Method("GET")
@@ -64,7 +105,7 @@ class ReportsController extends Controller
 //TODO: Validate get
         $em = $this->getDoctrine()->getManager();
 
-        $orders = $em->getRepository('MeVisaERPBundle:Orders')->findByMonthAndYear($month, $year);
+        $orders = $em->getRepository('MeVisaERPBundle:Orders')->findByMonthAndYearNoCash($month, $year);
 //        if (!$orders) {
 //            throw $this->createNotFoundException('Unable to find Reports entity.');
 //        }
