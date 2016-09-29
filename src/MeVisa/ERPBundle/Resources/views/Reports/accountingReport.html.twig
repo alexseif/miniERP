@@ -1,88 +1,84 @@
 {% extends ':default:admin.html.twig' %}
 {% block title %}Report for {{ month }} {{ year }} {% endblock %}
 {% block stylesheets %}
-    {{ parent() }}
-    <link rel="stylesheet" type="text/css" href="/css/dataTables.bootstrap.min.css" />
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.1.2/css/buttons.dataTables.min.css"/>
-    <style type="text/css">
-        table.dataTable{margin: 0 !important;}
-        div.dataTables_wrapper div.dataTables_paginate{text-align: center;}
-    </style>
+  {{ parent() }}
+  <link rel="stylesheet" type="text/css" href="/css/dataTables.bootstrap.min.css" />
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.1.2/css/buttons.dataTables.min.css"/>
+  <style type="text/css">
+    table.dataTable{margin: 0 !important;}
+    div.dataTables_wrapper div.dataTables_paginate{text-align: center;}
+  </style>
 {% endblock %}
 {% block wrapper %}
-    <div class="container-fluid">
-        <a class="btn btn-default ml-5" href="{{ path('reports_accounting') }}"><span class="glyphicon glyphicon-arrow-left"></span></a>
-        Report for <strong>{{ month }} {{ year }} </strong>
-        <hr/>
-        <table class="table table-striped records_list" id="datatable" cellspacing="0">
-            <thead>
+  <div class="container-fluid">
+    <a class="btn btn-default ml-5" href="{{ path('reports_accounting') }}"><span class="glyphicon glyphicon-arrow-left"></span></a>
+    Report for <strong>{{ month }} {{ year }} </strong>
+    <hr/>
+    <table class="table table-striped records_list" id="datatable" cellspacing="0">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Заявка #</th>
+          <th>Покупатель</th>
+          <th>Программа тура</th>
+          <th>Visitor Name</th>
+          <th>Passport</th>
+          <th>Nationality</th>
+          <th>Vendor</th>
+          <th>Product Cost</th>
+          <th>Prduct Fee</th>
+          <th>Payment Type</th>
+          <th>Remarks</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for order in orders %}
+          {% if order.orderPayments|last.state == 'paid' %}
+            {% for op in order.orderProducts %}
+              {% set costPrint = true %}
+              {% for companion in order.orderCompanions %}
                 <tr>
-                    <th>Заявка #</th>
-                    <th>Date</th>
-                    <th>Начало тура Окончание тура</th>
-                    <th>Покупатель</th>
-                    <th>Программа тура</th>
-                    <th>Подзаявка (№,  направление, поставщик)</th>
-                    <th>Стоимость</th>
-                    <th>Себетоимость</th>
-                    <th>Ожидаемая прибыль</th>
-                    <th>Оплачено покупателем</th>
-                    <th>Оплачено туроператору</th>
-                    <th>Доход фактический</th>
+                  <td>{{order.createdAt|localizeddate('short', 'none')}}</td>
+                  <td><a class="btn btn-link" href="{{ path('orders_show', { 'id': order.id }) }}">{{ order.number }}</a></td>
+                  <td>{{ order.customer.name }}</td>
+                  <td>{{ op.product.name }}</td>
+                  <td>{{ companion.name }}</td>
+                  <td>{{ companion.passportNumber }}</td>
+                  <td>{{ companion.nationality|country }}</td>
+                  <td>{{ op.product.vendor.name }}</td>
+                  <td>{{ (costPrint) ? (op.unitCost * op.quantity)/100 : 0 }}</td>
+                  <td>{{ (costPrint) ?  op.total/100 : 0 }}</td>
+                  <td>{{ (costPrint) ?  order.orderPayments|last.method }}</td>
+                  <td>Remarks</td>
                 </tr>
-            </thead>
-            <tbody>
-                {% for order in orders %}
-                    {% if order.orderPayments|last.state == 'paid' %}
-                        <tr>
-                            <td><a class="btn btn-link" href="{{ path('orders_show', { 'id': order.id }) }}">{{ order.number }}</a></td>
-                            <td>{{order.createdAt|localizeddate('short', 'none')}}</td>
-                            <td>{{order.arrival|localizeddate('short', 'none')}} - {{order.departure|localizeddate('short', 'none')}}</td>
-                            <td>{{ order.customer.name }}</td>
-                            <td></td>
-                            <td>
-                                {% set br = '' %}
-                                {% set cost = 0 %}
-                                {% set price = 0 %}
-                                {% for op in order.orderProducts %}
-                                    {% set cost = cost + (op.quantity * op.unitCost) %}
-                                    {% set price = price + op.total %}
-                                    {{ br|nl2br }} {{ op.quantity }} {{ op.product.name }} {{ (op.vendor)? op.vendor.name}} 
-                                    {% set br = '\n' %}
-                                {% endfor %}
-                            </td>
-                            <td>{{ (cost/100)|number_format }}</td>
-                            <td>{{ (price/100)|number_format }}</td>
-                            <td>{{ ((price - cost)/100)|number_format }}</td>
-                            <td>{{ ((order.orderPayments|last.amount)/100)|number_format }}</td>
-                            <td>{{ (cost/100)|number_format }}</td>
-                            <td>{{ ((price - cost)/100)|number_format }}</td>
-                        </tr>
-                    {% endif %}
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
+              {% set costPrint = false %}
+              {% endfor %}
+            {% endfor %}
+          {% endif %}
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
 {% endblock %}
 {% block javascripts %}
-    {{ parent() }}
-    <script src="/js/datatables.min.js"></script>
-    <script src="https://cdn.datatables.net/buttons/1.1.2/js/dataTables.buttons.min.js"></script>
-    <script src="//cdn.datatables.net/buttons/1.1.2/js/buttons.flash.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js"></script>
-    <script src="//cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/pdfmake.min.js"></script>
-    <script src="//cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/vfs_fonts.js"></script>
-    <script src="//cdn.datatables.net/buttons/1.1.2/js/buttons.html5.min.js"></script>
-    <script src="//cdn.datatables.net/buttons/1.1.2/js/buttons.print.min.js "></script>
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $('#datatable').DataTable({
-                dom: "<'row'<'col-sm-8'B><'col-sm-2 text-right'l><'col-sm-2'f>>tip",
-                buttons: [
-                    'copy', 'csv', 'excel', 'pdf', 'print'
-                ]
-            });
-        });
-    </script>
+  {{ parent() }}
+  <script src="/js/datatables.min.js"></script>
+  <script src="https://cdn.datatables.net/buttons/1.1.2/js/dataTables.buttons.min.js"></script>
+  <script src="//cdn.datatables.net/buttons/1.1.2/js/buttons.flash.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js"></script>
+  <script src="//cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/pdfmake.min.js"></script>
+  <script src="//cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/vfs_fonts.js"></script>
+  <script src="//cdn.datatables.net/buttons/1.1.2/js/buttons.html5.min.js"></script>
+  <script src="//cdn.datatables.net/buttons/1.1.2/js/buttons.print.min.js "></script>
+  <script type="text/javascript">
+    $(document).ready(function () {
+      $('#datatable').DataTable({
+        dom: "<'row'<'col-sm-8'B><'col-sm-2 text-right'l><'col-sm-2'f>>tip",
+        buttons: [
+          'copy', 'csv', 'excel', 'pdf', 'print'
+        ]
+      });
+    });
+  </script>
 
 {% endblock %}
