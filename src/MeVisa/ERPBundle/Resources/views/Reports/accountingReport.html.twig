@@ -49,7 +49,7 @@
                   <td>{{ (costPrint) ? (op.unitCost * op.quantity)/100 : 0 }}</td>
                   <td>{{ (costPrint) ?  op.total/100 : 0 }}</td>
                   <td>{{ (costPrint) ?  order.orderPayments|last.method }}</td>
-                  <td>Remarks</td>
+                  <td></td>
                 </tr>
               {% set costPrint = false %}
               {% endfor %}
