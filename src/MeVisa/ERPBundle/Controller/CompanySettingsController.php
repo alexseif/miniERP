@@ -7,148 +7,150 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use MeVisa\ERPBundle\Entity\CompanySettings;
 use MeVisa\ERPBundle\Form\CompanySettingsType;
 
 /**
  * CompanySettings controller.
  *
+ * @Security("has_role('ROLE_SUPER_ADMIN')")
  * @Route("/companysettings")
  */
 class CompanySettingsController extends Controller
 {
 
-    /**
-     * Finds and displays a CompanySettings entity.
-     *
-     * @Route("/preview", name="companysettings_preview")
-     * @Method("GET")
-     * @Template()
-     */
-    public function previewAction()
-    {
-        $em = $this->getDoctrine()->getManager();
+  /**
+   * Finds and displays a CompanySettings entity.
+   *
+   * @Route("/preview", name="companysettings_preview")
+   * @Method("GET")
+   * @Template()
+   */
+  public function previewAction()
+  {
+    $em = $this->getDoctrine()->getManager();
 
-        $CompanySettings = $em->getRepository('MeVisaERPBundle:CompanySettings')->find(1);
+    $CompanySettings = $em->getRepository('MeVisaERPBundle:CompanySettings')->find(1);
 
-        if (!$CompanySettings) {
-            throw $this->createNotFoundException('Unable to find CompanySettings entity.');
-        }
-
-        $order = new \MeVisa\ERPBundle\Entity\Orders();
-        $customer= new \MeVisa\CRMBundle\Entity\Customers();
-        $customer->setName("Preview");
-        $order->setCustomer($customer);
-        $product = new \MeVisa\ERPBundle\Entity\Products();
-        $product->setName("Preivew");
-        $orderProduct = New \MeVisa\ERPBundle\Entity\OrderProducts();
-        $orderProduct->setProduct($product);
-        $order->addOrderProduct($orderProduct);
-        $invoice = new \MeVisa\ERPBundle\Entity\Invoices();
-
-        return array(
-            'companySettings' => $CompanySettings,
-            'order' => $order,
-            'invoice' => $invoice,
-        );
+    if (!$CompanySettings) {
+      throw $this->createNotFoundException('Unable to find CompanySettings entity.');
     }
 
-    /**
-     * Finds and displays a CompanySettings entity.
-     *
-     * @Route("/{id}", name="companysettings_show")
-     * @Method("GET")
-     * @Template()
-     */
-    public function showAction($id)
-    {
-        $em = $this->getDoctrine()->getManager();
+    $order = new \MeVisa\ERPBundle\Entity\Orders();
+    $customer = new \MeVisa\CRMBundle\Entity\Customers();
+    $customer->setName("Preview");
+    $order->setCustomer($customer);
+    $product = new \MeVisa\ERPBundle\Entity\Products();
+    $product->setName("Preivew");
+    $orderProduct = New \MeVisa\ERPBundle\Entity\OrderProducts();
+    $orderProduct->setProduct($product);
+    $order->addOrderProduct($orderProduct);
+    $invoice = new \MeVisa\ERPBundle\Entity\Invoices();
 
-        $entity = $em->getRepository('MeVisaERPBundle:CompanySettings')->find($id);
+    return array(
+      'companySettings' => $CompanySettings,
+      'order' => $order,
+      'invoice' => $invoice,
+    );
+  }
 
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find CompanySettings entity.');
-        }
+  /**
+   * Finds and displays a CompanySettings entity.
+   *
+   * @Route("/{id}", name="companysettings_show")
+   * @Method("GET")
+   * @Template()
+   */
+  public function showAction($id)
+  {
+    $em = $this->getDoctrine()->getManager();
 
-        return array(
-            'entity' => $entity,
-        );
+    $entity = $em->getRepository('MeVisaERPBundle:CompanySettings')->find($id);
+
+    if (!$entity) {
+      throw $this->createNotFoundException('Unable to find CompanySettings entity.');
     }
 
-    /**
-     * Displays a form to edit an existing CompanySettings entity.
-     *
-     * @Route("/{id}/edit", name="companysettings_edit")
-     * @Method("GET")
-     * @Template()
-     */
-    public function editAction($id)
-    {
-        $em = $this->getDoctrine()->getManager();
+    return array(
+      'entity' => $entity,
+    );
+  }
 
-        $entity = $em->getRepository('MeVisaERPBundle:CompanySettings')->find($id);
+  /**
+   * Displays a form to edit an existing CompanySettings entity.
+   *
+   * @Route("/{id}/edit", name="companysettings_edit")
+   * @Method("GET")
+   * @Template()
+   */
+  public function editAction($id)
+  {
+    $em = $this->getDoctrine()->getManager();
 
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find CompanySettings entity.');
-        }
+    $entity = $em->getRepository('MeVisaERPBundle:CompanySettings')->find($id);
 
-        $editForm = $this->createEditForm($entity);
-
-        return array(
-            'entity' => $entity,
-            'edit_form' => $editForm->createView(),
-        );
+    if (!$entity) {
+      throw $this->createNotFoundException('Unable to find CompanySettings entity.');
     }
 
-    /**
-     * Creates a form to edit a CompanySettings entity.
-     *
-     * @param CompanySettings $entity The entity
-     *
-     * @return \Symfony\Component\Form\Form The form
-     */
-    private function createEditForm(CompanySettings $entity)
-    {
-        $form = $this->createForm(new CompanySettingsType(), $entity, array(
-            'action' => $this->generateUrl('companysettings_update', array('id' => $entity->getId())),
-            'method' => 'PUT',
-        ));
+    $editForm = $this->createEditForm($entity);
 
-        $form->add('submit', 'submit', array('label' => 'Update'));
+    return array(
+      'entity' => $entity,
+      'edit_form' => $editForm->createView(),
+    );
+  }
 
-        return $form;
+  /**
+   * Creates a form to edit a CompanySettings entity.
+   *
+   * @param CompanySettings $entity The entity
+   *
+   * @return \Symfony\Component\Form\Form The form
+   */
+  private function createEditForm(CompanySettings $entity)
+  {
+    $form = $this->createForm(new CompanySettingsType(), $entity, array(
+      'action' => $this->generateUrl('companysettings_update', array('id' => $entity->getId())),
+      'method' => 'PUT',
+    ));
+
+    $form->add('submit', 'submit', array('label' => 'Update'));
+
+    return $form;
+  }
+
+  /**
+   * Edits an existing CompanySettings entity.
+   *
+   * @Route("/{id}", name="companysettings_update")
+   * @Method("PUT")
+   * @Template("MeVisaERPBundle:CompanySettings:edit.html.twig")
+   */
+  public function updateAction(Request $request, $id)
+  {
+    $em = $this->getDoctrine()->getManager();
+
+    $entity = $em->getRepository('MeVisaERPBundle:CompanySettings')->find($id);
+
+    if (!$entity) {
+      throw $this->createNotFoundException('Unable to find CompanySettings entity.');
     }
 
-    /**
-     * Edits an existing CompanySettings entity.
-     *
-     * @Route("/{id}", name="companysettings_update")
-     * @Method("PUT")
-     * @Template("MeVisaERPBundle:CompanySettings:edit.html.twig")
-     */
-    public function updateAction(Request $request, $id)
-    {
-        $em = $this->getDoctrine()->getManager();
+    $editForm = $this->createEditForm($entity);
+    $editForm->handleRequest($request);
 
-        $entity = $em->getRepository('MeVisaERPBundle:CompanySettings')->find($id);
+    if ($editForm->isValid()) {
+      $em->flush();
 
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find CompanySettings entity.');
-        }
-
-        $editForm = $this->createEditForm($entity);
-        $editForm->handleRequest($request);
-
-        if ($editForm->isValid()) {
-            $em->flush();
-
-            return $this->redirect($this->generateUrl('companysettings_show', array('id' => $id)));
-        }
-
-        return array(
-            'entity' => $entity,
-            'edit_form' => $editForm->createView(),
-        );
+      return $this->redirect($this->generateUrl('companysettings_show', array('id' => $id)));
     }
+
+    return array(
+      'entity' => $entity,
+      'edit_form' => $editForm->createView(),
+    );
+  }
 
 }
