@@ -4,312 +4,318 @@ namespace MeVisa\ERPBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * Products
  *
  * @ORM\Table()
+ * @Gedmo\Loggable
  * @ORM\Entity(repositoryClass="MeVisa\ERPBundle\Entity\ProductsRepository")
  * 
  */
 class Products
 {
 
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    private $id;
+  /**
+   * @var integer
+   *
+   * @ORM\Column(name="id", type="integer")
+   * @ORM\Id
+   * @ORM\GeneratedValue(strategy="AUTO")
+   */
+  private $id;
 
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="wc_id", type="integer", nullable=true)
-     */
-    private $wcId;
+  /**
+   * @var integer
+   *
+   * @ORM\Column(name="wc_id", type="integer", nullable=true)
+   */
+  private $wcId;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="name", type="string", length=255)
-     */
-    private $name;
+  /**
+   * @var string
+   *
+   * @Gedmo\Versioned
+   * @ORM\Column(name="name", type="string", length=255)
+   */
+  private $name;
 
-    /**
-     * @var array
-     *
-     * @ORM\Column(name="requiredDocuments", type="array")
-     */
-    private $requiredDocuments;
+  /**
+   * @var array
+   *
+   * @ORM\Column(name="requiredDocuments", type="array")
+   */
+  private $requiredDocuments;
 
-    /**
-     * @var boolean
-     *
-     * @ORM\Column(name="enabled", type="boolean")
-     */
-    private $enabled;
-    
-    /**
-     * @var boolean
-     * this indicates if the quantity should be taken into consideration, 
-     * or should be ignored and calculated based on the stored cost
-     * @ORM\Column(name="wc_calc", type="boolean")
-     */
-    private $wcCalc = false;
-    /**
-     * @var boolean
-     *
-     * @ORM\Column(name="urgent", type="boolean")
-     */
-    private $urgent;
+  /**
+   * @var boolean
+   *
+   * @Gedmo\Versioned
+   * @ORM\Column(name="enabled", type="boolean")
+   */
+  private $enabled;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Vendors", inversedBy="products")
-     * @ORM\JoinColumn(name="vendor_id", referencedColumnName="id")
-     */
-    protected $vendor;
+  /**
+   * @var boolean
+   * this indicates if the quantity should be taken into consideration, 
+   * or should be ignored and calculated based on the stored cost
+   * @ORM\Column(name="wc_calc", type="boolean")
+   */
+  private $wcCalc = false;
 
-    /**
-     * @ORM\OneToMany(targetEntity="ProductPrices", mappedBy="product", cascade={"persist"})
-     * 
-     * */
-    private $pricing;
+  /**
+   * @var boolean
+   *
+   * @ORM\Column(name="urgent", type="boolean")
+   */
+  private $urgent;
 
-    /**
-     * @ORM\OneToMany(targetEntity="OrderProducts", mappedBy="product")
-     */
-    private $orderProducts;
+  /**
+   * @Gedmo\Versioned
+   * @ORM\ManyToOne(targetEntity="Vendors", inversedBy="products")
+   * @ORM\JoinColumn(name="vendor_id", referencedColumnName="id")
+   */
+  protected $vendor;
 
-    public function __construct()
-    {
-        $this->pricing = new ArrayCollection();
-    }
+  /**
+   * @ORM\OneToMany(targetEntity="ProductPrices", mappedBy="product", cascade={"persist"})
+   * 
+   * */
+  private $pricing;
 
-    /**
-     * Get id
-     *
-     * @return integer 
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
+  /**
+   * @ORM\OneToMany(targetEntity="OrderProducts", mappedBy="product")
+   */
+  private $orderProducts;
 
-    /**
-     * Set name
-     *
-     * @param string $name
-     * @return Products
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
+  public function __construct()
+  {
+    $this->pricing = new ArrayCollection();
+  }
 
-        return $this;
-    }
+  /**
+   * Get id
+   *
+   * @return integer 
+   */
+  public function getId()
+  {
+    return $this->id;
+  }
 
-    /**
-     * Get name
-     *
-     * @return string 
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
+  /**
+   * Set name
+   *
+   * @param string $name
+   * @return Products
+   */
+  public function setName($name)
+  {
+    $this->name = $name;
 
-    /**
-     * Set requiredDocuments
-     *
-     * @param array $requiredDocuments
-     * @return Products
-     */
-    public function setRequiredDocuments($requiredDocuments)
-    {
-        $this->requiredDocuments = $requiredDocuments;
+    return $this;
+  }
 
-        return $this;
-    }
+  /**
+   * Get name
+   *
+   * @return string 
+   */
+  public function getName()
+  {
+    return $this->name;
+  }
 
-    /**
-     * Get requiredDocuments
-     *
-     * @return array 
-     */
-    public function getRequiredDocuments()
-    {
-        return $this->requiredDocuments;
-    }
+  /**
+   * Set requiredDocuments
+   *
+   * @param array $requiredDocuments
+   * @return Products
+   */
+  public function setRequiredDocuments($requiredDocuments)
+  {
+    $this->requiredDocuments = $requiredDocuments;
 
-    /**
-     * Set enabled
-     *
-     * @param boolean $enabled
-     * @return Products
-     */
-    public function setEnabled($enabled)
-    {
-        $this->enabled = $enabled;
+    return $this;
+  }
 
-        return $this;
-    }
+  /**
+   * Get requiredDocuments
+   *
+   * @return array 
+   */
+  public function getRequiredDocuments()
+  {
+    return $this->requiredDocuments;
+  }
 
-    /**
-     * Get enabled
-     *
-     * @return boolean 
-     */
-    public function getEnabled()
-    {
-        return $this->enabled;
-    }
+  /**
+   * Set enabled
+   *
+   * @param boolean $enabled
+   * @return Products
+   */
+  public function setEnabled($enabled)
+  {
+    $this->enabled = $enabled;
 
-    /**
-     * Set vendor
-     *
-     * @param string $vendor
-     * @return Products
-     */
-    public function setVendor($vendor)
-    {
-        $this->vendor = $vendor;
+    return $this;
+  }
 
-        return $this;
-    }
+  /**
+   * Get enabled
+   *
+   * @return boolean 
+   */
+  public function getEnabled()
+  {
+    return $this->enabled;
+  }
 
-    /**
-     * Get vendor
-     *
-     * @return string 
-     */
-    public function getVendor()
-    {
-        return $this->vendor;
-    }
+  /**
+   * Set vendor
+   *
+   * @param string $vendor
+   * @return Products
+   */
+  public function setVendor($vendor)
+  {
+    $this->vendor = $vendor;
 
-    function getWcId()
-    {
-        return $this->wcId;
-    }
+    return $this;
+  }
 
-    function setWcId($wcId)
-    {
-        $this->wcId = $wcId;
-    }
+  /**
+   * Get vendor
+   *
+   * @return string 
+   */
+  public function getVendor()
+  {
+    return $this->vendor;
+  }
 
-    /**
-     * Add pricing
-     *
-     * @param \MeVisa\ERPBundle\Entity\ProductPrices $pricing
-     * @return Products
-     */
-    public function addPricing(\MeVisa\ERPBundle\Entity\ProductPrices $pricing)
-    {
-        $this->pricing[] = $pricing;
-        $pricing->setProduct($this);
-        return $this;
-    }
+  function getWcId()
+  {
+    return $this->wcId;
+  }
 
-    /**
-     * Remove pricing
-     *
-     * @param \MeVisa\ERPBundle\Entity\ProductPrices $pricing
-     */
-    public function removePricing(\MeVisa\ERPBundle\Entity\ProductPrices $pricing)
-    {
-        $this->pricing->removeElement($pricing);
-    }
+  function setWcId($wcId)
+  {
+    $this->wcId = $wcId;
+  }
 
-    /**
-     * Get pricing
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getPricing()
-    {
-        return $this->pricing;
-    }
+  /**
+   * Add pricing
+   *
+   * @param \MeVisa\ERPBundle\Entity\ProductPrices $pricing
+   * @return Products
+   */
+  public function addPricing(\MeVisa\ERPBundle\Entity\ProductPrices $pricing)
+  {
+    $this->pricing[] = $pricing;
+    $pricing->setProduct($this);
+    return $this;
+  }
 
+  /**
+   * Remove pricing
+   *
+   * @param \MeVisa\ERPBundle\Entity\ProductPrices $pricing
+   */
+  public function removePricing(\MeVisa\ERPBundle\Entity\ProductPrices $pricing)
+  {
+    $this->pricing->removeElement($pricing);
+  }
 
-    /**
-     * Set urgent
-     *
-     * @param boolean $urgent
-     * @return Products
-     */
-    public function setUrgent($urgent)
-    {
-        $this->urgent = $urgent;
+  /**
+   * Get pricing
+   *
+   * @return \Doctrine\Common\Collections\Collection 
+   */
+  public function getPricing()
+  {
+    return $this->pricing;
+  }
 
-        return $this;
-    }
+  /**
+   * Set urgent
+   *
+   * @param boolean $urgent
+   * @return Products
+   */
+  public function setUrgent($urgent)
+  {
+    $this->urgent = $urgent;
 
-    /**
-     * Get urgent
-     *
-     * @return boolean 
-     */
-    public function getUrgent()
-    {
-        return $this->urgent;
-    }
+    return $this;
+  }
 
-    /**
-     * Add orderProducts
-     *
-     * @param \MeVisa\ERPBundle\Entity\OrderProducts $orderProducts
-     * @return Products
-     */
-    public function addOrderProduct(\MeVisa\ERPBundle\Entity\OrderProducts $orderProducts)
-    {
-        $this->orderProducts[] = $orderProducts;
+  /**
+   * Get urgent
+   *
+   * @return boolean 
+   */
+  public function getUrgent()
+  {
+    return $this->urgent;
+  }
 
-        return $this;
-    }
+  /**
+   * Add orderProducts
+   *
+   * @param \MeVisa\ERPBundle\Entity\OrderProducts $orderProducts
+   * @return Products
+   */
+  public function addOrderProduct(\MeVisa\ERPBundle\Entity\OrderProducts $orderProducts)
+  {
+    $this->orderProducts[] = $orderProducts;
 
-    /**
-     * Remove orderProducts
-     *
-     * @param \MeVisa\ERPBundle\Entity\OrderProducts $orderProducts
-     */
-    public function removeOrderProduct(\MeVisa\ERPBundle\Entity\OrderProducts $orderProducts)
-    {
-        $this->orderProducts->removeElement($orderProducts);
-    }
+    return $this;
+  }
 
-    /**
-     * Get orderProducts
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getOrderProducts()
-    {
-        return $this->orderProducts;
-    }
+  /**
+   * Remove orderProducts
+   *
+   * @param \MeVisa\ERPBundle\Entity\OrderProducts $orderProducts
+   */
+  public function removeOrderProduct(\MeVisa\ERPBundle\Entity\OrderProducts $orderProducts)
+  {
+    $this->orderProducts->removeElement($orderProducts);
+  }
 
-    /**
-     * Set wcCalc
-     *
-     * @param boolean $wcCalc
-     * @return Products
-     */
-    public function setWcCalc($wcCalc)
-    {
-        $this->wcCalc = $wcCalc;
+  /**
+   * Get orderProducts
+   *
+   * @return \Doctrine\Common\Collections\Collection 
+   */
+  public function getOrderProducts()
+  {
+    return $this->orderProducts;
+  }
 
-        return $this;
-    }
+  /**
+   * Set wcCalc
+   *
+   * @param boolean $wcCalc
+   * @return Products
+   */
+  public function setWcCalc($wcCalc)
+  {
+    $this->wcCalc = $wcCalc;
 
-    /**
-     * Get wcCalc
-     *
-     * @return boolean 
-     */
-    public function getWcCalc()
-    {
-        return $this->wcCalc;
-    }
+    return $this;
+  }
+
+  /**
+   * Get wcCalc
+   *
+   * @return boolean 
+   */
+  public function getWcCalc()
+  {
+    return $this->wcCalc;
+  }
+
 }
