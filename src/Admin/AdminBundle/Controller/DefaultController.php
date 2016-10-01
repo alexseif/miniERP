@@ -97,4 +97,22 @@ class DefaultController extends Controller
     return array();
   }
 
+  /**
+   * @Route("/newsfeed", name="newsfeed")
+   * @Template()
+   */
+  public function newsfeedAction(Request $request)
+  {
+    /*
+      SELECT * FROM ext_log_entries
+      WHERE object_class='MeVisa\\ERPBundle\\Entity\\Products'
+      OR object_class='MeVisa\\ERPBundle\\Entity\\ProductPrices'
+      AND username != 'waziry'
+      ORDER BY id DESC;
+      */
+    $logRepo = $this->em->getRepository('Gedmo\Loggable\Entity\LogEntry');
+    $orderLog = $this->em->find('MeVisa\ERPBundle\Entity\Products', $id);
+    return $logRepo->getLogEntries($orderLog);
+  }
+
 }
