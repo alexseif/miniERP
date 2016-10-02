@@ -7,6 +7,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Gedmo\Loggable\Entity\LogEntry;
 
 class DefaultController extends Controller
 {
@@ -103,16 +104,38 @@ class DefaultController extends Controller
    */
   public function newsfeedAction(Request $request)
   {
-    /*
-      SELECT * FROM ext_log_entries
-      WHERE object_class='MeVisa\\ERPBundle\\Entity\\Products'
-      OR object_class='MeVisa\\ERPBundle\\Entity\\ProductPrices'
-      AND username != 'waziry'
-      ORDER BY id DESC;
-      */
-    $logRepo = $this->em->getRepository('Gedmo\Loggable\Entity\LogEntry');
-    $orderLog = $this->em->find('MeVisa\ERPBundle\Entity\Products', $id);
-    return $logRepo->getLogEntries($orderLog);
+    //TODO: Only select today's items
+    $em = $this->getDoctrine()->getManager();
+    $em->getRepository("Gedmo\Loggable\Entity\LogEntry");
+    $qr = $em->createQueryBuilder();
+    $logQuery = $qr->select("ele")
+        ->from("Gedmo\Loggable\Entity\LogEntry", "ele")
+        ->where("ele.objectClass = 'MeVisa\\ERPBundle\\Entity\\Products'")
+        ->orWhere("ele.objectClass = 'MeVisa\\ERPBundle\\Entity\\ProductPrices'")
+        ->orderBy("ele.id", "DESC");
+    $logResults = $logQuery->getQuery()
+        ->getResult();
+
+    foreach ($logResults as $key => $logRow) {
+      $logResults[$key]->object = $em->getRepository($logRow->getObjectClass())->find($logRow->getObjectId());
+      $on = explode('\\', $logRow->getObjectClass());
+      $on = end($on);
+      switch ($on) {
+        case 'Products':
+          $logResults[$key]->product = $logResults[$key]->object;
+          $logResults[$key]->objectName = 'Product : ' . $logResults[$key]->object->getName();
+          break;
+        case 'ProductPrices':
+          $logResults[$key]->product = $logResults[$key]->object->getProduct();
+          $logResults[$key]->objectName = 'Price for : ' . $logResults[$key]->object->getProduct()->getName();
+          $logResults[$key]->setData(array(
+            "cost" => $logResults[$key]->object->getCost() / 100,
+            "price" => $logResults[$key]->object->getPrice() / 100
+          ));
+          break;
+      }
+    }
+    return array('log' => $logResults);
   }
 
 }
