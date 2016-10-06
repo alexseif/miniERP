@@ -34,7 +34,7 @@ class MODxAPICommand extends ContainerAwareCommand
     $modxOrders = null;
     $mysqlLink = mysqli_connect('visallc.mysql', 'visallc_uaevisa', 'chW2vfr_', 'visallc_uaevisa');
     mysqli_query($mysqlLink, "SET NAMES UTF8");
-    $query = 'SELECT * FROM `modx_prazdnik_items` WHERE createdon >= NOW() - INTERVAL 6 MINUTE';
+    $query = 'SELECT * FROM `modx_prazdnik_items` WHERE createdon >= NOW() - INTERVAL 1 DAY';
     $mysqlResultLink = mysqli_query($mysqlLink, $query);
     while ($row = mysqli_fetch_assoc($mysqlResultLink)) {
       $modxOrders[] = $row;
@@ -137,14 +137,14 @@ class MODxAPICommand extends ContainerAwareCommand
     $order->addOrderProduct($orderProduct);
 
     $order->setPeople($modxOrder['kolchel']);
-    $arrival = \DateTime::createFromFormat("d/m/Y", $modxOrder['datet'], $timezone);
+    $arrival = \DateTime::createFromFormat('Y-m-d G:i:s', $modxOrder['datet'], $timezone);
     if ($arrival) {
       $order->setArrival($arrival);
     } else {
       //TODO: Report issue
       dump('Invalid arrival for Order: ' . $order->getNumber());
     }
-    $departure = \DateTime::createFromFormat("d/m/Y", $modxOrder['dateo'], $timezone);
+    $departure = \DateTime::createFromFormat("Y-m-d G:i:s", $modxOrder['dateo'], $timezone);
     if ($departure) {
       $order->setDeparture($departure);
     } else {
