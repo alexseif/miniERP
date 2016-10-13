@@ -32,7 +32,10 @@ class MODxAPICommand extends ContainerAwareCommand
   protected function execute(InputInterface $input, OutputInterface $output)
   {
     $modxOrders = null;
-    $mysqlLink = mysqli_connect('visallc.mysql', 'visallc_uaevisa', 'chW2vfr_', 'visallc_uaevisa');
+    $container = $this->getContainer();
+
+    $mysqlLink = mysqli_connect($container->getParameter('uaevc_host'), $container->getParameter('uaevc_user'), $container->getParameter('uaevc_password'), $container->getParameter('uaevc_name'));
+
     mysqli_query($mysqlLink, "SET NAMES UTF8");
     $query = 'SELECT * FROM `modx_prazdnik_items` WHERE createdon >= NOW() - INTERVAL 1 DAY';
     $mysqlResultLink = mysqli_query($mysqlLink, $query);
