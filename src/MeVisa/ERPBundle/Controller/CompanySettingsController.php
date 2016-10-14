@@ -21,6 +21,46 @@ class CompanySettingsController extends Controller
 {
 
   /**
+   * Lists all Company Settings.
+   *
+   * @Route("/", name="companysettings")
+   * @Method("GET")
+   * @Template()
+   */
+  public function indexAction()
+  {
+
+    $em = $this->getDoctrine()->getManager();
+
+    $CompanySettings = $em->getRepository('MeVisaERPBundle:CompanySettings')->findAll();
+
+    return array(
+      'companySettings' => $CompanySettings,
+    );
+  }
+
+  /**
+   * Displays a form to edit an existing CompanySettings entity.
+   *
+   * @Route("/new", name="companysettings_new")
+   * @Method("GET")
+   * @Template()
+   */
+  public function newAction()
+  {
+
+    $entity = new CompanySettings();
+
+
+    $newForm = $this->createNewForm($entity);
+
+    return array(
+      'entity' => $entity,
+      'form' => $newForm->createView(),
+    );
+  }
+
+  /**
    * Finds and displays a CompanySettings entity.
    *
    * @Route("/preview", name="companysettings_preview")
@@ -119,6 +159,56 @@ class CompanySettingsController extends Controller
     $form->add('submit', 'submit', array('label' => 'Update'));
 
     return $form;
+  }
+
+  /**
+   * Creates a form to add a CompanySettings entity.
+   *
+   * @param CompanySettings $entity The entity
+   *
+   * @return \Symfony\Component\Form\Form The form
+   */
+  private function createNewForm(CompanySettings $entity)
+  {
+    $form = $this->createForm(new CompanySettingsType(), $entity, array(
+      'action' => $this->generateUrl('companysettings_new'),
+      'method' => 'POST',
+    ));
+
+    $form->add('submit', 'submit', array('label' => 'Save'));
+
+    return $form;
+  }
+
+  /**
+   * Adds a new CompanySettings entity.
+   *
+   * @Route("/new", name="companysettings_create")
+   * @Method("POST")
+   * @Template("MeVisaERPBundle:CompanySettings:new.html.twig")
+   */
+  public function createAction(Request $request)
+  {
+
+    $entity = new CompanySettings();
+
+    $form = $this->createNewForm($entity);
+    $form->handleRequest($request);
+
+    if ($form->isSubmitted()) {
+      if ($form->isValid()) {
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($entity);
+        $em->flush();
+
+        return $this->redirect($this->generateUrl('companysettings_show', array('id' => $entity->getId())));
+      }
+    }
+
+    return array(
+      'entity' => $entity,
+      'form' => $form->createView(),
+    );
   }
 
   /**

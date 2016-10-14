@@ -1,0 +1,26 @@
+{% extends 'AdminAdminBundle:Default:adminLayout.html.twig' %}
+{% block adminPanelTitle %}Company Settings{% endblock %}
+{% block adminPanelTitleBadge %}{{ companySettings|length }}{% endblock %}
+{% block adminPanelHeadingRight %}
+  <a href="{{ path('companysettings_new')}}" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span></a>
+  {% endblock %}
+  {% block adminPanelBody %}
+  <div class="table-responsive">
+    <table class="table table-bordered table-hover table-striped records_list">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for companySetting in companySettings %}
+          <tr>
+            <td>{{ companySetting.name }}</td>
+            <td><a href="{{ path('companysettings_show', {'id':companySetting.id}) }}">Show</a></td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}
