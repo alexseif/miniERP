@@ -2,149 +2,131 @@
 {% block title %}Edit Order {{ order.number }}{% endblock %}
 {% block adminPanelTitle %}Edit Order {{ order.number }}{% endblock %}
 {% block adminPanelFormStart %}
-    {{ form_start(form) }}
-    {{ form_row(form._token) }}
-    {{ form_errors(form) }}
+  {{ form_start(form) }}
+  {{ form_row(form._token) }}
+  {{ form_errors(form) }}
 {% endblock %}
 {% block adminPanelBody %}
-    <div class="panel-body">
-        <div class="row">
-            <div class="col-sm-6">
-                <!-- Order Customer-->
-                {% include 'MeVisaERPBundle:Orders:form/customer.html.twig' %}
-                <!-- Order Customer-->
-            </div>
-            <div class="col-sm-6">
-                <!-- Order Details -->
-                {% include 'MeVisaERPBundle:Orders:form/details.html.twig' %}
-                <!-- Order Details -->
-            </div>
-        </div>
-        <!-- Order Products -->
-        {% include 'MeVisaERPBundle:Orders:form/products.html.twig' %}
-        <!-- Order Products -->
-        <!-- Order Companions -->
-        {% include 'MeVisaERPBundle:Orders:form/companions.html.twig' %}
-        <!-- Order Companions -->
-        <div class="row">
-            <div class="col-sm-6">
-                <!-- Order Documents -->
-                {% include 'MeVisaERPBundle:Orders:form/documents.html.twig' %}
-                <!-- Order Documents -->
-            </div>
-            <div class="col-sm-6">
-                <!-- Order Payments -->
-                {% include 'MeVisaERPBundle:Orders:form/payments.html.twig' %}
-                <!-- Order Payments -->
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-6">
-                <!-- Order Comments -->
-                {% include 'MeVisaERPBundle:Orders:form/comments.html.twig' %}
-                <!-- Order Comments -->
-            </div>
-            <div class="col-sm-6">
-                <!-- Order Log -->
-                {% include 'MeVisaERPBundle:Orders:show/logs.html.twig' %}
-                <!-- Order Log -->
-            </div>
-        </div>
+  <div class="panel-body">
+    <div class="row">
+      <div class="col-sm-6">
+        <!-- Order Customer-->
+        {% include 'MeVisaERPBundle:Orders:form/customer.html.twig' %}
+        <!-- Order Customer-->
+      </div>
+      <div class="col-sm-6">
+        <!-- Order Details -->
+        {% include 'MeVisaERPBundle:Orders:form/details.html.twig' %}
+        <!-- Order Details -->
+      </div>
     </div>
+    <!-- Order Products -->
+    {% include 'MeVisaERPBundle:Orders:form/products.html.twig' %}
+    <!-- Order Products -->
+    <!-- Order Companions -->
+    {% include 'MeVisaERPBundle:Orders:form/companions.html.twig' %}
+    <!-- Order Companions -->
+    <div class="row">
+      <div class="col-sm-6">
+        <!-- Order Documents -->
+        {% include 'MeVisaERPBundle:Orders:form/documents.html.twig' %}
+        <!-- Order Documents -->
+      </div>
+      <div class="col-sm-6">
+        <!-- Order Payments -->
+        {% include 'MeVisaERPBundle:Orders:form/payments.html.twig' %}
+        <!-- Order Payments -->
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-6">
+        <!-- Order Comments -->
+        {% include 'MeVisaERPBundle:Orders:form/comments.html.twig' %}
+        <!-- Order Comments -->
+      </div>
+      <div class="col-sm-6">
+        <!-- Order Log -->
+        {% include 'MeVisaERPBundle:Orders:show/logs.html.twig' %}
+        <!-- Order Log -->
+      </div>
+    </div>
+  </div>
 {% endblock %}
 {% block adminPanelFooter %}
-    <div class="panel-footer">
-        <div class="row">
-            <div class="col-sm-4">{{ form_row(form.total) }}</div>
-            <div class="col-sm-7">{{ form_widget(form.state) }}</div>
-            <div class="col-sm-1">{{ form_widget(form.update) }}</div>
-        </div>
+  <div class="panel-footer">
+    <div class="row">
+      <div class="col-sm-4">{{ form_row(form.total) }}</div>
+      <div class="col-sm-7">{{ form_widget(form.state) }}</div>
+      <div class="col-sm-1">{{ form_widget(form.update) }}</div>
     </div>
+  </div>
 {% endblock %}
 {% block adminPanelFormEnd %}
-    {{ form_end(form, {'render_rest': false}) }}
+  {{ form_end(form, {'render_rest': false}) }}
 {% endblock %}
 {% block afterContent  %}
-    <style type="text/css">
-        .table.order-info td{color:#fff;font-weight: bold;}
-    </style>
-    <nav class="navbar navbar-inverse navbar-fixed-bottom" id="nav" style="display: none;margin-bottom: 0px;">
-        <div class="container">
-            <table class="table table-condensed order-info" style="margin-bottom: 0px;">
-                <thead class="text-muted">
-                    <tr>
-                        <th>Number</th>
-                        <th>
-                            {% for product in order.orderProducts %}
-                                {% if (product.product.urgent) %}
-                                    <span class="label label-purple">Urgent</span>
-                                {% endif %}
-                            {% endfor %}
-                            <span class="label label-default">{{ order.channel|upper }}</span>
-                        </th>
-                        <th>Customer</th>
-                        <th>Total</th>
-                        <th>PAX</th>
-                        <th>Departure</th>
-                        <th>Arrival</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>{{order.number}}</td>
-                        <td>
-                            {% if (order.ticketRequired) %}
-                                <span class="label label-warning">Ticket Required</span>
-                            {% endif %}
-                            <label class="label label-{{ statusCSS.css(order.state) }}">{{ order.state|upper }}</label>
-                        </td>
-                        <td>{{ order.customer.name }}</td>
-                        <td>{{ (order.total/100)|localizedcurrency('RUB') }}</td>
-                        <td>{{ order.people }}</td>
-                        <td>{{ order.departure|localizeddate('short', 'none')}}</td>
-                        <td>{{ order.arrival|localizeddate('short', 'none')}}</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </nav>
+  <style type="text/css">
+    .table.order-info td{color:#fff;font-weight: bold;}
+  </style>
+  <nav class="navbar navbar-inverse navbar-fixed-bottom" id="nav" style="display: none;margin-bottom: 0px;">
+    <div class="container">
+      <table class="table table-condensed order-info" style="margin-bottom: 0px;">
+        <thead class="text-muted">
+          <tr>
+            <th>Number</th>
+            <th>
+              {% for product in order.orderProducts %}
+                {% if (product.product.urgent) %}
+                  <span class="label label-purple">Urgent</span>
+                {% endif %}
+              {% endfor %}
+              <span class="label label-default">{{ order.channel|upper }}</span>
+            </th>
+            <th>Customer</th>
+            <th>Total</th>
+            <th>PAX</th>
+            <th>Departure</th>
+            <th>Arrival</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>{{order.number}}</td>
+            <td>
+              {% if (order.ticketRequired) %}
+                <span class="label label-warning">Ticket Required</span>
+              {% endif %}
+              <label class="label label-{{ statusCSS.css(order.state) }}">{{ order.state|upper }}</label>
+            </td>
+            <td>{{ order.customer.name }}</td>
+            <td>{{ (order.total/100)|localizedcurrency('RUB') }}</td>
+            <td>{{ order.people }}</td>
+            <td>{{ order.departure|localizeddate('short', 'none')}}</td>
+            <td>{{ order.arrival|localizeddate('short', 'none')}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </nav>
 {% endblock %}
 {% block javascripts %}
-    {{ parent() }}
-    <script type="text/javascript" src="/js/orders.js"></script>
-    <script type="text/javascript" src="/js/orderDocuments.js"></script>
-    <script type="text/javascript">
-        var selectCustomer = '{{ path('select_customer') }}';
-                var PAX = {{ (order.people)?:0 }};
-                var $agent = {{ (order.customer.agent) ? 'true' : 'false' }};
-                var productPrices = new Array();
-        var distance;
-        $(document).ready(function () {
-           {# // Fixa navbar ao ultrapassa-lo
-            var navbar = $('#nav');
-            distance = $('.order-products-form').offset().top;
-            var $window = $(window);
+  {{ parent() }}
+  <script type="text/javascript" src="/js/orders.js"></script>
+  <script type="text/javascript" src="/js/orderDocuments.js"></script>
+  <script type="text/javascript">
+    var selectCustomer = '{{ path('select_customer') }}';
+            var PAX = {{ (order.people)?:0 }};
+            var $agent = {{ (order.customer.agent) ? 'true' : 'false' }};
+    var productPrices = new Array();
+    var distance;
+    {% if not is_granted('ROLE_SUPER_ADMIN') %}
+      $(document).ready(function () {
+        $('input[value="cancelled"]').attr('disabled', true);
+      });
+    {% endif %}
 
-            if ($window.scrollTop() >= distance) {
-                navbar.fadeIn();
-                $('body').css('padding-bottom', '70px');
-            } else {
-                $('body').css('padding-bottom', '0');
-                navbar.fadeOut();
-            }
-            $window.scroll(function () {
-                if ($window.scrollTop() >= distance) {
-                    navbar.fadeIn();
-                    $('body').css('padding-bottom', '70px');
-                } else {
-                    $('body').css('padding-bottom', '0');
-                    navbar.fadeOut();
-                }
-            });#}
-        });
-
-        {% for price in productPrices %}
-            productPrices[{{ price.product.id }}] = {{price.price/100}};
-        {% endfor %}
-    </script>
+    {% for price in productPrices %}
+      productPrices[{{ price.product.id }}] = {{price.price/100}};
+    {% endfor %}
+  </script>
 {% endblock %}
