@@ -1,0 +1,34 @@
+{% extends ':default:admin.html.twig' %}
+
+{% block content %}
+    <h2>MeVisa Settings</h2>
+    {{ form_start(form) }}
+    <div class="panel-group" id="accordion">
+        {% for key,item in form %}
+            {% if key not in ['submit', '_token'] %}
+                <div class="panel panel-default">
+                    <div class="panel-heading"> 
+                        <h4 class="panel-title">
+                            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapse{{loop.index0}}">{{ key|capitalize }}</a>
+                        </h4>
+                    </div>
+                    <div class="panel-body panel-collapse collapse {{ loop.index0 == 0 ? 'in' :''}}" id="collapse{{loop.index0}}">
+                        {{ form_widget(item) }}
+                    </div>
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+    <div class="pull-right">
+        {{ form_widget(form.submit) }}
+    </div>
+    {{ form_end(form) }}
+
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="/js/ckeditor/ckeditor.js"></script>
+    <script type="text/javascript">
+        CKEDITOR.replace('.ckeditor');
+    </script>
+{% endblock %}
