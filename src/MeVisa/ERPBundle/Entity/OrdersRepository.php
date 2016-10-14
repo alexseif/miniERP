@@ -206,6 +206,24 @@ class OrdersRepository extends EntityRepository
             ->getResult();
   }
 
+  public function findByFromAndTo($from, $to)
+  {
+    return $this->createQueryBuilder('o')
+            ->select('o, c, opa, opr')
+            ->leftJoin('o.customer', 'c')
+            ->leftJoin('o.orderPayments', 'opa')
+            ->leftJoin('o.orderProducts', 'opr')
+            ->where('opa.state = ?3 ')
+            ->andWhere('o.createdAt >= ?1')
+            ->andWhere('o.createdAt <= ?2')
+            ->orderBy('o.createdAt, o.wcId')
+            ->setParameter('1', $from)
+            ->setParameter('2', $to)
+            ->setParameter('3', "PAID")
+            ->getQuery()
+            ->getResult();
+  }
+
   public function findByMonthAndYearNoCash($month, $year)
   {
     return $this->createQueryBuilder('o')
@@ -220,6 +238,25 @@ class OrdersRepository extends EntityRepository
             ->orderBy('o.createdAt, o.wcId')
             ->setParameter('1', $month)
             ->setParameter('2', $year)
+            ->setParameter('3', "PAID")
+            ->getQuery()
+            ->getResult();
+  }
+
+  public function findByFromAndToNoCash($from, $to)
+  {
+    return $this->createQueryBuilder('o')
+            ->select('o, c, opa, opr')
+            ->leftJoin('o.customer', 'c')
+            ->leftJoin('o.orderPayments', 'opa')
+            ->leftJoin('o.orderProducts', 'opr')
+            ->where('opa.state = ?3 ')
+            ->andWhere('o.createdAt >= ?1')
+            ->andWhere('o.createdAt <= ?2')
+            ->andWhere("opa.method != 'cash'")
+            ->orderBy('o.createdAt, o.wcId')
+            ->setParameter('1', $from)
+            ->setParameter('2', $to)
             ->setParameter('3', "PAID")
             ->getQuery()
             ->getResult();

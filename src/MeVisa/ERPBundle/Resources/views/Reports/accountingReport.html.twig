@@ -1,5 +1,5 @@
 {% extends ':default:admin.html.twig' %}
-{% block title %}Accounting Report for {{ month }} {{ year }} {% endblock %}
+{% block title %}1C Report for {{ month }} {{ year }} {% endblock %}
 {% block stylesheets %}
   {{ parent() }}
   <link rel="stylesheet" type="text/css" href="/css/dataTables.bootstrap.min.css" />
@@ -51,7 +51,7 @@
                   <td>{{ (costPrint) ?  order.orderPayments|last.method }}</td>
                   <td></td>
                 </tr>
-              {% set costPrint = false %}
+                {% set costPrint = false %}
               {% endfor %}
             {% endfor %}
           {% endif %}
