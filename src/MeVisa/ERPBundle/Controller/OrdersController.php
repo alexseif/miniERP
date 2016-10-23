@@ -528,7 +528,6 @@ class OrdersController extends Controller
         $parts[count($parts) - 1] = $document->getName();
         $document->thumbnail = implode('/', $parts);
       } elseif (0 === strpos($document->getPath(), 'http://uaevisa.ru/')) {
-        dump("rock n roll");
         $document->thumbnail = false;
       } else {
         $document->thumbnail = false;
