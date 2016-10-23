@@ -158,7 +158,6 @@ class MODxAPICommand extends ContainerAwareCommand
     $accessBasePath = 'http://uaevisa.ru/assets/uploads/';
 
     $uploadBasePath = $this->getContainer()->getParameter('uaevc_path');
-    dump($uploadBasePath);
     $fs = new Filesystem();
     if ($fs->exists($uploadBasePath . $order->getWcId())) {
       $finder = new Finder();
