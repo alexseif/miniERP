@@ -2,72 +2,79 @@
 {% block title %}New Order{% endblock %}
 {% block adminPanelTitle %}New Order{% endblock %}
 {% block adminPanelFormStart %}
-    {{ form_start(form) }}
-    {{ form_row(form._token) }}
-    {{ form_errors(form) }}
+  {{ form_start(form) }}
+  {{ form_row(form._token) }}
+  {{ form_errors(form) }}
 {% endblock %}
 {% block adminPanelBody %}
-    <div class="panel-body">
-        <div class="row">
-            <div class="col-sm-6">
-                <!-- Order Customer-->
-                {% include 'MeVisaERPBundle:Orders:form/customer.html.twig' %}
-                <!-- Order Customer-->
-            </div>
-            <div class="col-sm-6">
-                <!-- Order Details -->
-                {% include 'MeVisaERPBundle:Orders:form/details.html.twig' %}
-                <!-- Order Details -->
-            </div>
-        </div>
-        <!-- Order Products -->
-        {% include 'MeVisaERPBundle:Orders:form/products.html.twig' %}
-        <!-- Order Products -->
-        <!-- Order Companions -->
-        {% include 'MeVisaERPBundle:Orders:form/companions.html.twig' %}
-        <!-- Order Companions -->
-        <div class="row">
-            <div class="col-sm-6">
-                <!-- Order Documents -->
-                {% include 'MeVisaERPBundle:Orders:form/documents.html.twig' %}
-                <!-- Order Documents -->
-            </div>
-            <div class="col-sm-6">
-                <!-- Order Payments -->
-                {% include 'MeVisaERPBundle:Orders:form/payments.html.twig' %}
-                <!-- Order Payments -->
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-6">
-                <!-- Order Comments -->
-                {% include 'MeVisaERPBundle:Orders:form/comments.html.twig' %}
-                <!-- Order Comments -->
-            </div>
-        </div>
+  <div class="panel-body">
+    <div class="row">
+      <div class="col-xs-offset-7 col-sm-5">
+        <!-- Sales By -->
+        {{ form_row(form.salesBy) }}
+        <!-- Sales By -->
+      </div>
     </div>
+    <div class="row">
+      <div class="col-sm-6">
+        <!-- Order Customer-->
+        {% include 'MeVisaERPBundle:Orders:form/customer.html.twig' %}
+        <!-- Order Customer-->
+      </div>
+      <div class="col-sm-6">
+        <!-- Order Details -->
+        {% include 'MeVisaERPBundle:Orders:form/details.html.twig' %}
+        <!-- Order Details -->
+      </div>
+    </div>
+    <!-- Order Products -->
+    {% include 'MeVisaERPBundle:Orders:form/products.html.twig' %}
+    <!-- Order Products -->
+    <!-- Order Companions -->
+    {% include 'MeVisaERPBundle:Orders:form/companions.html.twig' %}
+    <!-- Order Companions -->
+    <div class="row">
+      <div class="col-sm-6">
+        <!-- Order Documents -->
+        {% include 'MeVisaERPBundle:Orders:form/documents.html.twig' %}
+        <!-- Order Documents -->
+      </div>
+      <div class="col-sm-6">
+        <!-- Order Payments -->
+        {% include 'MeVisaERPBundle:Orders:form/payments.html.twig' %}
+        <!-- Order Payments -->
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-6">
+        <!-- Order Comments -->
+        {% include 'MeVisaERPBundle:Orders:form/comments.html.twig' %}
+        <!-- Order Comments -->
+      </div>
+    </div>
+  </div>
 {% endblock %}
 {% block adminPanelFooter %}
-    <div class="panel-footer">
-        <div class="row">
-            <div class="col-sm-4">{{ form_row(form.total) }}</div>
-            <div class="col-sm-7">{{ form_widget(form.state) }}</div>
-            <div class="col-sm-1">{{ form_widget(form.save) }}</div>
-        </div>
+  <div class="panel-footer">
+    <div class="row">
+      <div class="col-sm-4">{{ form_row(form.total) }}</div>
+      <div class="col-sm-7">{{ form_widget(form.state) }}</div>
+      <div class="col-sm-1">{{ form_widget(form.save) }}</div>
     </div>
+  </div>
 {% endblock %}
 {% block adminPanelFormEnd %}
-    {{ form_end(form, {'render_rest': false}) }}
+  {{ form_end(form, {'render_rest': false}) }}
 {% endblock %}
 {% block javascripts %}
-    {{ parent() }}
-    <script type="text/javascript" src="/js/orders.js"></script>
-    <script type="text/javascript">
-        var selectCustomer = '{{ path('select_customer') }}';
-        var PAX = {{ (order.people)?:0 }};
-        var productPrices = new Array();
-        {% for price in productPrices %}
-            productPrices[{{ price.product.id }}] = {{price.price/100}};
-        {% endfor %}
-    </script>
+  {{ parent() }}
+  <script type="text/javascript" src="/js/orders.js"></script>
+  <script type="text/javascript">
+    var selectCustomer = '{{ path('select_customer') }}';
+            var PAX = {{ (order.people)?:0 }};
+    var productPrices = new Array();
+    {% for price in productPrices %}
+      productPrices[{{ price.product.id }}] = {{price.price/100}};
+    {% endfor %}
+  </script>
 {% endblock %}

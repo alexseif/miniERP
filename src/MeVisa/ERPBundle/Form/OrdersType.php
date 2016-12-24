@@ -6,6 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Doctrine\ORM\EntityRepository;
 
 class OrdersType extends AbstractType
 {
@@ -74,6 +75,19 @@ class OrdersType extends AbstractType
         )
         ->add('ticketRequired', 'checkbox', array(
           'required' => false,
+        ))
+        ->add('salesBy', 'entity', array(
+          'placeholder' => 'Choose a User',
+          'class' => 'AdminAdminBundle:User',
+          'query_builder' => function (EntityRepository $em) {
+            return $em->createQueryBuilder('u')
+            ->where("u.enabled = true")
+            ->andWhere('u.roles NOT LIKE :super')
+            ->andWhere('u.roles NOT LIKE :acc')
+            ->setParameter('super', '%"ROLE_SUPER_ADMIN"%')
+            ->setParameter('acc', '%"ROLE_ACCOUNTANT"%')
+            ->orderBy('u.username', 'ASC');
+          }
         ))
     ;
     $builder->add('customer', new \MeVisa\CRMBundle\Form\CustomersType());

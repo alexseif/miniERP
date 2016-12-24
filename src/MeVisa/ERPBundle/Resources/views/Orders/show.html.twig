@@ -2,84 +2,89 @@
 {% block title %}Order # {{ order.number }}{% endblock %}
 {% block adminPanelTitle %}Order # {{ order.number }}{% endblock %}
 {% block adminPanelBody %}
-    {{ (companions_form)?form_errors(companions_form) }}
-    <div class="panel-body">
-        <div class="row">
-            <div class="col-sm-4">
-                {% include 'MeVisaERPBundle:Orders:show/customer.html.twig' %}
-            </div>
-            <div class="col-sm-4">
-                {% include 'MeVisaERPBundle:Orders:show/details.html.twig' %}
-            </div>
-            <div class="col-sm-4">
-                {% include 'MeVisaERPBundle:Orders:show/totals.html.twig' %}
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-6">
-                {% include 'MeVisaERPBundle:Orders:show/products.html.twig' %}
-            </div>
-            <div class="col-sm-6">
-                {% include 'MeVisaERPBundle:Orders:show/payments.html.twig' %}
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-6">
-                {% include 'MeVisaERPBundle:Orders:show/companions.html.twig' %}
-            </div>
-            <div class="col-sm-6">
-                {% include 'MeVisaERPBundle:Orders:show/documents.html.twig' %}
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-6">
-                {% include 'MeVisaERPBundle:Orders:form/comments_form.html.twig' %}
-            </div>
-            <div class="col-sm-6">
-                {% include 'MeVisaERPBundle:Orders:show/logs.html.twig' %}
-            </div>
-        </div>
+  {{ (companions_form)?form_errors(companions_form) }}
+  <div class="panel-body">
+    <!-- Sales By -->
+    <div class="text-right">
+      <strong>Sales By:</strong> {{ (order.salesBy) ? order.salesBy.username : "N/A" }}
     </div>
+    <!-- Sales By -->
+    <div class="row">
+      <div class="col-sm-4">
+        {% include 'MeVisaERPBundle:Orders:show/customer.html.twig' %}
+      </div>
+      <div class="col-sm-4">
+        {% include 'MeVisaERPBundle:Orders:show/details.html.twig' %}
+      </div>
+      <div class="col-sm-4">
+        {% include 'MeVisaERPBundle:Orders:show/totals.html.twig' %}
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-6">
+        {% include 'MeVisaERPBundle:Orders:show/products.html.twig' %}
+      </div>
+      <div class="col-sm-6">
+        {% include 'MeVisaERPBundle:Orders:show/payments.html.twig' %}
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-6">
+        {% include 'MeVisaERPBundle:Orders:show/companions.html.twig' %}
+      </div>
+      <div class="col-sm-6">
+        {% include 'MeVisaERPBundle:Orders:show/documents.html.twig' %}
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-6">
+        {% include 'MeVisaERPBundle:Orders:form/comments_form.html.twig' %}
+      </div>
+      <div class="col-sm-6">
+        {% include 'MeVisaERPBundle:Orders:show/logs.html.twig' %}
+      </div>
+    </div>
+  </div>
 {% endblock %}
 {% block adminPanelFooter %}
-    <div class="panel-footer">
-        <div class="row">
-            <div class="col-sm-5">
-                {% if is_granted('ROLE_SUPER_ADMIN') or is_granted('ROLE_ACCOUNTANT') or not (order.updatedAt or "POS" == order.channel) %}
-                    <a class="btn btn-default" href="{{ path('orders_edit', { "id" : order.id }) }}">Edit</a>
-                {% endif %}
-            </div>
-            <div class="col-sm-1">
-                {% if order.sendable %}
-                    <a href="mailto:{{order.customer.email}}?{{ {'subject': 'В приложении готовая виза в ОАЭ.',
+  <div class="panel-footer">
+    <div class="row">
+      <div class="col-sm-5">
+        {% if is_granted('ROLE_SUPER_ADMIN') or is_granted('ROLE_ACCOUNTANT') or not (order.updatedAt or "POS" == order.channel) %}
+          <a class="btn btn-default" href="{{ path('orders_edit', { "id" : order.id }) }}">Edit</a>
+        {% endif %}
+      </div>
+      <div class="col-sm-1">
+        {% if order.sendable %}
+          <a href="mailto:{{order.customer.email}}?{{ {'subject': 'В приложении готовая виза в ОАЭ.',
  'body': 'Уважаемый '~order.customer.name~',
 В приложении готовая виза в ОАЭ.
 Вам необходимо ее распечатать и предъявить на стойке регистрации перед посадкой в самолет, а также на стойке паспортного контроля в ОАЭ.
 Спасибо, что воспользовались услугами нашей компании'}|url_encode }}" target="_top" class="btn btn-primary btn-block"><span class="glyphicon glyphicon-send"></span></a>
 
-                {% endif %}
-            </div>
-            <div class="col-sm-6">
-                <div class="btn-toolbar pull-right" role="toolbar">
-                    {% if order.updatedAt or "POS" == order.channel %}
-                        {{ form_start(status_form) }}
-                        {% for btn in status_form %}
-                            {{ form_widget(btn) }}
-                        {% endfor %}
-                        {{ form_end(status_form) }}
-                    {% endif %}
-                </div>
-            </div>
+        {% endif %}
+      </div>
+      <div class="col-sm-6">
+        <div class="btn-toolbar pull-right" role="toolbar">
+          {% if order.updatedAt or "POS" == order.channel %}
+            {{ form_start(status_form) }}
+            {% for btn in status_form %}
+              {{ form_widget(btn) }}
+            {% endfor %}
+            {{ form_end(status_form) }}
+          {% endif %}
         </div>
+      </div>
     </div>
+  </div>
 {% endblock %}
 {% block content %}
-    {{ parent() }}
-    {% if ("post" == order.state) %}
-        {% include 'MeVisaERPBundle:Orders:form/approval_modal.html.twig' %}
-    {% endif %}
+  {{ parent() }}
+  {% if ("post" == order.state) %}
+    {% include 'MeVisaERPBundle:Orders:form/approval_modal.html.twig' %}
+  {% endif %}
 {% endblock %}
 {% block javascripts %}
-    {{ parent() }}
-    <script type="text/javascript" src="/js/orderDocuments.js"></script>
+  {{ parent() }}
+  <script type="text/javascript" src="/js/orderDocuments.js"></script>
 {% endblock %}
