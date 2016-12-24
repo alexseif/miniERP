@@ -9,6 +9,13 @@
 {% block adminPanelBody %}
   <div class="panel-body">
     <div class="row">
+      <div class="col-xs-offset-7 col-sm-5">
+        <!-- Sales By -->
+        {{ form_row(form.salesBy) }}
+        <!-- Sales By -->
+      </div>
+    </div>
+    <div class="row">
       <div class="col-sm-6">
         <!-- Order Customer-->
         {% include 'MeVisaERPBundle:Orders:form/customer.html.twig' %}
