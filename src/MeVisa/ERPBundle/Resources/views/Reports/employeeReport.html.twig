@@ -131,12 +131,9 @@
                 data.addRows([{% for l in logs %}
                     [
                         new Date({{l.loggedAt|date('Y')}}, {{l.loggedAt|date('m')}}, {{l.loggedAt|date('d')}} ),
-        {{(l.username == "alexseif")? l.cUpdates : "undefined"}},
-        {{(l.username == "waziry")? l.cUpdates : "undefined"}},
-        {{(l.username == "lbazarova")? l.cUpdates : "undefined"}},
-        {{(l.username == "esokratova")? l.cUpdates : "undefined"}},
-        {{(l.username == "accounting")? l.cUpdates : "undefined"}},
-        {{(l.username == "daria")? l.cUpdates : "undefined"}},{{(l.username == "liza")? l.cUpdates : "undefined"}}
+                        {% for u in users %}
+                          {{(l.username == u.username)? l.cUpdates }},
+                        {% endfor %}
                     ],{% endfor %}
                 ]);
                 // Set chart options
