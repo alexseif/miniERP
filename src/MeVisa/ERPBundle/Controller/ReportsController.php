@@ -531,4 +531,53 @@ class ReportsController extends Controller
     );
   }
 
+  /**
+   * Lists all Financial Reports
+   *
+   * @Route("/salesby", name="reports_sales_by")
+   * @Method("GET")
+   * @Template()
+   */
+  public function salesByAction()
+  {
+    $em = $this->getDoctrine()->getManager();
+
+    $reports = $em->getRepository('MeVisaERPBundle:Orders')->findAllGroupByMonthAndYear();
+
+    return array(
+      'reports' => $reports,
+    );
+  }
+
+  /**
+   * Finds and displays a Reports entity.
+   *
+   * @Route("/salesby/{year}/{month}", name="reports_sales_by_show")
+   * @Method("GET")
+   * @Template()
+   */
+  public function salesByReportAction($month, $year)
+  {
+//TODO: Validate get
+    $em = $this->getDoctrine()->getManager();
+    $ordersReport = $em->getRepository('MeVisaERPBundle:Orders');
+    $salesByUser = $ordersReport->createQueryBuilder('o')
+        ->select('o, COUNT(o.salesBy) as sales')
+        ->groupBy("o.salesBy")
+        ->where('o.salesBy IS NOT NULL')
+        ->andWhere('MONTHNAME(o.createdAt) = ?1')
+        ->andWhere('YEAR(o.createdAt) = ?2')
+        ->setParameter('1', $month)
+        ->setParameter('2', $year)
+        ->orderBy('sales', 'DESC')
+        ->getQuery()
+        ->getResult();
+
+    return array(
+      'month' => $month,
+      'year' => $year,
+      'salesByUser' => $salesByUser,
+    );
+  }
+
 }
