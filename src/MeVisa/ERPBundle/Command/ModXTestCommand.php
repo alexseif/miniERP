@@ -30,7 +30,7 @@ class ModXTestCommand extends ContainerAwareCommand
     ));
     $response = $curl;
     $curl->close();
-    dump($response);
+    \Doctrine\Common\Util\Debug::dump($response);
   }
 
 }
