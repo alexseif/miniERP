@@ -34,28 +34,33 @@ class MODxAPICommand extends ContainerAwareCommand
     $modxOrders = null;
     $container = $this->getContainer();
 
-    $mysqlLink = mysqli_connect($container->getParameter('uaevc_host'), $container->getParameter('uaevc_user'), $container->getParameter('uaevc_password'), $container->getParameter('uaevc_name'));
-
-    mysqli_query($mysqlLink, "SET NAMES UTF8");
-    $query = 'SELECT * FROM `modx_prazdnik_items` WHERE createdon >= NOW() - INTERVAL 1 DAY';
-    $mysqlResultLink = mysqli_query($mysqlLink, $query);
-    while ($row = mysqli_fetch_assoc($mysqlResultLink)) {
-      $modxOrders[] = $row;
-    }
+    $modxOrders = json_decode($this->fetchOrders());
 
     $em = $this->getContainer()->get('doctrine')->getManager();
     if ($modxOrders) {
       foreach ($modxOrders as $modxOrder) {
-        if (1 == $modxOrder['active']) {
-          $order = $em->getRepository('MeVisaERPBundle:Orders')->findOneBy(array('channel' => 'uaevisa.ru', 'wcId' => $modxOrder['id']));
-          if (!$order) {
-            $order = $this->newOrder($em, $modxOrder);
-          }
-          $em->persist($order);
+        $order = $em->getRepository('MeVisaERPBundle:Orders')->findOneBy(array('channel' => 'uaevisa.ru', 'wcId' => $modxOrder->id));
+        if (!$order) {
+          $order = $this->newOrder($em, $modxOrder);
         }
+        $em->persist($order);
       }
     }
     $em->flush();
+  }
+
+  public function fetchOrders()
+  {
+    $curl = new \Curl\Curl();
+    $curl->get('http://uaevisa.ru/api/v1/orders', array(
+      'login' => 'api',
+      'pass' => 'YrrLeqhb',
+      'startdate' => '2016-09-18 10:00',
+      'limit' => '10'
+    ));
+    $response = $curl->response;
+    $curl->close();
+    return $response;
   }
 
   public function newOrder($em, $modxOrder)
@@ -65,9 +70,9 @@ class MODxAPICommand extends ContainerAwareCommand
     $order = new Orders();
 
     $customer = new Customers();
-    $customer->setName($modxOrder['name'] . ' ' . $modxOrder['famil']);
-    $customer->setEmail($modxOrder['email']);
-    $customer->setPhone($modxOrder['phone']);
+    $customer->setName($modxOrder->customerDetails->name);
+    $customer->setEmail($modxOrder->customerDetails->email);
+    $customer->setPhone($modxOrder->customerDetails->phone);
 
     $customerExists = $em->getRepository('MeVisaCRMBundle:Customers')->findOneBy(array('email' => $customer->getEmail()));
 
@@ -103,26 +108,27 @@ class MODxAPICommand extends ContainerAwareCommand
 
   protected function setOrderDetails($modxOrder, $order, $timezone, $em)
   {
-    $order->setWcId($modxOrder['id']);
-    $order->setNumber('UV' . $modxOrder['id']);
-    $order->setCreatedAt(new \DateTime($modxOrder['createdon'], $timezone));
+    $order->setWcId($modxOrder->id);
+    $order->setNumber('UV' . $modxOrder->id);
+    $order->setCreatedAt(new \DateTime($modxOrder->orderDate, $timezone));
     $order->setState("backoffice");
 
-    $order->setPeople($modxOrder['kolchel']);
-    $order->setTotal($modxOrder['cost'] * 100);
-    $order->setProductsTotal($modxOrder['cost'] * 100);
+    $order->setPeople($modxOrder->pax);
+    $order->setTotal($modxOrder->orderTotal * 100);
+    $order->setProductsTotal($modxOrder->orderTotal * 100);
     $order->setAdjustmentTotal(0);
 
-    $product = $em->getRepository('MeVisaERPBundle:Products')->findOneBy(array('name' => $modxOrder['namezakaz']));
+    $product = $em->getRepository('MeVisaERPBundle:Products')->findOneBy(array('wcId' => $modxOrder->orderDetails->productRef));
     if (!$product) {
       $product = new Products();
       $product->setEnabled(true);
-      $product->setName($modxOrder['namezakaz']);
+      $product->setWcId($modxOrder->orderDetails->productRef);
+      $product->setName($modxOrder->orderDetails->productName);
       $product->setRequiredDocuments(array());
       $product->setUrgent(false);
       $productPrice = new ProductPrices();
       $productPrice->setCost(0);
-      $productPrice->setPrice(($modxOrder['cost'] * 100) / $modxOrder['kolchel']);
+      $productPrice->setPrice($modxOrder->orderDetails->productUnitPrice * 100);
       $product->addPricing($productPrice);
       $em->persist($product);
     }
@@ -131,23 +137,23 @@ class MODxAPICommand extends ContainerAwareCommand
     $productPrice = $product->getPricing()->last();
     $orderProduct = new OrderProducts();
     $orderProduct->setProduct($product);
-    $orderProduct->setQuantity($modxOrder['kolchel']);
-    $orderProduct->setUnitPrice(($modxOrder['cost'] * 100) / $modxOrder['kolchel']);
+    $orderProduct->setQuantity($modxOrder->orderDetails->productQuantity);
+    $orderProduct->setUnitPrice($modxOrder->orderDetails->productUnitPrice * 100);
     $orderProduct->setUnitCost($productPrice->getCost());
     $orderProduct->setVendor($product->getVendor());
-    $orderProduct->setTotal($modxOrder['cost'] * 100);
+    $orderProduct->setTotal($modxOrder->orderDetails->productUnitPrice * $modxOrder->orderDetails->productQuantity * 100);
 
     $order->addOrderProduct($orderProduct);
 
-    $order->setPeople($modxOrder['kolchel']);
-    $arrival = \DateTime::createFromFormat('Y-m-d G:i:s', $modxOrder['datet'], $timezone);
+    $order->setPeople($modxOrder->pax);
+    $arrival = \DateTime::createFromFormat('Y-m-d', $modxOrder->arrivalDate, $timezone);
     if ($arrival) {
       $order->setArrival($arrival);
     } else {
       //TODO: Report issue
       dump('Invalid arrival for Order: ' . $order->getNumber());
     }
-    $departure = \DateTime::createFromFormat("Y-m-d G:i:s", $modxOrder['dateo'], $timezone);
+    $departure = \DateTime::createFromFormat("Y-m-d", $modxOrder->departureDate, $timezone);
     if ($departure) {
       $order->setDeparture($departure);
     } else {
@@ -155,87 +161,33 @@ class MODxAPICommand extends ContainerAwareCommand
       dump('Invalid departure for Order: ' . $order->getNumber());
     }
 
-    $accessBasePath = 'http://uaevisa.ru/assets/uploads/';
-
-    $uploadBasePath = $this->getContainer()->getParameter('uaevc_path');
-    $fs = new Filesystem();
-    if ($fs->exists($uploadBasePath . $order->getWcId())) {
-      $finder = new Finder();
-
-      $finder->files()->in($uploadBasePath . $order->getWcId());
-      foreach ($finder as $file) {
-        $document = new \MeVisa\ERPBundle\Entity\OrderDocuments();
-        $document->setName($file->getFileName());
-        // http://uaevisa.ru/assets/uploads/74/0/contact_pasp_2016-09-06_12-54-15.png
-        $document->setPath($accessBasePath . $order->getWcId() . '/' . $file->getRelativePathname());
-        $order->addOrderDocument($document);
-      }
-    }
-
     $orderPayment = new OrderPayments();
     // method_id method_title
     $orderPayment->setMethod('payu');
-    $orderPayment->setAmount($modxOrder['cost'] * 100);
-    $orderPayment->setCreatedAt(new \DateTime($modxOrder['editedon'], $timezone));
-    if (1 == $modxOrder['active']) {
-      $orderPayment->setState("paid");
-    } else {
-      $orderPayment->setState("not_paid");
-    }
+    $orderPayment->setAmount($modxOrder->orderTotal * 100);
+    $orderPayment->setCreatedAt(new \DateTime($modxOrder->orderDate, $timezone));
+    $orderPayment->setState("paid");
     $order->addOrderPayment($orderPayment);
 
-    if ("" != $modxOrder['description']) {
+    if ("" != $modxOrder->comment) {
       $orderComment = new OrderComments();
-      $orderComment->setComment($modxOrder['note'] . "-- Customer: " . $order->getCustomer()->getName());
-      $orderComment->setCreatedAt(new \DateTime($modxOrder['created_at'], $timezone));
+      $orderComment->setComment($modxOrder->comment . "-- Customer: " . $order->getCustomer()->getName());
+      $orderComment->setCreatedAt(new \DateTime($modxOrder->orderDate, $timezone));
       $order->addOrderComment($orderComment);
     }
 
-    if ("" != $modxOrder["name1"]) {
+    foreach ($modxOrder->orderCompanions as $companion) {
       $orderCompanion = new OrderCompanions();
-      $orderCompanion->setName($modxOrder["name1"] . $modxOrder["famil1"]);
+      $orderCompanion->setName($companion->name);
       $order->addOrderCompanion($orderCompanion);
+
+      $document = new \MeVisa\ERPBundle\Entity\OrderDocuments();
+      $document->setName($companion->file);
+      // http://uaevisa.ru/assets/uploads/74/0/contact_pasp_2016-09-06_12-54-15.png
+      $document->setPath($companion->file);
+      $order->addOrderDocument($document);
     }
-    if ("" != $modxOrder["name2"]) {
-      $orderCompanion = new OrderCompanions();
-      $orderCompanion->setName($modxOrder["name2"] . $modxOrder["famil2"]);
-      $order->addOrderCompanion($orderCompanion);
-    }
-    if ("" != $modxOrder["name3"]) {
-      $orderCompanion = new OrderCompanions();
-      $orderCompanion->setName($modxOrder["name3"] . $modxOrder["famil3"]);
-      $order->addOrderCompanion($orderCompanion);
-    }
-    if ("" != $modxOrder["name4"]) {
-      $orderCompanion = new OrderCompanions();
-      $orderCompanion->setName($modxOrder["name4"] . $modxOrder["famil4"]);
-      $order->addOrderCompanion($orderCompanion);
-    }
-    if ("" != $modxOrder["name5"]) {
-      $orderCompanion = new OrderCompanions();
-      $orderCompanion->setName($modxOrder["name5"] . $modxOrder["famil5"]);
-      $order->addOrderCompanion($orderCompanion);
-    }
-    if ("" != $modxOrder["name6"]) {
-      $orderCompanion = new OrderCompanions();
-      $orderCompanion->setName($modxOrder["name6"] . $modxOrder["famil6"]);
-      $order->addOrderCompanion($orderCompanion);
-    }
-    if ("" != $modxOrder["name7"]) {
-      $orderCompanion = new OrderCompanions();
-      $orderCompanion->setName($modxOrder["name7"] . $modxOrder["famil7"]);
-      $order->addOrderCompanion($orderCompanion);
-    }
-    if ("" != $modxOrder["name8"]) {
-      $orderCompanion = new OrderCompanions();
-      $orderCompanion->setName($modxOrder["name8"] . $modxOrder["famil8"]);
-      $order->addOrderCompanion($orderCompanion);
-    }
-    if ("" != $modxOrder["name9"]) {
-      $orderCompanion = new OrderCompanions();
-      $orderCompanion->setName($modxOrder["name9"] . $modxOrder["famil9"]);
-      $order->addOrderCompanion($orderCompanion);
-    }
+
 
     //FIXME: Dynamic channel
     $order->setChannel("uaevisa.ru");

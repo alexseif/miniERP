@@ -25,12 +25,14 @@ class ModXTestCommand extends ContainerAwareCommand
     $curl->get('http://uaevisa.ru/api/v1/orders', array(
       'login' => 'api',
       'pass' => 'YrrLeqhb',
-      'startdate' => '2016-09-20 10:00',
-      'limit' => '5'
+      'startdate' => '2016-09-18 10:00',
+      'limit' => '10'
     ));
-    $response = $curl;
+    $response = $curl->response;
     $curl->close();
-    dump($response);
+    dump($curl);
+    dump(json_decode($response));
+    dump(count(json_decode($response)));
   }
 
 }
