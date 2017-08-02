@@ -97,6 +97,8 @@ class UsersController extends Controller
 
     if ($user_form->isSubmitted()) {
       if ($user_form->isValid()) {
+        $userManager = $this->container->get('fos_user.user_manager');
+        $userManager->updatePassword($user);
 
         if ($user == $this->getUser()) {
           $this->get('session')->set('_locale', $user->getLocale());
