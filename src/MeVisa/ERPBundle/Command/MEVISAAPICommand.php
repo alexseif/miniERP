@@ -33,7 +33,7 @@ class MEVISAAPICommand extends ContainerAwareCommand
     try {
       $username = "crmscript";
       $password = "jdjnde7352jdd";
-      $url = "http://mevisa.vamtest.ru/api/v1/orders";
+      $url = "http://mevisa.ru/api/v1/orders";
       $curl = new \Curl\Curl();
       $curl->setBasicAuthentication($username, $password);
       $curl->get($url);
