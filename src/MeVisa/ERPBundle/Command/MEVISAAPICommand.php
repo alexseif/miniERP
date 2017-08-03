@@ -29,7 +29,6 @@ class MEVISAAPICommand extends ContainerAwareCommand
 
   protected function execute(InputInterface $input, OutputInterface $output)
   {
-    $wcOrdersSecondPage = $wcOrders = null;
     try {
       $username = "crmscript";
       $password = "jdjnde7352jdd";
@@ -40,50 +39,37 @@ class MEVISAAPICommand extends ContainerAwareCommand
       $response = json_decode($curl->response);
       $curl->close();
     } catch (\Exception $exc) {
-      dump($exc);
+//      dump($exc);
       //TODO: do something
     }
-    dump($response);
-    die();
+//    dump($response->data);
+//    die();
     $em = $this->getContainer()->get('doctrine')->getManager();
-    if ($wcOrders) {
-      foreach ($wcOrders['orders'] as $wcOrder) {
-        if (true == $wcOrder['payment_details']['paid']) {
-          $order = $em->getRepository('MeVisaERPBundle:Orders')->findOneBy(array('channel' => 'MeVisa.ru', 'wcId' => $wcOrder['order_number']));
-          if (!$order) {
-            $order = $this->newOrder($em, $wcOrder);
-          }
-          $em->persist($order);
+    $data = $response->data;
+    if ($data) {
+      foreach ($data as $mevisaOrder) {
+//        if ("paid" == $mevisaOrder['payment_state']) {
+        $order = $em->getRepository('MeVisaERPBundle:Orders')->findOneBy(array('channel' => 'MeVisa.ru', 'wcId' => "mv" . $mevisaOrder->id_order));
+        if (!$order) {
+          $order = $this->newOrder($em, $mevisaOrder);
         }
-//            $wcOrderNotes = $client->getOrderNotes($wcOrder['order_number']);
-//            $this->updateOrderNotes($em, $order, $wcOrderNotes['order_notes']);
-      }
-    }
-
-    if ($wcOrdersSecondPage) {
-      foreach ($wcOrdersSecondPage['orders'] as $wcOrder) {
-        if (true == $wcOrder['payment_details']['paid']) {
-          $order = $em->getRepository('MeVisaERPBundle:Orders')->findOneBy(array('wcId' => $wcOrder['order_number']));
-          if (!$order) {
-            $order = $this->newOrder($em, $wcOrder);
-          }
-          $em->persist($order);
-        }
+        $em->persist($order);
+//        }
       }
     }
     $em->flush();
   }
 
-  public function newOrder($em, $wcOrder)
+  public function newOrder($em, $mevisaOrder)
   {
     $timezone = new \DateTimeZone('UTC');
 
     $order = new Orders();
 
     $customer = new Customers();
-    $customer->setName($wcOrder['billing_address']['first_name'] . ' ' . $wcOrder['billing_address']['last_name']);
-    $customer->setEmail($wcOrder['billing_address']['email']);
-    $customer->setPhone($wcOrder['billing_address']['phone']);
+    $customer->setName($mevisaOrder->customer_name);
+    $customer->setEmail($mevisaOrder->customer_email);
+    $customer->setPhone($mevisaOrder->customer_phone);
 
     $customerExists = $em->getRepository('MeVisaCRMBundle:Customers')->findOneBy(array('email' => $customer->getEmail()));
 
@@ -112,17 +98,16 @@ class MEVISAAPICommand extends ContainerAwareCommand
         $order->addOrderComment($orderComment);
       }
     }
-
-    $this->setOrderDetails($wcOrder, $order, $timezone, $em);
+    $this->setOrderDetails($mevisaOrder, $order, $timezone, $em);
     return $order;
   }
 
-  protected function setOrderDetails($wcOrder, $order, $timezone, $em)
+  protected function setOrderDetails($mevisaOrder, $order, $timezone, $em)
   {
-    $order->setWcId($wcOrder['order_number']);
-    $order->setNumber($wcOrder['order_number']);
-    $order->setCreatedAt(new \DateTime($wcOrder['created_at'], $timezone));
-    switch ($wcOrder['status']) {
+    $order->setWcId("mv".$mevisaOrder->id_order);
+    $order->setNumber("mv".$mevisaOrder->id_order);
+    $order->setCreatedAt(new \DateTime($mevisaOrder->order_date, $timezone));
+    switch ($mevisaOrder->order_state) {
       case "cancelled":
       case "failed":
         $state = "cancelled";
@@ -140,112 +125,66 @@ class MEVISAAPICommand extends ContainerAwareCommand
     }
 
     $order->setState($state);
-    $order->setTotal($wcOrder['total'] * 100);
-    $order->setProductsTotal($wcOrder['subtotal'] * 100);
-    $order->setPeople(0);
-    foreach ($wcOrder['line_items'] as $lineItem) {
-      $product = $em->getRepository('MeVisaERPBundle:Products')->findOneBy(array('wcId' => $lineItem['product_id']));
-      if (!$product) {
-        $product = new Products();
-        $product->setEnabled(true);
-        $product->setName($lineItem['name']);
-        $product->setWcId($lineItem['product_id']);
-        $product->setRequiredDocuments(array());
-        $productPrice = new ProductPrices();
-        $productPrice->setCost(0);
-        $productPrice->setPrice($lineItem['price'] * 100);
-        $product->addPricing($productPrice);
-        $em->persist($product);
-      }
-
-      //TODO: 1) Check product cost structure
-      //TODO: 2) Recalculate cost
-
-      $productPrice = $product->getPricing()->last();
-      $orderProduct = new OrderProducts();
-      $orderProduct->setProduct($product);
-      $orderProduct->setQuantity($lineItem['quantity']);
-      $orderProduct->setUnitPrice($lineItem['price'] * 100);
-      $orderProduct->setUnitCost($productPrice->getCost());
-      $orderProduct->setVendor($product->getVendor());
-      $orderProduct->setTotal($lineItem['total'] * 100);
-
-      $order->addOrderProduct($orderProduct);
-
-      foreach ($lineItem['meta'] as $key => $meta) {
-        switch ($meta['key']) {
-          case'Кол-во человек':
-            $order->setPeople($order->getPeople() + $meta['value']);
-            break;
-          case'Дата вылета':
-            $arrival = \DateTime::createFromFormat("d/m/Y", $meta['value'], $timezone);
-            $order->setArrival($arrival);
-            break;
-          case'Дата возврата':
-            $departure = \DateTime::createFromFormat("d/m/Y", $meta['value'], $timezone);
-            $order->setDeparture($departure);
-            break;
-          case'Прикрепите копию паспорта и фото (для всех туристов)':
-            $docs = explode(',', $meta['value']);
-            foreach ($docs as $doc) {
-              $document = new \MeVisa\ERPBundle\Entity\OrderDocuments();
-              $document->setName($doc);
-              // http://www.mevisa.ru/wp-content/uploads/product_files/confirmed/3975-915-img_9996.jpg
-              $document->setPath('http://www.mevisa.ru/wp-content/uploads/product_files/confirmed/' . $wcOrder['order_number'] . '-' . $lineItem['product_id'] . '-' . $doc);
-              $order->addOrderDocument($document);
-            }
-            break;
-          default :
-            break;
-        }
-      }
+    $order->setTotal($mevisaOrder->order_total * 100);
+    $order->setProductsTotal($mevisaOrder->order_total * 100);
+    $order->setPeople($mevisaOrder->pax);
+    $product = $em->getRepository('MeVisaERPBundle:Products')->findOneBy(array('wcId' => $mevisaOrder->product_ref));
+    if (!$product) {
+      $product = new Products();
+      $product->setEnabled(true);
+      $product->setName($mevisaOrder->product_name);
+      $product->setWcId($mevisaOrder->product_ref);
+      $product->setRequiredDocuments(array());
+      $productPrice = new ProductPrices();
+      $productPrice->setCost(0);
+      $productPrice->setPrice($mevisaOrder->product_unitprice * 100);
+      $product->addPricing($productPrice);
+      $em->persist($product);
     }
 
-    $order->setAdjustmentTotal($wcOrder['total_discount'] * 100);
-    $orderPayment = new OrderPayments();
-    // method_id method_title
-    $orderPayment->setMethod($wcOrder['payment_details']['method_id']);
-    $orderPayment->setAmount($wcOrder['total'] * 100);
-    $orderPayment->setCreatedAt(new \DateTime($wcOrder['created_at'], $timezone));
-    if ("true" == $wcOrder['payment_details']['paid']) {
+    //TODO: 1) Check product cost structure
+    //TODO: 2) Recalculate cost
+
+    $productPrice = $product->getPricing()->last();
+    $orderProduct = new OrderProducts();
+    $orderProduct->setProduct($product);
+    $orderProduct->setQuantity($mevisaOrder->product_quantiry);
+    $orderProduct->setUnitPrice($mevisaOrder->product_unitprice * 100);
+    $orderProduct->setUnitCost($productPrice->getCost());
+    $orderProduct->setVendor($product->getVendor());
+    $orderProduct->setTotal($mevisaOrder->order_total * 100);
+
+    $order->addOrderProduct($orderProduct);
+    if ($mevisaOrder->arrival_date) {
+      $arrival = \DateTime::createFromFormat("d/m/Y", $mevisaOrder->arrival_date, $timezone);
+      $order->setArrival($arrival);
+    }
+    if ($mevisaOrder->departure_date) {
+      $departure = \DateTime::createFromFormat("d/m/Y", $mevisaOrder->departure_date, $timezone);
+      $order->setDeparture($departure);
+    }
+    foreach ($mevisaOrder->files as $file) {
+      $document = new \MeVisa\ERPBundle\Entity\OrderDocuments();
+      $document->setName($file->title);
+      // http://www.mevisa.ru/wp-content/uploads/product_files/confirmed/3975-915-img_9996.jpg
+      $document->setPath($file->path);
+      $order->addOrderDocument($document);
+    }
+    $order->setAdjustmentTotal(0);
+    if ("paid" == $mevisaOrder->payment_state) {
+      $orderPayment = new OrderPayments();
+      // method_id method_title
+      $orderPayment->setMethod("CC");
+      $orderPayment->setAmount($mevisaOrder->order_total * 100);
+      $orderPayment->setCreatedAt(new \DateTime($mevisaOrder->order_date, $timezone));
       $orderPayment->setState("paid");
-    } else {
-      $orderPayment->setState("not_paid");
+      $order->addOrderPayment($orderPayment);
     }
-    $order->addOrderPayment($orderPayment);
-
-    if ("" != $wcOrder['note']) {
-      $orderComment = new OrderComments();
-      $orderComment->setComment($wcOrder['note'] . "-- Customer: " . $order->getCustomer()->getName());
-      $orderComment->setCreatedAt(new \DateTime($wcOrder['created_at'], $timezone));
-      $order->addOrderComment($orderComment);
-    }
-
     //FIXME: Dynamic channel
     $order->setChannel("MeVisa.ru");
 
 
     $order->setTicketRequired(false);
-  }
-
-  public function updateOrderNotes($em, $order, $wcOrderNotes)
-  {
-    $timezone = new \DateTimeZone('UTC');
-    foreach ($wcOrderNotes as $note) {
-      $ExistingOrderComment = $em->getRepository('MeVisaERPBundle:OrderComments')->findOneBy(array('wcId' => $note['id']));
-      if (!$ExistingOrderComment) {
-        $orderComment = new OrderComments();
-        $orderComment->setWcId($note['id']);
-        if ($note['customer_note']) {
-          $orderComment->setComment($note['note'] . "-- Customer: " . $order->getCustomer()->getName());
-        } else {
-          $orderComment->setComment($note['note']);
-        }
-
-        $orderComment->setCreatedAt(new \DateTime($note['created_at'], $timezone));
-        $order->addOrderComment($orderComment);
-      }
-    }
   }
 
 }
