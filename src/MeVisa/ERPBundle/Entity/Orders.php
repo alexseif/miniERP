@@ -32,7 +32,7 @@ class Orders
   /**
    * @var integer
    *
-   * @ORM\Column(name="wc_id", type="integer", nullable=true)
+   * @ORM\Column(name="wc_id", type="string", nullable=true)
    */
   private $wcId;
 

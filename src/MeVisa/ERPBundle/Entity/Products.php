@@ -29,7 +29,7 @@ class Products
   /**
    * @var integer
    *
-   * @ORM\Column(name="wc_id", type="integer", nullable=true)
+   * @ORM\Column(name="wc_id", type="string", nullable=true)
    */
   private $wcId;
 
@@ -91,6 +91,7 @@ class Products
 
   public function __construct()
   {
+    $this->urgent = false;
     $this->pricing = new ArrayCollection();
   }
 

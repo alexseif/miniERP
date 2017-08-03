@@ -1,185 +1,189 @@
 {% extends 'MeVisaERPBundle:Orders:defaultLayout.html.twig' %}
 {% block stylesheets %}
-    {{ parent() }}
-    <link rel="stylesheet" type="text/css" href="/css/dataTables.bootstrap.min.css" />
-    <style type="text/css">
-        table.dataTable{margin: 0 !important;}
-        div.dataTables_wrapper div.dataTables_paginate{text-align: center;}
-    </style>
+  {{ parent() }}
+  <link rel="stylesheet" type="text/css" href="/css/dataTables.bootstrap.min.css" />
+  <style type="text/css">
+    table.dataTable{margin: 0 !important;}
+    div.dataTables_wrapper div.dataTables_paginate{text-align: center;}
+  </style>
 {% endblock %}
 {% block adminPanel %}
-    <ul class="nav nav-tabs" role="tablist">
-        <li class="{{ ("orders" == app.request.get('_route'))?"active" }}"><a href="{{ path('orders') }}">Orders <span class="badge">{{  ("orders" == app.request.get('_route'))?orders|length }}</span></a></li>
-        <li class="{{ ("orders_archive" == app.request.get('_route'))?"active" }}"><a href="{{ path('orders_archive') }}">Archives <span class="badge">{{  ("orders_archive" == app.request.get('_route'))?orders|length }}</span></a></li>
-        <li class="pull-right"><a href="{{ path('orders_new') }}" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span></a></li>
-    </ul>
-    <div class="panel panel-default">
-        <div class="panel-heading">
+  <ul class="nav nav-tabs" role="tablist">
+    <li class="{{ ("orders" == app.request.get('_route'))?"active" }}"><a href="{{ path('orders') }}">Orders <span class="badge">{{  ("orders" == app.request.get('_route'))?orders|length }}</span></a></li>
+    <li class="{{ ("orders_archive" == app.request.get('_route'))?"active" }}"><a href="{{ path('orders_archive') }}">Archives <span class="badge">{{  ("orders_archive" == app.request.get('_route'))?orders|length }}</span></a></li>
+    <li class="pull-right"><a href="{{ path('orders_new') }}" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span></a></li>
+  </ul>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <div class="row">
+        <div class="col-sm-12">
+          <div id="datatable-options" class="text-right">
             <div class="row">
-                <div class="col-sm-12">
-                    <div id="datatable-options" class="text-right">
-                        <div class="row">
-                            <div class="col-sm-4">
-                                <div id="search-state" class="pull-left"></div>
-                                <div id="search-pay" class="pull-left"></div>
-                                <div id="search-product" class="pull-left"></div>
-                            </div>
-                            <div class="col-sm-5"><input type="search" id="datatable-search" class="form-control" placeholder="Search" aria-controls="datatable"></div>
-                            <div class="col-sm-3">
-                                <select name="datatable_length" id="datatable-length" aria-controls="datatable"><option value="10">10</option><option value="25">25</option><option value="50">50</option><option value="100">100</option></select>
-                                <div class="text-muted" id="datatable-info"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+              <div class="col-sm-4">
+                <div id="search-state" class="pull-left"></div>
+                <div id="search-pay" class="pull-left"></div>
+                <div id="search-product" class="pull-left"></div>
+              </div>
+              <div class="col-sm-5"><input type="search" id="datatable-search" class="form-control" placeholder="Search" aria-controls="datatable"></div>
+              <div class="col-sm-3">
+                <select name="datatable_length" id="datatable-length" aria-controls="datatable"><option value="10">10</option><option value="25">25</option><option value="50">50</option><option value="100">100</option></select>
+                <div class="text-muted" id="datatable-info"></div>
+              </div>
             </div>
+          </div>
         </div>
-        <table class="table table-bordered table-striped table-hover records_list" id="datatable" cellspacing="0">
-            <thead>
-                <tr>
-                    <th>Order #</th>
-                    <th>State</th>
-                    <th>Payment</th>
-                    <th data-orderable="false">Customer</th>
-                    <th>Channel</th>
-                    <th>Adjustment</th>
-                    <th>Total</th>
-                    <th>Created</th>
-                    <th data-visible="false">Products</th>
-                    <th data-orderable="false"></th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for order in orders %}
-                    {% set urgent = ''%}
-                    {% set highlight = ''%}
-                    {% if order.state == "post" %}
-                        {% if  (date(order.postedAt) < date('-2days')) and order.postedAt.timestamp is defined %}
-                            {% set highlight = 'highlight' %}
-                        {% endif %}
-                    {% endif %}
-                    {% if order.state == "backoffice" %}
-                        {% if  (date(order.createdAt) < date('-2days')) %}
-                            {% set highlight = 'highlight' %}
-                        {% endif %}
-                    {% endif %}
-                    {% for product in order.orderProducts %}
-                        {% if (product.product.urgent) %}
-                            {% set urgent='urgent' %}
-                        {% endif %}
-                    {% endfor %}
-                    <tr class="{{ highlight }} {{ urgent }}">
-                        <td class="text-center col-sm-1"><a class="btn btn-link" href="{{ path('orders_show', { 'id': order.id }) }}">{{ order.number }}</a></td>
-                        <td class="col-sm-1"><span class="label label-{{ statusCSS.css(order.state) }}">{{ order.state|upper }}</span></td>
-                        <td class="col-sm-1 payment" data-search="{{ order.orderPayments|last.state|replace('_',' ')|upper }} {{ order.orderPayments|last.method|replace('_',' ')|upper }}">
-                            <span class="label label-{{ statusCSS.css(order.orderPayments|last.state) }}">{{ order.orderPayments|last.state|replace('_',' ')|upper }}</span>
-                {{ order.orderPayments|last.method|replace('_',' ')|upper }}
-                        </td>
-                        <td class="col-sm-2">{{ order.customer.name }}</td>
-                        <td class="col-sm-1">{{ order.channel }}</td>
-                        <td class="text-right col-sm-1">{{ (order.adjustmentTotal/100)|localizedcurrency('RUB') }}</td>
-                        <td class="text-right col-sm-2">{{ (order.total/100)|localizedcurrency('RUB') }}</td>
-                        <td class="col-sm-2">{% if order.createdAt %}{{ order.createdAt|localizeddate('medium', 'short') }}{% endif %}</td>
-                        <td class="" >{% for product in order.orderProducts %}{{ product.product.name }},{% endfor %}</td>
-                        <td class="col-sm-1"><a class="btn btn-primary btn-sm" href="{{ path('orders_show', { 'id': order.id }) }}">Open</a></td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-        <div class="panel-footer">
-            <div id="datatable-pagination" class="dataTables_wrapper">
-            </div>
-        </div>
+      </div>
     </div>
+    <table class="table table-bordered table-striped table-hover records_list" id="datatable" cellspacing="0">
+      <thead>
+        <tr>
+          <th>Order #</th>
+          <th>State</th>
+          <th>Payment</th>
+          <th data-orderable="false">Customer</th>
+          <th>Channel</th>
+          <th>Adjustment</th>
+          <th>Total</th>
+          <th>Created</th>
+          <th data-visible="false">Products</th>
+          <th data-orderable="false"></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for order in orders %}
+          {% set urgent = ''%}
+          {% set highlight = ''%}
+          {% if order.state == "post" %}
+            {% if  (date(order.postedAt) < date('-2days')) and order.postedAt.timestamp is defined %}
+              {% set highlight = 'highlight' %}
+            {% endif %}
+          {% endif %}
+          {% if order.state == "backoffice" %}
+            {% if  (date(order.createdAt) < date('-2days')) %}
+              {% set highlight = 'highlight' %}
+            {% endif %}
+          {% endif %}
+          {% for product in order.orderProducts %}
+            {% if (product.product.urgent) %}
+              {% set urgent='urgent' %}
+            {% endif %}
+          {% endfor %}
+          <tr class="{{ highlight }} {{ urgent }}">
+            <td class="text-center col-sm-1"><a class="btn btn-link" href="{{ path('orders_show', { 'id': order.id }) }}">{{ order.number }}</a></td>
+            <td class="col-sm-1"><span class="label label-{{ statusCSS.css(order.state) }}">{{ order.state|upper }}</span></td>
+              {% if(order.orderPayments|length) %}
+              <td class="col-sm-1 payment" data-search="{{order.orderPayments|last.state|replace('_',' ')|upper }} {{ order.orderPayments|last.method|replace('_',' ')|upper }}">
+                <span class="label label-{{ statusCSS.css(order.orderPayments|last.state) }}">{{ order.orderPayments|last.state|replace('_',' ')|upper }}</span>
+                {{ order.orderPayments|last.method|replace('_',' ')|upper }}
+              </td>
+            {% else %}
+              <td class="col-sm-1 payment"></td>
+            {% endif %}
+            <td class="col-sm-2">{{ order.customer.name }}</td>
+            <td class="col-sm-1">{{ order.channel }}</td>
+            <td class="text-right col-sm-1">{{ (order.adjustmentTotal/100)|localizedcurrency('RUB') }}</td>
+            <td class="text-right col-sm-2">{{ (order.total/100)|localizedcurrency('RUB') }}</td>
+            <td class="col-sm-2">{% if order.createdAt %}{{ order.createdAt|localizeddate('medium', 'short') }}{% endif %}</td>
+            <td class="" >{% for product in order.orderProducts %}{{ product.product.name }},{% endfor %}</td>
+            <td class="col-sm-1"><a class="btn btn-primary btn-sm" href="{{ path('orders_show', { 'id': order.id }) }}">Open</a></td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <div class="panel-footer">
+      <div id="datatable-pagination" class="dataTables_wrapper">
+      </div>
+    </div>
+  </div>
 {% endblock %}
 
 {% block javascripts %}
-    {{ parent() }}
-    <script src="/js/datatables.min.js"></script>
-    {#    <script src="/js/dataTables.bootstrap.min.js"></script>#}
-    <script type="text/javascript">
-        var table;
-        var products = [];
-        $(document).ready(function () {
-            var states = [];
-            $('#datatable .payment').each(function () {
-                state = $(this).data('search');
-                if (state && (-1 == states.indexOf(state))) {
-                    states.push(state);
+  {{ parent() }}
+  <script src="/js/datatables.min.js"></script>
+  {#    <script src="/js/dataTables.bootstrap.min.js"></script>#}
+  <script type="text/javascript">
+    var table;
+    var products = [];
+    $(document).ready(function () {
+      var states = [];
+      $('#datatable .payment').each(function () {
+        state = $(this).data('search');
+        if (state && (-1 == states.indexOf(state))) {
+          states.push(state);
+        }
+      });
+      table = $('#datatable').DataTable({
+        initComplete: function () {
+          this.api().columns(1).every(function () {
+            var column = this;
+            var select = $('<select><option value="">All</option></select>')
+                    .appendTo($('#search-state').empty())
+                    .on('change', function () {
+                      var val = $.fn.dataTable.util.escapeRegex(
+                              $(this).val()
+                              );
+                      column
+                              .search(val ? '^' + val + '$' : '', true, false)
+                              .draw();
+                    });
+
+            column.data().unique().sort().each(function (d, j) {
+              d = $(d).text();
+              select.append('<option value="' + d + '">' + d + '</option>')
+            });
+          });
+          this.api().columns(2).every(function () {
+            var column = this;
+            var select = $('<select><option value="">All</option></select>')
+                    .appendTo($('#search-pay').empty())
+                    .on('change', function () {
+                      var val = $.fn.dataTable.util.escapeRegex(
+                              $(this).val()
+                              );
+                      column
+                              .search(val ? '^' + val + '$' : '', true, false)
+                              .draw();
+                    });
+            for (var s in states) {
+              select.append('<option value="' + states[s] + '">' + states[s] + '</option>');
+
+            }
+          });
+          this.api().columns(8).every(function () {
+            var column = this;
+            var select = $('<select><option value="">All</option></select>')
+                    .appendTo($('#search-product').empty())
+                    .on('change', function () {
+                      var val = $.fn.dataTable.util.escapeRegex($(this).val());
+                      column.search(val).draw();
+                    });
+            column.data().unique().sort().each(function (d, j) {
+              d = d.split(',');
+              for (i in d) {
+                if (d[i] && (-1 == products.indexOf(d[i]))) {
+                  products.push(d[i]);
+                  select.append('<option value="' + d[i] + '">' + d[i] + '</option>')
                 }
+              }
             });
-            table = $('#datatable').DataTable({
-                initComplete: function () {
-                    this.api().columns(1).every(function () {
-                        var column = this;
-                        var select = $('<select><option value="">All</option></select>')
-                                .appendTo($('#search-state').empty())
-                                .on('change', function () {
-                                    var val = $.fn.dataTable.util.escapeRegex(
-                                            $(this).val()
-                                            );
-                                    column
-                                            .search(val ? '^' + val + '$' : '', true, false)
-                                            .draw();
-                                });
-
-                        column.data().unique().sort().each(function (d, j) {
-                            d = $(d).text();
-                            select.append('<option value="' + d + '">' + d + '</option>')
-                        });
-                    });
-                    this.api().columns(2).every(function () {
-                        var column = this;
-                        var select = $('<select><option value="">All</option></select>')
-                                .appendTo($('#search-pay').empty())
-                                .on('change', function () {
-                                    var val = $.fn.dataTable.util.escapeRegex(
-                                            $(this).val()
-                                            );
-                                    column
-                                            .search(val ? '^' + val + '$' : '', true, false)
-                                            .draw();
-                                });
-                        for (var s in states) {
-                            select.append('<option value="' + states[s] + '">' + states[s] + '</option>');
-
-                        }
-                    });
-                    this.api().columns(8).every(function () {
-                        var column = this;
-                        var select = $('<select><option value="">All</option></select>')
-                                .appendTo($('#search-product').empty())
-                                .on('change', function () {
-                                    var val = $.fn.dataTable.util.escapeRegex($(this).val());
-                                    column.search(val).draw();
-                                });
-                        column.data().unique().sort().each(function (d, j) {
-                            d = d.split(',');
-                            for (i in d) {
-                                if (d[i] && (-1 == products.indexOf(d[i]))) {
-                                    products.push(d[i]);
-                                    select.append('<option value="' + d[i] + '">' + d[i] + '</option>')
-                                }
-                            }
-                        });
-                    });
-                },
-                "dom": '<bottom p>'
-            });
-            $('#datatable-info').html("Showing " + table.page.info().start + " to " + table.page.info().end + " of " + table.page.info().recordsDisplay);
-            $('#datatable').on('draw.dt', function () {
-                $('#datatable-info').html("Showing " + table.page.info().start + " to " + table.page.info().end + " of " + table.page.info().recordsDisplay);
-            });
-            $('#datatable-search').keyup(function () {
-                table.search($(this).val()).draw();
-            });
-            $('#datatable-length').change(function () {
-                table.page.len($(this).val()).draw();
-            });
-            $('#datatable-pagination').html($('#datatable_paginate'));
+          });
+        },
+        "dom": '<bottom p>'
+      });
+      $('#datatable-info').html("Showing " + table.page.info().start + " to " + table.page.info().end + " of " + table.page.info().recordsDisplay);
+      $('#datatable').on('draw.dt', function () {
+        $('#datatable-info').html("Showing " + table.page.info().start + " to " + table.page.info().end + " of " + table.page.info().recordsDisplay);
+      });
+      $('#datatable-search').keyup(function () {
+        table.search($(this).val()).draw();
+      });
+      $('#datatable-length').change(function () {
+        table.page.len($(this).val()).draw();
+      });
+      $('#datatable-pagination').html($('#datatable_paginate'));
 
 
 
-        });
-    </script>
+    });
+  </script>
 {% endblock %}
