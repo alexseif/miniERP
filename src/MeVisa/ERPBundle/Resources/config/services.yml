@@ -3,6 +3,10 @@ services:
     erp.order:
         class:  MeVisa\ERPBundle\Service\OrderService
         arguments: [ '@doctrine.orm.entity_manager', '@templating', '@security.token_storage' ]
+        
+    erp.order.api:
+        class:  MeVisa\ERPBundle\Service\OrderAPIService
+        arguments: [ '@doctrine.orm.entity_manager', '@crm.customer' ]
 
     erp.wcorder:
         class:  MeVisa\ERPBundle\Service\WCOrderService
