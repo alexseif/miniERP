@@ -104,8 +104,8 @@ class MEVISAAPICommand extends ContainerAwareCommand
 
   protected function setOrderDetails($mevisaOrder, $order, $timezone, $em)
   {
-    $order->setWcId("mv".$mevisaOrder->id_order);
-    $order->setNumber("mv".$mevisaOrder->id_order);
+    $order->setWcId("mv" . $mevisaOrder->id_order);
+    $order->setNumber("mv" . $mevisaOrder->id_order);
     $order->setCreatedAt(new \DateTime($mevisaOrder->order_date, $timezone));
     switch ($mevisaOrder->order_state) {
       case "cancelled":
@@ -156,11 +156,13 @@ class MEVISAAPICommand extends ContainerAwareCommand
 
     $order->addOrderProduct($orderProduct);
     if ($mevisaOrder->arrival_date) {
-      $arrival = \DateTime::createFromFormat("d/m/Y", $mevisaOrder->arrival_date, $timezone);
+      $arrival = new \DateTime($mevisaOrder->arrival_date, $timezone);
+//      $arrival = \DateTime::createFromFormat("d/m/Y", $mevisaOrder->arrival_date, $timezone);
       $order->setArrival($arrival);
     }
     if ($mevisaOrder->departure_date) {
-      $departure = \DateTime::createFromFormat("d/m/Y", $mevisaOrder->departure_date, $timezone);
+      $departure = new \DateTime($mevisaOrder->departure_date, $timezone);
+//      $departure = \DateTime::createFromFormat("d/m/Y", $mevisaOrder->departure_date, $timezone);
       $order->setDeparture($departure);
     }
     foreach ($mevisaOrder->files as $file) {
