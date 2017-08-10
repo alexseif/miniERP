@@ -15,7 +15,6 @@ use MeVisa\ERPBundle\Entity\OrderComments;
 use MeVisa\ERPBundle\Entity\Products;
 use MeVisa\ERPBundle\Entity\ProductPrices;
 use MeVisa\CRMBundle\Entity\Customers;
-use WC_API_Client_HTTP_Exception;
 
 class MEVISAAPICommand extends ContainerAwareCommand
 {
@@ -40,7 +39,7 @@ class MEVISAAPICommand extends ContainerAwareCommand
       $curl->close();
     } catch (\Exception $exc) {
 //      dump($exc);
-      //TODO: do something
+//TODO: do something
     }
 //    dump($response->data);
 //    die();
@@ -79,17 +78,17 @@ class MEVISAAPICommand extends ContainerAwareCommand
     } else {
       $order->setCustomer($customerExists);
       $orderCommentText = '';
-      // Emails do not match
+// Emails do not match
       if ($customer->getName() != $customerExists->getName()) {
-        //TODO: do something
-        //$customerExists->setName($customer->getName());
+//TODO: do something
+//$customerExists->setName($customer->getName());
       }
       if ($customer->getEmail() != $customerExists->getEmail()) {
-        //TODO: do something
+//TODO: do something
       }
-      // Phones do not match
+// Phones do not match
       if ($customer->getPhone() != $customerExists->getPhone()) {
-        //TODO: do something
+//TODO: do something
         $customerExists->setPhone($customer->getPhone());
       }
       if ('' != $orderCommentText) {
@@ -128,22 +127,10 @@ class MEVISAAPICommand extends ContainerAwareCommand
     $order->setTotal($mevisaOrder->order_total * 100);
     $order->setProductsTotal($mevisaOrder->order_total * 100);
     $order->setPeople($mevisaOrder->pax);
-    $product = $em->getRepository('MeVisaERPBundle:Products')->findOneBy(array('wcId' => $mevisaOrder->product_ref));
-    if (!$product) {
-      $product = new Products();
-      $product->setEnabled(true);
-      $product->setName($mevisaOrder->product_name);
-      $product->setWcId($mevisaOrder->product_ref);
-      $product->setRequiredDocuments(array());
-      $productPrice = new ProductPrices();
-      $productPrice->setCost(0);
-      $productPrice->setPrice($mevisaOrder->product_unitprice * 100);
-      $product->addPricing($productPrice);
-      $em->persist($product);
-    }
 
-    //TODO: 1) Check product cost structure
-    //TODO: 2) Recalculate cost
+    $product = $this->newProduct($mevisaOrder->product_ref, $mevisaOrder->product_name, $mevisaOrder->product_unitprice * 100);
+//TODO: 1) Check product cost structure
+//TODO: 2) Recalculate cost
 
     $productPrice = $product->getPricing()->last();
     $orderProduct = new OrderProducts();
@@ -168,25 +155,48 @@ class MEVISAAPICommand extends ContainerAwareCommand
     foreach ($mevisaOrder->files as $file) {
       $document = new \MeVisa\ERPBundle\Entity\OrderDocuments();
       $document->setName($file->title);
-      // http://www.mevisa.ru/wp-content/uploads/product_files/confirmed/3975-915-img_9996.jpg
+// http://www.mevisa.ru/wp-content/uploads/product_files/confirmed/3975-915-img_9996.jpg
       $document->setPath($file->path);
       $order->addOrderDocument($document);
     }
     $order->setAdjustmentTotal(0);
     if ("paid" == $mevisaOrder->payment_state) {
       $orderPayment = new OrderPayments();
-      // method_id method_title
+// method_id method_title
       $orderPayment->setMethod("CC");
       $orderPayment->setAmount($mevisaOrder->order_total * 100);
       $orderPayment->setCreatedAt(new \DateTime($mevisaOrder->order_date, $timezone));
       $orderPayment->setState("paid");
       $order->addOrderPayment($orderPayment);
     }
-    //FIXME: Dynamic channel
+//FIXME: Dynamic channel
     $order->setChannel("MeVisa.ru");
 
 
     $order->setTicketRequired(false);
+  }
+
+  public function newProduct($ref, $name, $unitPrice)
+  {
+    $em = $this->getContainer()->get('doctrine')->getManager();
+    $product = $em->getRepository('MeVisaERPBundle:Products')->findOneBy(array('wcId' => $ref));
+    if (!$product) {
+      $product = $em->getRepository('MeVisaERPBundle:Products')->findOneBy(array('name' => $name));
+      if (!$product) {
+        $product = new Products();
+        $product->setEnabled(true);
+        $product->setName($name);
+        $product->setWcId($ref);
+        $product->setRequiredDocuments(array());
+        $productPrice = new ProductPrices();
+        $productPrice->setCost(0);
+        $productPrice->setPrice($unitPrice * 100);
+        $product->addPricing($productPrice);
+        $em->persist($product);
+        $em->flush($product);
+      }
+    }
+    return $product;
   }
 
 }
