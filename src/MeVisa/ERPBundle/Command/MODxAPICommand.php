@@ -35,7 +35,7 @@ class MODxAPICommand extends ContainerAwareCommand
     $container = $this->getContainer();
 
     $modxOrders = json_decode($this->fetchOrders());
-
+    dump($modxOrders);
     $em = $this->getContainer()->get('doctrine')->getManager();
     if ($modxOrders) {
       foreach ($modxOrders as $modxOrder) {
@@ -51,12 +51,15 @@ class MODxAPICommand extends ContainerAwareCommand
 
   public function fetchOrders()
   {
+    $today = new \DateTime();
+//    $today->setDate(2017, 8, 1);
+    $today->setTime(00, 00, 00);
     $curl = new \Curl\Curl();
     $curl->get('http://uaevisa.ru/api/v1/orders', array(
       'login' => 'api',
       'pass' => 'YrrLeqhb',
-      'startdate' => '2016-09-18 10:00',
-      'limit' => '10'
+      'startdate' => $today->format('Y-m-d H:i'),
+      'limit' => '100'
     ));
     $response = $curl->response;
     $curl->close();
