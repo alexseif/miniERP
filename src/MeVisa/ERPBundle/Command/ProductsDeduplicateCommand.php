@@ -40,10 +40,10 @@ class ProductsDeduplicateCommand extends ContainerAwareCommand
       foreach ($sameNameProduct->getOrderProducts() as $orderProducts) {
         $orderProducts->setProduct($selectedProduct);
       }
-      foreach ($sameNameProduct->getPricing() as $pricing) {
-        $this->em->remove($pricing);
-      }
       if ($sameNameProduct != $selectedProduct) {
+        foreach ($sameNameProduct->getPricing() as $pricing) {
+          $this->em->remove($pricing);
+        }
         $this->em->remove($sameNameProduct);
       }
     }
