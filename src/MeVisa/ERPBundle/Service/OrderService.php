@@ -93,6 +93,12 @@ class OrderService
     $this->em->flush();
   }
 
+  public function hardDeleteOrder($order)
+  {
+    $this->em->remove($order);
+    $this->em->flush();
+  }
+
   public function generateInvoice($id)
   {
     $order = $this->getOrder($id);

@@ -53,8 +53,12 @@
         {% if(order.deletedAt is null) %}
           <a class="btn btn-default" href="{{ path('orders_edit', { "id" : order.id }) }}">Edit</a>
         {% endif %}
-        {% if((order.deletedAt is null) and (is_granted('ROLE_SUPER_ADMIN'))) %}
-          <a class="btn btn-danger del-btn" href="{{ path('orders_soft_delete', { "id" : order.id }) }}">Delete</a>
+        {% if(is_granted('ROLE_SUPER_ADMIN')) %}
+          {% if(order.deletedAt is null) %}
+            <a class="btn btn-danger del-btn" href="{{ path('orders_soft_delete', { "id" : order.id }) }}">Delete</a>
+          {% else %}
+            <a class="btn btn-danger del-btn" href="{{ path('orders_hard_delete', { "id" : order.id }) }}">Delete</a>
+          {% endif %}
         {% endif %}
       </div>
       <div class="col-sm-1">

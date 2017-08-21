@@ -248,6 +248,21 @@ class OrdersController extends Controller
     $this->get('erp.order')->softDeleteOrder($order);
     return $this->redirect($this->generateUrl('orders'));
   }
+  /**
+   * Soft delete Orders entity.
+   *
+   * @Route("/{id}/hard-delete", name="orders_hard_delete")
+   * @Method({"GET", "PUT"})
+   */
+  public function hardDeleteAction($id, Request $request)
+  {
+    $order = $this->get('erp.order')->getOrder($id);
+    if (!$order) {
+      throw $this->createNotFoundException('Unable to find Orders entity.');
+    }
+    $this->get('erp.order')->hardDeleteOrder($order);
+    return $this->redirect($this->generateUrl('orders_delete'));
+  }
 
   /**
    * Displays a form to edit an existing Orders entity.
