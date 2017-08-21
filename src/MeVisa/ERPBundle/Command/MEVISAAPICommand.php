@@ -15,7 +15,6 @@ use MeVisa\ERPBundle\Entity\OrderComments;
 use MeVisa\ERPBundle\Entity\Products;
 use MeVisa\ERPBundle\Entity\ProductPrices;
 use MeVisa\CRMBundle\Entity\Customers;
-use WC_API_Client_HTTP_Exception;
 
 class MEVISAAPICommand extends ContainerAwareCommand
 {
@@ -121,6 +120,29 @@ class MEVISAAPICommand extends ContainerAwareCommand
       }
       $OrderAPIService->saveAllOrders();
     }
+  }
+
+  public function newProduct($ref, $name, $unitPrice)
+  {
+    $em = $this->getContainer()->get('doctrine')->getManager();
+    $product = $em->getRepository('MeVisaERPBundle:Products')->findOneBy(array('wcId' => $ref));
+    if (!$product) {
+      $product = $em->getRepository('MeVisaERPBundle:Products')->findOneBy(array('name' => $name));
+      if (!$product) {
+        $product = new Products();
+        $product->setEnabled(true);
+        $product->setName($name);
+        $product->setWcId($ref);
+        $product->setRequiredDocuments(array());
+        $productPrice = new ProductPrices();
+        $productPrice->setCost(0);
+        $productPrice->setPrice($unitPrice * 100);
+        $product->addPricing($productPrice);
+        $em->persist($product);
+        $em->flush($product);
+      }
+    }
+    return $product;
   }
 
 }

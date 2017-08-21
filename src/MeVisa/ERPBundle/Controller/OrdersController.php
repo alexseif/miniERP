@@ -36,7 +36,7 @@ class OrdersController extends Controller
   }
 
   /**
-   * Lists all Orders entities.
+   * Lists all Archived Orders entities.
    *
    * @Route("/archive", name="orders_archive")
    * @Method("GET")
@@ -46,6 +46,20 @@ class OrdersController extends Controller
   {
     return array(
       'orders' => $this->get('erp.order')->getArchivedOrdersList(),
+    );
+  }
+
+  /**
+   * Lists all Deleted Orders entities.
+   *
+   * @Route("/delete", name="orders_delete")
+   * @Method("GET")
+   * @Template("MeVisaERPBundle:Orders:index.html.twig")
+   */
+  public function deleteListAction()
+  {
+    return array(
+      'orders' => $this->get('erp.order')->getDeletedOrdersList(),
     );
   }
 
@@ -217,6 +231,37 @@ class OrdersController extends Controller
       'form' => $form->createView(),
       'status_form' => $statusForm->createView(),
     );
+  }
+
+  /**
+   * Soft delete Orders entity.
+   *
+   * @Route("/{id}/soft-delete", name="orders_soft_delete")
+   * @Method({"GET", "PUT"})
+   */
+  public function softDeleteAction($id, Request $request)
+  {
+    $order = $this->get('erp.order')->getOrder($id);
+    if (!$order) {
+      throw $this->createNotFoundException('Unable to find Orders entity.');
+    }
+    $this->get('erp.order')->softDeleteOrder($order);
+    return $this->redirect($this->generateUrl('orders'));
+  }
+  /**
+   * Soft delete Orders entity.
+   *
+   * @Route("/{id}/hard-delete", name="orders_hard_delete")
+   * @Method({"GET", "PUT"})
+   */
+  public function hardDeleteAction($id, Request $request)
+  {
+    $order = $this->get('erp.order')->getOrder($id);
+    if (!$order) {
+      throw $this->createNotFoundException('Unable to find Orders entity.');
+    }
+    $this->get('erp.order')->hardDeleteOrder($order);
+    return $this->redirect($this->generateUrl('orders_delete'));
   }
 
   /**

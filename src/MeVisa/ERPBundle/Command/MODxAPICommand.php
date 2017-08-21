@@ -51,12 +51,14 @@ class MODxAPICommand extends ContainerAwareCommand
 
   public function fetchOrders()
   {
+    $today = new \DateTime();
+    $today->setTime(00, 00, 00);
     $curl = new \Curl\Curl();
     $curl->get('http://uaevisa.ru/api/v1/orders', array(
       'login' => 'api',
       'pass' => 'YrrLeqhb',
-      'startdate' => '2016-09-18 10:00',
-      'limit' => '10'
+      'startdate' => $today->format('Y-m-d H:i'),
+      'limit' => '100'
     ));
     $response = $curl->response;
     $curl->close();

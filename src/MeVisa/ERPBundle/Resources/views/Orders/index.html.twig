@@ -11,6 +11,7 @@
   <ul class="nav nav-tabs" role="tablist">
     <li class="{{ ("orders" == app.request.get('_route'))?"active" }}"><a href="{{ path('orders') }}">Orders <span class="badge">{{  ("orders" == app.request.get('_route'))?orders|length }}</span></a></li>
     <li class="{{ ("orders_archive" == app.request.get('_route'))?"active" }}"><a href="{{ path('orders_archive') }}">Archives <span class="badge">{{  ("orders_archive" == app.request.get('_route'))?orders|length }}</span></a></li>
+    <li class="{{ ("orders_delete" == app.request.get('_route'))?"active" }}"><a href="{{ path('orders_delete') }}">Deleted <span class="badge">{{  ("orders_delete" == app.request.get('_route'))?orders|length }}</span></a></li>
     <li class="pull-right"><a href="{{ path('orders_new') }}" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span></a></li>
   </ul>
   <div class="panel panel-default">
