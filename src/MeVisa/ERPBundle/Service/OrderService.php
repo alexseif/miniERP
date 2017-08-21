@@ -29,6 +29,11 @@ class OrderService
     return $this->em->getRepository('MeVisaERPBundle:Orders')->findArchivedOrdersList();
   }
 
+  public function getDeletedOrdersList()
+  {
+    return $this->em->getRepository('MeVisaERPBundle:Orders')->findDeletedOrdersList();
+  }
+
   public function getOrder($id)
   {
     $order = $this->em->getRepository('MeVisaERPBundle:Orders')->find($id);
@@ -78,6 +83,19 @@ class OrderService
     if (empty($order->getUpdatedAt())) {
       $order->setUpdatedAt(new \DateTime());
     }
+    $this->em->flush();
+  }
+
+  public function softDeleteOrder($order)
+  {
+    $order->setState('deleted');
+    $order = $this->stateEffect($order);
+    $this->em->flush();
+  }
+
+  public function hardDeleteOrder($order)
+  {
+    $this->em->remove($order);
     $this->em->flush();
   }
 
@@ -182,9 +200,13 @@ class OrderService
       case "cancelled":
         $order->setCompletedAt(new \DateTime());
         break;
+      case "deleted":
+        $order->setDeletedAt(new \DateTime());
+        break;
       default:
         $order->setPostedAt(null);
         $order->setCompletedAt(null);
+        $order->setDeletedAt(null);
         break;
     }
     return $order;

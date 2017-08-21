@@ -55,6 +55,7 @@ class OrdersRepository extends EntityRepository
             ->where('o.completedAt >= ?1')
             ->setParameter('1', $today->format('Y-m-d'))
             ->orWhere('o.completedAt is null')
+            ->andWhere("o.deletedAt is null")
             ->orderBy("o.createdAt, o.wcId")
             ->getQuery()
             ->getResult();
@@ -72,6 +73,21 @@ class OrdersRepository extends EntityRepository
             ->leftJoin('opr.product', 'p')
             ->where('o.completedAt < ?1')
             ->setParameter('1', $today->format('Y-m-d'))
+            ->orderBy("o.createdAt, o.wcId")
+            ->getQuery()
+            ->getResult();
+  }
+
+  public function findDeletedOrdersList()
+  {
+
+    return $this->createQueryBuilder('o')
+            ->select('o, c, opa, opr, p')
+            ->leftJoin('o.customer', 'c')
+            ->leftJoin('o.orderPayments', 'opa')
+            ->leftJoin('o.orderProducts', 'opr')
+            ->leftJoin('opr.product', 'p')
+            ->where('o.deletedAt IS NOT NULL')
             ->orderBy("o.createdAt, o.wcId")
             ->getQuery()
             ->getResult();
