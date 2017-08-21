@@ -50,9 +50,7 @@
   <div class="panel-footer">
     <div class="row">
       <div class="col-sm-5">
-        {% if is_granted('ROLE_SUPER_ADMIN') or is_granted('ROLE_ACCOUNTANT') or not (order.updatedAt or "POS" == order.channel) %}
-          <a class="btn btn-default" href="{{ path('orders_edit', { "id" : order.id }) }}">Edit</a>
-        {% endif %}
+        <a class="btn btn-default" href="{{ path('orders_edit', { "id" : order.id }) }}">Edit</a>
       </div>
       <div class="col-sm-1">
         {% if order.sendable %}
