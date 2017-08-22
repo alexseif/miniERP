@@ -16,7 +16,7 @@ class ProductsRepository extends EntityRepository
         return $this->createQueryBuilder('p')
                         ->Join('p.pricing', 'pp')
                         ->where('p.enabled = true')
-                        ->orderBy('p.id ASC, pp.createdAt', 'DESC')
+                        ->orderBy('p.country, p.id ASC, pp.createdAt', 'DESC')
                         ;
     }
 

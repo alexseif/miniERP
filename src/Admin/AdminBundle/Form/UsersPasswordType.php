@@ -9,15 +9,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 
-class UsersType extends AbstractType
+class UsersPasswordType extends AbstractType
 {
-
-  private $roles;
-
-  function __construct($roles)
-  {
-    $this->roles = $roles;
-  }
 
   /**
    * @param FormBuilderInterface $builder
@@ -26,30 +19,12 @@ class UsersType extends AbstractType
   public function buildForm(FormBuilderInterface $builder, array $options)
   {
     $builder
-        ->add('username', 'text', array(
-          'attr' => array(
-            'placeholder' => 'Name'
-          )
-        ))
-        ->add('email', 'email', array(
-          'attr' => array(
-            'placeholder' => 'Email'
-          )
-        ))
-        ->add('roles', 'choice', array(
-          'choices' => $this->roles,
-          'expanded' => true,
-          'multiple' => true,
-          'required' => false
-        ))
-        ->add('enabled', 'checkbox', array(
-          'required' => false
-        ))
-        ->add('locale', 'locale', array(
-          'choices' => array('English' => 'en', 'Russian' => 'ru'),
-          'attr' => array(
-            'class' => 'chosen'
-          )
+        ->add('plainPassword', RepeatedType::class, array(
+          'type' => PasswordType::class,
+          'options' => array('translation_domain' => 'FOSUserBundle'),
+          'first_options' => array('label' => 'form.password'),
+          'second_options' => array('label' => 'form.password_confirmation'),
+          'invalid_message' => 'fos_user.password.mismatch',
         ))
     ;
   }
@@ -69,7 +44,6 @@ class UsersType extends AbstractType
   {
     $resolver->setDefaults(array(
       'data_class' => 'Admin\AdminBundle\Entity\User',
-      'roles' => null,
     ));
   }
 
@@ -78,7 +52,7 @@ class UsersType extends AbstractType
    */
   public function getName()
   {
-    return 'admin_users';
+    return 'admin_users_password';
   }
 
 }

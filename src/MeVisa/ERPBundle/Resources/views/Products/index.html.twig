@@ -1,44 +1,54 @@
 {% extends 'AdminAdminBundle:Default:adminLayout.html.twig' %}
 {% block adminPanelTitle %}Products{% endblock %}
 {% block adminPanelTitleBadge %}{{ products|length }}{% endblock %}
+{% block adminPanelTitleSmall %}
+  {% if products|first.enabled %} 
+    <label class="label label-success">Enabled</label>
+  {% else %}
+    <label class="label label-danger">Disabled</label>
+  {% endif %}
+{% endblock %}
 {% block adminPanelHeadingRight %}
+  <div class="btn-group">
+    <a href="{{ path('products')}}" class="btn btn-{{ products|first.enabled ? "primary" : "default" }}">Enabled</a>
+    <a href="{{ path('products_disabled')}}" class="btn btn-{{ products|first.enabled ? "default" : "primary" }}">Disabled</a>
+  </div>
   {% if is_granted('ROLE_SUPER_ADMIN') %}
     <a href="{{ path('products_new')}}" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span></a>
-    {% endif %}
-  {% endblock %}
-  {% block adminPanelBody %}
+
+  {% endif %}
+{% endblock %}
+{% block adminPanelBody %}
   <div class="table-responsive">
-    <table class="table table-bordered table-hover table-striped records_list">
+    <table class="table table-bordered table-hover table-striped table-condensed records_list">
       <thead>
         <tr>
+          <th>Country</th>
           <th>Name</th>
           <th>Price</th>
-            {% if is_granted('ROLE_ACCOUNTANT') %}
+
+          {% if is_granted('ROLE_ACCOUNTANT') %}
             <th>Cost</th>
-            {% endif %}
-          <th>Required Documents</th>
+
+          {% endif %}
+          <th></th>
         </tr>
       </thead>
       <tbody>
         {% for product in products %}
           <tr>
+            <td>{{ product.country }}</td>
             <td>{{ product.name }}
               <div class="pull-right">
                 {% if product.urgent %}
                   <span class="label label-purple">Urgent</span>
                 {% endif %}
-                <span class="label label-{{ statusCSS.css((product.enabled)? "enabled": "disabled") }}">{{ (product.enabled)? "Enabled": "Disabled" }}</span>
               </div>
             </td>
             <td class="text-right">{{ (product.pricing|last)?(product.pricing|last.price/100)|localizedcurrency('RUB') }}</td>
             {% if is_granted('ROLE_ACCOUNTANT') %}
               <td class="text-right">{{ (product.pricing|last)?(product.pricing|last.cost/100)|localizedcurrency('RUB') }}</td>
             {% endif %}
-            <td> 
-              {% for req in product.requiredDocuments %}
-                {% filter upper %}{{ req }}{% endfilter %} ;
-              {% endfor %}
-            </td>
             <td>
               <a class="btn btn-primary btn-sm" href="{{ path('products_show', { 'id': product.id }) }}">Show</a>
               {% if is_granted('ROLE_ACCOUNTANT') %}

@@ -10,6 +10,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Admin\AdminBundle\Entity\User;
 use Admin\AdminBundle\Form\UsersType;
+use Admin\AdminBundle\Form\UsersPasswordType;
 
 /**
  * Users controller.
@@ -98,6 +99,43 @@ class UsersController extends Controller
     if ($user_form->isSubmitted()) {
       if ($user_form->isValid()) {
         $userManager = $this->container->get('fos_user.user_manager');
+
+        if ($user == $this->getUser()) {
+          $this->get('session')->set('_locale', $user->getLocale());
+        }
+
+        $em->flush();
+        return $this->redirect($this->generateUrl('users_show', array('id' => $user->getId())));
+      }
+    }
+
+
+    return array(
+      'user' => $user,
+      'user_form' => $user_form->createView()
+    );
+  }
+
+  /**
+   * @Route("/{id}/pwd", name="users_pwd")
+   * @Method({"GET", "PUT"})
+   * @Template()
+   */
+  public function passwordAction(Request $request, $id)
+  {
+    $em = $this->getDoctrine()->getManager();
+    $user = $em->getRepository('AdminAdminBundle:User')->find($id);
+    if (!$user) {
+      throw $this->createNotFoundException('Unable to find User entity.');
+    }
+    $user_form = $this->createUserPasswordForm($user);
+    //TODO: http://symfony.com/doc/current/bundles/FOSUserBundle/adding_invitation_registration.html
+
+    $user_form->handleRequest($request);
+
+    if ($user_form->isSubmitted()) {
+      if ($user_form->isValid()) {
+        $userManager = $this->container->get('fos_user.user_manager');
         $userManager->updatePassword($user);
 
         if ($user == $this->getUser()) {
@@ -145,6 +183,21 @@ class UsersController extends Controller
     }
     $user_form = $this->createForm(new UsersType($roles), $user, array(
       'action' => $this->generateUrl('users_edit', array('id' => $user->getId())),
+      'method' => 'PUT',
+    ));
+    $user_form->add('submit', 'submit', array(
+      'label' => 'Update',
+      'attr' => array(
+        'class' => 'btn-success pull-right'
+      )
+    ));
+    return $user_form;
+  }
+
+  private function createUserPasswordForm($user)
+  {
+    $user_form = $this->createForm(new UsersPasswordType(), $user, array(
+      'action' => $this->generateUrl('users_pwd', array('id' => $user->getId())),
       'method' => 'PUT',
     ));
     $user_form->add('submit', 'submit', array(
