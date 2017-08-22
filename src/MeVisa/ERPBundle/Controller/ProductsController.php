@@ -38,7 +38,7 @@ class ProductsController extends Controller
 
     $em = $this->getDoctrine()->getManager();
 
-    $products = $em->getRepository('MeVisaERPBundle:Products')->findBy(array('enabled' => true));
+    $products = $em->getRepository('MeVisaERPBundle:Products')->findBy(array('enabled' => true), array('country' => 'ASC'));
     foreach ($products as $product) {
       if (!is_array($product->getRequiredDocuments())) {
         $product->setRequiredDocuments($serializer->decode($product->getRequiredDocuments(), 'json'));
@@ -65,7 +65,7 @@ class ProductsController extends Controller
 
     $em = $this->getDoctrine()->getManager();
 
-    $products = $em->getRepository('MeVisaERPBundle:Products')->findBy(array('enabled' => false));
+    $products = $em->getRepository('MeVisaERPBundle:Products')->findBy(array('enabled' => false), array('country' => 'ASC'));
     foreach ($products as $product) {
       if (!is_array($product->getRequiredDocuments())) {
         $product->setRequiredDocuments($serializer->decode($product->getRequiredDocuments(), 'json'));

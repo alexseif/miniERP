@@ -23,6 +23,7 @@
     <table class="table table-bordered table-hover table-striped table-condensed records_list">
       <thead>
         <tr>
+          <th>Country</th>
           <th>Name</th>
           <th>Price</th>
 
@@ -36,6 +37,7 @@
       <tbody>
         {% for product in products %}
           <tr>
+            <td>{{ product.country }}</td>
             <td>{{ product.name }}
               <div class="pull-right">
                 {% if product.urgent %}

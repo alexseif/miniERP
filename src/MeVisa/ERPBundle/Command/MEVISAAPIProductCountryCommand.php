@@ -16,13 +16,13 @@ use MeVisa\ERPBundle\Entity\Products;
 use MeVisa\ERPBundle\Entity\ProductPrices;
 use MeVisa\CRMBundle\Entity\Customers;
 
-class MEVISAAPIProductCommand extends ContainerAwareCommand
+class MEVISAAPIProductCountryCommand extends ContainerAwareCommand
 {
 
   protected function configure()
   {
     $this
-        ->setName('mevisaapi:product:get')
+        ->setName('mevisaapi:product:update')
         ->setDescription('Fetch products from mevisa');
   }
 
@@ -46,12 +46,12 @@ class MEVISAAPIProductCommand extends ContainerAwareCommand
     $data = $response->data;
     if ($data) {
       foreach ($data as $product) {
-        $this->newProduct($product->product_ref, $product->title, $product->country, 0);
+        $this->updateProductCountry($product->product_ref, $product->title, $product->country, 0);
       }
     }
   }
 
-  public function newProduct($ref, $name, $country, $unitPrice)
+  public function updateProductCountry($ref, $name, $country, $unitPrice)
   {
     $em = $this->getContainer()->get('doctrine')->getManager();
     $product = $em->getRepository('MeVisaERPBundle:Products')->findOneBy(array('wcId' => $ref));
@@ -70,7 +70,13 @@ class MEVISAAPIProductCommand extends ContainerAwareCommand
         $product->addPricing($productPrice);
         $em->persist($product);
         $em->flush($product);
+      } else {
+        $product->setCountry($country);
+        $em->flush($product);
       }
+    } else {
+      $product->setCountry($country);
+      $em->flush($product);
     }
     return $product;
   }
