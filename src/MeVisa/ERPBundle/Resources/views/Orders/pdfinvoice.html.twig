@@ -69,7 +69,7 @@
                     <tr>
                         {# FIXME: row number #}
                         <td>{{ key + 1 }}</td>
-                        <td>{{ product.product.name }}</td>
+                        <td>{{ product.product.countryAndName }}</td>
                         <td>{{ product.quantity }}</td>
                         <td>{{ (product.unitPrice/100)|localizedcurrency('RUB') }}</td>
                         <td>{{ (product.total/100)|localizedcurrency('RUB') }}</td>
