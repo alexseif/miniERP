@@ -29,7 +29,7 @@ class OrderProductsType extends AbstractType
           'group_by' => function($product) {
             return $product->getCountry();
           },
-          'choice_label' => 'name',
+          'choice_label' => 'countryAndName',
           'placeholder' => 'Select Product',
           'query_builder' => function(\MeVisa\ERPBundle\Entity\ProductsRepository $pr) {
             return $pr->queryAllEnabled();

@@ -349,4 +349,14 @@ class Products
     return $this->country;
   }
 
+  /**
+   * Get country And Name
+   *
+   * @return string 
+   */
+  public function getCountryAndName()
+  {
+    return (($this->country) ? $this->country . " | " : "") . $this->getName();
+  }
+
 }
