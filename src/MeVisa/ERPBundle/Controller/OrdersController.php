@@ -567,7 +567,7 @@ class OrdersController extends Controller
   {
     $orderDocuments = $order->getOrderDocuments();
     foreach ($orderDocuments as $document) {
-      if (0 === strpos($document->getPath(), 'http://mevisa.ru/')) {
+      if (0 === strpos($document->getPath(), 'http://mevisa.ru/') || 0 === strpos($document->getPath(), 'http://www.mevisa.ru/')) {
         $parts = explode('/', $document->getPath());
         $parts[count($parts) - 2] = 'thumbs';
         $parts[count($parts) - 1] = $document->getName();
