@@ -71,6 +71,11 @@ class MEVISAAPIProductCommand extends ContainerAwareCommand
         $em->persist($product);
         $em->flush($product);
       }
+    } else {
+      $product->setName($name);
+      $product->setCountry($country);
+      $em->persist($product);
+      $em->flush($product);
     }
     return $product;
   }
