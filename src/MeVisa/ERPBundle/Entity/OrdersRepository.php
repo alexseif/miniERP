@@ -197,6 +197,19 @@ class OrdersRepository extends EntityRepository
   {
     return $this->createQueryBuilder('o')
             ->select(' YEAR(o.createdAt) as gBYear, MONTHNAME(o.createdAt) as gBMonth, MONTH(o.createdAt) as gMonth ')
+            ->where('YEAR(o.createdAt) = YEAR(NOW())')
+            ->orderBy("o.createdAt, o.wcId")
+            ->groupBy('gBYear')
+            ->addGroupBy('gBMonth')
+            ->getQuery()
+            ->getResult();
+  }
+
+  public function findArchiveGroupByMonthAndYear()
+  {
+    return $this->createQueryBuilder('o')
+            ->select(' YEAR(o.createdAt) as gBYear, MONTHNAME(o.createdAt) as gBMonth, MONTH(o.createdAt) as gMonth ')
+            ->where('YEAR(o.createdAt) < YEAR(NOW())')
             ->orderBy("o.createdAt, o.wcId")
             ->groupBy('gBYear')
             ->addGroupBy('gBMonth')
