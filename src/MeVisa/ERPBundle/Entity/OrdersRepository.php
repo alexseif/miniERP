@@ -197,6 +197,19 @@ class OrdersRepository extends EntityRepository
   {
     return $this->createQueryBuilder('o')
             ->select(' YEAR(o.createdAt) as gBYear, MONTHNAME(o.createdAt) as gBMonth, MONTH(o.createdAt) as gMonth ')
+            ->where('YEAR(o.createdAt) = YEAR(NOW())')
+            ->orderBy("o.createdAt, o.wcId")
+            ->groupBy('gBYear')
+            ->addGroupBy('gBMonth')
+            ->getQuery()
+            ->getResult();
+  }
+
+  public function findArchiveGroupByMonthAndYear()
+  {
+    return $this->createQueryBuilder('o')
+            ->select(' YEAR(o.createdAt) as gBYear, MONTHNAME(o.createdAt) as gBMonth, MONTH(o.createdAt) as gMonth ')
+            ->where('YEAR(o.createdAt) < YEAR(NOW())')
             ->orderBy("o.createdAt, o.wcId")
             ->groupBy('gBYear')
             ->addGroupBy('gBMonth')
@@ -211,13 +224,15 @@ class OrdersRepository extends EntityRepository
             ->leftJoin('o.customer', 'c')
             ->leftJoin('o.orderPayments', 'opa')
             ->leftJoin('o.orderProducts', 'opr')
-            ->where('opa.state = ?3 ')
+            ->where('o.state != ?4 ')
+            ->andWhere('opa.state = ?3 ')
             ->andWhere('MONTHNAME(o.createdAt) = ?1')
             ->andWhere('YEAR(o.createdAt) = ?2')
             ->orderBy('o.createdAt, o.wcId')
             ->setParameter('1', $month)
             ->setParameter('2', $year)
             ->setParameter('3', "PAID")
+            ->setParameter('4', "deleted")
             ->getQuery()
             ->getResult();
   }
@@ -229,13 +244,15 @@ class OrdersRepository extends EntityRepository
             ->leftJoin('o.customer', 'c')
             ->leftJoin('o.orderPayments', 'opa')
             ->leftJoin('o.orderProducts', 'opr')
-            ->where('opa.state = ?3 ')
+            ->where('o.state != ?4 ')
+            ->andWhere('opa.state = ?3 ')
             ->andWhere('o.createdAt >= ?1')
             ->andWhere('o.createdAt <= ?2')
             ->orderBy('o.createdAt, o.wcId')
             ->setParameter('1', $from)
             ->setParameter('2', $to)
             ->setParameter('3', "PAID")
+            ->setParameter('4', "deleted")
             ->getQuery()
             ->getResult();
   }
@@ -247,7 +264,8 @@ class OrdersRepository extends EntityRepository
             ->leftJoin('o.customer', 'c')
             ->leftJoin('o.orderPayments', 'opa')
             ->leftJoin('o.orderProducts', 'opr')
-            ->where('opa.state = ?3 ')
+            ->where('o.state != ?4 ')
+            ->andWhere('opa.state = ?3 ')
             ->andWhere('MONTHNAME(o.createdAt) = ?1')
             ->andWhere('YEAR(o.createdAt) = ?2')
             ->andWhere("opa.method != 'cash'")
@@ -255,6 +273,7 @@ class OrdersRepository extends EntityRepository
             ->setParameter('1', $month)
             ->setParameter('2', $year)
             ->setParameter('3', "PAID")
+            ->setParameter('4', "deleted")
             ->getQuery()
             ->getResult();
   }
@@ -266,7 +285,8 @@ class OrdersRepository extends EntityRepository
             ->leftJoin('o.customer', 'c')
             ->leftJoin('o.orderPayments', 'opa')
             ->leftJoin('o.orderProducts', 'opr')
-            ->where('opa.state = ?3 ')
+            ->where('o.state = ?4 ')
+            ->andWhere('opa.state = ?3 ')
             ->andWhere('o.createdAt >= ?1')
             ->andWhere('o.createdAt <= ?2')
             ->andWhere("opa.method != 'cash'")
@@ -274,6 +294,7 @@ class OrdersRepository extends EntityRepository
             ->setParameter('1', $from)
             ->setParameter('2', $to)
             ->setParameter('3', "PAID")
+            ->setParameter('4', "deleted")
             ->getQuery()
             ->getResult();
   }
@@ -284,6 +305,8 @@ class OrdersRepository extends EntityRepository
             ->select('v.id as vendor_id, v.name as vendor_name, YEAR(o.createdAt) as gBYear, MONTHNAME(o.createdAt) as gBMonth, MONTH(o.createdAt) as gMonth ')
             ->leftJoin('o.orderProducts', 'opr')
             ->leftJoin('opr.vendor', 'v')
+            ->where('o.state != ?4 ')
+            ->setParameter('4', "deleted")
             ->orderBy("o.createdAt, o.wcId")
             ->groupBy('opr.vendor')
             ->addGroupBy('gBYear')
@@ -299,7 +322,8 @@ class OrdersRepository extends EntityRepository
             ->leftJoin('o.customer', 'c')
             ->leftJoin('o.orderPayments', 'opa')
             ->leftJoin('o.orderProducts', 'opr')
-            ->where('opa.state = ?3 ')
+            ->where('o.state != ?5 ')
+            ->andWhere('opa.state = ?3 ')
             ->andWhere('MONTHNAME(o.createdAt) = ?1')
             ->andWhere('YEAR(o.createdAt) = ?2')
             ->andWhere('opr.vendor = ?4')
@@ -308,6 +332,7 @@ class OrdersRepository extends EntityRepository
             ->setParameter('2', $year)
             ->setParameter('3', "PAID")
             ->setParameter('4', $vendor_id)
+            ->setParameter('5', "deleted")
             ->getQuery()
             ->getResult();
   }
