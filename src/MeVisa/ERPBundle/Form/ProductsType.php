@@ -6,6 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\CountryType;
 
 class ProductsType extends AbstractType
 {
@@ -17,6 +18,7 @@ class ProductsType extends AbstractType
   public function buildForm(FormBuilderInterface $builder, array $options)
   {
     $builder
+        ->add('country')
         ->add('name')
         ->add('vendor', 'entity', array(
           'class' => 'MeVisaERPBundle:Vendors',

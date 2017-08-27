@@ -24,7 +24,7 @@ class ProductsController extends Controller
 {
 
   /**
-   * Lists all Products products.
+   * Lists all enabled Products products.
    *
    * @Route("/", name="products")
    * @Method("GET")
@@ -38,7 +38,34 @@ class ProductsController extends Controller
 
     $em = $this->getDoctrine()->getManager();
 
-    $products = $em->getRepository('MeVisaERPBundle:Products')->findAll();
+    $products = $em->getRepository('MeVisaERPBundle:Products')->findBy(array('enabled' => true), array('country' => 'ASC'));
+    foreach ($products as $product) {
+      if (!is_array($product->getRequiredDocuments())) {
+        $product->setRequiredDocuments($serializer->decode($product->getRequiredDocuments(), 'json'));
+      }
+    }
+
+    return array(
+      'products' => $products,
+    );
+  }
+
+  /**
+   * Lists all disabled Products products.
+   *
+   * @Route("/disabled", name="products_disabled")
+   * @Method("GET")
+   * @Template("MeVisaERPBundle:Products:index.html.twig")
+   */
+  public function disabledIndexAction()
+  {
+    $encoders = array(new XmlEncoder(), new JsonEncoder());
+    $normalizers = array(new ObjectNormalizer());
+    $serializer = new Serializer($normalizers, $encoders);
+
+    $em = $this->getDoctrine()->getManager();
+
+    $products = $em->getRepository('MeVisaERPBundle:Products')->findBy(array('enabled' => false), array('country' => 'ASC'));
     foreach ($products as $product) {
       if (!is_array($product->getRequiredDocuments())) {
         $product->setRequiredDocuments($serializer->decode($product->getRequiredDocuments(), 'json'));

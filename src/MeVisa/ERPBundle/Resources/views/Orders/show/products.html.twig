@@ -13,7 +13,7 @@
             <tbody>
                 {%for product in order.orderProducts %}
                     <tr>
-                        <td>{{ product.product.name }}</td>
+                        <td>{{ product.product.countryAndName }}</td>
                         <td>{{ (product.vendor)?product.vendor.name }}</td>
                         <td>{{ product.quantity }}</td>
                         <td>{{ (product.unitPrice/100)|localizedcurrency('RUB') }}</td>

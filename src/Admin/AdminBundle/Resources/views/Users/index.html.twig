@@ -25,6 +25,7 @@
             <td>
               <a class="btn btn-default btn-sm" href="{{ path('users_show', {"id": user.id} ) }}">Show</a>
               <a class="btn btn-default btn-sm" href="{{ path('users_edit', {"id": user.id} ) }}">Edit</a>
+              <a class="btn btn-default btn-sm" href="{{ path('users_pwd', {"id": user.id} ) }}">Password</a>
             </td>
           </tr>
         {% endfor %}

@@ -26,13 +26,16 @@ class OrderProductsType extends AbstractType
     $builder
         ->add('product', 'entity', array(
           'class' => 'MeVisa\ERPBundle\Entity\Products',
-          'choice_label' => 'name',
+          'group_by' => function($product) {
+            return $product->getCountry();
+          },
+          'choice_label' => 'countryAndName',
           'placeholder' => 'Select Product',
           'query_builder' => function(\MeVisa\ERPBundle\Entity\ProductsRepository $pr) {
             return $pr->queryAllEnabled();
           },
           'attr' => array(
-            'class' => 'product_id',
+            'class' => 'product_id, chosen',
           )
         ))
         ->add('quantity', 'integer', array(

@@ -42,6 +42,13 @@ class Products
   private $name;
 
   /**
+   * @var string
+   *
+   * @ORM\Column(name="country", type="string", length=255, nullable=true)
+   */
+  private $country;
+
+  /**
    * @var array
    *
    * @ORM\Column(name="requiredDocuments", type="array")
@@ -317,6 +324,39 @@ class Products
   public function getWcCalc()
   {
     return $this->wcCalc;
+  }
+
+  /**
+   * Set country
+   *
+   * @param string $country
+   * @return Products
+   */
+  public function setCountry($country)
+  {
+    $this->country = $country;
+
+    return $this;
+  }
+
+  /**
+   * Get country
+   *
+   * @return string 
+   */
+  public function getCountry()
+  {
+    return $this->country;
+  }
+
+  /**
+   * Get country And Name
+   *
+   * @return string 
+   */
+  public function getCountryAndName()
+  {
+    return (($this->country) ? $this->country . " | " : "") . $this->getName();
   }
 
 }
