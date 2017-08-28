@@ -1,67 +1,67 @@
 <div class="panel panel-default">
-    <table class="table-condensed order-products-form">
-        <thead>
-            <tr class="panel-heading">
-                <th style="width: 20%;">{{ form_label(form.orderProducts[0].product) }}</th>
-                <th style="width: 15%;">{{ form_label(form.orderProducts[0].vendor) }}</th>
-                <th style="width: 5%;">{{ form_label(form.orderProducts[0].quantity) }}</th>
-                <th style="width: 15%;">{{ form_label(form.orderProducts[0].unitCost) }}</th>
-                <th style="width: 15%;">{{ form_label(form.orderProducts[0].unitPrice) }}</th>
-                <th style="width: 20%;">{{ form_label(form.orderProducts[0].total) }}</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody class="orderProducts">
-            {% for product in form.orderProducts %}
-                <tr>
-                    <td>{{form_widget(product.product)}}</td>
-                    <td>{{form_widget(product.vendor)}}</td>
-                    <td>{{form_widget(product.quantity, {'attr': {"class":"qty"} })}}</td>
-                    <td>{{form_widget(product.unitCost, {'attr': {"class":"cost"} })}}</td>
-                    <td>{{form_widget(product.unitPrice, {'attr': {"class":"price"} })}}</td>
-                    <td>{{form_widget(product.total, {'attr': {"class":"ptotal"} })}}</td>
-                    <td><button class="btn btn-primary import" type="button" >Import</button></td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-    <div class='panel-footer clearfix'>
-        <div class="pull-right"> {{ form_row(form.productsTotal) }}</div>
-    </div>
+  <table class="table-condensed order-products-form">
+    <thead>
+      <tr class="panel-heading">
+        <th style="width: 20%;">{{ form_label(form.orderProducts[0].product) }}</th>
+        <th style="width: 15%;">{{ form_label(form.orderProducts[0].vendor) }}</th>
+        <th style="width: 5%;">{{ form_label(form.orderProducts[0].quantity) }}</th>
+        <th style="width: 15%;">{{ form_label(form.orderProducts[0].unitCost) }}</th>
+        <th style="width: 15%;">{{ form_label(form.orderProducts[0].unitPrice) }}</th>
+        <th style="width: 20%;">{{ form_label(form.orderProducts[0].total) }}</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody class="orderProducts">
+      {% for product in form.orderProducts %}
+        <tr>
+          <td>{{form_widget(product.product)}}</td>
+          <td>{{form_widget(product.vendor)}}</td>
+          <td>{{form_widget(product.quantity, {'attr': {"class":"qty"} })}}</td>
+          <td>{{form_widget(product.unitCost, {'attr': {"class":"cost"} })}}</td>
+          <td>{{form_widget(product.unitPrice, {'attr': {"class":"price"} })}}</td>
+          <td>{{form_widget(product.total, {'attr': {"class":"ptotal"} })}}</td>
+          <td><button class="btn btn-primary import" type="button" >Import</button></td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <div class='panel-footer clearfix'>
+    <div class="pull-right"> {{ form_row(form.productsTotal) }}</div>
+  </div>
 </div>
 <script type="text/javascript">
-    var productPrices = new Array();
-    var productCosts = new Array();
-    {% for price in productPrices %}
-        productPrices[{{ price.product.id }}] = {{price.price/100}};
-        productCosts[{{ price.product.id }}] = {{price.cost/100}};    
-    {% endfor %}
+  var productPrices = new Array();
+  var productCosts = new Array();
+  {% for price in productPrices %}
+    productPrices[{{ price.product.id }}] = {{price.price/100}};
+            productCosts[{{ price.product.id }}] = {{price.cost/100}};
+  {% endfor %}
 </script>
 
 <script type="text/javascript">
-    $('.import').click(function (e) {
-        e.preventDefault();
-        $product = $(this).parent().parent().children().first().children('select').val();
-        $index = $(this).parent().parent().index();
-        $('.cost').eq($index).val(productCosts[$product]);
-        $('.price').eq($index).val(productPrices[$product]);
-        $index = $(this).closest('tr').index();
-        if($('.ptotal').eq($index).val() != ($('.qty').eq($index).val() * $('.price').eq($index).val())){
-            alert('Total Error');
-        }
-    });
-    $('.price').change(function(e){
-        e.preventDefault();
-        $index = $(this).closest('tr').index();
-        if($('.ptotal').eq($index).val() != ($('.qty').eq($index).val() * $('.price').eq($index).val())){
-            alert('Total Error');
-        }
-    });
-    $('.qty').change(function(e){
-        e.preventDefault();
-        $index = $(this).closest('tr').index();
-        if($('.ptotal').eq($index).val() != ($('.qty').eq($index).val() * $('.price').eq($index).val())){
-            alert('Total Error');
-        }
-    });
+  $('.import').click(function (e) {
+    e.preventDefault();
+    $product = $(this).parent().parent().children().first().children('select').val();
+    $index = $(this).parent().parent().index();
+    $('.cost').eq($index).val(productCosts[$product]);
+    $('.price').eq($index).val(productPrices[$product]);
+    $index = $(this).closest('tr').index();
+    if ($('.ptotal').eq($index).val() != ($('.qty').eq($index).val() * $('.price').eq($index).val())) {
+      alert('Total Error');
+    }
+  });
+  $('.price').change(function (e) {
+    e.preventDefault();
+    $index = $(this).closest('tr').index();
+    if ($('.ptotal').eq($index).val() != ($('.qty').eq($index).val() * $('.price').eq($index).val())) {
+      alert('Total Error');
+    }
+  });
+  $('.qty').change(function (e) {
+    e.preventDefault();
+    $index = $(this).closest('tr').index();
+    if ($('.ptotal').eq($index).val() != ($('.qty').eq($index).val() * $('.price').eq($index).val())) {
+      alert('Total Error');
+    }
+  });
 </script>

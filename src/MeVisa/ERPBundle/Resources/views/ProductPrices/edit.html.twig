@@ -1,26 +1,26 @@
 {% extends 'AppBundle:Admin:adminLayout.html.twig' %}
 {% block backLink %}{{ path('pricing', { 'product_id': entity.product.id }) }}{% endblock %}
 {% block adminPanelFormStart %}
-    {{ form_start(edit_form) }}
-    {{ form_errors(edit_form) }}
-    {{ form_row(edit_form._token) }}
+  {{ form_start(edit_form) }}
+  {{ form_errors(edit_form) }}
+  {{ form_row(edit_form._token) }}
 {% endblock %}
 {% block adminPanelTitle %}Pricing{% endblock %}
 {% block adminPanelTitleSmall %}{{entity.product.name}}{% endblock %}
 {% block adminPanelBody %}
-    <div class="panel-body">
-        <div class="row">
-            <div class="hidden">{{ form_widget(edit_form.product) }}</div>
-            <div class="col-md-4">{{ form_row(edit_form.cost) }}</div>
-            <div class="col-md-4">{{ form_row(edit_form.price) }}</div>
-        </div>
+  <div class="panel-body">
+    <div class="row">
+      <div class="hidden">{{ form_widget(edit_form.product) }}</div>
+      <div class="col-md-4">{{ form_row(edit_form.cost) }}</div>
+      <div class="col-md-4">{{ form_row(edit_form.price) }}</div>
     </div>
+  </div>
 {% endblock %}
 {% block adminPanelFooter %}
-    <div class="panel-footer">
-        <div class="clearfix">
-            {{ form_widget(edit_form.submit) }}
-        </div>
+  <div class="panel-footer">
+    <div class="clearfix">
+      {{ form_widget(edit_form.submit) }}
     </div>
+  </div>
 {% endblock %}
 {% block adminPanelFormEnd %}{{ form_end(edit_form) }}{% endblock %}

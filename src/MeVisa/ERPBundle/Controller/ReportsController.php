@@ -127,6 +127,7 @@ class ReportsController extends Controller
       'reports' => $reports,
     );
   }
+
   /**
    * Lists all Accounting Reports
    *

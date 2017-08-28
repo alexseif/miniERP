@@ -1,15 +1,15 @@
 <div class="panel panel-default">
-    <div class="panel-heading">
-        <span class="panel-title">Order Details</span>
-    </div>
-    <table class="table table-condensed table-hover no-border ">
-        <tbody>
-            <tr>
-                <td><label for="mevisa_erpbundle_orders_people" class="control-label required">PAX No</label></td><td>{{ form_widget(form.people,{"attr":{"style":"width:50%"} }) }}</td>
-                <td>{{ form_widget(form.ticketRequired) }}</td>
-            </tr>
-            <tr><td><label for="mevisa_erpbundle_orders_arrival" class="control-label required">Arrival</label></td><td colspan="2">{{ form_widget(form.arrival) }}</td></tr>
-            <tr><td><label for="mevisa_erpbundle_orders_departure" class="control-label required">Departure</label></td><td colspan="2">{{ form_widget(form.departure) }}</td></tr>
-        </tbody>
-    </table>
+  <div class="panel-heading">
+    <span class="panel-title">Order Details</span>
+  </div>
+  <table class="table table-condensed table-hover no-border ">
+    <tbody>
+      <tr>
+        <td><label for="mevisa_erpbundle_orders_people" class="control-label required">PAX No</label></td><td>{{ form_widget(form.people,{"attr":{"style":"width:50%"} }) }}</td>
+        <td>{{ form_widget(form.ticketRequired) }}</td>
+      </tr>
+      <tr><td><label for="mevisa_erpbundle_orders_arrival" class="control-label required">Arrival</label></td><td colspan="2">{{ form_widget(form.arrival) }}</td></tr>
+      <tr><td><label for="mevisa_erpbundle_orders_departure" class="control-label required">Departure</label></td><td colspan="2">{{ form_widget(form.departure) }}</td></tr>
+    </tbody>
+  </table>
 </div>

@@ -16,15 +16,15 @@
             <span class="badge">{% block adminPanelTitleBadge %}{% endblock %}</span>
           </span>
           <div class="pull-right">
-            {% block adminPanelHeadingRight %}{% endblock %}
-          </div>
-        {% endblock %}
-      </div>
-      {% block adminPanelBody %}{% endblock %}
-      {% block adminPanelFooter %}{% endblock %}
+          {% block adminPanelHeadingRight %}{% endblock %}
+        </div>
+      {% endblock %}
     </div>
-  {% endblock %}
-  {% block adminPanelFormEnd %}{% endblock %}
-  </div>
+  {% block adminPanelBody %}{% endblock %}
+{% block adminPanelFooter %}{% endblock %}
+</div>
+{% endblock %}
+{% block adminPanelFormEnd %}{% endblock %}
+</div>
 </div>
 {% endblock %}

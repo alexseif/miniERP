@@ -3,27 +3,27 @@
 {% block adminPanelTitle %}Vendor{% endblock %}
 {% block adminPanelTitleSmall %}{{ vendor.name }}{% endblock %}
 {% block adminPanelBody %}
-    <div class="table-responsive">
-        <table class="table table-bordered table-hover table-striped records_list">
-            <tbody>
-                <tr>
-                    <th>Name</th>
-                    <td>{{ vendor.name }}</td>
-                </tr>
-                <tr>
-                    <th>Code</th>
-                    <td>{{ vendor.code }}</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+  <div class="table-responsive">
+    <table class="table table-bordered table-hover table-striped records_list">
+      <tbody>
+        <tr>
+          <th>Name</th>
+          <td>{{ vendor.name }}</td>
+        </tr>
+        <tr>
+          <th>Code</th>
+          <td>{{ vendor.code }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 {% endblock %}
 {% block adminPanelFooter %}
-    <div class="panel-footer">
-        <div class='clearfix'>
-            {% if(is_granted('ROLE_SUPER_ADMIN')) %}
-                <a class="btn btn-primary pull-right" href="{{ path('vendors_edit', { 'id': vendor.id }) }}">Edit</a>
-            {% endif %}
-        </div>
+  <div class="panel-footer">
+    <div class='clearfix'>
+      {% if(is_granted('ROLE_SUPER_ADMIN')) %}
+        <a class="btn btn-primary pull-right" href="{{ path('vendors_edit', { 'id': vendor.id }) }}">Edit</a>
+      {% endif %}
     </div>
+  </div>
 {% endblock %}

@@ -15,208 +15,208 @@ use Gedmo\Mapping\Annotation as Gedmo;
 class OrderCompanions
 {
 
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    private $id;
+  /**
+   * @var integer
+   *
+   * @ORM\Column(name="id", type="integer")
+   * @ORM\Id
+   * @ORM\GeneratedValue(strategy="AUTO")
+   */
+  private $id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Orders", inversedBy="orderCompanions")
-     * @ORM\JoinColumn(name="order_id", referencedColumnName="id", onDelete="CASCADE")
-     *
-     */
-    private $orderRef;
+  /**
+   * @ORM\ManyToOne(targetEntity="Orders", inversedBy="orderCompanions")
+   * @ORM\JoinColumn(name="order_id", referencedColumnName="id", onDelete="CASCADE")
+   *
+   */
+  private $orderRef;
 
-    /**
-     * @var string
-     *
-     * @Gedmo\Versioned
-     * @ORM\Column(name="name", type="string", length=255)
-     */
-    private $name;
+  /**
+   * @var string
+   *
+   * @Gedmo\Versioned
+   * @ORM\Column(name="name", type="string", length=255)
+   */
+  private $name;
 
-    /**
-     * @var string
-     *
-     * @Gedmo\Versioned
-     * @ORM\Column(name="nationality", type="string", length=255, nullable=true)
-     */
-    private $nationality;
+  /**
+   * @var string
+   *
+   * @Gedmo\Versioned
+   * @ORM\Column(name="nationality", type="string", length=255, nullable=true)
+   */
+  private $nationality;
 
-    /**
-     * @var string
-     *
-     * @Gedmo\Versioned
-     * @ORM\Column(name="passport_number", type="string", length=255, nullable=true)
-     */
-    private $passportNumber;
+  /**
+   * @var string
+   *
+   * @Gedmo\Versioned
+   * @ORM\Column(name="passport_number", type="string", length=255, nullable=true)
+   */
+  private $passportNumber;
 
-    /**
-     * @var \DateTime
-     *
-     * @Gedmo\Versioned
-     * @ORM\Column(name="passport_expiry", type="datetime", nullable=true)
-     */
-    private $passportExpiry;
+  /**
+   * @var \DateTime
+   *
+   * @Gedmo\Versioned
+   * @ORM\Column(name="passport_expiry", type="datetime", nullable=true)
+   */
+  private $passportExpiry;
 
-    /**
-     * @var string
-     *
-     * @Gedmo\Versioned
-     * @ORM\Column(name="state", type="string", length=255, nullable=true)
-     */
-    private $state;
+  /**
+   * @var string
+   *
+   * @Gedmo\Versioned
+   * @ORM\Column(name="state", type="string", length=255, nullable=true)
+   */
+  private $state;
 
-    /**
-     * Get id
-     *
-     * @return integer 
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
+  /**
+   * Get id
+   *
+   * @return integer 
+   */
+  public function getId()
+  {
+    return $this->id;
+  }
 
-    /**
-     * Set orderRef
-     *
-     * @param integer $orderRef
-     * @return orderCompanions
-     */
-    public function setOrderRef($orderRef)
-    {
-        $this->orderRef = $orderRef;
+  /**
+   * Set orderRef
+   *
+   * @param integer $orderRef
+   * @return orderCompanions
+   */
+  public function setOrderRef($orderRef)
+  {
+    $this->orderRef = $orderRef;
 
-        return $this;
-    }
+    return $this;
+  }
 
-    /**
-     * Get orderRef
-     *
-     * @return integer 
-     */
-    public function getOrderRef()
-    {
-        return $this->orderRef;
-    }
+  /**
+   * Get orderRef
+   *
+   * @return integer 
+   */
+  public function getOrderRef()
+  {
+    return $this->orderRef;
+  }
 
-    /**
-     * Set name
-     *
-     * @param string $name
-     * @return OrderCompanions
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
+  /**
+   * Set name
+   *
+   * @param string $name
+   * @return OrderCompanions
+   */
+  public function setName($name)
+  {
+    $this->name = $name;
 
-        return $this;
-    }
+    return $this;
+  }
 
-    /**
-     * Get name
-     *
-     * @return string 
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
+  /**
+   * Get name
+   *
+   * @return string 
+   */
+  public function getName()
+  {
+    return $this->name;
+  }
 
-    /**
-     * Set passportNumber
-     *
-     * @param string $passportNumber
-     * @return OrderCompanions
-     */
-    public function setPassportNumber($passportNumber)
-    {
-        $this->passportNumber = $passportNumber;
+  /**
+   * Set passportNumber
+   *
+   * @param string $passportNumber
+   * @return OrderCompanions
+   */
+  public function setPassportNumber($passportNumber)
+  {
+    $this->passportNumber = $passportNumber;
 
-        return $this;
-    }
+    return $this;
+  }
 
-    /**
-     * Get passportNumber
-     *
-     * @return string 
-     */
-    public function getPassportNumber()
-    {
-        return $this->passportNumber;
-    }
+  /**
+   * Get passportNumber
+   *
+   * @return string 
+   */
+  public function getPassportNumber()
+  {
+    return $this->passportNumber;
+  }
 
-    /**
-     * Set passportExpiry
-     *
-     * @param string $passportExpiry
-     * @return OrderCompanions
-     */
-    public function setPassportExpiry($passportExpiry)
-    {
-        $this->passportExpiry = $passportExpiry;
+  /**
+   * Set passportExpiry
+   *
+   * @param string $passportExpiry
+   * @return OrderCompanions
+   */
+  public function setPassportExpiry($passportExpiry)
+  {
+    $this->passportExpiry = $passportExpiry;
 
-        return $this;
-    }
+    return $this;
+  }
 
-    /**
-     * Get passportExpiry
-     *
-     * @return string 
-     */
-    public function getPassportExpiry()
-    {
-        return $this->passportExpiry;
-    }
+  /**
+   * Get passportExpiry
+   *
+   * @return string 
+   */
+  public function getPassportExpiry()
+  {
+    return $this->passportExpiry;
+  }
 
-    /**
-     * Set nationality
-     *
-     * @param string $nationality
-     * @return OrderCompanions
-     */
-    public function setNationality($nationality)
-    {
-        $this->nationality = $nationality;
+  /**
+   * Set nationality
+   *
+   * @param string $nationality
+   * @return OrderCompanions
+   */
+  public function setNationality($nationality)
+  {
+    $this->nationality = $nationality;
 
-        return $this;
-    }
+    return $this;
+  }
 
-    /**
-     * Get nationality
-     *
-     * @return string 
-     */
-    public function getNationality()
-    {
-        return $this->nationality;
-    }
+  /**
+   * Get nationality
+   *
+   * @return string 
+   */
+  public function getNationality()
+  {
+    return $this->nationality;
+  }
 
+  /**
+   * Set state
+   *
+   * @param string $state
+   * @return OrderCompanions
+   */
+  public function setState($state)
+  {
+    $this->state = $state;
 
-    /**
-     * Set state
-     *
-     * @param string $state
-     * @return OrderCompanions
-     */
-    public function setState($state)
-    {
-        $this->state = $state;
+    return $this;
+  }
 
-        return $this;
-    }
+  /**
+   * Get state
+   *
+   * @return string 
+   */
+  public function getState()
+  {
+    return $this->state;
+  }
 
-    /**
-     * Get state
-     *
-     * @return string 
-     */
-    public function getState()
-    {
-        return $this->state;
-    }
 }

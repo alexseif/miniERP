@@ -1,23 +1,23 @@
 {% extends 'AppBundle:Admin:adminLayout.html.twig' %}
 {% block backLink %}{{ path('customers_show', {'id': customer.id}) }}{% endblock %}
 {% block adminPanelFormStart %}
-    {{ form_start(customer_form) }}
-    {{ form_errors(customer_form) }}
-    {{ form_row(customer_form._token) }}
+  {{ form_start(customer_form) }}
+  {{ form_errors(customer_form) }}
+  {{ form_row(customer_form._token) }}
 {% endblock %}
 {% block adminPanelTitle %}Customer{% endblock %}
 {% block adminPanelTitleSmall %}{{ customer.name }}{% endblock %}
 {% block adminPanelBody %}
-    <div class="panel-body">
-        {{ form_row(customer_form.name) }}
-        {{ form_row(customer_form.email) }}
-        {{ form_row(customer_form.phone) }}
-        {{ (customer_form.agent)?form_row(customer_form.agent) }}
-    </div>
+  <div class="panel-body">
+    {{ form_row(customer_form.name) }}
+    {{ form_row(customer_form.email) }}
+    {{ form_row(customer_form.phone) }}
+    {{ (customer_form.agent)?form_row(customer_form.agent) }}
+  </div>
 {% endblock %}
 {% block adminPanelFooter %}
-    <div class="panel-footer">
-        {{ form_row(customer_form.submit) }}
-    </div>
+  <div class="panel-footer">
+    {{ form_row(customer_form.submit) }}
+  </div>
 {% endblock %}
 {% block adminPanelFormEnd %}{{ form_end(customer_form) }}{% endblock %}

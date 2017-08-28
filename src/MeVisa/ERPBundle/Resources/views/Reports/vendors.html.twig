@@ -3,24 +3,24 @@
 {% block adminPanelTitle %}Vendors Reports{% endblock %}
 {% block adminPanelTitleBadge %}{{ reports|length }}{% endblock %}
 {% block adminPanelBody %}
-    <ul class="list-group">
-        {% for report in reports %}
-            <li class="list-group-item">
-                <a href="{{ path('reports_vendors_show', {vendor_id: report.vendor_id, month: report.gBMonth, year:report.gBYear}) }} ">
-                    <div class="row">
-                        <div class="col-sm-2">
-                            {% if report.vendor_name %}
-                                {{ report.vendor_name }}
-                            {% else %}
-                                <span class="text-danger">NO VENDOR</span>
-                            {% endif %}    
-                        </div>
-                        <div class="col-sm-3">
-                            {{ report.gBMonth }} {{ report.gBYear }}
-                        </div>
-                    </div>
-                </a>
-            </li>
-        {% endfor %}
-    </ul>
+  <ul class="list-group">
+    {% for report in reports %}
+      <li class="list-group-item">
+        <a href="{{ path('reports_vendors_show', {vendor_id: report.vendor_id, month: report.gBMonth, year:report.gBYear}) }} ">
+          <div class="row">
+            <div class="col-sm-2">
+              {% if report.vendor_name %}
+                {{ report.vendor_name }}
+              {% else %}
+                <span class="text-danger">NO VENDOR</span>
+              {% endif %}    
+            </div>
+            <div class="col-sm-3">
+              {{ report.gBMonth }} {{ report.gBYear }}
+            </div>
+          </div>
+        </a>
+      </li>
+    {% endfor %}
+  </ul>
 {% endblock %}

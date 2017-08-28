@@ -1,32 +1,32 @@
 <div class="panel panel-default" id="order-docs">
-    <div class="panel-heading">
-        <span class="panel-title">Documents</span>
-    </div>
-    <div class="panel-body">
-        {# TODO: Preview for PDF http://mozilla.github.io/pdf.js/examples/ #}
-        {# FIXME: Delete links for files#}
-        {%for document in order.orderDocuments%}
-            <div class="thumbnail">
-                {% if document.path ends with 'pdf' %}
-                    <a href="{{ document.path }}" target="_blank">
-                        <span class="glyphicon glyphicon-file"></span> <span>{{ document.name }}</span>
-                    </a>
-                {% else %}
-                    <img class="docs-link" src="{{ document.thumbnail ? document.thumbnail : document.path }}" data-url="{{ document.path}}" alt="{{ document.name }}"/>
-                    <a href="{{ document.path}}" class="btn-sm" target="_blank">
-                        <span>{{ document.name }}</span> <span class="glyphicon glyphicon-new-window"></span>
-                    </a>
-                {% endif %}
-            </div>
+  <div class="panel-heading">
+    <span class="panel-title">Documents</span>
+  </div>
+  <div class="panel-body">
+    {# TODO: Preview for PDF http://mozilla.github.io/pdf.js/examples/ #}
+    {# FIXME: Delete links for files#}
+    {%for document in order.orderDocuments%}
+      <div class="thumbnail">
+        {% if document.path ends with 'pdf' %}
+          <a href="{{ document.path }}" target="_blank">
+            <span class="glyphicon glyphicon-file"></span> <span>{{ document.name }}</span>
+          </a>
+        {% else %}
+          <img class="docs-link" src="{{ document.thumbnail ? document.thumbnail : document.path }}" data-url="{{ document.path}}" alt="{{ document.name }}"/>
+          <a href="{{ document.path}}" class="btn-sm" target="_blank">
+            <span>{{ document.name }}</span> <span class="glyphicon glyphicon-new-window"></span>
+          </a>
+        {% endif %}
+      </div>
 
-        {% endfor %}
+    {% endfor %}
 
-        <hr/>
-        {# TODO: dropzone.js#}
-        <div class="row">
-            <div class="col-sm-9 col-sm-push-3">
-                {{ form_widget(form.uploadedFiles)}}
-            </div>
-        </div>
+    <hr/>
+    {# TODO: dropzone.js#}
+    <div class="row">
+      <div class="col-sm-9 col-sm-push-3">
+        {{ form_widget(form.uploadedFiles)}}
+      </div>
     </div>
+  </div>
 </div>

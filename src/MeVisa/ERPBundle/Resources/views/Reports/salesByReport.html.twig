@@ -45,48 +45,48 @@
       data.addColumn('string', 'User');
       data.addColumn('number', 'Sales By');
       data.addRows([{% for sbu in salesByUser %}
-        {% if sbu[0].salesBy %}
-        ['{{ sbu[0].salesBy.username }}',{{sbu.sales}} ],{% endif %}{% endfor %}
-      ]);
+    {% if sbu[0].salesBy %}
+          ['{{ sbu[0].salesBy.username }}',{{sbu.sales}} ],{% endif %}{% endfor %}
+        ]);
 
-      data.sort([{column: 1, desc: true}]);
+        data.sort([{column: 1, desc: true}]);
 
-      // Create a dashboard.
-      var dashboard = new google.visualization.Dashboard(
-              document.getElementById('dashboard_div'));
+        // Create a dashboard.
+        var dashboard = new google.visualization.Dashboard(
+                document.getElementById('dashboard_div'));
 
 
-      // Create a range slider, passing some options
-      var donutRangeSlider = new google.visualization.ControlWrapper({
-        controlType: 'CategoryFilter',
-        containerId: 'filter_div',
-        "options": {"filterColumnIndex": 0}
-      });
-      // Create a pie chart, passing some options
-      var pieChart = new google.visualization.ChartWrapper({
-        'chartType': 'PieChart',
-        'containerId': 'chart_div',
-        'options': {
-          'legend': 'left',
-          is3D: true,
-        },
-        views: [0, 1]
-      });
+        // Create a range slider, passing some options
+        var donutRangeSlider = new google.visualization.ControlWrapper({
+          controlType: 'CategoryFilter',
+          containerId: 'filter_div',
+          "options": {"filterColumnIndex": 0}
+        });
+        // Create a pie chart, passing some options
+        var pieChart = new google.visualization.ChartWrapper({
+          'chartType': 'PieChart',
+          'containerId': 'chart_div',
+          'options': {
+            'legend': 'left',
+            is3D: true,
+          },
+          views: [0, 1]
+        });
 
-      // Create a pie chart, passing some options
-      var tableChart = new google.visualization.ChartWrapper({
-        'chartType': 'Table',
-        'containerId': 'table_div',
-        'options': {
-          title: 'Revenue by product',
-        },
-      });
+        // Create a pie chart, passing some options
+        var tableChart = new google.visualization.ChartWrapper({
+          'chartType': 'Table',
+          'containerId': 'table_div',
+          'options': {
+            title: 'Revenue by product',
+          },
+        });
 
-      dashboard.bind(donutRangeSlider, [pieChart, tableChart])
+        dashboard.bind(donutRangeSlider, [pieChart, tableChart])
 
-      // Draw the dashboard.
-      dashboard.draw(data);
+        // Draw the dashboard.
+        dashboard.draw(data);
 
-    }
-  </script>
-{% endblock %}
+      }
+    </script>
+    {% endblock %}

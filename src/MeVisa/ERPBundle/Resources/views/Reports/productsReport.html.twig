@@ -1,105 +1,105 @@
 {% extends ':default:admin.html.twig' %}
 {% block title %}Report for Products{% endblock %}
 {% block stylesheets %}
-    {{ parent() }}
+  {{ parent() }}
 
 {% endblock %}
 {% block wrapper %}
-    <div class="container-fluid">
-        <a class="btn btn-default ml-5" href="{{ path('reports') }}"><span class="glyphicon glyphicon-arrow-left"></span></a>
-        Revenue by Product <strong>{{ month or year ? "for" }} {{ month? month }} {{ year? year}} </strong>
-        <hr/>
-        <div id="error_div"></div>
-        <div id="dashboard_div">
-            <div class="row">
-                <div class="col-md-4">
-                    <div class="dropdown">
-                        <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                            Filter By Month <span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                            <li><a href="{{ path('reports_products') }}">All</a></li>
-                                {% for report in reports %}
-                                <li><a href="{{ path('reports_products', {month: report.gBMonth, year:report.gBYear}) }}">{{ report.gBMonth }} {{ report.gBYear }}</a></li>
-                                {% endfor %}
-                        </ul>
-                    </div>
-                    <div id="filter_div"></div>
-                    <div id="table_div"></div>
-                </div>
-                <div id="chart_div" style="min-height: 500px;" class="col-md-8"></div>
-            </div>
+  <div class="container-fluid">
+    <a class="btn btn-default ml-5" href="{{ path('reports') }}"><span class="glyphicon glyphicon-arrow-left"></span></a>
+    Revenue by Product <strong>{{ month or year ? "for" }} {{ month? month }} {{ year? year}} </strong>
+    <hr/>
+    <div id="error_div"></div>
+    <div id="dashboard_div">
+      <div class="row">
+        <div class="col-md-4">
+          <div class="dropdown">
+            <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+              Filter By Month <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+              <li><a href="{{ path('reports_products') }}">All</a></li>
+                {% for report in reports %}
+                <li><a href="{{ path('reports_products', {month: report.gBMonth, year:report.gBYear}) }}">{{ report.gBMonth }} {{ report.gBYear }}</a></li>
+                {% endfor %}
+            </ul>
+          </div>
+          <div id="filter_div"></div>
+          <div id="table_div"></div>
         </div>
+        <div id="chart_div" style="min-height: 500px;" class="col-md-8"></div>
+      </div>
     </div>
+  </div>
 {% endblock %}
 {% block javascripts %}
-    {{ parent() }}
-    <!--Load the AJAX API-->
-    {#    <script type="text/javascript" src="https://www.google.com/jsapi"></script>#}
-    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    <script type="text/javascript">
+  {{ parent() }}
+  <!--Load the AJAX API-->
+  {#    <script type="text/javascript" src="https://www.google.com/jsapi"></script>#}
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <script type="text/javascript">
 
-        // Load the Visualization API and the corechart package.
-        google.charts.load('current', {'packages': ['controls', 'corechart', 'table']});
+    // Load the Visualization API and the corechart package.
+    google.charts.load('current', {'packages': ['controls', 'corechart', 'table']});
 
-        // Set a callback to run when the Google Visualization API is loaded.
-        google.charts.setOnLoadCallback(drawDashboard);
+    // Set a callback to run when the Google Visualization API is loaded.
+    google.charts.setOnLoadCallback(drawDashboard);
 
-        var data;
-        // Callback that creates and populates a data table,
-        // instantiates the pie chart, passes in the data and
-        // draws it.
-        function drawDashboard() {
+    var data;
+    // Callback that creates and populates a data table,
+    // instantiates the pie chart, passes in the data and
+    // draws it.
+    function drawDashboard() {
 
-            // Create the data table.
-            data = new google.visualization.DataTable();
-            data.addColumn('string', 'Product');
-            data.addColumn('number', 'Revenue');
-            data.addColumn('number', 'Quantity');
-            data.addRows([{% for op in ops %}
-                ['{{ op.name }}',{{op.sTotal/100}} , {{op.sQty}}],{% endfor %}
-            ]);
+      // Create the data table.
+      data = new google.visualization.DataTable();
+      data.addColumn('string', 'Product');
+      data.addColumn('number', 'Revenue');
+      data.addColumn('number', 'Quantity');
+      data.addRows([{% for op in ops %}
+        ['{{ op.name }}',{{op.sTotal/100}} , {{op.sQty}}],{% endfor %}
+      ]);
 
-            data.sort([{column: 1, desc: true}]);
+      data.sort([{column: 1, desc: true}]);
 
-            // Create a dashboard.
-            var dashboard = new google.visualization.Dashboard(
-                    document.getElementById('dashboard_div'));
+      // Create a dashboard.
+      var dashboard = new google.visualization.Dashboard(
+              document.getElementById('dashboard_div'));
 
 
-            // Create a range slider, passing some options
-            var donutRangeSlider = new google.visualization.ControlWrapper({
-                controlType: 'CategoryFilter',
-                containerId: 'filter_div',
-                "options": {"filterColumnIndex": 0}
-            });
-            // Create a pie chart, passing some options
-            var pieChart = new google.visualization.ChartWrapper({
-                'chartType': 'PieChart',
-                'containerId': 'chart_div',
-                'options': {
-                    'legend': 'left',
-                    is3D: true,
-                },
-                views: [0, 1]
-            });
+      // Create a range slider, passing some options
+      var donutRangeSlider = new google.visualization.ControlWrapper({
+        controlType: 'CategoryFilter',
+        containerId: 'filter_div',
+        "options": {"filterColumnIndex": 0}
+      });
+      // Create a pie chart, passing some options
+      var pieChart = new google.visualization.ChartWrapper({
+        'chartType': 'PieChart',
+        'containerId': 'chart_div',
+        'options': {
+          'legend': 'left',
+          is3D: true,
+        },
+        views: [0, 1]
+      });
 
-            // Create a pie chart, passing some options
-            var tableChart = new google.visualization.ChartWrapper({
-                'chartType': 'Table',
-                'containerId': 'table_div',
-                'options': {
-                    title: 'Revenue by product',
-                },
-            });
+      // Create a pie chart, passing some options
+      var tableChart = new google.visualization.ChartWrapper({
+        'chartType': 'Table',
+        'containerId': 'table_div',
+        'options': {
+          title: 'Revenue by product',
+        },
+      });
 
-            dashboard.bind(donutRangeSlider, [pieChart, tableChart])
+      dashboard.bind(donutRangeSlider, [pieChart, tableChart])
 
-            // Draw the dashboard.
-            dashboard.draw(data);
+      // Draw the dashboard.
+      dashboard.draw(data);
 
-        }
-    </script>
+    }
+  </script>
 
 
 {% endblock %}

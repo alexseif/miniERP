@@ -3,32 +3,32 @@
 {% block adminPanelTitleBadge %}{{ customers|length }}{% endblock %}
 {% block adminPanelHeadingRight %}<a href="{{ path('customers_new')}}" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span> </a>{% endblock %}
 {% block adminPanelBody %}
-    <div class="table-responsive">
-        <table class="table table-bordered table-hover table-striped records_list" id="customers-list">
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Phone</th>
-                    <th>Agent</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for customer in customers %}
-                    <tr>
-                        <td><a class="" href="{{ path('customers_show', { 'id': customer.id }) }}">{{ customer.name }}</a></td>
-                        <td>{{ customer.email }}</td>
-                        <td>{{ customer.phone }}</td>
-                        <td>{{ (customer.agent)? 'Yes':'No' }}</td>
-                        <td>
-                            {% if(is_granted('ROLE_SUPER_ADMIN')) %}
-                                <a class="btn btn-primary btn-sm" href="{{ path('customers_edit', { 'id': customer.id }) }}">edit</a>
-                            {% endif %}
-                            <a class="btn btn-primary btn-sm" href="{{ path('customers_show', { 'id': customer.id }) }}">show</a>
-                        </td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
+  <div class="table-responsive">
+    <table class="table table-bordered table-hover table-striped records_list" id="customers-list">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Phone</th>
+          <th>Agent</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for customer in customers %}
+          <tr>
+            <td><a class="" href="{{ path('customers_show', { 'id': customer.id }) }}">{{ customer.name }}</a></td>
+            <td>{{ customer.email }}</td>
+            <td>{{ customer.phone }}</td>
+            <td>{{ (customer.agent)? 'Yes':'No' }}</td>
+            <td>
+              {% if(is_granted('ROLE_SUPER_ADMIN')) %}
+                <a class="btn btn-primary btn-sm" href="{{ path('customers_edit', { 'id': customer.id }) }}">edit</a>
+              {% endif %}
+              <a class="btn btn-primary btn-sm" href="{{ path('customers_show', { 'id': customer.id }) }}">show</a>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
 {% endblock %}

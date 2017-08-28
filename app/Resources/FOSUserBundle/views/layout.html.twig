@@ -3,38 +3,38 @@
 {% block title %}Mevisa Authentication{% endblock %}
 
 {% block body %}
-    <style type="text/css">
-        input, label {display: block;margin-bottom: 10px;}
-        input[type="text"], input[type="password"]{width: 100%;}
-        input[type="checkbox"]{float: left;margin-right: 10px;}
-    </style>
-    <div id="page-wrapper">
-        <div class="container">
-            {% for type, messages in app.session.flashBag.all %}
-                {% for message in messages %}
-                    <div class="{{ type }}">
-                        {{ message|trans({}, 'FOSUserBundle') }}
-                    </div>
-                {% endfor %}
-            {% endfor %}
-            <div class="row" style="padding-top: 100px;">
-                <div class="col-sm-8 col-sm-offset-2">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <img src="/images/visa_logo.png?v=1" alt="MeVisa" height="100px"/>
-                        </div>
-                        <div class="panel-body">
-                            <div class="form-horizontal">
-                                {% block fos_user_content %}
-                                {% endblock %}
-                            </div>
-                        </div>
-                        {% if app.user %}
-                            <div class="panel-footer"><span class="clearfix"><a href="{{ path('dashboard') }}" class="pull-right btn btn-default">Dashboard</a></span></div>
-                        {% endif %}
-                    </div>
-                </div>
+  <style type="text/css">
+    input, label {display: block;margin-bottom: 10px;}
+    input[type="text"], input[type="password"]{width: 100%;}
+    input[type="checkbox"]{float: left;margin-right: 10px;}
+  </style>
+  <div id="page-wrapper">
+    <div class="container">
+      {% for type, messages in app.session.flashBag.all %}
+        {% for message in messages %}
+          <div class="{{ type }}">
+            {{ message|trans({}, 'FOSUserBundle') }}
+          </div>
+        {% endfor %}
+      {% endfor %}
+      <div class="row" style="padding-top: 100px;">
+        <div class="col-sm-8 col-sm-offset-2">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <img src="/images/visa_logo.png?v=1" alt="MeVisa" height="100px"/>
             </div>
+            <div class="panel-body">
+              <div class="form-horizontal">
+                {% block fos_user_content %}
+                {% endblock %}
+              </div>
+            </div>
+            {% if app.user %}
+              <div class="panel-footer"><span class="clearfix"><a href="{{ path('dashboard') }}" class="pull-right btn btn-default">Dashboard</a></span></div>
+            {% endif %}
+          </div>
         </div>
+      </div>
     </div>
+  </div>
 {% endblock %}

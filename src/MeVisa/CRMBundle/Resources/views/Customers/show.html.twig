@@ -2,45 +2,45 @@
 {% block backLink %}{{ path('customers') }}{% endblock %}
 {% block adminPanelTitle %}Customer{% endblock %}
 {% block adminPanelBody %}
-    <div class="panel-body">
+  <div class="panel-body">
+    <div class="row">
+      <div class="col-sm-6">
         <div class="row">
-            <div class="col-sm-6">
-                <div class="row">
-                    <div class="col-sm-2"><label>Name</label></div><div class="col-sm-10">{{ customer.name }}</div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-2"><label>Email</label></div><div class="col-sm-10">{{ customer.email }}</div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-2"><label>Phone</label></div><div class="col-sm-10">{{ customer.phone }}</div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-2"><label>Agent</label></div><div class="col-sm-10">{{ (customer.agent)?'Yes':'No' }}</div>
-                </div>
-            </div>
-            <div class="col-sm-4">
-                <div class="panel panel-default" id="customer-log">
-                    <div class="panel-heading">
-                        <span class="panel-title">Log</span>
-                    </div>
-                    <ul class="list-group" id="log">
-                        {%for log in logs %}
-                            <li class="list-group-item">
-                                <span class="badge">{{ log.username ? log.username : "mevisa.ru"}}</span>
-                                {{ log.action }} @ {{ log.loggedAt|localizeddate('short', 'short') }}  
-                            </li>
-                        {% endfor %}
-                    </ul>
-                </div>
-            </div>
+          <div class="col-sm-2"><label>Name</label></div><div class="col-sm-10">{{ customer.name }}</div>
         </div>
+        <div class="row">
+          <div class="col-sm-2"><label>Email</label></div><div class="col-sm-10">{{ customer.email }}</div>
+        </div>
+        <div class="row">
+          <div class="col-sm-2"><label>Phone</label></div><div class="col-sm-10">{{ customer.phone }}</div>
+        </div>
+        <div class="row">
+          <div class="col-sm-2"><label>Agent</label></div><div class="col-sm-10">{{ (customer.agent)?'Yes':'No' }}</div>
+        </div>
+      </div>
+      <div class="col-sm-4">
+        <div class="panel panel-default" id="customer-log">
+          <div class="panel-heading">
+            <span class="panel-title">Log</span>
+          </div>
+          <ul class="list-group" id="log">
+            {%for log in logs %}
+              <li class="list-group-item">
+                <span class="badge">{{ log.username ? log.username : "mevisa.ru"}}</span>
+                {{ log.action }} @ {{ log.loggedAt|localizeddate('short', 'short') }}  
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
     </div>
+  </div>
 {% endblock %}
 {% block adminPanelFooter %}
-    <div class="panel-footer">
-        <a class="btn btn-default" href="#">Orders</a>
-        {% if(is_granted('ROLE_SUPER_ADMIN')) %}
-            <a class="btn btn-primary pull-right" href="{{ path('customers_edit', { 'id': customer.id }) }}">Edit</a>
-        {% endif %}
-    </div>
+  <div class="panel-footer">
+    <a class="btn btn-default" href="#">Orders</a>
+    {% if(is_granted('ROLE_SUPER_ADMIN')) %}
+      <a class="btn btn-primary pull-right" href="{{ path('customers_edit', { 'id': customer.id }) }}">Edit</a>
+    {% endif %}
+  </div>
 {% endblock %}

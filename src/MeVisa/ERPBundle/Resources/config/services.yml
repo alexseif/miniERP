@@ -1,5 +1,4 @@
 services:
-
     erp.order:
         class:  MeVisa\ERPBundle\Service\OrderService
         arguments: [ '@doctrine.orm.entity_manager', '@templating', '@security.token_storage' ]

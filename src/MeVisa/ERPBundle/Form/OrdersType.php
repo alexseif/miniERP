@@ -81,10 +81,10 @@ class OrdersType extends AbstractType
           'class' => 'AppBundle:User',
           'query_builder' => function (EntityRepository $em) {
             return $em->createQueryBuilder('u')
-            ->where("u.enabled = true")
-            ->andWhere('u.roles NOT LIKE :acc')
-            ->setParameter('acc', '%"ROLE_ACCOUNTANT"%')
-            ->orderBy('u.username', 'ASC');
+                ->where("u.enabled = true")
+                ->andWhere('u.roles NOT LIKE :acc')
+                ->setParameter('acc', '%"ROLE_ACCOUNTANT"%')
+                ->orderBy('u.username', 'ASC');
           }
         ))
     ;

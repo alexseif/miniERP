@@ -1,32 +1,32 @@
 <div class="panel panel-{{ (order.orderCompanions|length < order.people) ? 'danger' : 'default' }}">
-    <div class="panel-heading">
-        <span class="panel-title">Companions</span>
-        {% if (not order.completedAt) %}
-            <a href="{{ path('orders_edit_companions', {'id': order.id}) }}" class="btn btn-xs text-primary pull-right"><span class="glyphicon glyphicon-pencil"></span> Edit companion</a>
-        {% endif %}
-    </div>
-    <div class="table-responsive">
-        <table class="table table-bordered table-hover table-striped records_list">
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Passport #</th>
-                    <th>Passport Expiry</th>
-                    <th>Nationality</th>
-                    <th>State</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for companion in order.orderCompanions %}
-                    <tr>
-                        <td>{{companion.name}}</td>
-                        <td>{{companion.passportNumber}}</td>
-                        <td>{{companion.passportExpiry|date('d-m-Y')}}</td>
-                        <td>{{companion.nationality}}</td>
-                        <td><label class='label label-{{ statusCSS.css(companion.state) }}'>{{ (companion.state)?: "none"}}</label></td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
+  <div class="panel-heading">
+    <span class="panel-title">Companions</span>
+    {% if (not order.completedAt) %}
+      <a href="{{ path('orders_edit_companions', {'id': order.id}) }}" class="btn btn-xs text-primary pull-right"><span class="glyphicon glyphicon-pencil"></span> Edit companion</a>
+    {% endif %}
+  </div>
+  <div class="table-responsive">
+    <table class="table table-bordered table-hover table-striped records_list">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Passport #</th>
+          <th>Passport Expiry</th>
+          <th>Nationality</th>
+          <th>State</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for companion in order.orderCompanions %}
+          <tr>
+            <td>{{companion.name}}</td>
+            <td>{{companion.passportNumber}}</td>
+            <td>{{companion.passportExpiry|date('d-m-Y')}}</td>
+            <td>{{companion.nationality}}</td>
+            <td><label class='label label-{{ statusCSS.css(companion.state) }}'>{{ (companion.state)?: "none"}}</label></td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
 </div>

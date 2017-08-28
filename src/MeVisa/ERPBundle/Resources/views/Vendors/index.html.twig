@@ -3,27 +3,27 @@
 {% block adminPanelTitleBadge %}{{ vendors|length }}{% endblock %}
 {% block adminPanelHeadingRight %}<a href="{{ path('vendors_new')}}" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span> </a>{% endblock %}
 {% block adminPanelBody %}
-    <div class="table-responsive">
-        <table class="table table-bordered table-hover table-striped records_list">
-            <thead>
-                <tr>
-                    <th>Code</th>
-                    <th>Name</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for vendor in vendors %}
-                    <tr>
-                        <td>{{ vendor.code }}</td>
-                        <td>{{ vendor.name }}</td>
-                        <td>
-                            <a class="btn btn-primary" href="{{ path('vendors_show', { 'id': vendor.id }) }}">Show</a>
-                            <a class="btn btn-primary" href="{{ path('vendors_edit', { 'id': vendor.id }) }}">Edit</a>
-                        </td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
+  <div class="table-responsive">
+    <table class="table table-bordered table-hover table-striped records_list">
+      <thead>
+        <tr>
+          <th>Code</th>
+          <th>Name</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for vendor in vendors %}
+          <tr>
+            <td>{{ vendor.code }}</td>
+            <td>{{ vendor.name }}</td>
+            <td>
+              <a class="btn btn-primary" href="{{ path('vendors_show', { 'id': vendor.id }) }}">Show</a>
+              <a class="btn btn-primary" href="{{ path('vendors_edit', { 'id': vendor.id }) }}">Edit</a>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
 {% endblock %}
