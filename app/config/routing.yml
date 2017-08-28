@@ -3,11 +3,6 @@ admin_security:
     type:     annotation
     prefix:   /
 
-admin_admin:
-    resource: "@AdminAdminBundle/Controller/"
-    type:     annotation
-    prefix:   /admin
-
 me_visa_erp:
     resource: "@MeVisaERPBundle/Controller/"
     type:     annotation

@@ -459,7 +459,7 @@ class ReportsController extends Controller
           ->getQuery()
           ->getResult();
     }
-    $users = $em->getRepository('AdminAdminBundle:User')->findAll();
+    $users = $em->getRepository('AppBundle:User')->findAll();
 
 
     return array(
@@ -537,7 +537,7 @@ class ReportsController extends Controller
           ->getQuery()
           ->getResult();
     }
-    $users = $em->getRepository('AdminAdminBundle:User')->findAll();
+    $users = $em->getRepository('AppBundle:User')->findAll();
 
 
     return array(

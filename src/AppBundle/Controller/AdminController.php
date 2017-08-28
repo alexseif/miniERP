@@ -1,6 +1,6 @@
 <?php
 
-namespace Admin\AdminBundle\Controller;
+namespace AppBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Gedmo\Loggable\Entity\LogEntry;
 
-class DefaultController extends Controller
+class AdminController extends Controller
 {
 
   /**

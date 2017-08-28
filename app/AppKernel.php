@@ -21,7 +21,6 @@ class AppKernel extends Kernel
             new AppBundle\AppBundle(),
             new MeVisa\CRMBundle\MeVisaCRMBundle(),
             new MeVisa\ERPBundle\MeVisaERPBundle(),
-            new Admin\AdminBundle\AdminAdminBundle(),
             new Admin\SecurityBundle\AdminSecurityBundle(),
             new FOS\UserBundle\FOSUserBundle(),
             new Sonata\IntlBundle\SonataIntlBundle(),

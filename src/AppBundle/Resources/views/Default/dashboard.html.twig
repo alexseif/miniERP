@@ -1,14 +1,14 @@
 {% extends ':default:admin.html.twig' %}
 
 {% block content %}
-    {% include 'AdminAdminBundle:Default:quickActions.html.twig' %}
+    {% include 'AppBundle:Default:quickActions.html.twig' %}
     <div id="panels">
         <div class="row">
             <div class="col-sm-12">
                 {% set orders = backoffice %}
                 {% set state = 'backoffice' %}
                 {% set panelTitle = 'Backoffice Orders' %}
-                {% include 'AdminAdminBundle:Default:dashboardPanel.html.twig' %}
+                {% include 'AppBundle:Default:dashboardPanel.html.twig' %}
             </div>
         </div>
         <div class="row">
@@ -16,13 +16,13 @@
                 {% set orders = document %}
                 {% set state = 'document' %}
                 {% set panelTitle = 'Document Required Orders' %}
-                {% include 'AdminAdminBundle:Default:dashboardPanel.html.twig' %}
+                {% include 'AppBundle:Default:dashboardPanel.html.twig' %}
             </div>
             <div class="col-sm-6">   
                 {% set orders = post %}
                 {% set state = 'post' %}
                 {% set panelTitle = 'Post Orders' %}
-                {% include 'AdminAdminBundle:Default:dashboardPanel.html.twig' %}
+                {% include 'AppBundle:Default:dashboardPanel.html.twig' %}
             </div>
         </div>
         <div class="row">
@@ -30,13 +30,13 @@
                 {% set orders = not_paid %}
                 {% set state = 'not_paid' %}
                 {% set panelTitle = 'Not Paid' %}
-                {% include 'AdminAdminBundle:Default:dashboardPanel.html.twig' %}
+                {% include 'AppBundle:Default:dashboardPanel.html.twig' %}
             </div>
             <div class="col-sm-6">
                 {% set orders = completed %}
                 {% set state = 'completed' %}
                 {% set panelTitle = 'Completed Today' %}
-                {% include 'AdminAdminBundle:Default:dashboardPanel.html.twig' %}
+                {% include 'AppBundle:Default:dashboardPanel.html.twig' %}
             </div>
         </div>
     </div>
