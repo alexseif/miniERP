@@ -1,4 +1,4 @@
-{% extends 'AppBundle:Default:adminLayout.html.twig' %}
+{% extends 'AppBundle:Admin:adminLayout.html.twig' %}
 {% block backLink %}{{ path('customers_show', {'id': customer.id}) }}{% endblock %}
 {% block adminPanelFormStart %}
     {{ form_start(customer_form) }}

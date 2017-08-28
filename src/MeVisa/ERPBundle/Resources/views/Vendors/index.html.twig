@@ -1,4 +1,4 @@
-{% extends 'AppBundle:Default:adminLayout.html.twig' %}
+{% extends 'AppBundle:Admin:adminLayout.html.twig' %}
 {% block adminPanelTitle %}Vendors{% endblock %}
 {% block adminPanelTitleBadge %}{{ vendors|length }}{% endblock %}
 {% block adminPanelHeadingRight %}<a href="{{ path('vendors_new')}}" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span> </a>{% endblock %}

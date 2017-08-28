@@ -8,7 +8,10 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Gedmo\Loggable\Entity\LogEntry;
-
+ /**
+   * @Route("/admin")
+  * 
+  */
 class AdminController extends Controller
 {
 

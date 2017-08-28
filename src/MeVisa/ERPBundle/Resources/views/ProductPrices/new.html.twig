@@ -1,4 +1,4 @@
-{% extends 'AppBundle:Default:adminLayout.html.twig' %}
+{% extends 'AppBundle:Admin:adminLayout.html.twig' %}
 {% block backLink %}{{ path('pricing', { 'product_id': entity.product.id }) }}{% endblock %}
 {% block adminPanelFormStart %}
     {{ form_start(form) }}
