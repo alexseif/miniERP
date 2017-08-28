@@ -19,7 +19,26 @@
     <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
   </head>
   <body>
-    <div id="wrapper">{% block body %}{% endblock %}</div>
+    <div id="wrapper">
+      {% block body %}
+        {% block nav %}
+          {% include 'nav.html.twig' %}
+        {% endblock %}
+        {% block wrapper %}
+          <div id="page-wrapper">
+            {% block beforeContent %}
+            {% endblock %}
+            <div class="container">
+              {% include 'flashMessages.html.twig' %}
+              {% block content %}
+              {% endblock %}
+            </div>
+            {% block afterContent %}
+            {% endblock %}
+          </div>
+        {% endblock %}
+      {% endblock %}
+    </div>
     {% block javascripts %}
       {% javascripts
             'js/jquery-2.2.2.min.js'
