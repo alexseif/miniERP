@@ -248,6 +248,7 @@ class OrdersController extends Controller
     $this->get('erp.order')->softDeleteOrder($order);
     return $this->redirect($this->generateUrl('orders'));
   }
+
   /**
    * Soft delete Orders entity.
    *

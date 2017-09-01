@@ -1,14 +1,14 @@
 <div class="panel panel-default" id="payment-panel">
-    <div class="panel-heading">
-        <span class="panel-title">Payment details</span>
-    </div>
-    <div class="panel-body">
-        {% if form.orderPayments|length %}
-            {% for payment in form.orderPayments %}
-                {{form_widget(payment) }}
-            {% endfor %}
-        {% else %}
-            <div class="orderPayments form-group-sm" data-prototype='{{form_widget(form.orderPayments.vars.prototype)|e }}' ></div>
-        {% endif %}
-    </div>
+  <div class="panel-heading">
+    <span class="panel-title">Payment details</span>
+  </div>
+  <div class="panel-body">
+    {% if form.orderPayments|length %}
+      {% for payment in form.orderPayments %}
+        {{form_widget(payment) }}
+      {% endfor %}
+    {% else %}
+      <div class="orderPayments form-group-sm" data-prototype='{{form_widget(form.orderPayments.vars.prototype)|e }}' ></div>
+    {% endif %}
+  </div>
 </div>

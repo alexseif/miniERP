@@ -71,11 +71,6 @@ class CurrencyController extends Controller
       return $this->redirect($this->generateUrl('admin_currency'));
     }
     return $this->redirect($this->generateUrl('admin_currency'));
-
-//        return array(
-//            'entity' => $entity,
-//            'form' => $form->createView(),
-//        );
   }
 
   /**

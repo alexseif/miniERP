@@ -1,4 +1,4 @@
-{% extends 'AdminAdminBundle:Default:adminLayout.html.twig' %}
+{% extends 'AppBundle:Admin:adminLayout.html.twig' %}
 {% block backLink %}{{ path('reports') }}{% endblock %}
 {% block adminPanelTitle %}Financial Reports{% endblock %}
 {% block adminPanelTitleBadge %}{{ reports|length }}{% endblock %}
@@ -7,6 +7,7 @@
   <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#customForm">
     Custom
   </button>
+  <a href="{{ path('reports_financial_archive') }}" class="btn btn-default">Archive</a>
 {% endblock %}
 {% block adminPanelBody %}
   <style type="text/css">

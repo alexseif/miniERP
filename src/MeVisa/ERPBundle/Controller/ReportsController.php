@@ -43,10 +43,22 @@ class ReportsController extends Controller
    */
   public function financialAction()
   {
-    $em = $this->getDoctrine()->getManager();
+    $reports = $this->getAllGroupByMonthAndYear();
+    return array(
+      'reports' => $reports,
+    );
+  }
 
-    $reports = $em->getRepository('MeVisaERPBundle:Orders')->findAllGroupByMonthAndYear();
-
+  /**
+   * Lists all Financial Reports
+   *
+   * @Route("/financial/archive", name="reports_financial_archive")
+   * @Method("GET")
+   * @Template("MeVisaERPBundle:Reports:financial.html.twig")
+   */
+  public function financialArchiveAction()
+  {
+    $reports = $this->getArchiveGroupByMonthAndYear();
     return array(
       'reports' => $reports,
     );
@@ -109,9 +121,23 @@ class ReportsController extends Controller
    */
   public function accountingAction()
   {
-    $em = $this->getDoctrine()->getManager();
+    $reports = $this->getAllGroupByMonthAndYear();
 
-    $reports = $em->getRepository('MeVisaERPBundle:Orders')->findAllGroupByMonthAndYear();
+    return array(
+      'reports' => $reports,
+    );
+  }
+
+  /**
+   * Lists all Accounting Reports
+   *
+   * @Route("/accounting/archive", name="reports_accounting_archive")
+   * @Method("GET")
+   * @Template("MeVisaERPBundle:Reports:accounting.html.twig")
+   */
+  public function accountingArchiveAction()
+  {
+    $reports = $this->getArchiveGroupByMonthAndYear();
 
     return array(
       'reports' => $reports,
@@ -332,13 +358,10 @@ class ReportsController extends Controller
    */
   public function revenueReportAction()
   {
-//TODO: Validate get
+    //TODO: Validate get
     $em = $this->getDoctrine()->getManager();
 
     $orders = $em->getRepository('MeVisaERPBundle:Orders')->findRevenue();
-//        if (!$orders) {
-//            throw $this->createNotFoundException('Unable to find Reports entity.');
-//        }
 
     return array(
       'os' => $orders,
@@ -354,18 +377,15 @@ class ReportsController extends Controller
    */
   public function productsReportAction($year, $month)
   {
-//TODO: Validate get
+    //TODO: Validate get
     $em = $this->getDoctrine()->getManager();
-    $reports = $em->getRepository('MeVisaERPBundle:Orders')->findAllGroupByMonthAndYear();
+    $reports = $this->getAllGroupByMonthAndYear();
 
     if (is_null($year) || is_null($month)) {
       $orderProducts = $em->getRepository('MeVisaERPBundle:OrderProducts')->findRevenue();
     } else {
       $orderProducts = $em->getRepository('MeVisaERPBundle:OrderProducts')->findRevenueByMonthAndYear($month, $year);
     }
-//        if (!$orders) {
-//            throw $this->createNotFoundException('Unable to find Reports entity.');
-//        }
 
     return array(
       'ops' => $orderProducts,
@@ -386,7 +406,7 @@ class ReportsController extends Controller
   {
 //TODO: Validate get
     $em = $this->getDoctrine()->getManager();
-    $reports = $em->getRepository('MeVisaERPBundle:Orders')->findAllGroupByMonthAndYear();
+    $reports = $this->getAllGroupByMonthAndYear();
     $logRepo = $em->getRepository('Gedmo\Loggable\Entity\LogEntry');
 
     if (is_null($year) || is_null($month)) {
@@ -440,7 +460,7 @@ class ReportsController extends Controller
           ->getQuery()
           ->getResult();
     }
-    $users = $em->getRepository('AdminAdminBundle:User')->findAll();
+    $users = $em->getRepository('AppBundle:User')->findAll();
 
 
     return array(
@@ -464,7 +484,7 @@ class ReportsController extends Controller
   {
 //TODO: Validate get
     $em = $this->getDoctrine()->getManager();
-    $reports = $em->getRepository('MeVisaERPBundle:Orders')->findAllGroupByMonthAndYear();
+    $reports = $this->getAllGroupByMonthAndYear();
     $logRepo = $em->getRepository('Gedmo\Loggable\Entity\LogEntry');
 
     if (is_null($year) || is_null($month)) {
@@ -518,7 +538,7 @@ class ReportsController extends Controller
           ->getQuery()
           ->getResult();
     }
-    $users = $em->getRepository('AdminAdminBundle:User')->findAll();
+    $users = $em->getRepository('AppBundle:User')->findAll();
 
 
     return array(
@@ -540,9 +560,7 @@ class ReportsController extends Controller
    */
   public function salesByAction()
   {
-    $em = $this->getDoctrine()->getManager();
-
-    $reports = $em->getRepository('MeVisaERPBundle:Orders')->findAllGroupByMonthAndYear();
+    $reports = $this->getAllGroupByMonthAndYear();
 
     return array(
       'reports' => $reports,
@@ -578,6 +596,18 @@ class ReportsController extends Controller
       'year' => $year,
       'salesByUser' => $salesByUser,
     );
+  }
+
+  public function getAllGroupByMonthAndYear()
+  {
+    $em = $this->getDoctrine()->getManager();
+    return $em->getRepository('MeVisaERPBundle:Orders')->findAllGroupByMonthAndYear();
+  }
+
+  public function getArchiveGroupByMonthAndYear()
+  {
+    $em = $this->getDoctrine()->getManager();
+    return $em->getRepository('MeVisaERPBundle:Orders')->findArchiveGroupByMonthAndYear();
   }
 
 }

@@ -3,6 +3,7 @@ imports:
     - { resource: security.yml }
     - { resource: services.yml }
     - { resource: '@AppBundle/Resources/config/services.yml' }
+    - { resource: '@MeVisaCRMBundle/Resources/config/services.yml' }
     - { resource: '@MeVisaERPBundle/Resources/config/services.yml' }
 
 # Put parameters here that don't need to change on each machine where the app is deployed
@@ -189,7 +190,7 @@ swiftmailer:
 fos_user:
     db_driver: orm 
     firewall_name: main
-    user_class: Admin\AdminBundle\Entity\User
+    user_class: AppBundle\Entity\User
 
 sonata_intl:
     timezone:

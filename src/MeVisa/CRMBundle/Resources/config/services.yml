@@ -1,0 +1,4 @@
+services:
+    crm.customer:
+        class:  MeVisa\CRMBundle\Service\CustomerAPIService
+        arguments: [ '@doctrine.orm.entity_manager']

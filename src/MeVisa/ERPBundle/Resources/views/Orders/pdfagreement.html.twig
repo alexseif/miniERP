@@ -1,22 +1,22 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8" />
-        <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
-        <title>MeVisa Invoice</title>
-        <link rel="stylesheet" type="text/css" href="{{ absolute_url(asset('css/bootstrap.min.css')) }}" />
-        <link rel="stylesheet" type="text/css" href="{{ absolute_url(asset('css/custom.css')) }}" />
-        <link rel="stylesheet" type="text/css" href="{{ absolute_url(asset('css/pdf.css')) }}" />
-    </head>
-    <body>
-        <div style="position:fixed; left: 0; right: 0; bottom: 0cm; top: 0cm;overflow: scroll;"> 
-            <table class="table" style="margin: 0px;"><tr>
-                    <td style="width: 25%"><small>г.  Москва</small></td>
-                    <td class="h4" style="margin: 0px;">ДОГОВОР ОБ ОКАЗАНИИ ВИЗОВЫХ УСЛУГ № {{ invoice.id }}</td>
-                    <td style="width: 25%" class="text-right"><small>{{ "now" | format_date(null, 'ru', 'Europe/Moscow', constant('IntlDateFormatter::LONG')) }}</small></td>
-                </tr></table>
-                {{ include(template_from_string(companySettings.jsonValue['agreement'])) }}
-                {% include 'MeVisaERPBundle:Orders:pdfCustomerSignature.html.twig' %}
-        </div>
-    </body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+    <title>MeVisa Invoice</title>
+    <link rel="stylesheet" type="text/css" href="{{ absolute_url(asset('css/bootstrap.min.css')) }}" />
+    <link rel="stylesheet" type="text/css" href="{{ absolute_url(asset('css/custom.css')) }}" />
+    <link rel="stylesheet" type="text/css" href="{{ absolute_url(asset('css/pdf.css')) }}" />
+  </head>
+  <body>
+    <div style="position:fixed; left: 0; right: 0; bottom: 0cm; top: 0cm;overflow: scroll;"> 
+      <table class="table" style="margin: 0px;"><tr>
+          <td style="width: 25%"><small>г.  Москва</small></td>
+          <td class="h4" style="margin: 0px;">ДОГОВОР ОБ ОКАЗАНИИ ВИЗОВЫХ УСЛУГ № {{ invoice.id }}</td>
+          <td style="width: 25%" class="text-right"><small>{{ "now" | format_date(null, 'ru', 'Europe/Moscow', constant('IntlDateFormatter::LONG')) }}</small></td>
+        </tr></table>
+        {{ include(template_from_string(companySettings.jsonValue['agreement'])) }}
+        {% include 'MeVisaERPBundle:Orders:pdfCustomerSignature.html.twig' %}
+    </div>
+  </body>
 </html>

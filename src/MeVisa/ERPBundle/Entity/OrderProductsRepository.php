@@ -13,46 +13,46 @@ use Doctrine\ORM\EntityRepository;
 class OrderProductsRepository extends EntityRepository
 {
 
-    public function findWithMessages()
-    {
-        return $this->createQueryBuilder("op")
-                        ->select("op, om, o")
-                        ->join('op.messages', 'om')
-                        ->join('op.orderRef', 'o')
-                        ->where('om.read = FALSE')
-                        ->orderBy('o.number', 'ASC')
-                        ->getQuery()
-                        ->getResult();
-    }
+  public function findWithMessages()
+  {
+    return $this->createQueryBuilder("op")
+            ->select("op, om, o")
+            ->join('op.messages', 'om')
+            ->join('op.orderRef', 'o')
+            ->where('om.read = FALSE')
+            ->orderBy('o.number', 'ASC')
+            ->getQuery()
+            ->getResult();
+  }
 
-    public function findRevenue()
-    {
-        return $this->createQueryBuilder('op')
-                        ->select('op, o, p, p.name as name,SUM(op.total) as sTotal, SUM(op.quantity) as sQty')
-                        ->leftJoin('op.orderRef', 'o')
-                        ->leftJoin('op.product', 'p')
-                        ->Where("o.state = 'approved' OR o.state = 'rejected'")
-                        ->groupBy('op.product')
-                        ->orderBy("sTotal", "DESC")
-                        ->getQuery()
-                        ->getResult();
-    }
+  public function findRevenue()
+  {
+    return $this->createQueryBuilder('op')
+            ->select('op, o, p, p.name as name,SUM(op.total) as sTotal, SUM(op.quantity) as sQty')
+            ->leftJoin('op.orderRef', 'o')
+            ->leftJoin('op.product', 'p')
+            ->Where("o.state = 'approved' OR o.state = 'rejected'")
+            ->groupBy('op.product')
+            ->orderBy("sTotal", "DESC")
+            ->getQuery()
+            ->getResult();
+  }
 
-    public function findRevenueByMonthAndYear($month, $year)
-    {
-        return $this->createQueryBuilder('op')
-                        ->select('op, o, p, p.name as name,SUM(op.total) as sTotal, SUM(op.quantity) as sQty')
-                        ->leftJoin('op.orderRef', 'o')
-                        ->leftJoin('op.product', 'p')
-                        ->Where("o.state = 'approved' OR o.state = 'rejected'")
-                        ->andWhere('MONTHNAME(o.createdAt) = ?1')
-                        ->andWhere('YEAR(o.createdAt) = ?2')
-                        ->setParameter('1', $month)
-                        ->setParameter('2', $year)
-                        ->groupBy('op.product')
-                        ->orderBy("sTotal", "DESC")
-                        ->getQuery()
-                        ->getResult();
-    }
+  public function findRevenueByMonthAndYear($month, $year)
+  {
+    return $this->createQueryBuilder('op')
+            ->select('op, o, p, p.name as name,SUM(op.total) as sTotal, SUM(op.quantity) as sQty')
+            ->leftJoin('op.orderRef', 'o')
+            ->leftJoin('op.product', 'p')
+            ->Where("o.state = 'approved' OR o.state = 'rejected'")
+            ->andWhere('MONTHNAME(o.createdAt) = ?1')
+            ->andWhere('YEAR(o.createdAt) = ?2')
+            ->setParameter('1', $month)
+            ->setParameter('2', $year)
+            ->groupBy('op.product')
+            ->orderBy("sTotal", "DESC")
+            ->getQuery()
+            ->getResult();
+  }
 
 }
