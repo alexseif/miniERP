@@ -23,11 +23,19 @@ class DefaultController extends Controller
 
   /**
    * @Route("/metronic", name="metronic")
-   * @Template("AppBundle:metronic:metronic.html.twig")
+   * @Template("AppBundle:metronic:dashboard.html.twig")
    */
   public function metronicAction()
   {
     return array();
   }
 
+  /**
+   * @Route("/form_controls", name="form-controls")
+   * @Template("AppBundle:metronic:form_controls.html.twig")
+   */
+  public function formControlsActions()
+  {
+    return array();
+  }
 }
