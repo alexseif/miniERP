@@ -1,4 +1,28 @@
-{% extends ':metronic:base.html.twig' %}
+{% extends ':metronic:base-sidebar.html.twig' %}
+{% block breadcrumbs %}
+  <div class="breadcrumbs">
+    <h1>Bootstrap Form Controls</h1>
+    <ol class="breadcrumb">
+      <li>
+        <a href="#">Home</a>
+      </li>
+      <li>
+        <a href="#">Features</a>
+      </li>
+      <li class="active">Form Stuff</li>
+    </ol>
+    <!-- Sidebar Toggle Button -->
+    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".page-sidebar">
+      <span class="sr-only">Toggle navigation</span>
+      <span class="toggle-icon">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </span>
+    </button>
+    <!-- Sidebar Toggle Button -->
+  </div>
+{% endblock %}
 {% block content %}
   <!-- BEGIN PAGE BASE CONTENT -->
   <div class="row">

@@ -56,7 +56,9 @@
             </div>
             <!-- END BREADCRUMBS -->
           {% endblock %}
-          {% block content %}
+          {% block layout %}
+            {% block content %}
+            {% endblock %}
           {% endblock %}
         </div>
         {% block footer %}
@@ -65,11 +67,11 @@
       </div>
     </div>
     <!-- END CONTAINER -->
-    {% block sidebar %}
-      {% include ':metronic:sidebar.html.twig' %}
+    {% block quickSidebar %}
+      {% include ':metronic:quick-sidebar.html.twig' %}
     {% endblock %}
     {% block quickNav %}
-      {% include ':metronic:quickNav.html.twig' %}
+      {% include ':metronic:quick-nav.html.twig' %}
     {% endblock %}
     {% block javascript %}
       <!--[if lt IE 9]>
