@@ -6,7 +6,8 @@
     <div class="col-md-12 ">
       {% block portlet %}
         <!-- BEGIN SAMPLE FORM PORTLET-->
-        <div class="portlet light bordered">
+        <div class="portlet {% block portletClass %}light bordered{% endblock %}">
+          {#        <div class="portlet {% block portletClass %}light bordered{% endblock %}">#}
           <div class="portlet-title">
             {#                <div class="caption font-red-sunglo">#}
             <div class="caption {% block portletTitleClass %}{% endblock %}">
@@ -15,7 +16,7 @@
               <span class="caption-subject bold uppercase">{% block portletTitle %}{{ block('title') }}{% endblock %}</span>
             </div>
             {% block portletActions %}
-              <div class="actions">
+              {#<div class="actions">
                 <div class="btn-group">
                   <a class="btn btn-sm green dropdown-toggle" href="javascript:;" data-toggle="dropdown"> Actions
                     <i class="fa fa-angle-down"></i>
@@ -40,9 +41,15 @@
                   </ul>
                 </div>
               </div>
+              <div class="tools">
+                <a href="javascript:;" class="collapse"> </a>
+                <a href="#portlet-config" data-toggle="modal" class="config"> </a>
+                <a href="javascript:;" class="reload"> </a>
+                <a href="javascript:;" class="remove"> </a>
+              </div>#}
             {% endblock %}
           </div>
-          <div class="portlet-body form">
+          <div class="portlet-body {% block portletBodyClass %}{% endblock %}">
             {% block portletBody %}
               <form role="form">
                 <div class="form-body">

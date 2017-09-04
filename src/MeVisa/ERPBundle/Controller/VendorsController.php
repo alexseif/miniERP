@@ -128,6 +128,7 @@ class VendorsController extends Controller
 
     return array(
       'vendor' => $vendor,
+      'vendor_delete' => $this->createDeleteForm($id)->createView()
     );
   }
 
@@ -173,7 +174,7 @@ class VendorsController extends Controller
 
     $form->add('submit', 'submit', array('label' => 'Update',
       'attr' => array(
-        'class' => 'btn-success pull-right',
+        'class' => 'btn-circle btn-success',
       )
     ));
 
