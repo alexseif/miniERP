@@ -10,7 +10,7 @@
 {% endblock %}
 
 
-{% block portletTitle %}Vendors {{ vendors|length }}{% endblock %}
+{% block portletTitle %}Vendors <label class="badge">{{ vendors|length }}</label>{% endblock %}
 {% block portletActions %}
   <div class="actions">
     <a href="{{ path('vendors_new')}}" class="btn blue"><span class="glyphicon glyphicon-plus"></span> Add</a>
