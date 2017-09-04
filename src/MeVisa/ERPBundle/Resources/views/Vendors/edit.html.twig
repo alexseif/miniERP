@@ -1,4 +1,7 @@
-{% extends 'AppBundle:Admin:adminLayout.html.twig' %}
+{# srv/MeVisa/ERPBundle/Resources/views/Vendors/new.html.twig #}
+{% extends ':metronic:portlet.html.twig' %}
+
+{#
 {% block backLink %}{{ path('vendors_show', {'id': vendor.id}) }}{% endblock %}
 {% block adminPanelFormStart %}
   {{ form_start(vendor_form) }}
@@ -19,3 +22,10 @@
   </div>
 {% endblock %}
 {% block adminPanelFormEnd %}{{ form_end(vendor_form) }}{% endblock %}
+#}
+
+{% block title %}Edit Vendor: {{ vendor.name }}{% endblock %}
+
+{% block portletBody %}
+  {{ form(vendor_form) }}
+{% endblock %}
