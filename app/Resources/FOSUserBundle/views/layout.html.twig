@@ -1,15 +1,31 @@
-{% extends 'base.html.twig' %}
+{# app/Resources/FOSUserBundle/views/layout.html.twig #}
+{% extends ':metronic:base.html.twig' %}
 
-{% block title %}Mevisa Authentication{% endblock %}
+{% block title %}Wazeery Group Authentication{% endblock %}
+{% block stylesheets %}
+  {{ parent() }}
+  <!-- BEGIN PAGE LEVEL PLUGINS -->
+  <link href="/metronic/assets/global/plugins/select2/css/select2.min.css" rel="stylesheet" type="text/css" />
+  <link href="/metronic/assets/global/plugins/select2/css/select2-bootstrap.min.css" rel="stylesheet" type="text/css" />
+  <!-- END PAGE LEVEL PLUGINS -->
+  <!-- BEGIN PAGE LEVEL STYLES -->
+  <link href="/metronic/assets/pages/css/login.min.css" rel="stylesheet" type="text/css" />
+  <!-- END PAGE LEVEL STYLES -->
+{% endblock %}
+{% block bodyClass %}login{% endblock %}
 
 {% block body %}
-  <style type="text/css">
-    input, label {display: block;margin-bottom: 10px;}
-    input[type="text"], input[type="password"]{width: 100%;}
-    input[type="checkbox"]{float: left;margin-right: 10px;}
-  </style>
-  <div id="page-wrapper">
-    <div class="container">
+  <!-- BEGIN LOGO -->
+  <div class="logo">
+    <a href="index.html">
+      <img src="/images/visa_logo.png?v=1" alt="Wazeery Group" />
+    </a>
+  </div>
+  <!-- END LOGO -->
+
+  <!-- BEGIN LOGIN -->
+  <div class="content">
+    {% if app.request.hasPreviousSession %}
       {% for type, messages in app.session.flashBag.all %}
         {% for message in messages %}
           <div class="{{ type }}">
@@ -17,24 +33,48 @@
           </div>
         {% endfor %}
       {% endfor %}
-      <div class="row" style="padding-top: 100px;">
-        <div class="col-sm-8 col-sm-offset-2">
-          <div class="panel panel-default">
-            <div class="panel-heading">
-              <img src="/images/visa_logo.png?v=1" alt="MeVisa" height="100px"/>
-            </div>
-            <div class="panel-body">
-              <div class="form-horizontal">
-                {% block fos_user_content %}
-                {% endblock %}
-              </div>
-            </div>
-            {% if app.user %}
-              <div class="panel-footer"><span class="clearfix"><a href="{{ path('dashboard') }}" class="pull-right btn btn-default">Dashboard</a></span></div>
-            {% endif %}
-          </div>
-        </div>
+    {% endif %}
+
+    {% block fos_user_content %}
+    {% endblock %}
+    {#<div class="form-actions">
+      {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+        {{ 'layout.logged_in_as'|trans({'%username%': app.user.username}, 'FOSUserBundle') }} |
+        <a href="{{ path('fos_user_security_logout') }}">
+          {{ 'layout.logout'|trans({}, 'FOSUserBundle') }}
+        </a>
+      {% else %}
+        <a href="{{ path('fos_user_security_login') }}">{{ 'layout.login'|trans({}, 'FOSUserBundle') }}</a>
+      {% endif %}
+    </div>#}
+    <!-- BEGIN FORGOT PASSWORD FORM -->
+    <form class="forget-form" action="index.html" method="post">
+      <h3 class="font-green">Forget Password ?</h3>
+      <p> Enter your e-mail address below to reset your password. </p>
+      <div class="form-group">
+        <input class="form-control placeholder-no-fix" type="text" autocomplete="off" placeholder="Email" name="email" /> </div>
+      <div class="form-actions">
+        <button type="button" id="back-btn" class="btn green btn-outline">Back</button>
+        <button type="submit" class="btn btn-success uppercase pull-right">Submit</button>
       </div>
-    </div>
+    </form>
+    <!-- END FORGOT PASSWORD FORM -->
   </div>
+{% endblock %}
+
+
+
+{% block footer %}
+  <div class="copyright"> 2014 © Metronic. Admin Dashboard Template. </div>
+{% endblock %}
+{% block javascripts %}
+  {{ parent() }}
+  <!-- BEGIN PAGE LEVEL PLUGINS -->
+  <script src="/metronic/assets/global/plugins/jquery-validation/js/jquery.validate.min.js" type="text/javascript"></script>
+  <script src="/metronic/assets/global/plugins/jquery-validation/js/additional-methods.min.js" type="text/javascript"></script>
+  <script src="/metronic/assets/global/plugins/select2/js/select2.full.min.js" type="text/javascript"></script>
+  <!-- END PAGE LEVEL PLUGINS -->
+  <!-- BEGIN PAGE LEVEL SCRIPTS -->
+  <script src="/metronic/assets/pages/scripts/login.min.js" type="text/javascript"></script>
+  <!-- END PAGE LEVEL SCRIPTS -->
 {% endblock %}
