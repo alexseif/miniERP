@@ -15,83 +15,82 @@ use Gedmo\Mapping\Annotation as Gedmo;
 class Invoices
 {
 
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    private $id;
+  /**
+   * @var integer
+   *
+   * @ORM\Column(name="id", type="integer")
+   * @ORM\Id
+   * @ORM\GeneratedValue(strategy="AUTO")
+   */
+  private $id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Orders", inversedBy="invoices")
-     * @ORM\JoinColumn(name="order_id", referencedColumnName="id", onDelete="CASCADE")
-     * */
-    private $orderRef;
+  /**
+   * @ORM\ManyToOne(targetEntity="Orders", inversedBy="invoices")
+   * @ORM\JoinColumn(name="order_id", referencedColumnName="id", onDelete="CASCADE")
+   * */
+  private $orderRef;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="createdAt", type="datetime")
-     */
-    private $createdAt;
+  /**
+   * @var \DateTime
+   *
+   * @ORM\Column(name="createdAt", type="datetime")
+   */
+  private $createdAt;
 
+  /**
+   * Get id
+   *
+   * @return integer 
+   */
+  public function getId()
+  {
+    return $this->id;
+  }
 
-    /**
-     * Get id
-     *
-     * @return integer 
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
+  /**
+   * Set orderRef
+   *
+   * @param \MeVisa\ERPBundle\Entity\Orders $orderRef
+   * @return Invoices
+   */
+  public function setOrderRef(\MeVisa\ERPBundle\Entity\Orders $orderRef = null)
+  {
+    $this->orderRef = $orderRef;
 
-    /**
-     * Set orderRef
-     *
-     * @param \MeVisa\ERPBundle\Entity\Orders $orderRef
-     * @return Invoices
-     */
-    public function setOrderRef(\MeVisa\ERPBundle\Entity\Orders $orderRef = null)
-    {
-        $this->orderRef = $orderRef;
+    return $this;
+  }
 
-        return $this;
-    }
+  /**
+   * Get orderRef
+   *
+   * @return \MeVisa\ERPBundle\Entity\Orders 
+   */
+  public function getOrderRef()
+  {
+    return $this->orderRef;
+  }
 
-    /**
-     * Get orderRef
-     *
-     * @return \MeVisa\ERPBundle\Entity\Orders 
-     */
-    public function getOrderRef()
-    {
-        return $this->orderRef;
-    }
+  /**
+   * Set createdAt
+   *
+   * @param \DateTime $createdAt
+   * @return Invoices
+   */
+  public function setCreatedAt($createdAt)
+  {
+    $this->createdAt = $createdAt;
 
-    /**
-     * Set createdAt
-     *
-     * @param \DateTime $createdAt
-     * @return Invoices
-     */
-    public function setCreatedAt($createdAt)
-    {
-        $this->createdAt = $createdAt;
+    return $this;
+  }
 
-        return $this;
-    }
-
-    /**
-     * Get createdAt
-     *
-     * @return \DateTime 
-     */
-    public function getCreatedAt()
-    {
-        return $this->createdAt;
-    }
+  /**
+   * Get createdAt
+   *
+   * @return \DateTime 
+   */
+  public function getCreatedAt()
+  {
+    return $this->createdAt;
+  }
 
 }

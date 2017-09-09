@@ -1,15 +1,15 @@
 <div class="panel panel-default" id="order-log">
-    <div class="panel-heading">
-        <span class="panel-title">Log</span>
-    </div>
-    <ul class="list-group">
-        {%for log in logs %}
-            {% if log.action == 'create' or log.username %}
-                <li class="list-group-item">
-                    <span class="badge">{{ log.username ? log.username : "mevisa.ru"}}</span>
-                    {{ log.action }} @ {{ log.loggedAt|localizeddate('short', 'short') }}  
-                </li>
-            {% endif %}
-        {% endfor %}
-    </ul>
+  <div class="panel-heading">
+    <span class="panel-title">Log</span>
+  </div>
+  <ul class="list-group">
+    {%for log in logs %}
+      {% if log.action == 'create' or log.username %}
+        <li class="list-group-item">
+          <span class="badge">{{ log.username ? log.username : "mevisa.ru"}}</span>
+          {{ log.action }} @ {{ log.loggedAt|localizeddate('short', 'short') }}  
+        </li>
+      {% endif %}
+    {% endfor %}
+  </ul>
 </div>

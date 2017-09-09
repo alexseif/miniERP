@@ -78,13 +78,13 @@ class OrdersType extends AbstractType
         ))
         ->add('salesBy', 'entity', array(
           'placeholder' => 'Choose a User',
-          'class' => 'AdminAdminBundle:User',
+          'class' => 'AppBundle:User',
           'query_builder' => function (EntityRepository $em) {
             return $em->createQueryBuilder('u')
-            ->where("u.enabled = true")
-            ->andWhere('u.roles NOT LIKE :acc')
-            ->setParameter('acc', '%"ROLE_ACCOUNTANT"%')
-            ->orderBy('u.username', 'ASC');
+                ->where("u.enabled = true")
+                ->andWhere('u.roles NOT LIKE :acc')
+                ->setParameter('acc', '%"ROLE_ACCOUNTANT"%')
+                ->orderBy('u.username', 'ASC');
           }
         ))
     ;

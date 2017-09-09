@@ -196,7 +196,7 @@ class Orders
   /**
    *
    * @Gedmo\Versioned
-   * @ORM\ManyToOne(targetEntity="Admin\AdminBundle\Entity\User", inversedBy="Orders")
+   * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User", inversedBy="Orders")
    * @ORM\JoinColumn(name="sales_by", referencedColumnName="id", nullable=true)
    */
   private $salesBy;

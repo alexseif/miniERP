@@ -1,22 +1,22 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8" />
-        <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
-        <title>MeVisa Invoice</title>
-        <link rel="stylesheet" type="text/css" href="{{ absolute_url(asset('css/bootstrap.min.css')) }}" />
-        <link rel="stylesheet" type="text/css" href="{{ absolute_url(asset('css/custom.css')) }}" />
-        <link rel="stylesheet" type="text/css" href="{{ absolute_url(asset('css/pdf.css')) }}" />
-    </head>
-    <body>
-        <table class="table" style="margin: 0px;"><tr>
-                <td style="width: 20%"><small></small></td>
-                <td class="bold" style="margin: 0px;">Приняты документы от Заказчика:</td>
-                <td style="width: 20%" class="text-right"><small>{{ "now" | format_date(null, 'ru', 'Europe/Moscow', constant('IntlDateFormatter::LONG')) }}</small></td>
-            </tr></table>
-            {{ companySettings.jsonValue['waiver']|raw }}
-        <br/>
-        <br/>
-        {% include 'MeVisaERPBundle:Orders:pdfCustomerSignature.html.twig' %}
-    </body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+    <title>MeVisa Invoice</title>
+    <link rel="stylesheet" type="text/css" href="{{ absolute_url(asset('css/bootstrap.min.css')) }}" />
+    <link rel="stylesheet" type="text/css" href="{{ absolute_url(asset('css/custom.css')) }}" />
+    <link rel="stylesheet" type="text/css" href="{{ absolute_url(asset('css/pdf.css')) }}" />
+  </head>
+  <body>
+    <table class="table" style="margin: 0px;"><tr>
+        <td style="width: 20%"><small></small></td>
+        <td class="bold" style="margin: 0px;">Приняты документы от Заказчика:</td>
+        <td style="width: 20%" class="text-right"><small>{{ "now" | format_date(null, 'ru', 'Europe/Moscow', constant('IntlDateFormatter::LONG')) }}</small></td>
+      </tr></table>
+      {{ companySettings.jsonValue['waiver']|raw }}
+    <br/>
+    <br/>
+    {% include 'MeVisaERPBundle:Orders:pdfCustomerSignature.html.twig' %}
+  </body>
 </html>

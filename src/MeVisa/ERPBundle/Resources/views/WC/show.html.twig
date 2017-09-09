@@ -1,45 +1,45 @@
 {% extends ':default:admin.html.twig' %}
 {% macro nested_array(array) %}
-    {% import _self as macros %}
-    {% for key, val in array %}
-        {{ key }}: {% if val is iterable %}<br/>{{ macros.nested_array(val) }}{% else %}{{ val }}{% endif %}<br/>
-    {% endfor %}
+  {% import _self as macros %}
+  {% for key, val in array %}
+    {{ key }}: {% if val is iterable %}<br/>{{ macros.nested_array(val) }}{% else %}{{ val }}{% endif %}<br/>
+  {% endfor %}
 {% endmacro %}
 {% block content %}
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            <span class="panel-title">WC</span>
-        </div>
-        <table class="table table-bordered table-hover table-striped records_list">
-            <tbody>
-                <tr>
-                    <th>Id</th>
-                    <td>{{ entity.id }}</td>
-                </tr>
-                <tr>
-                    <th>Header</th>
-                    <td>{% import _self as macros %}{{ macros.nested_array(entity.header) }}</td>
-                </tr>
-                <tr>
-                    <th>Content</th>
-                    <td>{{ macros.nested_array(entity.content) }}</td>
-                </tr>
-                <tr>
-                    <th>Result</th>
-                    <td>{{ entity.result }}</td>
-                </tr>
-                <tr>
-                    <th>Createdat</th>
-                    <td>{{ entity.createdAt|date('Y-m-d H:i:s') }}</td>
-                </tr>
-            </tbody>
-        </table>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <span class="panel-title">WC</span>
     </div>
-    <ul class="record_actions">
-        <li>
-            <a href="{{ path('wc') }}">
-                Back to the list
-            </a>
-        </li>
-    </ul>
+    <table class="table table-bordered table-hover table-striped records_list">
+      <tbody>
+        <tr>
+          <th>Id</th>
+          <td>{{ entity.id }}</td>
+        </tr>
+        <tr>
+          <th>Header</th>
+          <td>{% import _self as macros %}{{ macros.nested_array(entity.header) }}</td>
+        </tr>
+        <tr>
+          <th>Content</th>
+          <td>{{ macros.nested_array(entity.content) }}</td>
+        </tr>
+        <tr>
+          <th>Result</th>
+          <td>{{ entity.result }}</td>
+        </tr>
+        <tr>
+          <th>Createdat</th>
+          <td>{{ entity.createdAt|date('Y-m-d H:i:s') }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <ul class="record_actions">
+    <li>
+      <a href="{{ path('wc') }}">
+        Back to the list
+      </a>
+    </li>
+  </ul>
 {% endblock %}

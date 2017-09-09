@@ -16,193 +16,194 @@ use Gedmo\Mapping\Annotation as Gedmo;
 class Customers
 {
 
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    private $id;
+  /**
+   * @var integer
+   *
+   * @ORM\Column(name="id", type="integer")
+   * @ORM\Id
+   * @ORM\GeneratedValue(strategy="AUTO")
+   */
+  private $id;
 
-    /**
-     * @var string
-     *
-     * @Gedmo\Versioned
-     * @ORM\Column(name="name", type="string", length=255)
-     * @Assert\NotBlank()
-     */
-    private $name;
+  /**
+   * @var string
+   *
+   * @Gedmo\Versioned
+   * @ORM\Column(name="name", type="string", length=255)
+   * @Assert\NotBlank()
+   */
+  private $name;
 
-    /**
-     * @var string
-     *
-     * @Gedmo\Versioned
-     * @ORM\Column(name="email", type="string", length=255)
-     */
-    private $email;
+  /**
+   * @var string
+   *
+   * @Gedmo\Versioned
+   * @ORM\Column(name="email", type="string", length=255)
+   */
+  private $email;
 
-    /**
-     * @var string
-     *
-     * @Gedmo\Versioned
-     * @ORM\Column(name="phone", type="string", length=25)
-     */
-    private $phone;
+  /**
+   * @var string
+   *
+   * @Gedmo\Versioned
+   * @ORM\Column(name="phone", type="string", length=25)
+   */
+  private $phone;
 
-    /**
-     * @var boolean
-     *
-     * @ORM\Column(name="agent", type="boolean", nullable=true)
-     */
-    private $agent;
-    /**
-     *
-     * @ORM\OneToMany(targetEntity="MeVisa\ERPBundle\Entity\Orders", mappedBy="customer", cascade={"persist"})
-     */
-    private $orders;
+  /**
+   * @var boolean
+   *
+   * @ORM\Column(name="agent", type="boolean", nullable=true)
+   */
+  private $agent;
 
-    /**
-     * Get id
-     *
-     * @return integer 
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
+  /**
+   *
+   * @ORM\OneToMany(targetEntity="MeVisa\ERPBundle\Entity\Orders", mappedBy="customer", cascade={"persist"})
+   */
+  private $orders;
 
-    /**
-     * Set name
-     *
-     * @param string $name
-     * @return Customers
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
+  /**
+   * Get id
+   *
+   * @return integer 
+   */
+  public function getId()
+  {
+    return $this->id;
+  }
 
-        return $this;
-    }
+  /**
+   * Set name
+   *
+   * @param string $name
+   * @return Customers
+   */
+  public function setName($name)
+  {
+    $this->name = $name;
 
-    /**
-     * Get name
-     *
-     * @return string 
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
+    return $this;
+  }
 
-    /**
-     * Set email
-     *
-     * @param string $email
-     * @return Customers
-     */
-    public function setEmail($email)
-    {
-        $this->email = $email;
+  /**
+   * Get name
+   *
+   * @return string 
+   */
+  public function getName()
+  {
+    return $this->name;
+  }
 
-        return $this;
-    }
+  /**
+   * Set email
+   *
+   * @param string $email
+   * @return Customers
+   */
+  public function setEmail($email)
+  {
+    $this->email = $email;
 
-    /**
-     * Get email
-     *
-     * @return string 
-     */
-    public function getEmail()
-    {
-        return $this->email;
-    }
+    return $this;
+  }
 
-    /**
-     * Set phone
-     *
-     * @param string $phone
-     * @return Customers
-     */
-    public function setPhone($phone)
-    {
-        $this->phone = $phone;
+  /**
+   * Get email
+   *
+   * @return string 
+   */
+  public function getEmail()
+  {
+    return $this->email;
+  }
 
-        return $this;
-    }
+  /**
+   * Set phone
+   *
+   * @param string $phone
+   * @return Customers
+   */
+  public function setPhone($phone)
+  {
+    $this->phone = $phone;
 
-    /**
-     * Get phone
-     *
-     * @return string 
-     */
-    public function getPhone()
-    {
-        return $this->phone;
-    }
+    return $this;
+  }
 
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->orders = new \Doctrine\Common\Collections\ArrayCollection();
-    }
+  /**
+   * Get phone
+   *
+   * @return string 
+   */
+  public function getPhone()
+  {
+    return $this->phone;
+  }
 
-    /**
-     * Add orders
-     *
-     * @param \MeVisa\ERPBundle\Entity\Orders $orders
-     * @return Customers
-     */
-    public function addOrder(\MeVisa\ERPBundle\Entity\Orders $orders)
-    {
-        $this->orders[] = $orders;
+  /**
+   * Constructor
+   */
+  public function __construct()
+  {
+    $this->orders = new \Doctrine\Common\Collections\ArrayCollection();
+  }
 
-        return $this;
-    }
+  /**
+   * Add orders
+   *
+   * @param \MeVisa\ERPBundle\Entity\Orders $orders
+   * @return Customers
+   */
+  public function addOrder(\MeVisa\ERPBundle\Entity\Orders $orders)
+  {
+    $this->orders[] = $orders;
 
-    /**
-     * Remove orders
-     *
-     * @param \MeVisa\ERPBundle\Entity\Orders $orders
-     */
-    public function removeOrder(\MeVisa\ERPBundle\Entity\Orders $orders)
-    {
-        $this->orders->removeElement($orders);
-    }
+    return $this;
+  }
 
-    /**
-     * Get orders
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getOrders()
-    {
-        return $this->orders;
-    }
+  /**
+   * Remove orders
+   *
+   * @param \MeVisa\ERPBundle\Entity\Orders $orders
+   */
+  public function removeOrder(\MeVisa\ERPBundle\Entity\Orders $orders)
+  {
+    $this->orders->removeElement($orders);
+  }
 
+  /**
+   * Get orders
+   *
+   * @return \Doctrine\Common\Collections\Collection 
+   */
+  public function getOrders()
+  {
+    return $this->orders;
+  }
 
-    /**
-     * Set agent
-     *
-     * @param boolean $agent
-     * @return Customers
-     */
-    public function setAgent($agent)
-    {
-        $this->agent = $agent;
+  /**
+   * Set agent
+   *
+   * @param boolean $agent
+   * @return Customers
+   */
+  public function setAgent($agent)
+  {
+    $this->agent = $agent;
 
-        return $this;
-    }
+    return $this;
+  }
 
-    /**
-     * Get agent
-     *
-     * @return boolean 
-     */
-    public function getAgent()
-    {
-        return $this->agent;
-    }
+  /**
+   * Get agent
+   *
+   * @return boolean 
+   */
+  public function getAgent()
+  {
+    return $this->agent;
+  }
+
 }

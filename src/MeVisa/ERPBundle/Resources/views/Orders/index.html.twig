@@ -73,9 +73,9 @@
             <td class="text-center col-sm-1"><a class="btn btn-link" href="{{ path('orders_show', { 'id': order.id }) }}">{{ order.number }}</a></td>
             <td class="col-sm-1"><span class="label label-{{ statusCSS.css(order.state) }}">{{ order.state|upper }}</span></td>
               {% if(order.orderPayments|length) %}
-              <td class="col-sm-1 payment" data-search="{{order.orderPayments|last.state|replace('_',' ')|upper }} {{ order.orderPayments|last.method|replace('_',' ')|upper }}">
-                <span class="label label-{{ statusCSS.css(order.orderPayments|last.state) }}">{{ order.orderPayments|last.state|replace('_',' ')|upper }}</span>
-                {{ order.orderPayments|last.method|replace('_',' ')|upper }}
+              <td class="col-sm-1 payment" data-search="{{order.orderPayments|last.state|replace({'_':' '})|upper }} {{ order.orderPayments|last.method|replace({'_':' '})|upper }}">
+                <span class="label label-{{ statusCSS.css(order.orderPayments|last.state) }}">{{ order.orderPayments|last.state|replace({'_':' '})|upper }}</span>
+                {{ order.orderPayments|last.method|replace({'_':' '})|upper }}
               </td>
             {% else %}
               <td class="col-sm-1 payment"></td>

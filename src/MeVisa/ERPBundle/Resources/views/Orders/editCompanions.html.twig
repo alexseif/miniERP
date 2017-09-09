@@ -2,49 +2,49 @@
 {% block title %}Order # {{ order.number }}{% endblock %}
 {% block adminPanelTitle %}Order # {{ order.number }}{% endblock %}
 {% block adminPanelBody %}
-    <div class="panel-body">
-        <div class="row">
-            <div class="col-sm-4">
-                {% include 'MeVisaERPBundle:Orders:show/customer.html.twig' %}
-            </div>
-            <div class="col-sm-4">
-                {% include 'MeVisaERPBundle:Orders:show/details.html.twig' %}
-            </div>
-            <div class="col-sm-4">
-                {% include 'MeVisaERPBundle:Orders:show/totals.html.twig' %}
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-6">
-                {% include 'MeVisaERPBundle:Orders:show/products.html.twig' %}
-            </div>
-            <div class="col-sm-6">
-                {% include 'MeVisaERPBundle:Orders:show/payments.html.twig' %}
-            </div>
-        </div>
-        {% include 'MeVisaERPBundle:Orders:form/companions_form.html.twig' %}
-        <div class="row">
-            <div class="col-sm-6">
-                {% include 'MeVisaERPBundle:Orders:show/documents.html.twig' %}
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-6">
-                {% include 'MeVisaERPBundle:Orders:show/comments.html.twig' %}
-            </div>
-            <div class="col-sm-6">
-                {% include 'MeVisaERPBundle:Orders:show/logs.html.twig' %}
-            </div>
-        </div>
+  <div class="panel-body">
+    <div class="row">
+      <div class="col-sm-4">
+        {% include 'MeVisaERPBundle:Orders:show/customer.html.twig' %}
+      </div>
+      <div class="col-sm-4">
+        {% include 'MeVisaERPBundle:Orders:show/details.html.twig' %}
+      </div>
+      <div class="col-sm-4">
+        {% include 'MeVisaERPBundle:Orders:show/totals.html.twig' %}
+      </div>
     </div>
+    <div class="row">
+      <div class="col-sm-6">
+        {% include 'MeVisaERPBundle:Orders:show/products.html.twig' %}
+      </div>
+      <div class="col-sm-6">
+        {% include 'MeVisaERPBundle:Orders:show/payments.html.twig' %}
+      </div>
+    </div>
+    {% include 'MeVisaERPBundle:Orders:form/companions_form.html.twig' %}
+    <div class="row">
+      <div class="col-sm-6">
+        {% include 'MeVisaERPBundle:Orders:show/documents.html.twig' %}
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-6">
+        {% include 'MeVisaERPBundle:Orders:show/comments.html.twig' %}
+      </div>
+      <div class="col-sm-6">
+        {% include 'MeVisaERPBundle:Orders:show/logs.html.twig' %}
+      </div>
+    </div>
+  </div>
 {% endblock %}
 {% block adminPanelFooter %}{% endblock %}
 {% block javascripts %}
-    {{ parent() }}
-    <script type="text/javascript">
-        var PAX
-        = {{ (order.people)?:0 }};
-    </script>
-    <script type="text/javascript" src="/js/orderDocuments.js"></script>
-    <script type="text/javascript" src="/js/orderCompanions.js"></script>
+  {{ parent() }}
+  <script type="text/javascript">
+    var PAX
+    = {{ (order.people)?:0 }};
+  </script>
+  <script type="text/javascript" src="/js/orderDocuments.js"></script>
+  <script type="text/javascript" src="/js/orderCompanions.js"></script>
 {% endblock %}

@@ -1,34 +1,34 @@
 <div class='panel panel-default'>
-    <div class="table-responsive">
-        <table class="table table-hover table-condensed records_list">
-            <thead>
-                <tr>
-                    <th>Payment</th>
-                    <th>Amount</th>
-                    <th>State</th>
-                    <th>Detail</th>
-                    <th>Created at</th>
-                </tr>
-            </thead>
-            {% if (order.orderPayments|length) %}
-                <tbody>
-                    {%for payment in order.orderPayments%}
-                        <tr>
-                            <td>{{ payment.method }}</td>
-                            <td>{{ (payment.amount/100)|localizedcurrency('RUB') }}</td>
-                            <td>
-                                {% if(payment.state=="not_paid") %}
-                                    <span class="label label-danger">NOT PAID</span>
-                                {% elseif(payment.state=="paid") %}
-                                    <span class="label label-success">PAID</span>    
-                                {% endif %}
-                            </td>
-                            <td>{{ payment.detail }}</td>
-                            <td>{{ payment.createdAt|localizeddate }}</td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            {% endif %}
-        </table>
-    </div>
+  <div class="table-responsive">
+    <table class="table table-hover table-condensed records_list">
+      <thead>
+        <tr>
+          <th>Payment</th>
+          <th>Amount</th>
+          <th>State</th>
+          <th>Detail</th>
+          <th>Created at</th>
+        </tr>
+      </thead>
+      {% if (order.orderPayments|length) %}
+        <tbody>
+          {%for payment in order.orderPayments%}
+            <tr>
+              <td>{{ payment.method }}</td>
+              <td>{{ (payment.amount/100)|localizedcurrency('RUB') }}</td>
+              <td>
+                {% if(payment.state=="not_paid") %}
+                  <span class="label label-danger">NOT PAID</span>
+                {% elseif(payment.state=="paid") %}
+                  <span class="label label-success">PAID</span>    
+                {% endif %}
+              </td>
+              <td>{{ payment.detail }}</td>
+              <td>{{ payment.createdAt|localizeddate }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      {% endif %}
+    </table>
+  </div>
 </div>

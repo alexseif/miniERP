@@ -1,37 +1,37 @@
 <div class='panel panel-{{ (order.orderCompanions|length < order.people) ? 'danger' : 'default' }}' id="companion-panel">
-    <div class='panel-heading'>
-        <span class="panel-title">Companions</span>
-        <a href="#" class="btn btn-xs text-primary addCompanion pull-right" id="add-companion"><span class="glyphicon glyphicon-plus-sign"></span> Add another companion</a>
-    </div>
-    <table class="table table-condensed table-striped table-hover records_list">
-        <thead>
-            <tr>
-                <th class="col-sm-3">Name</th>
-                <th class="col-sm-3">Passport #</th>
-                <th class="col-sm-3">Passport Exp</th>
-                <th class="col-sm-2">Nationality</th>
-            </tr>
-        </thead>
-        <tbody class="companions" data-prototype="{{ 
+  <div class='panel-heading'>
+    <span class="panel-title">Companions</span>
+    <a href="#" class="btn btn-xs text-primary addCompanion pull-right" id="add-companion"><span class="glyphicon glyphicon-plus-sign"></span> Add another companion</a>
+  </div>
+  <table class="table table-condensed table-striped table-hover records_list">
+    <thead>
+      <tr>
+        <th class="col-sm-3">Name</th>
+        <th class="col-sm-3">Passport #</th>
+        <th class="col-sm-3">Passport Exp</th>
+        <th class="col-sm-2">Nationality</th>
+      </tr>
+    </thead>
+    <tbody class="companions" data-prototype="{{ 
 '<td>' ~ form_widget(form.orderCompanions.vars.prototype.name) ~ '</td>' 
 ~ '<td>' ~ form_widget(form.orderCompanions.vars.prototype.passportNumber) ~ '</td>'
 ~ '<td>' ~ form_widget(form.orderCompanions.vars.prototype.passportExpiry, {'attr': { 'class': 'form-group-sm pull-left' } })  ~ '</td>'
 ~ '<td>' ~ form_widget(form.orderCompanions.vars.prototype.nationality)
 ~ '<a href="#" class="btn btn-xs removeCompanion text-danger pull-right" tabindex="-100" style="padding-left:0px;padding-right:0px;"><span class="glyphicon glyphicon-trash"></span></a>'
 ~ '</td>'
-               }}">
-            {# TODO: Expiry date initial this month #}
-            {% for companion in form.orderCompanions %}
-                <tr>
-                    <td>{{ form_widget(companion.name) }}</td>
-                    <td>{{form_widget(companion.passportNumber)}}</td>
-                    <td>{{form_widget(companion.passportExpiry, {'attr': { 'class': 'form-group-sm pull-left' } }) }}</td>
-                    <td>
-                        {{form_widget(companion.nationality) }}
-                        <a href="#" class="btn btn-xs removeCompanion text-danger pull-right" tabindex="-100" style="padding-left:0px;padding-right:0px;"><span class="glyphicon glyphicon-trash"></span></a>                        
-                    </td>
-                </tr>
-            {%endfor%}
-        </tbody>
-    </table>
+           }}">
+      {# TODO: Expiry date initial this month #}
+      {% for companion in form.orderCompanions %}
+        <tr>
+          <td>{{ form_widget(companion.name) }}</td>
+          <td>{{form_widget(companion.passportNumber)}}</td>
+          <td>{{form_widget(companion.passportExpiry, {'attr': { 'class': 'form-group-sm pull-left' } }) }}</td>
+          <td>
+            {{form_widget(companion.nationality) }}
+            <a href="#" class="btn btn-xs removeCompanion text-danger pull-right" tabindex="-100" style="padding-left:0px;padding-right:0px;"><span class="glyphicon glyphicon-trash"></span></a>                        
+          </td>
+        </tr>
+      {%endfor%}
+    </tbody>
+  </table>
 </div>

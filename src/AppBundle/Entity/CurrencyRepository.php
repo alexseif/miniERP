@@ -12,11 +12,11 @@ use Doctrine\ORM\EntityRepository;
 class CurrencyRepository extends EntityRepository
 {
 
-    public function getToDate()
-    {
-        return $this->getEntityManager()
-                        ->getRepository("AppBundle:Currency")
-                        ->findOneBy(array(), array("createdAt" => "Desc"));
-    }
+  public function getToDate()
+  {
+    return $this->getEntityManager()
+            ->getRepository("AppBundle:Currency")
+            ->findOneBy(array(), array("createdAt" => "Desc"));
+  }
 
 }

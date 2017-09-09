@@ -4,6 +4,7 @@ namespace MeVisa\ERPBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+
 /**
  * Vendors
  *
@@ -13,144 +14,144 @@ use Doctrine\Common\Collections\ArrayCollection;
 class Vendors
 {
 
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    private $id;
+  /**
+   * @var integer
+   *
+   * @ORM\Column(name="id", type="integer")
+   * @ORM\Id
+   * @ORM\GeneratedValue(strategy="AUTO")
+   */
+  private $id;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="name", type="string", length=255)
-     */
-    private $name;
+  /**
+   * @var string
+   *
+   * @ORM\Column(name="name", type="string", length=255)
+   */
+  private $name;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="code", type="string", length=255)
-     */
-    private $code;
+  /**
+   * @var string
+   *
+   * @ORM\Column(name="code", type="string", length=255)
+   */
+  private $code;
 
-    /**
-     * @ORM\OneToMany(targetEntity="Products", mappedBy="vendor")
-     */
-    protected $products;
-    
-    /**
-     * @ORM\OneToMany(targetEntity="OrderProducts", mappedBy="vendor")
-     */
-    protected $orderProducts;
+  /**
+   * @ORM\OneToMany(targetEntity="Products", mappedBy="vendor")
+   */
+  protected $products;
 
-    public function __construct()
-    {
-        $this->products = new ArrayCollection();
-    }
+  /**
+   * @ORM\OneToMany(targetEntity="OrderProducts", mappedBy="vendor")
+   */
+  protected $orderProducts;
 
-    /**
-     * Get id
-     *
-     * @return integer 
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
+  public function __construct()
+  {
+    $this->products = new ArrayCollection();
+  }
 
-    /**
-     * Set name
-     *
-     * @param string $name
-     * @return Vendors
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
+  /**
+   * Get id
+   *
+   * @return integer 
+   */
+  public function getId()
+  {
+    return $this->id;
+  }
 
-        return $this;
-    }
+  /**
+   * Set name
+   *
+   * @param string $name
+   * @return Vendors
+   */
+  public function setName($name)
+  {
+    $this->name = $name;
 
-    /**
-     * Get name
-     *
-     * @return string 
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
+    return $this;
+  }
 
-    /**
-     * Set code
-     *
-     * @param string $code
-     * @return Vendors
-     */
-    public function setCode($code)
-    {
-        $this->code = $code;
+  /**
+   * Get name
+   *
+   * @return string 
+   */
+  public function getName()
+  {
+    return $this->name;
+  }
 
-        return $this;
-    }
+  /**
+   * Set code
+   *
+   * @param string $code
+   * @return Vendors
+   */
+  public function setCode($code)
+  {
+    $this->code = $code;
 
-    /**
-     * Get code
-     *
-     * @return string 
-     */
-    public function getCode()
-    {
-        return $this->code;
-    }
+    return $this;
+  }
 
-    /**
-     * Set products
-     *
-     * @param string $products
-     * @return Vendors
-     */
-    public function setProducts($products)
-    {
-        $this->products = $products;
+  /**
+   * Get code
+   *
+   * @return string 
+   */
+  public function getCode()
+  {
+    return $this->code;
+  }
 
-        return $this;
-    }
+  /**
+   * Set products
+   *
+   * @param string $products
+   * @return Vendors
+   */
+  public function setProducts($products)
+  {
+    $this->products = $products;
 
-    /**
-     * Get products
-     *
-     * @return string 
-     */
-    public function getProducts()
-    {
-        return $this->products;
-    }
+    return $this;
+  }
 
+  /**
+   * Get products
+   *
+   * @return string 
+   */
+  public function getProducts()
+  {
+    return $this->products;
+  }
 
-    /**
-     * Add products
-     *
-     * @param \MeVisa\ERPBundle\Entity\Products $products
-     * @return Vendors
-     */
-    public function addProduct(\MeVisa\ERPBundle\Entity\Products $products)
-    {
-        $this->products[] = $products;
+  /**
+   * Add products
+   *
+   * @param \MeVisa\ERPBundle\Entity\Products $products
+   * @return Vendors
+   */
+  public function addProduct(\MeVisa\ERPBundle\Entity\Products $products)
+  {
+    $this->products[] = $products;
 
-        return $this;
-    }
+    return $this;
+  }
 
-    /**
-     * Remove products
-     *
-     * @param \MeVisa\ERPBundle\Entity\Products $products
-     */
-    public function removeProduct(\MeVisa\ERPBundle\Entity\Products $products)
-    {
-        $this->products->removeElement($products);
-    }
+  /**
+   * Remove products
+   *
+   * @param \MeVisa\ERPBundle\Entity\Products $products
+   */
+  public function removeProduct(\MeVisa\ERPBundle\Entity\Products $products)
+  {
+    $this->products->removeElement($products);
+  }
+
 }

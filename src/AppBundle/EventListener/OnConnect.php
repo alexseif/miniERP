@@ -8,10 +8,10 @@ use Doctrine\ORM\EntityManager;
 class OnConnect
 {
 
-    public function postConnect($event)
-    {
-        $conn = $event->getConnection();
-        $conn->executeQuery("SET NAMES UTF8");
-    }
+  public function postConnect($event)
+  {
+    $conn = $event->getConnection();
+    $conn->executeQuery("SET NAMES UTF8");
+  }
 
 }

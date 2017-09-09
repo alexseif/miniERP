@@ -1,21 +1,21 @@
-{% extends 'AdminAdminBundle:Default:adminLayout.html.twig' %}
+{% extends 'AppBundle:Admin:adminLayout.html.twig' %}
 {% block backLink %}{{ path('vendors_show', {'id': vendor.id}) }}{% endblock %}
 {% block adminPanelFormStart %}
-    {{ form_start(vendor_form) }}
-    {{ form_errors(vendor_form) }}
-    {{ form_row(vendor_form._token) }}
+  {{ form_start(vendor_form) }}
+  {{ form_errors(vendor_form) }}
+  {{ form_row(vendor_form._token) }}
 {% endblock %}
 {% block adminPanelTitle %}Vendor{% endblock %}
 {% block adminPanelTitleSmall %}{{ vendor.name }}{% endblock %}
 {% block adminPanelBody %}
-    <div class="panel-body">
-        {{ form_row(vendor_form.name) }}
-        {{ form_row(vendor_form.code) }}
-    </div>
+  <div class="panel-body">
+    {{ form_row(vendor_form.name) }}
+    {{ form_row(vendor_form.code) }}
+  </div>
 {% endblock %}
 {% block adminPanelFooter %}
-    <div class="panel-footer">
-        {{ form_row(vendor_form.submit) }}
-    </div>
+  <div class="panel-footer">
+    {{ form_row(vendor_form.submit) }}
+  </div>
 {% endblock %}
 {% block adminPanelFormEnd %}{{ form_end(vendor_form) }}{% endblock %}

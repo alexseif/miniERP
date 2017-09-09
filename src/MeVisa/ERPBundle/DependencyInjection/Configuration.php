@@ -12,18 +12,20 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
  */
 class Configuration implements ConfigurationInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getConfigTreeBuilder()
-    {
-        $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('me_visa_erp');
 
-        // Here you should define the parameters that are allowed to
-        // configure your bundle. See the documentation linked above for
-        // more information on that topic.
+  /**
+   * {@inheritdoc}
+   */
+  public function getConfigTreeBuilder()
+  {
+    $treeBuilder = new TreeBuilder();
+    $rootNode = $treeBuilder->root('me_visa_erp');
 
-        return $treeBuilder;
-    }
+    // Here you should define the parameters that are allowed to
+    // configure your bundle. See the documentation linked above for
+    // more information on that topic.
+
+    return $treeBuilder;
+  }
+
 }
