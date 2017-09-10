@@ -1,73 +1,80 @@
-{% extends 'AppBundle:Admin:adminLayout.html.twig' %}
-{% block backLink %}{{ path('products') }}{% endblock %}
-{% block adminPanelTitle %}Product{% endblock %}
-{% block adminPanelTitleSmall %}{{ product.name }}{% endblock %}
-{% block adminPanelHeadingRight %}
-  {% if product.urgent %}
-    <span class="label label-purple">Urgent</span>
-  {% endif %}
-  <span class="label label-{{ statusCSS.css((product.enabled ? "enabled":"disabled"))}}">{{ (product.enabled ? "Enabled":"Disabled") }}</span>
+{# srv/MeVisa/ERPBundle/Resources/views/Products/show.html.twig #}
+{% extends ':metronic:portlet.html.twig' %}
+
+{% block title %}Product: {{ product.name }}{% endblock %}
+{#
+{% block portletActions %}
+<div class="actions">
+  <a class="btn btn-circle btn-icon-only btn-default" href="javascript:;">
+    <i class="icon-trash"></i>    
+  </a>
+</div>
+{{ form(vendor_delete) }}
 {% endblock %}
-{% block adminPanelBody %}
-  <style type="text/css">
-    #productPrice tbody tr:first-child{background-color: #5cb85c;color: #fff;font-weight: bold;}
-  </style>
-  <table class="table table-condensed table-bordered">
-    <tr>
-      <td>
-        <div class="row">
-          <label class="col-sm-2 col-sm-offset-1">Country</label><span class="col-sm-8">{{ product.country }}</span>
-        </div>
-        <div class="row">
-          <label class="col-sm-2 col-sm-offset-1">Name</label><span class="col-sm-8">{{ product.name }}</span>
-        </div>
-        <div class="row">
-          <label class="col-sm-2 col-sm-offset-1">Vendor</label><span class="col-sm-8">{{ (product.vendor)?product.vendor.name }}</span>
-        </div>
-      </td>
-      <td rowspan="2">
-        <div class="table-responsive">
-          <table class="table table-condensed">
-            <thead><tr><th>Required Documents</th></tr></thead>
-            <tbody>
-              {% for req in product.requiredDocuments%}
-                <tr><td>{% filter upper %}{{ req }}{% endfilter %}</td></tr>
-              {% endfor %}    
-            </tbody>
-          </table>
-        </div>
-      </td>
-    </tr>
-    <tr>
-      <td style="padding: 0px 20px;">
-        <table class="table table-condensed" id="productPrice">
-          <thead>
-            <tr><th>Price</th>
-                {% if is_granted('ROLE_ACCOUNTANT') %}
-                <th>Cost</th>
-                {% endif %}
-              <th class="col-sm-3"></th></tr>
-          </thead>
-          <tbody>
-            {% for key,price in product.pricing|reverse %}
-              <tr><td>{{ (price.price/100)|localizedcurrency('RUB') }}</td>
-                {% if is_granted('ROLE_ACCOUNTANT') %}
-                  <td>{{ (price.cost/100)|localizedcurrency('RUB') }}</td>
-                {% endif %}
-                <td>{{ price.createdAt|localizeddate }}</td></tr>
-              {% endfor %}
-          </tbody>
-        </table>
-      </td>
-    </tr>
-  </table>
-{% endblock %}
-{% block adminPanelFooter %}
-  <div class="panel-footer">
-    <div class='clearfix'>
-      {% if(is_granted('ROLE_ACCOUNTANT')) %}
-        <a class="btn btn-primary pull-right" href="{{ path('products_edit', { 'id': product.id }) }}">Edit</a>
+#}
+{% block portletBodyClass %}form{% endblock %}
+{% block portletBody %}
+  <form class="form-horizontal" role="form">
+    <div class="form-body">
+      {% if product.urgent %}
+        <span class="label label-purple">Urgent</span>
       {% endif %}
+      <span class="label label-{{ statusCSS.css((product.enabled ? "enabled":"disabled"))}}">{{ (product.enabled ? "Enabled":"Disabled") }}</span>
+
+      <table class="table table-condensed table-bordered">
+        <tr>
+          <td>
+            <div class="row">
+              <label class="col-sm-2 col-sm-offset-1">Country</label><span class="col-sm-8">{{ product.country }}</span>
+            </div>
+            <div class="row">
+              <label class="col-sm-2 col-sm-offset-1">Name</label><span class="col-sm-8">{{ product.name }}</span>
+            </div>
+            <div class="row">
+              <label class="col-sm-2 col-sm-offset-1">Vendor</label><span class="col-sm-8">{{ (product.vendor)?product.vendor.name }}</span>
+            </div>
+          </td>
+          <td rowspan="2">
+            <div class="table-responsive">
+              <table class="table table-condensed">
+                <thead><tr><th>Required Documents</th></tr></thead>
+                <tbody>
+                  {% for req in product.requiredDocuments%}
+                    <tr><td>{% filter upper %}{{ req }}{% endfilter %}</td></tr>
+                  {% endfor %}    
+                </tbody>
+              </table>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding: 0px 20px;">
+            <table class="table table-condensed" id="productPrice">
+              <thead>
+                <tr><th>Price</th>
+                    {% if is_granted('ROLE_ACCOUNTANT') %}
+                    <th>Cost</th>
+                    {% endif %}
+                  <th class="col-sm-3"></th></tr>
+              </thead>
+              <tbody>
+                {% for key,price in product.pricing|reverse %}
+                  <tr><td>{{ (price.price/100)|localizedcurrency('RUB') }}</td>
+                    {% if is_granted('ROLE_ACCOUNTANT') %}
+                      <td>{{ (price.cost/100)|localizedcurrency('RUB') }}</td>
+                    {% endif %}
+                    <td>{{ price.createdAt|localizeddate }}</td></tr>
+                  {% endfor %}
+              </tbody>
+            </table>
+          </td>
+        </tr>
+      </table>
     </div>
-  </div>
+    {% if(is_granted('ROLE_ACCOUNTANT')) %}
+      <div class="form-actions right">
+        <a class="btn btn-primary pull-right" href="{{ path('products_edit', { 'id': product.id }) }}">Edit</a>
+      </div>
+    {% endif %}
+  </form>
 {% endblock %}

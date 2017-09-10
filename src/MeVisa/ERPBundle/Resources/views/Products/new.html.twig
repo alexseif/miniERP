@@ -1,60 +1,9 @@
-{% extends 'AppBundle:Admin:adminLayout.html.twig' %}
-{% block backLink %}{{ path('products') }}{% endblock %}
-{% block adminPanelFormStart %}
-  {{ form_start(product_form) }}
-  {{ form_errors(product_form) }}
-  {{ form_row(product_form._token) }}
-{% endblock %}
-{% block adminPanelTitle %}New Product{% endblock %}
-{% block adminPanelBody %}
-  <table class="table table-condensed table-bordered">
-    <tr>
-      <td>
-        <div class="row">
-          <div class="col-sm-10">
-            {{ form_row(product_form.country) }}
-          </div>
-          <div class="col-sm-10">
-            {{ form_row(product_form.name) }}
-          </div>
-          <div class="col-sm-2">
-            {{ form_row(product_form.urgent) }}
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-sm-10">
-            {{ form_row(product_form.vendor) }}
-          </div>
-        </div>
-      </td>
-      <td rowspan="2">
-        <table class="table table-condensed">
-          <thead>
-            <tr><th>{{ form_row(product_form.enabled) }}</th></tr>
-            <tr><th>{{ form_row(product_form.wcCalc) }}</th></tr>
-            <tr><th>{{ form_label(product_form.requiredDocuments) }}</th></tr>
-          </thead>
-          <tbody><tr><td>{{ form_widget(product_form.requiredDocuments) }}</td></tr></tbody>
-        </table>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <div class="pricing" data-index="{{product.pricing|length}}" data-prototype="{{
-form_row(product_form.pricing.vars.prototype.cost) 
-~ form_row(product_form.pricing.vars.prototype.price)}}"></div>
-      </td>
-    </tr>
-  </table>
-{% endblock %}
-{% block adminPanelFooter %}
-  <div class="panel-footer">
-    <div class="clearfix">
-      {{ form_widget(product_form.submit) }}
-    </div>
-  </div>
-{% endblock %}
-{% block adminPanelFormEnd %}{{ form_end(product_form, {"render_rest": false}) }}{% endblock %}
+{# srv/MeVisa/ERPBundle/Resources/views/Products/new.html.twig #}
+{% extends ':metronic:portlet.html.twig' %}
+
+{% block title %}New Product{% endblock %}
+{% block portletBody %}{{ form(product_form) }}{% endblock %}
+
 {% block javascripts %}
   {{ parent() }}
   <script type="text/javascript">
