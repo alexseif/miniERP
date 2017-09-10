@@ -14,15 +14,15 @@
         </button>
         <!-- End Toggle Button -->
         <!-- BEGIN LOGO -->
-        <a id="index" class="page-logo" href="index.html">
+        <a id="index" class="page-logo" href="{{ path('dashboard') }}">
           <img src="/images/visa_logo.png" alt="Logo"> </a>
         <!-- END LOGO -->
         <!-- BEGIN SEARCH -->
-        <form class="search" action="extra_search.html" method="GET">
-          <input type="name" class="form-control" name="query" placeholder="Search...">
-          <a href="javascript:;" class="btn submit md-skip">
+        <form class="search" action="{{ path('search') }}" method="GET">
+          <input type="text" class="form-control" name="search" placeholder="Search..." value="{{ app.request.query.get("search") }}">
+          <button type="submit" class="btn submit md-skip">
             <i class="fa fa-search"></i>
-          </a>
+          </button>
         </form>
         <!-- END SEARCH -->
         <!-- BEGIN TOPBAR ACTIONS -->
