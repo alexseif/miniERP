@@ -1,34 +1,58 @@
-{% extends 'AppBundle:Admin:adminLayout.html.twig' %}
-{% block adminPanelTitle %}Customers{% endblock %}
-{% block adminPanelTitleBadge %}{{ customers|length }}{% endblock %}
-{% block adminPanelHeadingRight %}<a href="{{ path('customers_new')}}" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span> </a>{% endblock %}
-{% block adminPanelBody %}
-  <div class="table-responsive">
-    <table class="table table-bordered table-hover table-striped records_list" id="customers-list">
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Email</th>
-          <th>Phone</th>
-          <th>Agent</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for customer in customers %}
-          <tr>
-            <td><a class="" href="{{ path('customers_show', { 'id': customer.id }) }}">{{ customer.name }}</a></td>
-            <td>{{ customer.email }}</td>
-            <td>{{ customer.phone }}</td>
-            <td>{{ (customer.agent)? 'Yes':'No' }}</td>
-            <td>
-              {% if(is_granted('ROLE_SUPER_ADMIN')) %}
-                <a class="btn btn-primary btn-sm" href="{{ path('customers_edit', { 'id': customer.id }) }}">edit</a>
-              {% endif %}
-              <a class="btn btn-primary btn-sm" href="{{ path('customers_show', { 'id': customer.id }) }}">show</a>
-            </td>
-          </tr>
-        {% endfor %}
-      </tbody>
-    </table>
+{# srv/MeVisa/CRMBundle/Resources/views/Customers/index.html.twig #}
+{% extends ':metronic:portlet.html.twig' %}
+
+{% block title %}Customers{% endblock %}
+{% block stylesheets %}
+  {{ parent() }}
+  <!-- BEGIN PAGE LEVEL PLUGINS -->
+  <link href="/metronic/assets/global/plugins/bootstrap-table/bootstrap-table.min.css" rel="stylesheet" type="text/css" />
+  <!-- END PAGE LEVEL PLUGINS -->
+{% endblock %}
+
+{% block portletTitle %}Customers <label class="badge">{{ customers|length }}</label>{% endblock %}
+{% block portletActions %}
+  <div class="actions">
+    <a href="{{ path('customers_new')}}" class="btn blue"><span class="glyphicon glyphicon-plus"></span> Add</a>
   </div>
+{% endblock %}
+{% block portletBody %}
+  <table data-toggle="table">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Phone</th>
+        <th>Agent</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for customer in customers %}
+        <tr>
+          <td><a class="" href="{{ path('customers_show', { 'id': customer.id }) }}">{{ customer.name }}</a></td>
+          <td>{{ customer.email }}</td>
+          <td>{{ customer.phone }}</td>
+          <td>{{ (customer.agent)? 'Yes':'No' }}</td>
+          <td>
+            {% if(is_granted('ROLE_SUPER_ADMIN')) %}
+              <a class="btn btn-primary btn-sm" href="{{ path('customers_edit', { 'id': customer.id }) }}">edit</a>
+            {% endif %}
+            <a class="btn btn-primary btn-sm" href="{{ path('customers_show', { 'id': customer.id }) }}">show</a>
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}
+{% block javascripts %}
+  {{ parent() }}
+  <!-- BEGIN PAGE LEVEL PLUGINS -->
+  <script src="/metronic/assets/global/plugins/bootstrap-table/bootstrap-table.min.js" type="text/javascript"></script>
+  <!-- END PAGE LEVEL PLUGINS -->
+  <!-- BEGIN PAGE LEVEL SCRIPTS -->
+  <script src="/metronic/assets/pages/scripts/table-bootstrap.min.js" type="text/javascript"></script>
+  <!-- END PAGE LEVEL SCRIPTS -->
+  <script>
+    {#    $().ready#}
+    {#    $('[data-toggle="dropdown"]').dropdown();#}
+  </script>
 {% endblock %}
