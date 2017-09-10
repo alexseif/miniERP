@@ -43,6 +43,9 @@
             {% endblock %}
             <div class="container">
               {% include 'flashMessages.html.twig' %}
+              {% block title %}
+                Dashboard
+              {% endblock %}
               {% block content %}
               {% endblock %}
             </div>
