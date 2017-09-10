@@ -1,31 +1,44 @@
-{% extends 'AppBundle:Admin:adminLayout.html.twig' %}
-{% block backLink %}{{ path('users') }}{% endblock %}
-{% block adminPanelTitle %}User{% endblock %}
-{% block adminPanelBody %}
-  <div class="table-responsive">
-    <table class="table table-bordered table-hover table-striped records_list">
-      <tbody>
-        <tr><td>User</td><td>{{ user.username }}</td></tr>
-        <tr><td>Email</td><td>{{ user.email }}</td></tr>
-        <tr><td>Enabled</td><td>{{ user.enabled }}</td></tr>
-        <tr>
-          <td>Roles</td>
-          <td>
-            {% for role in user.roles %}
-              <span class="label label-{{ statusCSS.css(role) }}">{{ role|replace({"_":" ", "ROLE":""}) }}</span>
-            {% endfor %}
-          </td>
-        </tr>
-        <tr><td>Last Login</td><td>{{ user.lastlogin|localizeddate() }}</td></tr>
-      </tbody>
-    </table>
-  </div>
+{# srv/AppBundle/Resources/views/Users/show.html.twig #}
+{% extends ':metronic:portlet.html.twig' %}
+
+{% block title %}User{{ user.username }}{% endblock %}
+{#
+{% block portletActions %}
+<div class="actions">
+  <a class="btn btn-circle btn-icon-only btn-default" href="javascript:;">
+    <i class="icon-trash"></i>    
+  </a>
+</div>
+{{ form(vendor_delete) }}
 {% endblock %}
-{% block adminPanelFooter %}
-  <div class="panel-footer">
-    <div class="clearfix">
-      <a href="{{ path('users_edit', {"id":user.id}) }}" class="btn btn-primary pull-right">Edit</a>
-      <a href="{{ path('users_pwd', {"id":user.id}) }}" class="btn btn-primary">Password</a>
+#}
+{% block portletBodyClass %}form{% endblock %}
+{% block portletBody %}
+  <form class="form-horizontal" role="form">
+    <div class="form-body">
+      <table class="table table-bordered table-hover table-striped records_list">
+        <tbody>
+          <tr><td>User</td><td>{{ user.username }}</td></tr>
+          <tr><td>Email</td><td>{{ user.email }}</td></tr>
+          <tr><td>Enabled</td><td>{{ user.enabled }}</td></tr>
+          <tr>
+            <td>Roles</td>
+            <td>
+              {% for role in user.roles %}
+                <span class="label label-{{ statusCSS.css(role) }}">{{ role|replace({"_":" ", "ROLE":""}) }}</span>
+              {% endfor %}
+            </td>
+          </tr>
+          <tr><td>Last Login</td><td>{{ user.lastlogin|localizeddate() }}</td></tr>
+        </tbody>
+      </table>
     </div>
-  </div>
+    {% if(is_granted('ROLE_SUPER_ADMIN')) %}
+      <div class="form-actions right">
+        <a href="{{ path('users_edit', {"id":user.id}) }}" class="btn btn-primary pull-right">Edit</a>
+        <a href="{{ path('users_pwd', {"id":user.id}) }}" class="btn btn-primary">Password</a>
+      </div>
+    {% endif %}
+  </form>
+
 {% endblock %}
