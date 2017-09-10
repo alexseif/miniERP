@@ -1,24 +1,29 @@
-{% extends 'base.html.twig' %}
+{# srv/MeVisa/ERPBundle/Resources/views/CompanySettings/new.html.twig #}
+{% extends ':metronic:portlet.html.twig' %}
+{% block title %}MeVisa Settings{% endblock %}
 
-{% block content %}
-  <h2>MeVisa Settings</h2>
-  <div class="panel-group" id="accordion">
-    {% for key,item in entity.jsonValue %}
-      <div class="panel panel-default">
-        <div class="panel-heading"> 
-          <h4 class="panel-title">
-            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapse{{loop.index0}}">{{ key|capitalize }}</a>
-          </h4>
-        </div>
-        <div class="panel-collapse collapse {{ loop.index0 == 0 ? 'in' :''}}" id="collapse{{loop.index0}}">
-          <div class="panel-body">
-            {{ item|raw }}
+{% block portletBodyClass %}form{% endblock %}
+{% block portletBody %}
+  <form class="form-horizontal" role="form">
+    <div class="form-body">
+      <div class="panel-group" id="accordion">
+        {% for key,item in entity.jsonValue %}
+          <div class="panel panel-default">
+            <div class="panel-heading"> 
+              <h4 class="panel-title">
+                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapse{{loop.index0}}">{{ key|capitalize }}</a>
+              </h4>
+            </div>
+            <div class="panel-collapse collapse {{ loop.index0 == 0 ? 'in' :''}}" id="collapse{{loop.index0}}">
+              <div class="panel-body">
+                {{ item|raw }}
+              </div>
+            </div>
           </div>
-        </div>
+        {% endfor %}
       </div>
-    {% endfor %}
-  </div>
-  <a href="{{ path('companysettings_edit', { 'id': entity.id }) }}" class="btn btn-default">
-    Edit
-  </a>
+      <a href="{{ path('companysettings_edit', { 'id': entity.id }) }}" class="btn btn-default">
+        Edit
+      </a>
+  </form>
 {% endblock %}
