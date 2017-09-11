@@ -182,6 +182,7 @@ stof_doctrine_extensions:
 # Swiftmailer Configuration
 swiftmailer:
     transport: %mailer_transport%
+    encryption: null
     auth_mode:  login
     host:      %mailer_host%
     username:  %mailer_user%
