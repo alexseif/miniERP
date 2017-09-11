@@ -28,6 +28,9 @@
             <td class="text-center">
               <a class="btn btn-link" href="{{ path('orders_show', { 'id': order.id }) }}">{{ order.number }}</a>
             </td>
+            <td>
+              {{ order.orderProducts|first.product.country }}
+            </td>
             <td>{{ order.customer.name }}</td>
             <td class="text-right">{{ (order.total/100)|localizedcurrency('RUB') }}</td>
             {% if order.state == "post" %}
