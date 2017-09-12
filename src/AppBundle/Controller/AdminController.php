@@ -5,6 +5,7 @@ namespace AppBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Gedmo\Loggable\Entity\LogEntry;
@@ -81,6 +82,37 @@ class AdminController extends Controller
 
     return array(
       "results" => $results
+    );
+  }
+
+  /**
+   * @Route("/revision", name="revision")
+   * @Template()
+   * @Security("has_role('ROLE_SUPER_ADMIN')")
+   */
+  public function revisionAction(Request $request)
+  {
+    $em = $this->getDoctrine()->getManager();
+
+    $date = $request->get('date');
+    $dateTime = false;
+    if ($date != "") {
+      $dateTime = \DateTime::createFromFormat('Y-m-d', $date);
+    }
+    if (!$dateTime) {
+      $dateTime = new \DateTime();
+    }
+
+    $orders = $em->getRepository('MeVisaERPBundle:Orders')->createQueryBuilder('o')
+        ->where('DATE(o.createdAt) = ?1')
+        ->setParameter('1', $dateTime->format('Y-m-d'))
+        ->getQuery()
+        ->getResult();
+
+
+    return array(
+      "orders" => $orders,
+      "dateTime" => $dateTime
     );
   }
 

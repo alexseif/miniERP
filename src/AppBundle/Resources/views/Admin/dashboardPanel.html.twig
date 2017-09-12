@@ -1,6 +1,6 @@
 <div class="panel panel-default">
   <div class="panel-heading clearfix">
-    <span class="panel-title"><span class="label label-{{ statusCSS.css(state) }}">{{ state|replace('_', ' ')|upper }}</span></span>
+    <span class="panel-title"><span class="label label-{{ statusCSS.css(state) }}">{{ state|replace({'_':' '})|upper }}</span></span>
     <div class="pull-right"><span class="badge">{{ orders|length }}</span></div>
   </div>
   <div class="table-responsive dashboard">
@@ -27,6 +27,9 @@
           <tr class="{{ highlight }} {{urgent}}">
             <td class="text-center">
               <a class="btn btn-link" href="{{ path('orders_show', { 'id': order.id }) }}">{{ order.number }}</a>
+            </td>
+            <td>
+              {{ order.orderProducts|first.product.country }}
             </td>
             <td>{{ order.customer.name }}</td>
             <td class="text-right">{{ (order.total/100)|localizedcurrency('RUB') }}</td>
