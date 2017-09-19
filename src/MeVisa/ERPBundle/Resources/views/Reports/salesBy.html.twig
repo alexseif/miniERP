@@ -1,9 +1,8 @@
-{% extends 'AppBundle:Default:adminLayout.html.twig' %}
+{# src/MeVisa/ERPBundle/Resources/views/Reports/salesBy.html.twig #}
+{% extends ':metronic:portlet.html.twig' %}
+
 {% block title %}Sales By Reports{% endblock %}
-{% block backLink %}{{ path('reports') }}{% endblock %}
-{% block adminPanelTitle %}Employees Sales Reports{% endblock %}
-{% block adminPanelTitleBadge %}{{ reports|length }}{% endblock %}
-{% block adminPanelBody %}
+{% block portletBody %}
   <ul class="list-group">
     {% for report in reports %}
       <li class="list-group-item">
@@ -11,9 +10,6 @@
       </li>
     {% endfor %}
   </ul>
-{% endblock %}
-{% block content %}
-  {{ parent() }}
   <!-- Modal -->
   <div class="modal fade" id="customForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">

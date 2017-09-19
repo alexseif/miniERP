@@ -1,15 +1,18 @@
-{% extends 'AppBundle:Default:adminLayout.html.twig' %}
-{% block backLink %}{{ path('reports') }}{% endblock %}
-{% block adminPanelTitle %}1C Reports{% endblock %}
-{% block adminPanelTitleBadge %}{{ reports|length }}{% endblock %}
-{% block adminPanelHeadingRight %}
-  <!-- Button trigger modal -->
-  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#customForm">
-    Custom
-  </button>
-  <a href="{{ path('reports_accounting_archive') }}" class="btn btn-default">Archive</a>
+{# src/MeVisa/ERPBundle/Resources/views/Reports/accounting.html.twig #}
+{% extends ':metronic:portlet.html.twig' %}
+
+{% block title %}1C Reports{% endblock %}
+{% block portletActions %}
+  <div class="actions">
+    <!-- Button trigger modal -->
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#customForm">
+      Custom
+    </button>
+    <a href="{{ path('reports_accounting_archive') }}" class="btn btn-default">Archive</a>
+  </div>
 {% endblock %}
-{% block adminPanelBody %}
+
+{% block portletBody %}
   <style type="text/css">
     .ui-datepicker {z-index: 1100 !important;}
   </style>

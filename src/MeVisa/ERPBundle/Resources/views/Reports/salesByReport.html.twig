@@ -1,25 +1,30 @@
-{% extends 'base.html.twig' %}
-{% block title %}Report for Sales By Employees{% endblock %}
-{% block wrapper %}
-  <div class="container-fluid">
-    <a class="btn btn-default ml-5" href="{{ path('reports') }}"><span class="glyphicon glyphicon-arrow-left"></span></a>
-    Sales by Employee <strong>{{ month or year ? "for" }} {{ month? month }} {{ year? year}} </strong>
-    <hr/>
-    <div id="error_div"></div>
-    <div id="dashboard_div">
-      <div class="row">
-        <div class="col-md-4">
-          <div id="filter_div"></div>
-          <div id="table_div"></div>
-        </div>
-        <div id="chart_div" style="min-height: 500px;" class="col-md-8"></div>
-      </div>
-    </div>
-    <div id="timeline_div" style="width: 100%; height: 500px">
+{# src/MeVisa/ERPBundle/Resources/views/Reports/employeesReports=.html.twig #}
+{% extends ':metronic:portlet.html.twig' %}
 
-    </div>
+{% block title %}Sales by Employee <strong>{{ month or year ? "for" }} {{ month? month }} {{ year? year}} </strong>{% endblock %}
+
+{% block portletActions %}
+  <div class="actions">
+    <a class="btn btn-default ml-5" href="{{ path('reports') }}"><span class="glyphicon glyphicon-arrow-left"></span></a>
   </div>
 {% endblock %}
+
+{% block portletBody %}
+  <div id="error_div"></div>
+  <div id="dashboard_div">
+    <div class="row">
+      <div class="col-md-4">
+        <div id="filter_div"></div>
+        <div id="table_div"></div>
+      </div>
+      <div id="chart_div" style="min-height: 500px;" class="col-md-8"></div>
+    </div>
+  </div>
+  <div id="timeline_div" style="width: 100%; height: 500px">
+
+  </div>
+{% endblock %}
+
 {% block javascripts %}
   {{ parent() }}
   <!--Load the AJAX API-->

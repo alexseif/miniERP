@@ -1,4 +1,6 @@
-{% extends 'base.html.twig' %}
+{# src/MeVisa/ERPBundle/Resources/views/Reports/accounting.html.twig #}
+{% extends ':metronic:portlet.html.twig' %}
+
 {% block title %}1C Report for {{ month }} {{ year }} {% endblock %}
 {% block stylesheets %}
   {{ parent() }}
@@ -9,56 +11,58 @@
     div.dataTables_wrapper div.dataTables_paginate{text-align: center;}
   </style>
 {% endblock %}
-{% block wrapper %}
-  <div class="container-fluid">
+
+{% block portletActions %}
+  <div class="actions">
     <a class="btn btn-default ml-5" href="{{ path('reports_accounting') }}"><span class="glyphicon glyphicon-arrow-left"></span></a>
-    Report for <strong>{{ month }} {{ year }} </strong>
-    <hr/>
-    <table class="table table-striped records_list" id="datatable" cellspacing="0">
-      <thead>
-        <tr>
-          <th>Date</th>
-          <th>Заявка #</th>
-          <th>Покупатель</th>
-          <th>Программа тура</th>
-          <th>Visitor Name</th>
-          <th>Passport</th>
-          <th>Nationality</th>
-          <th>Vendor</th>
-          <th>Product Cost</th>
-          <th>Prduct Fee</th>
-          <th>Payment Type</th>
-          <th>Remarks</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for order in orders %}
-          {% if order.orderPayments|last.state == 'paid' %}
-            {% for op in order.orderProducts %}
-              {% set costPrint = true %}
-              {% for companion in order.orderCompanions %}
-                <tr>
-                  <td>{{order.createdAt|localizeddate('short', 'none')}}</td>
-                  <td><a class="btn btn-link" href="{{ path('orders_show', { 'id': order.id }) }}">{{ order.number }}</a></td>
-                  <td>{{ order.customer.name }}</td>
-                  <td>{{ op.product.name }}</td>
-                  <td>{{ companion.name }}</td>
-                  <td>{{ companion.passportNumber }}</td>
-                  <td>{{ companion.nationality|country }}</td>
-                  <td>{{ op.product.vendor.name }}</td>
-                  <td>{{ (costPrint) ? (op.unitCost * op.quantity)/100 : 0 }}</td>
-                  <td>{{ (costPrint) ?  op.total/100 : 0 }}</td>
-                  <td>{{ (costPrint) ?  order.orderPayments|last.method }}</td>
-                  <td></td>
-                </tr>
-                {% set costPrint = false %}
-              {% endfor %}
-            {% endfor %}
-          {% endif %}
-        {% endfor %}
-      </tbody>
-    </table>
   </div>
+{% endblock %}
+
+{% block portletBody %}
+  <table class="table table-striped records_list" id="datatable" cellspacing="0">
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>Заявка #</th>
+        <th>Покупатель</th>
+        <th>Программа тура</th>
+        <th>Visitor Name</th>
+        <th>Passport</th>
+        <th>Nationality</th>
+        <th>Vendor</th>
+        <th>Product Cost</th>
+        <th>Prduct Fee</th>
+        <th>Payment Type</th>
+        <th>Remarks</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for order in orders %}
+        {% if order.orderPayments|last.state == 'paid' %}
+          {% for op in order.orderProducts %}
+            {% set costPrint = true %}
+            {% for companion in order.orderCompanions %}
+              <tr>
+                <td>{{order.createdAt|localizeddate('short', 'none')}}</td>
+                <td><a class="btn btn-link" href="{{ path('orders_show', { 'id': order.id }) }}">{{ order.number }}</a></td>
+                <td>{{ order.customer.name }}</td>
+                <td>{{ op.product.name }}</td>
+                <td>{{ companion.name }}</td>
+                <td>{{ companion.passportNumber }}</td>
+                <td>{{ companion.nationality|country }}</td>
+                <td>{{ op.product.vendor.name }}</td>
+                <td>{{ (costPrint) ? (op.unitCost * op.quantity)/100 : 0 }}</td>
+                <td>{{ (costPrint) ?  op.total/100 : 0 }}</td>
+                <td>{{ (costPrint) ?  order.orderPayments|last.method }}</td>
+                <td></td>
+              </tr>
+              {% set costPrint = false %}
+            {% endfor %}
+          {% endfor %}
+        {% endif %}
+      {% endfor %}
+    </tbody>
+  </table>
 {% endblock %}
 {% block javascripts %}
   {{ parent() }}

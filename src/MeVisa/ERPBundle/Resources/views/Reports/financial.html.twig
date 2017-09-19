@@ -1,18 +1,22 @@
-{% extends 'AppBundle:Default:adminLayout.html.twig' %}
-{% block backLink %}{{ path('reports') }}{% endblock %}
-{% block adminPanelTitle %}Financial Reports{% endblock %}
-{% block adminPanelTitleBadge %}{{ reports|length }}{% endblock %}
-{% block adminPanelHeadingRight %}
-  <!-- Button trigger modal -->
-  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#customForm">
-    Custom
-  </button>
-  <a href="{{ path('reports_financial_archive') }}" class="btn btn-default">Archive</a>
+{# src/MeVisa/ERPBundle/Resources/views/Reports/financial.html.twig #}
+{% extends ':metronic:portlet.html.twig' %}
+{% block title %}Financial Reports{% endblock %}
+
+{% block portletActions %}
+  <div class="actions">
+    <!-- Button trigger modal -->
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#customForm">
+      Custom
+    </button>
+    <a href="{{ path('reports_financial_archive') }}" class="btn btn-default">Archive</a>
+  </div>
 {% endblock %}
-{% block adminPanelBody %}
+
+{% block portletBody %}
   <style type="text/css">
     .ui-datepicker {z-index: 1100 !important;}
   </style>
+
   <ul class="list-group">
     {% for report in reports %}
       <li class="list-group-item">
@@ -20,9 +24,6 @@
       </li>
     {% endfor %}
   </ul>
-{% endblock %}
-{% block content %}
-  {{ parent() }}
   <!-- Modal -->
   <div class="modal fade" id="customForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">

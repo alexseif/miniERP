@@ -1,37 +1,42 @@
-{% extends 'base.html.twig' %}
+{# src/MeVisa/ERPBundle/Resources/views/Reports/productsReport.html.twig #}
+{% extends ':metronic:portlet.html.twig' %}
+
 {% block title %}Report for Products{% endblock %}
 {% block stylesheets %}
   {{ parent() }}
 
 {% endblock %}
-{% block wrapper %}
-  <div class="container-fluid">
+
+{% block portletActions %}
+  <div class="actions">
     <a class="btn btn-default ml-5" href="{{ path('reports') }}"><span class="glyphicon glyphicon-arrow-left"></span></a>
-    Revenue by Product <strong>{{ month or year ? "for" }} {{ month? month }} {{ year? year}} </strong>
-    <hr/>
-    <div id="error_div"></div>
-    <div id="dashboard_div">
-      <div class="row">
-        <div class="col-md-4">
-          <div class="dropdown">
-            <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-              Filter By Month <span class="caret"></span>
-            </button>
-            <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-              <li><a href="{{ path('reports_products') }}">All</a></li>
-                {% for report in reports %}
-                <li><a href="{{ path('reports_products', {month: report.gBMonth, year:report.gBYear}) }}">{{ report.gBMonth }} {{ report.gBYear }}</a></li>
-                {% endfor %}
-            </ul>
-          </div>
-          <div id="filter_div"></div>
-          <div id="table_div"></div>
+  </div>
+{% endblock %}
+
+{% block portletBody %}
+  <div id="error_div"></div>
+  <div id="dashboard_div">
+    <div class="row">
+      <div class="col-md-4">
+        <div class="dropdown">
+          <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+            Filter By Month <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+            <li><a href="{{ path('reports_products') }}">All</a></li>
+              {% for report in reports %}
+              <li><a href="{{ path('reports_products', {month: report.gBMonth, year:report.gBYear}) }}">{{ report.gBMonth }} {{ report.gBYear }}</a></li>
+              {% endfor %}
+          </ul>
         </div>
-        <div id="chart_div" style="min-height: 500px;" class="col-md-8"></div>
+        <div id="filter_div"></div>
+        <div id="table_div"></div>
       </div>
+      <div id="chart_div" style="min-height: 500px;" class="col-md-8"></div>
     </div>
   </div>
 {% endblock %}
+
 {% block javascripts %}
   {{ parent() }}
   <!--Load the AJAX API-->
