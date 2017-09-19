@@ -13,6 +13,7 @@ class DefaultController extends Controller
 {
 
   /**
+   * @Route("/", name="homepage")
    * @Route("/", name="dashboard")
    * @Template()
    */
