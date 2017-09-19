@@ -1,13 +1,14 @@
-{% extends 'MeVisaERPBundle:Orders:defaultLayout.html.twig' %}
+{# srv/MeVisa/ERPBundle/Resources/views/Orders/new.html.twig #}
+{% extends ':metronic:portlet.html.twig' %}
+
 {% block title %}New Order{% endblock %}
-{% block adminPanelTitle %}New Order{% endblock %}
-{% block adminPanelFormStart %}
-  {{ form_start(form) }}
+
+
+{% block portletBody %}
+  {{ form_start(form, {'attr':{'class':'form'} }) }}
   {{ form_row(form._token) }}
   {{ form_errors(form) }}
-{% endblock %}
-{% block adminPanelBody %}
-  <div class="panel-body">
+  <div class="form-body">
     <div class="row">
       <div class="col-xs-offset-7 col-sm-5">
         <!-- Sales By -->
@@ -53,19 +54,18 @@
       </div>
     </div>
   </div>
-{% endblock %}
-{% block adminPanelFooter %}
-  <div class="panel-footer">
+  <div class="form-actions">
     <div class="row">
       <div class="col-sm-4">{{ form_row(form.total) }}</div>
       <div class="col-sm-7">{{ form_widget(form.state) }}</div>
       <div class="col-sm-1">{{ form_widget(form.save) }}</div>
     </div>
   </div>
-{% endblock %}
-{% block adminPanelFormEnd %}
   {{ form_end(form, {'render_rest': false}) }}
+
 {% endblock %}
+
+
 {% block javascripts %}
   {{ parent() }}
   <script type="text/javascript" src="/js/orders.js"></script>
