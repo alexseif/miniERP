@@ -11,6 +11,7 @@
 {% endblock %}
 
 
+{% block portletTitleIcon %}icon-users{% endblock %}
 {% block portletTitle %}Users <label class="badge">{{ users|length }}</label>{% endblock %}
 {% block portletActions %}
   <div class="actions">
@@ -47,6 +48,7 @@
     </tbody>
   </table>
 {% endblock %}
+
 {% block javascripts %}
   {{ parent() }}
   <!-- BEGIN PAGE LEVEL PLUGINS -->

@@ -1,12 +1,12 @@
 me_visa_erp:
     resource: "@MeVisaERPBundle/Controller/"
     type:     annotation
-    prefix:   /admin
+    prefix:   /
 
 me_visa_crm:
     resource: "@MeVisaCRMBundle/Controller/"
     type:     annotation
-    prefix:   /admin
+    prefix:   /
 
 app:
     resource: "@AppBundle/Controller/"
