@@ -4,12 +4,13 @@
     <i class="fa fa-plus"></i>
   </button>
   <ul class="dropdown-menu-v2" role="menu">
-    <li><a href="{{ path('orders_new') }}">New Order</a></li>
-{#    <li class="active">#}
-    <li>
-      <a href="{{ path('orders_new') }}">New Customer</a>
+    <li class="{{ 'orders_new' == app.request.get('_route')? "active" }}">
+      <a href="{{ path('orders_new') }}">New Order</a>
     </li>
-    <li>
+    <li class="{{ 'customers_new' == app.request.get('_route')? "active" }}">
+      <a href="{{ path('customers_new') }}">New Customer</a>
+    </li>
+    {#<li>
       <a href="#">New Comment</a>
     </li>
     <li>
@@ -25,7 +26,7 @@
       <a href="#">Feedbacks
         <span class="badge badge-danger">2</span>
       </a>
-    </li>
+    </li>#}
   </ul>
 </div>
 <!-- END GROUP INFORMATION -->

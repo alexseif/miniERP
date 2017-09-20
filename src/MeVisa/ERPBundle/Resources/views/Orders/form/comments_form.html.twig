@@ -1,11 +1,11 @@
-<div class="panel panel-default">
-  <div class="panel-heading">
-    <span class="panel-title">Notes</span>
-    <div class="pull-right">
+<div class="portlet light bordered">
+  <div class="portlet-title">
+    <div class="caption">Notes</div>
+    <div class="actions">
       <span class="badge">{{ app.user.username }}</span>
     </div>
   </div>
-  <div class="panel-body order-comment">
+  <div class="portlet-body order-comment">
     <ul class="comments">
       {%for comment in order.orderComments%}
         <li class="clearfix">

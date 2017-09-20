@@ -24,12 +24,12 @@ tr.bg-success:focus {
     clear: both;
 }
 .order-comment{
-    font-size: 14px;
+/*    font-size: 14px;
     background:#eee;
     padding-left: 15%;
     padding-right: 15%;
     max-height: 244px;
-    overflow-y: scroll;
+    overflow-y: scroll;*/
 }
 
 .order-comment ul{

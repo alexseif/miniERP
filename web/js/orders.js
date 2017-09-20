@@ -53,7 +53,7 @@ function addProductForm() {
     $('.remove_product_link').show();
     $('input[name="mevisa_erpbundle_orders[orderProducts][' + index + '][unitPrice]"]').attr('readonly', !$agent);
     $('select[name="mevisa_erpbundle_orders[orderProducts][' + index + '][product]"]').focus();
-    $('.chosen').chosen();
+//    $('.chosen').chosen();
 }
 
 function addCompanions() {
