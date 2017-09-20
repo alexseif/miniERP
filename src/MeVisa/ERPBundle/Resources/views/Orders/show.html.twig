@@ -90,7 +90,7 @@
       </div>
       <div class="col-sm-6">
         <div class="btn-toolbar pull-right" role="toolbar">
-          {% if((order.deletedAt is not null) and (is_granted('ROLE_SUPER_ADMIN'))) %}
+          {% if((order.deletedAt is null) and (is_granted('ROLE_SUPER_ADMIN'))) %}
             {% if order.updatedAt or "POS" == order.channel %}
               {{ form_start(status_form) }}
               {% for btn in status_form %}
