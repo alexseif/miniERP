@@ -2,21 +2,28 @@
 {% extends ':metronic:portlet.html.twig' %}
 
 {% block title %}Edit Order {{ order.number }}{% endblock %}
-{% block portletBody %}
-  {% for product in order.orderProducts %}
-    {% if (product.product.urgent) %}
-      <span class="label label-purple">Urgent</span>
+{% block portletActions %}
+  <div class="actions">
+    {% for product in order.orderProducts %}
+      {% if (product.product.urgent) %}
+        <span class="label label-purple">Urgent</span>
+      {% endif %}
+    {% endfor %}
+    {% if (order.ticketRequired) %}
+      <span class="label label-warning">Ticket Required</span>
     {% endif %}
-  {% endfor %}
-  {% if (order.ticketRequired) %}
-    <span class="label label-warning">Ticket Required</span>
-  {% endif %}
-  &nbsp;<span class="label label-default">{{ order.channel|upper }}</span>
-  &nbsp;<span class="label label-{{order.orderState.currentState.bootstrapClass}}">{{ order.stateName|upper }}</span>
-  &nbsp;<span class="label label-default"> {{ order.createdAt|localizeddate }}</span>
-  <span class="label label-{{order.orderState.state('post').bootstrapClass}}">{{ order.postedAt ? 'Posted '~order.postedAt|localizeddate }}</span>
-  <span class="label label-success">{{ order.completedAt ? 'Completed '~order.completedAt |localizeddate }}</span>
+    <span class="label label-default">{{ order.channel|upper }}</span>
+    <span class="label label-{{order.orderState.currentState.bootstrapClass}}">{{ order.stateName|upper }}</span>
+    <span class="label label-default"> {{ order.createdAt|localizeddate }}</span>
+    <span class="label label-{{order.orderState.state('post').bootstrapClass}}">{{ order.postedAt ? 'Posted '~order.postedAt|localizeddate }}</span>
+    <span class="label label-success">{{ order.completedAt ? 'Completed '~order.completedAt |localizeddate }}</span>
+    <!-- Sales By -->
+    <strong>Sales By:</strong> {{ (order.salesBy) ? order.salesBy.username : "N/A" }}
+    <!-- Sales By -->
+  </div>
+{% endblock %}
 
+{% block portletBody %}
   {{ form_start(form, {'attr' : {'class':'form'} }) }}
   {{ form_row(form._token) }}
   {{ form_errors(form) }}
