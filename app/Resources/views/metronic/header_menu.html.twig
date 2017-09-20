@@ -23,7 +23,7 @@
       </ul>
     </li>
     <li class="dropdown dropdown-fw dropdown-fw-disabled  {{ (app.request.get('_route')) starts with 'customers' ? "active open selected" }}">
-      <a href="javascript:;" class="text-uppercase"><i class="icon-briefcase"></i> Customers </a>
+      <a href="{{ path('customers') }}" class="text-uppercase"><i class="icon-briefcase"></i> Customers </a>
       <ul class="dropdown-menu dropdown-menu-fw">
         <li>
           <a href="{{ path('customers') }}"> Customers </a>
