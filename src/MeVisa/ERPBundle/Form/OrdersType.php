@@ -61,7 +61,7 @@ class OrdersType extends AbstractType
           'attr' => array(
             'class' => 'form-control input-inline datepicker',
             'data-provide' => 'datepicker',
-            'data-date-format' => 'dd.mm.yy',
+            'data-date-format' => 'dd.mm.yyyy',
           ))
         )
         ->add('arrival', 'date', array(
@@ -70,7 +70,7 @@ class OrdersType extends AbstractType
           'attr' => array(
             'class' => 'form-control input-inline datepicker',
             'data-provide' => 'datepicker',
-            'data-date-format' => 'dd.mm.yy',
+            'data-date-format' => 'dd.mm.yyyy',
           ))
         )
         ->add('ticketRequired', 'checkbox', array(
