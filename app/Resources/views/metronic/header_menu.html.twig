@@ -33,11 +33,38 @@
     <li class="dropdown dropdown-fw dropdown-fw-disabled {{ (app.request.get('_route')) starts with 'reports' ? "active open selected" }}">
       <a href="javascript:;" class="text-uppercase"><i class="icon-layers"></i> Reports </a>
       <ul class="dropdown-menu dropdown-menu-fw">
-        <li class="dropdown more-dropdown-sub">
-          <a href="{{ path('reports') }}"><i class="icon-basket"></i> Reports </a>
+        {#        <li class="{{ (app.request.get('_route')) starts with 'reports' ? "active" }}">#}
+        {#          <a href="{{ path('reports') }}"><i class="icon-bar-chart"></i> Reports </a>#}
+        {#        </li>#}
+        <li class="{{ (app.request.get('_route')) ends with 'financial' ? "active" }}">
+          <a href="{{ path('reports_financial') }} ">Financial</a>
+        </li>
+        <li class="{{ (app.request.get('_route')) ends with 'accounting' ? "active" }}">
+          <a href="{{ path('reports_accounting') }}">1C Report</a>
+        </li>
+        <li class="{{ (app.request.get('_route')) ends with 'vendors' ? "active" }}">
+          <a href="{{ path('reports_vendors') }} ">Vendors accounts</a>
+        </li>
+        <li class="{{ (app.request.get('_route')) ends with 'revenue' ? "active" }}">
+          <a href="{{ path('reports_revenue') }} ">Revenue</a>
+        </li>
+        <li class="{{ (app.request.get('_route')) ends with 'products' ? "active" }}">
+          <a href="{{ path('reports_products') }} ">Products</a>
+        </li>
+        <li class="{{ (app.request.get('_route')) ends with 'employees' ? "active" }}">
+          <a href="{{ path('reports_employees') }} ">Employees</a>
+        </li>
+        <li class="{{ (app.request.get('_route')) ends with 'salesby' ? "active" }}">
+          <a href="{{ path('reports_sales_by') }} ">Sales By</a>
         </li>
       </ul>
-    <li class="dropdown dropdown-fw dropdown-fw-disabled {{ (app.request.get('_route')) starts with 'settings' ? "active open selected" }} ">
+    <li class="dropdown dropdown-fw dropdown-fw-disabled 
+        {{ (app.request.get('_route')) starts with 'products' ? "active open selected" }}
+        {{ (app.request.get('_route')) starts with 'vendors' ? "active open selected" }} 
+        {{ (app.request.get('_route')) starts with 'currency' ? "active open selected" }} 
+        {{ (app.request.get('_route')) starts with 'companysettings' ? "active open selected" }} 
+        {{ (app.request.get('_route')) starts with 'users' ? "active open selected" }} 
+        ">
       <a href="javascript:;"><i class="icon-docs"></i> Settings </a>
       <ul class="dropdown-menu dropdown-menu-fw">
         <li>

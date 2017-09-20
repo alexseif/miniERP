@@ -3,12 +3,6 @@
 
 {% block title %}Updates by Employee <strong>{{ month or year ? "for" }} {{ month? month }} {{ year? year}} </strong>{% endblock %}
 
-{% block portletActions %}
-  <div class="actions">
-    <a class="btn btn-default ml-5" href="{{ path('reports') }}"><span class="glyphicon glyphicon-arrow-left"></span></a>
-  </div>
-{% endblock %}
-
 {% block portletBody %}
   <div id="error_div"></div>
   <div id="dashboard_div">
