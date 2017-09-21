@@ -7,6 +7,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\CountryType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 class ProductsType extends AbstractType
 {
@@ -20,11 +21,6 @@ class ProductsType extends AbstractType
     $builder
         ->add('country')
         ->add('name')
-        ->add('vendor', 'entity', array(
-          'class' => 'MeVisaERPBundle:Vendors',
-          'choice_label' => 'name',
-          'attr' => array('class' => 'chosen')
-        ))
         ->add('enabled', 'checkbox', array(
           'required' => false,
         ))
@@ -48,13 +44,20 @@ class ProductsType extends AbstractType
             'class' => 'col-sm-12'
           )
         ))
-        ->add('pricing', 'collection', array(
-          'type' => new ProductPricesType(),
-          'allow_add' => true,
-          'attr' => array(
-            'class' => 'pricing'
-          )
-        ))
+//        ->add('pricing', 'collection', array(
+//          'type' => new ProductPricesType(),
+//          'allow_add' => true,
+//          'attr' => array(
+//            'class' => 'pricing'
+//          )
+//        ))
+        ->add('vendors', EntityType::class
+            , array(
+          'class' => 'MeVisaERPBundle:Vendors',
+          'expanded' => true,
+          'multiple' => true
+            )
+        )
     ;
   }
 

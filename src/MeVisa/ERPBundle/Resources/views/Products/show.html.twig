@@ -2,25 +2,24 @@
 {% extends ':metronic:portlet.html.twig' %}
 
 {% block title %}Product: {{ product.name }}{% endblock %}
-{#
+
 {% block portletActions %}
-<div class="actions">
-  <a class="btn btn-circle btn-icon-only btn-default" href="javascript:;">
-    <i class="icon-trash"></i>    
-  </a>
-</div>
-{{ form(vendor_delete) }}
+  <div class="actions">
+    {% if product.urgent %}
+      <span class="label label-purple">Urgent</span>
+    {% endif %}
+    <span class="label label-{{ statusCSS.css((product.enabled ? "enabled":"disabled"))}}">{{ (product.enabled ? "Enabled":"Disabled") }}</span>
+    {#<a class="btn btn-circle btn-icon-only btn-default" href="javascript:;">
+      <i class="icon-trash"></i>    
+      {{ form(vendor_delete) }}
+</a>#}
+  </div>
 {% endblock %}
-#}
+
 {% block portletBodyClass %}form{% endblock %}
 {% block portletBody %}
   <form class="form-horizontal" role="form">
     <div class="form-body">
-      {% if product.urgent %}
-        <span class="label label-purple">Urgent</span>
-      {% endif %}
-      <span class="label label-{{ statusCSS.css((product.enabled ? "enabled":"disabled"))}}">{{ (product.enabled ? "Enabled":"Disabled") }}</span>
-
       <table class="table table-condensed table-bordered">
         <tr>
           <td>
@@ -31,7 +30,14 @@
               <label class="col-sm-2 col-sm-offset-1">Name</label><span class="col-sm-8">{{ product.name }}</span>
             </div>
             <div class="row">
-              <label class="col-sm-2 col-sm-offset-1">Vendor</label><span class="col-sm-8">{{ (product.vendor)?product.vendor.name }}</span>
+              <label class="col-sm-2 col-sm-offset-1">Vendor</label>
+              <div class="col-sm-8">
+                <div class="row">
+                  {% for vendor in product.vendors %}
+                    <div class="col-sm-6">{{ vendor.name }}</div>
+                  {% endfor %}
+                </div>
+              </div>
             </div>
           </td>
           <td rowspan="2">

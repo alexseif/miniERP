@@ -99,9 +99,10 @@
         <script src="/js/chosen.jquery.min.js" type="text/javascript"></script>
 
         <script>
-          {#$(document).ready(function () {
-            $('[data-toggle="dropdown"]').dropdown();
-          });#}
+          $(document).ready(function () {
+            $('select').chosen();
+{#            $('[data-toggle="dropdown"]').dropdown();#}
+          });
         </script>
         {% if app.environment == 'prod' %}
           <script>

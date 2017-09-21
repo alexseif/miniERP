@@ -79,11 +79,14 @@ class Products
   private $urgent;
 
   /**
-   * @Gedmo\Versioned
-   * @ORM\ManyToOne(targetEntity="Vendors", inversedBy="products")
-   * @ORM\JoinColumn(name="vendor_id", referencedColumnName="id")
+   * Many Products have Many Vendors.
+   * @ORM\ManyToMany(targetEntity="Vendors", inversedBy="products")
+   * @ORM\JoinTable(name="product_vendors",
+   *      joinColumns={@ORM\JoinColumn(name="products_id", referencedColumnName="id")},
+   *      inverseJoinColumns={@ORM\JoinColumn(name="vendors_id", referencedColumnName="id")}
+   *      )
    */
-  protected $vendor;
+  protected $vendors;
 
   /**
    * @ORM\OneToMany(targetEntity="ProductPrices", mappedBy="product", cascade={"persist"})
@@ -100,6 +103,7 @@ class Products
   {
     $this->urgent = false;
     $this->pricing = new ArrayCollection();
+    $this->vendors = new ArrayCollection();
   }
 
   /**
@@ -179,29 +183,6 @@ class Products
   public function getEnabled()
   {
     return $this->enabled;
-  }
-
-  /**
-   * Set vendor
-   *
-   * @param string $vendor
-   * @return Products
-   */
-  public function setVendor($vendor)
-  {
-    $this->vendor = $vendor;
-
-    return $this;
-  }
-
-  /**
-   * Get vendor
-   *
-   * @return string 
-   */
-  public function getVendor()
-  {
-    return $this->vendor;
   }
 
   function getWcId()
@@ -357,6 +338,54 @@ class Products
   public function getCountryAndName()
   {
     return (($this->country) ? $this->country . " | " : "") . $this->getName();
+  }
+
+  /**
+   * Add vendors
+   *
+   * @param \MeVisa\ERPBundle\Entity\Vendors $vendors
+   * @return Products
+   */
+  public function addVendor(\MeVisa\ERPBundle\Entity\Vendors $vendors)
+  {
+    $this->vendors[] = $vendors;
+
+    return $this;
+  }
+
+  /**
+   * Remove vendors
+   *
+   * @param \MeVisa\ERPBundle\Entity\Vendors $vendors
+   */
+  public function removeVendor(\MeVisa\ERPBundle\Entity\Vendors $vendors)
+  {
+    $this->vendors->removeElement($vendors);
+  }
+
+  /**
+   * Get vendors
+   *
+   * @return \Doctrine\Common\Collections\Collection 
+   */
+  public function getVendors()
+  {
+    return $this->vendors;
+  }
+
+  /**
+   * 
+   * @param \MeVisa\ERPBundle\Entity\Vendors $vendor
+   * @return bool
+   */
+  public function hasVendor(Vendors $vendor)
+  {
+    return $this->getVendors()->contains($vendor);
+  }
+
+  public function __toString()
+  {
+    return (string) $this->getName();
   }
 
 }

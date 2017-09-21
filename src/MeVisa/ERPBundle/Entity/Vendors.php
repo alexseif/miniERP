@@ -38,7 +38,8 @@ class Vendors
   private $code;
 
   /**
-   * @ORM\OneToMany(targetEntity="Products", mappedBy="vendor")
+   * Many Vendors have Many products.
+   * @ORM\ManyToMany(targetEntity="Products", mappedBy="vendors")
    */
   protected $products;
 
@@ -140,6 +141,7 @@ class Vendors
   public function addProduct(\MeVisa\ERPBundle\Entity\Products $products)
   {
     $this->products[] = $products;
+    $products->addVendor($this);
 
     return $this;
   }
@@ -152,6 +154,54 @@ class Vendors
   public function removeProduct(\MeVisa\ERPBundle\Entity\Products $products)
   {
     $this->products->removeElement($products);
+  }
+
+  /**
+   * 
+   * @param \MeVisa\ERPBundle\Entity\Products $product
+   * @return bool
+   */
+  public function hasProduct(Products $product)
+  {
+    return $this->getProducts()->contains($product);
+  }
+
+  /**
+   * Add orderProducts
+   *
+   * @param \MeVisa\ERPBundle\Entity\OrderProducts $orderProducts
+   * @return Vendors
+   */
+  public function addOrderProduct(\MeVisa\ERPBundle\Entity\OrderProducts $orderProducts)
+  {
+    $this->orderProducts[] = $orderProducts;
+
+    return $this;
+  }
+
+  /**
+   * Remove orderProducts
+   *
+   * @param \MeVisa\ERPBundle\Entity\OrderProducts $orderProducts
+   */
+  public function removeOrderProduct(\MeVisa\ERPBundle\Entity\OrderProducts $orderProducts)
+  {
+    $this->orderProducts->removeElement($orderProducts);
+  }
+
+  /**
+   * Get orderProducts
+   *
+   * @return \Doctrine\Common\Collections\Collection 
+   */
+  public function getOrderProducts()
+  {
+    return $this->orderProducts;
+  }
+
+  public function __toString()
+  {
+    return (string) $this->getName();
   }
 
 }

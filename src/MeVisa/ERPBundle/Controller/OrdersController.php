@@ -141,7 +141,8 @@ class OrdersController extends Controller
 
     return array(
       'order' => $order,
-      'productPrices' => $this->getAvailableProducts(),
+      'products' => $this->getAvailableProducts(),
+      'productPrices' => $this->getAvailableProductPrices(),
       'form' => $form->createView(),
     );
   }
@@ -225,7 +226,7 @@ class OrdersController extends Controller
 
     return array(
       'order' => $order,
-      'productPrices' => $this->getAvailableProducts(),
+      'productPrices' => $this->getAvailableProductPrices(),
       'documents' => $this->getThumbnails($order),
       'logs' => $this->get('erp.order')->getOrderLog($id),
       'form' => $form->createView(),
@@ -581,6 +582,14 @@ class OrdersController extends Controller
   }
 
   private function getAvailableProducts()
+  {
+    $em = $this->getDoctrine()->getManager();
+
+    $products = $em->getRepository('MeVisaERPBundle:Products')->findAllEnabled();
+    return $products;
+  }
+
+  private function getAvailableProductPrices()
   {
     $em = $this->getDoctrine()->getManager();
     //FIXME: Select with invalid product_prices produces errors
