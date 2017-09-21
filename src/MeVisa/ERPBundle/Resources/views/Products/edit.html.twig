@@ -2,7 +2,35 @@
 {% extends ':metronic:portlet.html.twig' %}
 
 {% block title %}Edit Product: {{ product.name }}{% endblock %}
-{% block portletBody %}{{ form(product_form) }}{% endblock %}
+{% block portletBody %}
+  {{ form_start(product_form, {'attr':{'class':'form'} }) }}
+  <div class="form-body">
+    {{ form_errors(product_form) }}
+    {{ form_row(product_form._token) }}
+    {{ form_row(product_form.name) }}
+    {{ form_row(product_form.country) }}
+    <div class="row">
+      <div class="col-md-4 col-md-offset-2">
+        {{ form_row(product_form.enabled) }}
+        {{ form_row(product_form.urgent) }}
+        {{ form_row(product_form.wcCalc) }}
+      </div>
+      <div class="col-md-6">
+        {{ form_row(product_form.requiredDocuments) }}
+      </div>
+    </div>
+    <div class="pricing" data-index="{{product.pricing|length}}" data-prototype="{{
+form_row(product_form.pricing.vars.prototype.cost, {'value' : (product.pricing|last)?product.pricing|last.cost/100} ) 
+~ form_row(product_form.pricing.vars.prototype.price, {'value' : (product.pricing|last)?product.pricing|last.price/100} )}}">
+    </div>
+    <hr/>
+    {{ form_row(product_form.vendors) }}
+  </div>
+  <div class="form-actions">
+    {{ form_row(product_form.submit) }}
+  </div>
+  {{ form_end(product_form, {"render_rest": false}) }}
+{% endblock %}
 
 {% block javascripts %}
   {{ parent() }}
