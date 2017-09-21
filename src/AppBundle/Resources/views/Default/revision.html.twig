@@ -1,13 +1,19 @@
-{% extends 'MeVisaERPBundle:Orders:defaultLayout.html.twig' %}
+{# src/AppBundle/Resources/views/Default/revision.html.twig #}
+{% extends ':metronic:base.html.twig' %}
+
+{% block title %}
+  Revision
+{% endblock %}
+
 {% block stylesheets %}
   {{ parent() }}
-  <link rel="stylesheet" type="text/css" href="/css/dataTables.bootstrap.min.css" />
-  <style type="text/css">
-    table.dataTable{margin: 0 !important;}
-    div.dataTables_wrapper div.dataTables_paginate{text-align: center;}
-  </style>
+  <!-- BEGIN PAGE LEVEL PLUGINS -->
+  <link href="/metronic/assets/global/plugins/datatables/datatables.min.css" rel="stylesheet" type="text/css" />
+  <link href="/metronic/assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.css" rel="stylesheet" type="text/css" />
+  <!-- END PAGE LEVEL PLUGINS -->
 {% endblock %}
-{% block adminPanel %}
+
+{% block content %}
   <form class="pull-right" action="{{path('revision')}}">
     <input type="date" name="date" value="{{ app.request.get('date') }}"/>
     <input type="submit"/>
@@ -15,99 +21,109 @@
   <ul class="nav nav-tabs" role="tablist">
     <li><button class="btn btn-default">{{ dateTime|localizeddate('medium', 'none') }} <span class="badge">{{ orders|length }}</span></button></li>
   </ul>
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <div class="row">
-        <div class="col-sm-12">
-          <div id="datatable-options" class="text-right">
-            <div class="row">
-              <div class="col-sm-4">
-                <div id="search-state" class="pull-left"></div>
-                <div id="search-pay" class="pull-left"></div>
-                <div id="search-product" class="pull-left"></div>
-              </div>
-              <div class="col-sm-5"><input type="search" id="datatable-search" class="form-control" placeholder="Search" aria-controls="datatable"></div>
-              <div class="col-sm-3">
-                <select name="datatable_length" id="datatable-length" aria-controls="datatable"><option value="10">10</option><option value="25">25</option><option value="50">50</option><option value="100">100</option></select>
-                <div class="text-muted" id="datatable-info"></div>
-              </div>
-            </div>
-          </div>
-        </div>
+  <div id="datatable-options" class="text-right">
+    <div class="row">
+      <div class="col-sm-2">
+        <div id="search-state"></div>
       </div>
-    </div>
-    <table class="table table-bordered table-striped table-hover records_list" id="datatable" cellspacing="0">
-      <thead>
-        <tr>
-          <th>Order #</th>
-          <th>State</th>
-          <th>Payment</th>
-          <th>Country</th>
-          <th data-orderable="false">Customer</th>
-          <th>Channel</th>
-          <th>Adjustment</th>
-          <th>Total</th>
-          <th>Created</th>
-          <th data-visible="false">Products</th>
-          <th data-orderable="false"></th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for order in orders %}
-          {% set urgent = ''%}
-          {% set highlight = ''%}
-          {% if order.state == "post" %}
-            {% if  (date(order.postedAt) < date('-2days')) and order.postedAt.timestamp is defined %}
-              {% set highlight = 'highlight' %}
-            {% endif %}
-          {% endif %}
-          {% if order.state == "backoffice" %}
-            {% if  (date(order.createdAt) < date('-2days')) %}
-              {% set highlight = 'highlight' %}
-            {% endif %}
-          {% endif %}
-          {% for product in order.orderProducts %}
-            {% if (product.product.urgent) %}
-              {% set urgent='urgent' %}
-            {% endif %}
-          {% endfor %}
-          <tr class="{{ highlight }} {{ urgent }}">
-            <td class="text-center col-sm-1"><a class="btn btn-link" href="{{ path('orders_show', { 'id': order.id }) }}">{{ order.number }}</a></td>
-            <td class="col-sm-1"><span class="label label-{{ statusCSS.css(order.state) }}">{{ order.state|upper }}</span></td>
-              {% if(order.orderPayments|length) %}
-              <td class="col-sm-1 payment" data-search="{{order.orderPayments|last.state|replace({'_':' '})|upper }} {{ order.orderPayments|last.method|replace({'_':' '})|upper }}">
-                <span class="label label-{{ statusCSS.css(order.orderPayments|last.state) }}">{{ order.orderPayments|last.state|replace({'_':' '})|upper }}</span>
-                {{ order.orderPayments|last.method|replace({'_':' '})|upper }}
-              </td>
-            {% else %}
-              <td class="col-sm-1 payment"></td>
-            {% endif %}
-            <td class="col-sm-2">{{ order.orderProducts|first.product.country }}</td>
-            <td class="col-sm-2">{{ order.customer.name }}</td>
-            <td class="col-sm-1">{{ order.channel }}</td>
-            <td class="text-right col-sm-1">{{ (order.adjustmentTotal/100)|localizedcurrency('RUB') }}</td>
-            <td class="text-right col-sm-2">{{ (order.total/100)|localizedcurrency('RUB') }}</td>
-            <td class="col-sm-2">{% if order.createdAt %}{{ order.createdAt|localizeddate('medium', 'short') }}{% endif %}</td>
-            <td class="" >{% for product in order.orderProducts %}{{ product.product.name }},{% endfor %}</td>
-            <td class="col-sm-1"><a class="btn btn-primary btn-sm" href="{{ path('orders_show', { 'id': order.id }) }}">Open</a></td>
-          </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-    <div class="panel-footer">
-      <div id="datatable-pagination" class="dataTables_wrapper">
+      <div class="col-sm-2">
+        <div id="search-pay"></div>
+      </div>
+      <div class="col-sm-2">
+        <div id="search-product"></div>
+      </div>
+      <div class="col-sm-3"><input type="search" id="datatable-search" class="form-control" placeholder="Search" aria-controls="datatable"></div>
+      <div class="col-sm-3">
+        <select name="datatable_length" id="datatable-length" aria-controls="datatable"><option value="10">10</option><option value="25">25</option><option value="50">50</option><option value="100">100</option></select>
+        <div class="text-muted" id="datatable-info"></div>
       </div>
     </div>
   </div>
+  {#        </div>#}
+  {#      </div>#}
+  {#    </div>#}
+  <table class="table table-bordered table-striped table-hover records_list" id="datatable" cellspacing="0">
+    <thead>
+      <tr>
+        <th>Order #</th>
+        <th>State</th>
+        <th>Payment</th>
+        <th>Country</th>
+        <th data-orderable="false">Customer</th>
+        <th>Channel</th>
+        <th>Adjustment</th>
+        <th>Total</th>
+        <th>Created</th>
+        <th data-visible="false">Products</th>
+        <th data-orderable="false"></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for order in orders %}
+        {% set urgent = ''%}
+        {% set highlight = ''%}
+        {% if order.state == "post" %}
+          {% if  (date(order.postedAt) < date('-2days')) and order.postedAt.timestamp is defined %}
+            {% set highlight = 'highlight' %}
+          {% endif %}
+        {% endif %}
+        {% if order.state == "backoffice" %}
+          {% if  (date(order.createdAt) < date('-2days')) %}
+            {% set highlight = 'highlight' %}
+          {% endif %}
+        {% endif %}
+        {% for product in order.orderProducts %}
+          {% if (product.product.urgent) %}
+            {% set urgent='urgent' %}
+          {% endif %}
+        {% endfor %}
+        <tr class="{{ highlight }} {{ urgent }}">
+          <td class="text-center col-sm-1"><a class="btn btn-link" href="{{ path('orders_show', { 'id': order.id }) }}">{{ order.number }}</a></td>
+          <td class="col-sm-1"><span class="label label-{{ statusCSS.css(order.state) }}">{{ order.state|upper }}</span></td>
+            {% if(order.orderPayments|length) %}
+            <td class="col-sm-1 payment" data-search="{{order.orderPayments|last.state|replace({'_':' '})|upper }} {{ order.orderPayments|last.method|replace({'_':' '})|upper }}">
+              <span class="label label-{{ statusCSS.css(order.orderPayments|last.state) }}">{{ order.orderPayments|last.state|replace({'_':' '})|upper }}</span>
+              {{ order.orderPayments|last.method|replace({'_':' '})|upper }}
+            </td>
+          {% else %}
+            <td class="col-sm-1 payment"></td>
+          {% endif %}
+          <td class="col-sm-2">{{ order.orderProducts|first.product.country }}</td>
+          <td class="col-sm-2">{{ order.customer.name }}</td>
+          <td class="col-sm-1">{{ order.channel }}</td>
+          <td class="text-right col-sm-1">{{ (order.adjustmentTotal/100)|localizedcurrency('RUB') }}</td>
+          <td class="text-right col-sm-2">{{ (order.total/100)|localizedcurrency('RUB') }}</td>
+          <td class="col-sm-2">{% if order.createdAt %}{{ order.createdAt|localizeddate('medium', 'short') }}{% endif %}</td>
+          <td class="" >{% for product in order.orderProducts %}{{ product.product.name }},{% endfor %}</td>
+          <td class="col-sm-1"><a class="btn btn-primary btn-sm" href="{{ path('orders_show', { 'id': order.id }) }}">Open</a></td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <div class="form-actions">
+    <div id="datatable-pagination" class="dataTables_wrapper">
+    </div>
+  </div>
+  {#  </div>#}
 {% endblock %}
 
 {% block javascripts %}
   {{ parent() }}
-  <script src="/js/datatables.min.js"></script>
-  {#    <script src="/js/dataTables.bootstrap.min.js"></script>#}
+  <!-- BEGIN PAGE LEVEL PLUGINS -->
+  <script src="/metronic/assets/global/scripts/datatable.js" type="text/javascript"></script>
+  <script src="/metronic/assets/global/plugins/datatables/datatables.min.js" type="text/javascript"></script>
+  <script src="/metronic/assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.js" type="text/javascript"></script>
+  <!-- END PAGE LEVEL PLUGINS -->
+  <!-- BEGIN THEME GLOBAL SCRIPTS -->
+  <script src="/metronic/assets/global/scripts/app.min.js" type="text/javascript"></script>
+  <!-- END THEME GLOBAL SCRIPTS -->
+  <!-- BEGIN PAGE LEVEL SCRIPTS -->
+  {#  <script src="/metronic/assets/pages/scripts/table-datatables-fixedheader.min.js" type="text/javascript"></script>#}
+  <!-- END PAGE LEVEL SCRIPTS -->
   <script type="text/javascript">
     var table;
     var products = [];
+
     $(document).ready(function () {
       var states = [];
       $('#datatable .payment').each(function () {
@@ -116,11 +132,54 @@
           states.push(state);
         }
       });
+
+      //table-datatables-fixedheader.js
+      var fixedHeaderOffset = 0;
+      if (App.getViewPort().width < App.getResponsiveBreakpoint('md')) {
+        if ($('.page-header').hasClass('page-header-fixed-mobile')) {
+          fixedHeaderOffset = $('.page-header').outerHeight(true);
+        }
+      } else if ($('body').hasClass('page-header-menu-fixed')) { // admin 3 fixed header menu mode
+        fixedHeaderOffset = $('.page-header-menu').outerHeight(true);
+      } else if ($('body').hasClass('page-header-top-fixed')) { // admin 3 fixed header top mode
+        fixedHeaderOffset = $('.page-header-top').outerHeight(true);
+      } else if ($('.page-header').hasClass('navbar-fixed-top')) {
+        fixedHeaderOffset = $('.page-header').outerHeight(true);
+      } else if ($('body').hasClass('page-header-fixed')) {
+        fixedHeaderOffset = 64; // admin 5 fixed height
+      }
+
       table = $('#datatable').DataTable({
+        // Internationalisation. For more info refer to http://datatables.net/manual/i18n
+        "language": {
+          "aria": {
+            "sortAscending": ": activate to sort column ascending",
+            "sortDescending": ": activate to sort column descending"
+          },
+          "emptyTable": "No data available in table",
+          "info": "Showing _START_ to _END_ of _TOTAL_ entries",
+          "infoEmpty": "No entries found",
+          "infoFiltered": "(filtered1 from _MAX_ total entries)",
+          "lengthMenu": "_MENU_ entries",
+          "search": "Search:",
+          "zeroRecords": "No matching records found"
+        },
+
+        // Or you can use remote translation file
+        //"language": {
+        //   url: '//cdn.datatables.net/plug-ins/3cfcc339e89/i18n/Portuguese.json'
+        //},
+
+        // setup rowreorder extension: http://datatables.net/extensions/fixedheader/
+        fixedHeader: {
+          header: true,
+          headerOffset: fixedHeaderOffset
+        },
+
         initComplete: function () {
           this.api().columns(1).every(function () {
             var column = this;
-            var select = $('<select><option value="">All</option></select>')
+            var select = $('<select class="form-control"><option value="">All</option></select>')
                     .appendTo($('#search-state').empty())
                     .on('change', function () {
                       var val = $.fn.dataTable.util.escapeRegex(
@@ -138,7 +197,7 @@
           });
           this.api().columns(2).every(function () {
             var column = this;
-            var select = $('<select><option value="">All</option></select>')
+            var select = $('<select class="form-control"><option value="">All</option></select>')
                     .appendTo($('#search-pay').empty())
                     .on('change', function () {
                       var val = $.fn.dataTable.util.escapeRegex(
@@ -153,9 +212,9 @@
 
             }
           });
-          this.api().columns(8).every(function () {
+          this.api().columns(9).every(function () {
             var column = this;
-            var select = $('<select><option value="">All</option></select>')
+            var select = $('<select class="form-control"><option value="">All</option></select>')
                     .appendTo($('#search-product').empty())
                     .on('change', function () {
                       var val = $.fn.dataTable.util.escapeRegex($(this).val());
