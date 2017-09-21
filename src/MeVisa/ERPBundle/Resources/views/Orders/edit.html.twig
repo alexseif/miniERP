@@ -12,6 +12,11 @@
   <link href="/metronic/assets/global/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css" />
   <link href="/metronic/assets/global/plugins/clockface/css/clockface.css" rel="stylesheet" type="text/css" />
   <!-- END PAGE LEVEL PLUGINS -->
+  <style>
+    .order-products-form tbody tr td{
+      padding: 0;
+    }
+  </style>
 {% endblock %}
 
 
@@ -164,18 +169,34 @@
   <script type="text/javascript" src="/js/orderDocuments.js"></script>
   <script type="text/javascript">
     var selectCustomer = '{{ path('select_customer') }}';
-            var PAX = {{ (order.people)?:0 }};
-            var $agent = {{ (order.customer.agent) ? 'true' : 'false' }};
-    var productPrices = new Array();
-    var distance;
+    var PAX = {{ (order.people)?:0 }};
+    var isAccountant = false;
+    {% if(is_granted('ROLE_ACCOUNTANT')) %}
+      isAccountant = true;
+    {% endif %}
+      var $agent = {{ (order.customer.agent) ? 'true' : 'false' }};
+      var productPrices = new Array();
+      var productCosts = new Array();
+      var distance;
     {% if not is_granted('ROLE_SUPER_ADMIN') %}
       $(document).ready(function () {
-        $('input[value="cancelled"]').attr('disabled', true);
+      $('input[value="cancelled"]').attr('disabled', true);
       });
     {% endif %}
 
     {% for price in productPrices %}
       productPrices[{{ price.product.id }}] = {{price.price/100}};
+      productCosts[{{ price.product.id }}] = {{price.cost/100}};
+    {% endfor %}
+
+      var vendors = new Array();
+    {% for product in products %}
+      {% for vendor in product.vendors %}
+        if (typeof vendors[{{product.id}}] == 'undefined'){
+        vendors[{{product.id}}] = new Array();
+        }
+        vendors[{{product.id}}][{{vendor.id}}] = "{{vendor.name}}";
+      {% endfor %}
     {% endfor %}
   </script>
 {% endblock %}

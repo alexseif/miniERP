@@ -92,15 +92,23 @@
   <script type="text/javascript">
     var selectCustomer = '{{ path('select_customer') }}';
     var PAX = {{ (order.people)?:0 }};
-    var productPrices = new Array();
+    var isAccountant = false;
+    {% if(is_granted('ROLE_ACCOUNTANT')) %}
+      isAccountant = true;
+    {% endif %}
+
+      var productPrices = new Array();
+      var productCosts = new Array();
     {% for price in productPrices %}
       productPrices[{{ price.product.id }}] = {{price.price/100}};
+      productCosts[{{ price.product.id }}] = {{price.cost/100}};
     {% endfor %}
+
       var vendors = new Array();
     {% for product in products %}
       {% for vendor in product.vendors %}
         if (typeof vendors[{{product.id}}] == 'undefined'){
-          vendors[{{product.id}}] = new Array();
+        vendors[{{product.id}}] = new Array();
         }
         vendors[{{product.id}}][{{vendor.id}}] = "{{vendor.name}}";
       {% endfor %}

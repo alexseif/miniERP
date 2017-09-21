@@ -1,12 +1,20 @@
+function updateProductPrice(ele) {
+  index = ele.attr('name').replace(/\D/g, '');
+  $productPrice = productPrices[$('select[name="mevisa_erpbundle_orders[orderProducts][' + index + '][product]"]').val()];
+  $productCost = productCosts[$('select[name="mevisa_erpbundle_orders[orderProducts][' + index + '][product]"]').val()];
+  $('input[name="mevisa_erpbundle_orders[orderProducts][' + index + '][unitPrice]"]').val($productPrice);
+  console.log($productCost);
+  $('input[name="mevisa_erpbundle_orders[orderProducts][' + index + '][unitCost]"]').val($productCost);
+}
+
 function updatePricesAndTotals() {
   var index = $productHolder.data('index');
   var subtotal = 0;
   var total = 0;
 
   for (i = 0; i < index; i++) {
-    $productPrice = productPrices[$('select[name="mevisa_erpbundle_orders[orderProducts][' + i + '][product]"]').val()];
-    $qty = $('input[name="mevisa_erpbundle_orders[orderProducts][' + i + '][quantity]"]').val();
-    $('input[name="mevisa_erpbundle_orders[orderProducts][' + i + '][unitPrice]"]').val($productPrice);
+    $productPrice = parseInt($('input[name="mevisa_erpbundle_orders[orderProducts][' + i + '][unitPrice]"]').val());
+    $qty = parseInt($('input[name="mevisa_erpbundle_orders[orderProducts][' + i + '][quantity]"]').val());
     $total = $productPrice * $qty;
     $('input[name="mevisa_erpbundle_orders[orderProducts][' + i + '][total]"]').val($total);
     subtotal += $total;
@@ -38,21 +46,25 @@ function agentPrices() {
   }
   var index = $productHolder.data('index');
   for (i = 0; i < index; i++) {
-    $('input[name="mevisa_erpbundle_orders[orderProducts][' + i + '][unitPrice]"]').attr('readonly', !$agent);
+    $('input[name="mevisa_erpbundle_orders[orderProducts][' + i + '][unitPrice]"]').attr('readonly', !($agent || isAccountant));
   }
 }
 
 function addProductForm() {
   addPrototypeForm('tbody.orderProducts', '<tr></tr>');
   $('select[name="mevisa_erpbundle_orders[orderProducts][' + index + '][product]"]').change(function () {
-    updateVendors(index);
+    updateProductPrice($(this));
+    updateVendors($(this));
     updatePricesAndTotals();
   });
   $('input[name="mevisa_erpbundle_orders[orderProducts][' + index + '][quantity]"]').change(function () {
     updatePricesAndTotals();
   });
+  $('input[name="mevisa_erpbundle_orders[orderProducts][' + index + '][unitPrice]"]').change(function () {
+    updatePricesAndTotals();
+  });
   $('.remove_product_link').show();
-  $('input[name="mevisa_erpbundle_orders[orderProducts][' + index + '][unitPrice]"]').attr('readonly', !$agent);
+  $('input[name="mevisa_erpbundle_orders[orderProducts][' + index + '][unitPrice]"]').attr('readonly', !($agent || isAccountant));
   $('select[name="mevisa_erpbundle_orders[orderProducts][' + index + '][product]"]').focus();
   $('select[name="mevisa_erpbundle_orders[orderProducts][' + index + '][vendor]"] option:not(:first)').hide();
   $('select').chosen();
@@ -87,7 +99,8 @@ function checkCompanions(alrt) {
   }
 }
 
-function updateVendors(index) {
+function updateVendors(ele) {
+  index = ele.attr('name').replace(/\D/g, '');
   $('select[name="mevisa_erpbundle_orders[orderProducts][' + index + '][vendor]"] option:not(:first)').hide();
   var current = vendors[$('select[name="mevisa_erpbundle_orders[orderProducts][' + index + '][product]"]').val()];
   if (current) {
@@ -107,6 +120,7 @@ var $companionHolder;
 var $agent = false;
 
 $(document).ready(function () {
+
   $('input[name="mevisa_erpbundle_orders[adjustmentTotal]"]').change(function () {
     updatePricesAndTotals();
   });
@@ -119,10 +133,14 @@ $(document).ready(function () {
 
   for (i = 0; i < $productHolder.data('index'); i++) {
     $('select[name="mevisa_erpbundle_orders[orderProducts][' + i + '][product]"]').change(function () {
-      updateVendors(i);
+      updateProductPrice($(this));
+      updateVendors($(this));
       updatePricesAndTotals();
     });
     $('input[name="mevisa_erpbundle_orders[orderProducts][' + i + '][quantity]"]').change(function () {
+      updatePricesAndTotals();
+    });
+    $('input[name="mevisa_erpbundle_orders[orderProducts][' + i + '][unitPrice]"]').change(function () {
       updatePricesAndTotals();
     });
   }

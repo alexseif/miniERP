@@ -107,6 +107,7 @@ class OrdersController extends Controller
     $order->setCreatedAt(new \DateTime("now"));
     //Generate Form
     $form = $this->createForm(new OrdersType(), $order, array(
+      'isAccountant' => $this->isGranted('ROLE_ACCOUNTANT'),
       'action' => $this->generateUrl('orders_new'),
       'method' => 'POST',
     ));
@@ -226,6 +227,7 @@ class OrdersController extends Controller
 
     return array(
       'order' => $order,
+      'products' => $this->getAvailableProducts(),
       'productPrices' => $this->getAvailableProductPrices(),
       'documents' => $this->getThumbnails($order),
       'logs' => $this->get('erp.order')->getOrderLog($id),
@@ -703,6 +705,7 @@ class OrdersController extends Controller
   private function createEditForm(Orders $entity)
   {
     $form = $this->createForm(new OrdersType(), $entity, array(
+      'isAccountant' => $this->isGranted('ROLE_ACCOUNTANT'),
       'action' => $this->generateUrl('orders_edit', array('id' => $entity->getId())),
       'method' => 'PUT',
     ));

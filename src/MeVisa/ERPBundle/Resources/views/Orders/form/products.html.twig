@@ -9,18 +9,24 @@
     <table class="table table-hover table-condensed order-products-form">
       <thead>
         <tr class="panel-heading">
-          <th style="width: 40%;">{{ form_label(form.orderProducts.vars.prototype.product) }}</th>
+          <th style="width: 32%;">{{ form_label(form.orderProducts.vars.prototype.product) }}</th>
           <th style="width: 14%;">{{ form_label(form.orderProducts.vars.prototype.vendor) }}</th>
-          <th style="width: 10%;">{{ form_label(form.orderProducts.vars.prototype.quantity) }}</th>
-          <th style="width: 18%;">{{ form_label(form.orderProducts.vars.prototype.unitPrice) }}</th>
-          <th style="width: 18%;">{{ form_label(form.orderProducts.vars.prototype.total) }}</th>
+          <th style="width: 6%;">{{ form_label(form.orderProducts.vars.prototype.quantity) }}</th>
+
+          {% if is_granted('ROLE_ACCOUNTANT') %}
+            <th style="width: 16%;">{{ form_label(form.orderProducts.vars.prototype.unitCost) }}</th>
+
+          {% endif %}
+          <th style="width: 16%;">{{ form_label(form.orderProducts.vars.prototype.unitPrice) }}</th>
+          <th style="width: 16%;">{{ form_label(form.orderProducts.vars.prototype.total) }}</th>
         </tr>
       </thead>
       <tbody class="orderProducts" data-prototype="{{
 '<td>' ~ form_widget(form.orderProducts.vars.prototype.product) ~ '</td>'
  ~ '<td>' ~ form_widget(form.orderProducts.vars.prototype.vendor) ~ '</td>'
- ~ '<td>' ~ form_widget(form.orderProducts.vars.prototype.quantity) ~ '</td>'
- ~ '<td>' ~ form_widget(form.orderProducts.vars.prototype.unitPrice) ~ '</td>'
+ ~ '<td>' ~ form_widget(form.orderProducts.vars.prototype.quantity) ~ '</td>' }}
+             {{ (is_granted('ROLE_ACCOUNTANT')) ?  '<td>' ~ form_widget(form.orderProducts.vars.prototype.unitCost) ~ '</td>' }}
+             {{ '<td>' ~ form_widget(form.orderProducts.vars.prototype.unitPrice) ~ '</td>'
  ~ '<td>' ~ form_widget(form.orderProducts.vars.prototype.total) ~ '</td>'
              }}">
         {% for product in form.orderProducts %}
@@ -28,6 +34,9 @@
             <td>{{form_widget(product.product)}}</td>
             <td>{{form_widget(product.vendor)}}</td>
             <td>{{form_widget(product.quantity)}}</td>
+            {% if is_granted('ROLE_ACCOUNTANT') %}
+              <td>{{form_widget(product.unitCost)}}</td>
+            {% endif %}
             <td>{{form_widget(product.unitPrice)}}</td>
             <td>{{form_widget(product.total)}}</td>
           </tr>

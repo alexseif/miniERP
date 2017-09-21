@@ -17,6 +17,8 @@ class OrdersType extends AbstractType
    */
   public function buildForm(FormBuilderInterface $builder, array $options)
   {
+    $isAccountant = $options['isAccountant'];
+
     $availableStates = $options['data']->getOrderState()->getAvailableStates();
     $states = array($options['data']->getOrderState()->getCurrentState()->getKey() => $options['data']->getOrderState()->getCurrentState()->getName());
     foreach ($availableStates as $state) {
@@ -95,6 +97,9 @@ class OrdersType extends AbstractType
     }
     $builder->add('orderProducts', 'collection', array(
       'type' => new OrderProductsType($agent),
+      'entry_options' => array(
+        'isAccountant' => $options['isAccountant']
+      ),
       'allow_add' => true,
       'allow_delete' => true,
       'label' => false,
@@ -143,7 +148,8 @@ class OrdersType extends AbstractType
   public function configureOptions(OptionsResolver $resolver)
   {
     $resolver->setDefaults(array(
-      'data_class' => 'MeVisa\ERPBundle\Entity\Orders'
+      'data_class' => 'MeVisa\ERPBundle\Entity\Orders',
+      'isAccountant' => null
     ));
   }
 
