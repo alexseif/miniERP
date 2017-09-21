@@ -48,7 +48,7 @@
                 <td>{{ companion.name }}</td>
                 <td>{{ companion.passportNumber }}</td>
                 <td>{{ companion.nationality|country }}</td>
-                <td>{{ op.product.vendor.name }}</td>
+                <td>{{ op.vendor.name }}</td>
                 <td>{{ (costPrint) ? (op.unitCost * op.quantity)/100 : 0 }}</td>
                 <td>{{ (costPrint) ?  op.total/100 : 0 }}</td>
                 <td>{{ (costPrint) ?  order.orderPayments|last.method }}</td>
