@@ -1,17 +1,21 @@
 <!-- BEGIN HEADER MENU -->
 <div class="nav-collapse collapse navbar-collapse navbar-responsive-collapse">
   <ul class="nav navbar-nav">
-    <li class="dropdown dropdown-fw dropdown-fw-disabled {{ (app.request.get('_route')) starts with 'dashboard' ? "active open selected" }}">
+    <li class="dropdown dropdown-fw dropdown-fw-disabled 
+        {{ (app.request.get('_route')) starts with 'dashboard' ? "active open selected" }}
+        {{ (app.request.get('_route')) starts with 'revision' ? "active open selected" }}
+        ">
       <a href="{{ path('dashboard') }}" class="text-uppercase"><i class="icon-home"></i> Dashboard </a>
       <ul class="dropdown-menu dropdown-menu-fw">
         <li class="{{ (app.request.get('_route')) starts with 'dashboard' ? "active" }}">
           <a href="{{ path('dashboard') }}"><i class="icon-bar-chart"></i> Dashboard </a>
         </li>
-        {#<li><a href="dashboard_2.html"><i class="icon-bulb"></i> Back Office </a></li>
-        <li><a href="dashboard_3.html"><i class="icon-graph"></i> Document </a></li>
-        <li><a href="dashboard_3.html"><i class="icon-graph"></i> Post </a></li>
-        <li><a href="dashboard_3.html"><i class="icon-graph"></i> Not Paid </a></li>
-        <li><a href="dashboard_3.html"><i class="icon-graph"></i> Completed </a></li>#}
+        <li class="{{ ("revision" == app.request.get('_route'))?"active" }}"><a href="{{ path('revision') }}">Revision</a></li>
+          {#<li><a href="dashboard_2.html"><i class="icon-bulb"></i> Back Office </a></li>
+          <li><a href="dashboard_3.html"><i class="icon-graph"></i> Document </a></li>
+          <li><a href="dashboard_3.html"><i class="icon-graph"></i> Post </a></li>
+          <li><a href="dashboard_3.html"><i class="icon-graph"></i> Not Paid </a></li>
+          <li><a href="dashboard_3.html"><i class="icon-graph"></i> Completed </a></li>#}
       </ul>
     </li>
     <li class="dropdown dropdown-fw dropdown-fw-disabled {{ (app.request.get('_route')) starts with 'orders' ? "active open selected" }}">
