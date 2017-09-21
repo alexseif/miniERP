@@ -1,26 +1,46 @@
-{% extends 'AppBundle:Admin:adminLayout.html.twig' %}
-{% block adminPanelTitle %}Company Settings{% endblock %}
-{% block adminPanelTitleBadge %}{{ companySettings|length }}{% endblock %}
-{% block adminPanelHeadingRight %}
-  <a href="{{ path('companysettings_new')}}" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span></a>
-  {% endblock %}
-  {% block adminPanelBody %}
-  <div class="table-responsive">
-    <table class="table table-bordered table-hover table-striped records_list">
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for companySetting in companySettings %}
-          <tr>
-            <td>{{ companySetting.name }}</td>
-            <td><a href="{{ path('companysettings_show', {'id':companySetting.id}) }}">Show</a></td>
-          </tr>
-        {% endfor %}
-      </tbody>
-    </table>
+{# srv/MeVisa/ERPBundle/Resources/views/Vendors/index.html.twig #}
+{% extends ':metronic:portlet.html.twig' %}
+{% block title %}Company Settings{% endblock %}
+{% block stylesheets %}
+  {{ parent() }}
+  <!-- BEGIN PAGE LEVEL PLUGINS -->
+  <link href="/metronic/assets/global/plugins/bootstrap-table/bootstrap-table.min.css" rel="stylesheet" type="text/css" />
+  <!-- END PAGE LEVEL PLUGINS -->
+{% endblock %}
+{% block portletActions %}
+  <div class="actions">
+    <a href="{{ path('companysettings_new')}}" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span></a>
   </div>
+{% endblock %}
+
+{% block portletBody %}
+  <table data-toggle="table">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for companySetting in companySettings %}
+        <tr>
+          <td>{{ companySetting.name }}</td>
+          <td><a href="{{ path('companysettings_show', {'id':companySetting.id}) }}">Show</a></td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}
+{% block javascripts %}
+  {{ parent() }}
+  <!-- BEGIN PAGE LEVEL PLUGINS -->
+  <script src="/metronic/assets/global/plugins/bootstrap-table/bootstrap-table.min.js" type="text/javascript"></script>
+  <!-- END PAGE LEVEL PLUGINS -->
+  <!-- BEGIN PAGE LEVEL SCRIPTS -->
+  <script src="/metronic/assets/pages/scripts/table-bootstrap.min.js" type="text/javascript"></script>
+  <!-- END PAGE LEVEL SCRIPTS -->
+  <script>
+    {#    $().ready#}
+    {#    $('[data-toggle="dropdown"]').dropdown();#}
+  </script>
 {% endblock %}

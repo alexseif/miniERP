@@ -1,8 +1,8 @@
-<div class="panel panel-default" id="order-docs">
-  <div class="panel-heading">
-    <span class="panel-title">Documents</span>
+<div class="portlet light bordered" id="order-docs">
+  <div class="portlet-title">
+    <span class="caption">Documents</span>
   </div>
-  <div class="panel-body">
+  <div class="portlet-body">
     {# TODO: Preview for PDF http://mozilla.github.io/pdf.js/examples/ #}
     {# FIXME: Delete links for files#}
     {%for document in order.orderDocuments%}
@@ -21,11 +21,12 @@
 
     {% endfor %}
 
-    <hr/>
-    {# TODO: dropzone.js#}
-    <div class="row">
-      <div class="col-sm-9 col-sm-push-3">
-        {{ form_widget(form.uploadedFiles)}}
+    <div class="form-actions">
+      {# TODO: dropzone.js#}
+      <div class="row">
+        <div class="col-sm-9 col-sm-push-3">
+          {{ form_widget(form.uploadedFiles)}}
+        </div>
       </div>
     </div>
   </div>

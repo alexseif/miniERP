@@ -1,0 +1,74 @@
+<div class="portlet box 
+     {{ 'primary' == statusCSS.css(state)? 'blue-chambray'}}
+     {{ 'info' == statusCSS.css(state)? 'blue-soft'}}
+     {{ 'warning' == statusCSS.css(state)? 'yellow-crusta'}}
+     {{ 'danger' == statusCSS.css(state)? 'red'}}
+     {{ 'default' == statusCSS.css(state)? 'default'}}
+     ">
+  <div class="portlet-title">
+    <div class="caption">
+      {{ state|replace({'_':' '})|upper }}
+      <span class="badge">{{ orders|length }}</span>
+    </div>
+    <div class="tools">
+      <a href="javascript:;" class="collapse" data-original-title="" title=""> </a>
+      <a href="" class="fullscreen" data-original-title="" title=""> </a>
+      <a href="javascript:;" class="remove" data-original-title="" title=""> </a>
+    </div>
+  </div>
+  <div class="portlet-body flip-scroll">
+
+{#      <table data-toggle="table" class="table-condensed">#}
+    <table class="table table-bordered table-striped table-condensed flip-content">
+      <thead class="hide">
+        <tr>
+          <th>Order #</th>
+          <th>Country</th>
+          <th>Customer</th>
+          <th>Total</th>
+          <th>CreatedAt</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for order in orders %}
+          {% set highlight = ''%}
+          {% set urgent = ''%}
+          {% if order.state == "post" %}
+            {% if  (date(order.postedAt) < date('-3days')) and order.postedAt.timestamp is defined %}
+              {% set highlight = 'highlight' %}
+            {% endif %}
+          {% endif %}
+          {% if order.state == "backoffice" %}
+            {% if  (date(order.createdAt) < date('-3days')) %}
+              {% set highlight = 'highlight' %}
+            {% endif %}
+          {% endif %}
+          {% for product in order.orderProducts %}
+            {% if (product.product.urgent) %}
+              {% set urgent='urgent' %}
+            {% endif %}
+          {% endfor %}
+          <tr class="{{ highlight }} {{urgent}}">
+            <td class="text-center">
+              <a class="btn btn-link" href="{{ path('orders_show', { 'id': order.id }) }}">{{ order.number }}</a>
+            </td>
+            <td>
+              {{ order.orderProducts|first.product.country }}
+            </td>
+            <td>{{ order.customer.name }}</td>
+            <td class="text-right">{{ (order.total/100)|localizedcurrency('RUB') }}</td>
+            {% if order.state == "post" %}
+              <td data-toggle="tooltip" title="Posted">
+                {{ order.postedAt|localizeddate('short', 'short')}}
+                {#              <a href="#" data-toggle="popover" title="{{order.number}}" data-content="Created: {{order.createdAt|localizeddate('short', 'short')}}" class="pull-right"><span class="glyphicon glyphicon-info-sign"></span></a>#}
+              {% else %}
+              <td data-toggle="tooltip" title="Created">
+                {{ order.createdAt|localizeddate('short', 'short') }}
+              {% endif %}
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>

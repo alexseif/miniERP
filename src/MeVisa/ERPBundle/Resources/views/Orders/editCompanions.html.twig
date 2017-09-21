@@ -1,44 +1,57 @@
-{% extends 'MeVisaERPBundle:Orders:defaultLayout.html.twig' %}
+{# srv/MeVisa/ERPBundle/Resources/views/Orders/editCompanions.html.twig #}
+{% extends ':metronic:portlet.html.twig' %}
+
 {% block title %}Order # {{ order.number }}{% endblock %}
-{% block adminPanelTitle %}Order # {{ order.number }}{% endblock %}
-{% block adminPanelBody %}
-  <div class="panel-body">
-    <div class="row">
-      <div class="col-sm-4">
-        {% include 'MeVisaERPBundle:Orders:show/customer.html.twig' %}
-      </div>
-      <div class="col-sm-4">
-        {% include 'MeVisaERPBundle:Orders:show/details.html.twig' %}
-      </div>
-      <div class="col-sm-4">
-        {% include 'MeVisaERPBundle:Orders:show/totals.html.twig' %}
-      </div>
+{% block portletBody %}
+  {% for product in order.orderProducts %}
+    {% if (product.product.urgent) %}
+      <span class="label label-purple">Urgent</span>
+    {% endif %}
+  {% endfor %}
+  {% if (order.ticketRequired) %}
+    <span class="label label-warning">Ticket Required</span>
+  {% endif %}
+  &nbsp;<span class="label label-default">{{ order.channel|upper }}</span>
+  &nbsp;<span class="label label-{{order.orderState.currentState.bootstrapClass}}">{{ order.stateName|upper }}</span>
+  &nbsp;<span class="label label-default"> {{ order.createdAt|localizeddate }}</span>
+  <span class="label label-{{order.orderState.state('post').bootstrapClass}}">{{ order.postedAt ? 'Posted '~order.postedAt|localizeddate }}</span>
+  <span class="label label-success">{{ order.completedAt ? 'Completed '~order.completedAt |localizeddate }}</span>
+
+  <div class="row">
+    <div class="col-sm-4">
+      {% include 'MeVisaERPBundle:Orders:show/customer.html.twig' %}
     </div>
-    <div class="row">
-      <div class="col-sm-6">
-        {% include 'MeVisaERPBundle:Orders:show/products.html.twig' %}
-      </div>
-      <div class="col-sm-6">
-        {% include 'MeVisaERPBundle:Orders:show/payments.html.twig' %}
-      </div>
+    <div class="col-sm-4">
+      {% include 'MeVisaERPBundle:Orders:show/details.html.twig' %}
     </div>
-    {% include 'MeVisaERPBundle:Orders:form/companions_form.html.twig' %}
-    <div class="row">
-      <div class="col-sm-6">
-        {% include 'MeVisaERPBundle:Orders:show/documents.html.twig' %}
-      </div>
+    <div class="col-sm-4">
+      {% include 'MeVisaERPBundle:Orders:show/totals.html.twig' %}
     </div>
-    <div class="row">
-      <div class="col-sm-6">
-        {% include 'MeVisaERPBundle:Orders:show/comments.html.twig' %}
-      </div>
-      <div class="col-sm-6">
-        {% include 'MeVisaERPBundle:Orders:show/logs.html.twig' %}
-      </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-6">
+      {% include 'MeVisaERPBundle:Orders:show/products.html.twig' %}
+    </div>
+    <div class="col-sm-6">
+      {% include 'MeVisaERPBundle:Orders:show/payments.html.twig' %}
+    </div>
+  </div>
+  {% include 'MeVisaERPBundle:Orders:form/companions_form.html.twig' %}
+  <div class="row">
+    <div class="col-sm-6">
+      {% include 'MeVisaERPBundle:Orders:show/documents.html.twig' %}
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-6">
+      {% include 'MeVisaERPBundle:Orders:show/comments.html.twig' %}
+    </div>
+    <div class="col-sm-6">
+      {% include 'MeVisaERPBundle:Orders:show/logs.html.twig' %}
     </div>
   </div>
 {% endblock %}
-{% block adminPanelFooter %}{% endblock %}
+
 {% block javascripts %}
   {{ parent() }}
   <script type="text/javascript">

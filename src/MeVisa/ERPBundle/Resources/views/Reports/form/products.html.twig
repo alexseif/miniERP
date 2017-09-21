@@ -34,7 +34,8 @@
   var productCosts = new Array();
   {% for price in productPrices %}
     productPrices[{{ price.product.id }}] = {{price.price/100}};
-            productCosts[{{ price.product.id }}] = {{price.cost/100}};
+
+    productCosts[{{ price.product.id }}] = {{price.cost/100}};
   {% endfor %}
 </script>
 

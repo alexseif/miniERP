@@ -128,6 +128,7 @@ class ProductsController extends Controller
             $product->addPricing($price);
           }
         }
+
         $em = $this->getDoctrine()->getManager();
         $em->persist($product);
         $em->flush();

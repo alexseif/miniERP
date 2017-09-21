@@ -1,0 +1,54 @@
+{# src/AppBundle/Resources/views/Default/base.html.twig #}
+{% extends ':metronic:base.html.twig' %}
+
+{% block title %}Dashboard{% endblock %}
+{% block stylesheets %}
+  {{ parent() }}
+  <!-- BEGIN PAGE LEVEL PLUGINS -->
+  <link href="/metronic/assets/global/plugins/bootstrap-table/bootstrap-table.min.css" rel="stylesheet" type="text/css" />
+  <!-- END PAGE LEVEL PLUGINS -->
+{% endblock %}
+
+
+{% block content %}
+  {% set orders = backoffice %}
+  {% set state = 'backoffice' %}
+  {% set panelTitle = 'Backoffice Orders' %}
+  {% include 'AppBundle:Default:dashboardPanel.html.twig' %}
+
+  {% set orders = document %}
+  {% set state = 'document' %}
+  {% set panelTitle = 'Document Required Orders' %}
+  {% include 'AppBundle:Default:dashboardPanel.html.twig' %}
+
+  {% set orders = post %}
+  {% set state = 'post' %}
+  {% set panelTitle = 'Post Orders' %}
+  {% include 'AppBundle:Default:dashboardPanel.html.twig' %}
+
+  {% set orders = not_paid %}
+  {% set state = 'not_paid' %}
+  {% set panelTitle = 'Not Paid' %}
+  {% include 'AppBundle:Default:dashboardPanel.html.twig' %}
+
+  {% set orders = completed %}
+  {% set state = 'completed' %}
+  {% set panelTitle = 'Completed Today' %}
+  {% include 'AppBundle:Default:dashboardPanel.html.twig' %}
+{% endblock %}
+
+{% block javascripts %}
+  {{ parent() }}
+  <!-- BEGIN PAGE LEVEL PLUGINS -->
+  <script src="/metronic/assets/global/plugins/bootstrap-table/bootstrap-table.min.js" type="text/javascript"></script>
+  <!-- END PAGE LEVEL PLUGINS -->
+  <!-- BEGIN PAGE LEVEL SCRIPTS -->
+  <script src="/metronic/assets/pages/scripts/table-bootstrap.min.js" type="text/javascript"></script>
+  <!-- END PAGE LEVEL SCRIPTS -->
+
+  <script type="text/javascript">
+    $(document).ready(function () {
+      $('[data-toggle="popover"]').popover();
+    });
+  </script>
+{% endblock %}

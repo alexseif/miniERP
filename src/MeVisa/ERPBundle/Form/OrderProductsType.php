@@ -23,6 +23,8 @@ class OrderProductsType extends AbstractType
    */
   public function buildForm(FormBuilderInterface $builder, array $options)
   {
+
+    $isAccountant = $options['isAccountant'];
     $builder
         ->add('product', 'entity', array(
           'class' => 'MeVisa\ERPBundle\Entity\Products',
@@ -35,10 +37,11 @@ class OrderProductsType extends AbstractType
             return $pr->queryAllEnabled();
           },
           'attr' => array(
-            'class' => 'product_id, chosen',
+            'class' => 'product_id chosen',
           )
         ))
         ->add('quantity', 'integer', array(
+          'label' => 'Qty',
           'attr' => array('min' => 1)
         ))
         ->add('total', 'money', array(
@@ -49,15 +52,21 @@ class OrderProductsType extends AbstractType
         ->add('unitPrice', 'money', array(
           'currency' => 'RUB',
           'divisor' => 100,
-          'label' => 'Price',
-          'read_only' => !$this->agent
+          'read_only' => !($this->agent || $isAccountant)
         ))
         ->add('vendor', 'entity', array(
           'class' => 'MeVisaERPBundle:Vendors',
+          'placeholder' => 'Select Vendor',
           'choice_label' => 'name',
           'attr' => array('class' => 'chosen')
         ))
     ;
+    if ($isAccountant) {
+      $builder->add('unitCost', 'money', array(
+        'currency' => 'RUB',
+        'divisor' => 100,
+      ));
+    }
   }
 
   /**
@@ -74,7 +83,8 @@ class OrderProductsType extends AbstractType
   public function configureOptions(OptionsResolver $resolver)
   {
     $resolver->setDefaults(array(
-      'data_class' => 'MeVisa\ERPBundle\Entity\OrderProducts'
+      'data_class' => 'MeVisa\ERPBundle\Entity\OrderProducts',
+      'isAccountant' => null
     ));
   }
 

@@ -285,7 +285,7 @@ class OrdersRepository extends EntityRepository
             ->leftJoin('o.customer', 'c')
             ->leftJoin('o.orderPayments', 'opa')
             ->leftJoin('o.orderProducts', 'opr')
-            ->where('o.state = ?4 ')
+            ->where('o.state != ?4 ')
             ->andWhere('opa.state = ?3 ')
             ->andWhere('o.createdAt >= ?1')
             ->andWhere('o.createdAt <= ?2')

@@ -1,0 +1,128 @@
+{# app/Resources/views/metronic/base.html.twig #}
+<!DOCTYPE html>
+<!--[if IE 8]> <html lang="en" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]> <html lang="en" class="ie9 no-js"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="{% block HTMLlang%}en{% endblock %}">
+  <!--<![endif]-->
+  <!-- BEGIN HEAD -->
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+    <meta content="{% block metaDescription %}{% endblock %}" name="description" />
+    <meta content=""{% block metaAuthor %}{% endblock %}" name="author" />
+    <title>{% block HTMLTitle %}{{ block('title') }}{% endblock %} - Wazeery Group</title>
+    {% block stylesheets %}
+      <!-- BEGIN LAYOUT FIRST STYLES -->
+      <link href="//fonts.googleapis.com/css?family=Oswald:400,300,700" rel="stylesheet" type="text/css" />
+      <!-- END LAYOUT FIRST STYLES -->
+      <!-- BEGIN GLOBAL MANDATORY STYLES -->
+      <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet" type="text/css" />
+      <link href="/metronic/assets/global/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+      <link href="/metronic/assets/global/plugins/simple-line-icons/simple-line-icons.min.css" rel="stylesheet" type="text/css" />
+      <link href="/metronic/assets/global/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+      <link href="/metronic/assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css" rel="stylesheet" type="text/css" />
+      <!-- END GLOBAL MANDATORY STYLES -->
+      <!-- BEGIN THEME GLOBAL STYLES -->
+      <link href="/metronic/assets/global/css/components.min.css" rel="stylesheet" id="style_components" type="text/css" />
+      <link href="/metronic/assets/global/css/plugins.min.css" rel="stylesheet" type="text/css" />
+      <!-- END THEME GLOBAL STYLES -->
+      <!-- BEGIN THEME LAYOUT STYLES -->
+      <link href="/metronic/assets/layouts/layout5/css/layout.min.css" rel="stylesheet" type="text/css" />
+      <link href="/metronic/assets/layouts/layout5/css/custom.min.css" rel="stylesheet" type="text/css" />
+      <!-- END THEME LAYOUT STYLES -->
+      <link href="/css/chosen.min.css" rel="stylesheet" type="text/css" />
+      <link href="/css/custom.css" rel="stylesheet" type="text/css" />
+    {% endblock %}
+    <link rel="icon shortcut" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+  </head>
+  <!-- END HEAD -->
+  <body class="{% block bodyClass %}page-header-fixed page-sidebar-closed-hide-logo{% endblock %}">
+    {% block body %}
+      <!-- BEGIN CONTAINER -->
+      <div id="wrapper" class="wrapper">
+        {% block header %}
+          {% include ':metronic:header.html.twig' %}
+        {% endblock %}
+        <div class="container-fluid">
+          <div class="page-content">
+            {% block breadcrumbs %}
+              {#          {% include ':metronic:breadcrumbs.html.twig' %}#}
+            {% endblock %}
+            {% block layout %}
+              {% include 'flashMessages.html.twig' %}
+              {% block beforeContent %}
+              {% endblock %}
+              {% block content %}
+              {% endblock %}
+              {% block afterContent %}
+              {% endblock %}
+            {% endblock %}
+          </div>
+          {% block footer %}
+            {% include ':metronic:footer.html.twig' %}
+          {% endblock %}
+        </div>
+      </div>
+      <!-- END CONTAINER -->
+      {% block quickSidebar %}
+        {#        {% include ':metronic:quick-sidebar.html.twig' %}#}
+      {% endblock %}
+      {% block quickNav %}
+        {#    {% include ':metronic:quick-nav.html.twig' %}#}
+      {% endblock %}
+      {% block javascripts %}
+        <!--[if lt IE 9]>
+        <script src="/metronic/assets/global/plugins/respond.min.js"></script>
+        <script src="/metronic/assets/global/plugins/excanvas.min.js"></script> 
+        <script src="/metronic/assets/global/plugins/ie8.fix.min.js"></script> 
+        <![endif]-->
+        <!-- BEGIN CORE PLUGINS -->
+        <script src="/metronic/assets/global/plugins/jquery.min.js" type="text/javascript"></script>
+        <script src="/metronic/assets/global/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+        <script src="/metronic/assets/global/plugins/js.cookie.min.js" type="text/javascript"></script>
+        <script src="/metronic/assets/global/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
+        <script src="/metronic/assets/global/plugins/jquery.blockui.min.js" type="text/javascript"></script>
+        <script src="/metronic/assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js" type="text/javascript"></script>
+        <!-- END CORE PLUGINS -->
+        <!-- BEGIN THEME GLOBAL SCRIPTS -->
+        <script src="/metronic/assets/global/scripts/app.min.js" type="text/javascript"></script>
+        <!-- END THEME GLOBAL SCRIPTS -->
+        <!-- BEGIN THEME LAYOUT SCRIPTS -->
+        <script src="/metronic/assets/layouts/layout5/scripts/layout.min.js" type="text/javascript"></script>
+        <script src="/metronic/assets/layouts/global/scripts/quick-sidebar.min.js" type="text/javascript"></script>
+        <script src="/metronic/assets/layouts/global/scripts/quick-nav.min.js" type="text/javascript"></script>
+        <!-- END THEME LAYOUT SCRIPTS -->
+        <script src="/js/prototypeForms.js" type="text/javascript"></script>
+        <script src="/metronic/assets/global/plugins/jquery-ui/jquery-ui.min.js" type="text/javascript"></script>
+        <script src="/js/chosen.jquery.min.js" type="text/javascript"></script>
+
+        <script>
+          $(document).ready(function () {
+            $('select').chosen();
+{#            $('[data-toggle="dropdown"]').dropdown();#}
+          });
+        </script>
+        {% if app.environment == 'prod' %}
+          <script>
+            (function (i, s, o, g, r, a, m) {
+              i['GoogleAnalyticsObject'] = r;
+              i[r] = i[r] || function () {
+                (i[r].q = i[r].q || []).push(arguments)
+              }, i[r].l = 1 * new Date();
+              a = s.createElement(o),
+                      m = s.getElementsByTagName(o)[0];
+              a.async = 1;
+              a.src = g;
+              m.parentNode.insertBefore(a, m)
+            })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+            ga('create', 'UA-15073710-6', 'auto');
+            ga('require', 'linkid');
+            ga('send', 'pageview');
+          </script>
+        {% endif %}
+      {% endblock %}
+    {% endblock %}
+  </body>
+</html>

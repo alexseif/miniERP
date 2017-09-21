@@ -1,7 +1,8 @@
-{% extends ':default:admin.html.twig' %}
+{# srv/MeVisa/ERPBundle/Resources/views/Vendors/new.html.twig #}
+{% extends ':metronic:portlet.html.twig' %}
 
-{% block content %}
-  <h2>MeVisa Settings</h2>
+{% block title %}MeVisa Settings{% endblock %}
+{% block portletBody %}
   {{ form_start(edit_form) }}
   <div class="panel-group" id="accordion">
     {% for key,item in edit_form %}

@@ -1,29 +1,53 @@
-{% extends 'AppBundle:Admin:adminLayout.html.twig' %}
-{% block backLink %}{{ path('vendors') }}{% endblock %}
-{% block adminPanelTitle %}Vendor{% endblock %}
-{% block adminPanelTitleSmall %}{{ vendor.name }}{% endblock %}
-{% block adminPanelBody %}
-  <div class="table-responsive">
-    <table class="table table-bordered table-hover table-striped records_list">
-      <tbody>
-        <tr>
-          <th>Name</th>
-          <td>{{ vendor.name }}</td>
-        </tr>
-        <tr>
-          <th>Code</th>
-          <td>{{ vendor.code }}</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+{# srv/MeVisa/ERPBundle/Resources/views/Vendors/show.html.twig #}
+{% extends ':metronic:portlet.html.twig' %}
+
+{% block title %}Vendor: {{ vendor.name }}{% endblock %}
+{#
+{% block portletActions %}
+<div class="actions">
+  <a class="btn btn-circle btn-icon-only btn-default" href="javascript:;">
+    <i class="icon-trash"></i>    
+  </a>
+</div>
+{{ form(vendor_delete) }}
 {% endblock %}
-{% block adminPanelFooter %}
-  <div class="panel-footer">
-    <div class='clearfix'>
-      {% if(is_granted('ROLE_SUPER_ADMIN')) %}
-        <a class="btn btn-primary pull-right" href="{{ path('vendors_edit', { 'id': vendor.id }) }}">Edit</a>
-      {% endif %}
+#}
+{% block portletBodyClass %}form{% endblock %}
+{% block portletBody %}
+  <form class="form-horizontal" role="form">
+    <div class="form-body">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group">
+            <label class="control-label col-md-3">Name</label>
+            <div class="col-md-9">
+              <p class="form-control-static">{{ vendor.name }}</p>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label col-md-3">Code</label>
+            <div class="col-md-9">
+              <p class="form-control-static">{{ vendor.code }}</p>
+            </div>
+          </div>
+          <div class="row">
+            <label class="col-sm-2 col-sm-offset-1">Products</label>
+            <div class="col-sm-8">
+              <div class="row">
+                {% for product in vendor.products %}
+                  <div class="col-sm-6">{{ product.name }}</div>
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-  </div>
+    {% if(is_granted('ROLE_SUPER_ADMIN')) %}
+      <div class="form-actions right">
+        <a class="btn btn-circle btn-primary" href="{{ path('vendors_edit', { 'id': vendor.id }) }}">Edit</a>
+      </div>
+    {% endif %}
+  </form>
+
 {% endblock %}

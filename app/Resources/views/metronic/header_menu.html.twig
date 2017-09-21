@@ -1,0 +1,86 @@
+<!-- BEGIN HEADER MENU -->
+<div class="nav-collapse collapse navbar-collapse navbar-responsive-collapse">
+  <ul class="nav navbar-nav">
+    <li class="dropdown dropdown-fw dropdown-fw-disabled {{ (app.request.get('_route')) starts with 'dashboard' ? "active open selected" }}">
+      <a href="{{ path('dashboard') }}" class="text-uppercase"><i class="icon-home"></i> Dashboard </a>
+      <ul class="dropdown-menu dropdown-menu-fw">
+        <li class="{{ (app.request.get('_route')) starts with 'dashboard' ? "active" }}">
+          <a href="{{ path('dashboard') }}"><i class="icon-bar-chart"></i> Dashboard </a>
+        </li>
+        {#<li><a href="dashboard_2.html"><i class="icon-bulb"></i> Back Office </a></li>
+        <li><a href="dashboard_3.html"><i class="icon-graph"></i> Document </a></li>
+        <li><a href="dashboard_3.html"><i class="icon-graph"></i> Post </a></li>
+        <li><a href="dashboard_3.html"><i class="icon-graph"></i> Not Paid </a></li>
+        <li><a href="dashboard_3.html"><i class="icon-graph"></i> Completed </a></li>#}
+      </ul>
+    </li>
+    <li class="dropdown dropdown-fw dropdown-fw-disabled {{ (app.request.get('_route')) starts with 'orders' ? "active open selected" }}">
+      <a href="javascript:;" class="text-uppercase"><i class="icon-puzzle"></i> Orders </a>
+      <ul class="dropdown-menu dropdown-menu-fw">
+        <li class="{{ ("orders" == app.request.get('_route'))?"active" }}"><a href="{{ path('orders') }}">Orders </a></li>
+        <li class="{{ ("orders_archive" == app.request.get('_route'))?"active" }}"><a href="{{ path('orders_archive') }}">Archives</a></li>
+        <li class="{{ ("orders_delete" == app.request.get('_route'))?"active" }}"><a href="{{ path('orders_delete') }}">Deleted</a></li>
+      </ul>
+    </li>
+    <li class="dropdown dropdown-fw dropdown-fw-disabled  {{ (app.request.get('_route')) starts with 'customers' ? "active open selected" }}">
+      <a href="{{ path('customers') }}" class="text-uppercase"><i class="icon-briefcase"></i> Customers </a>
+      <ul class="dropdown-menu dropdown-menu-fw">
+        <li>
+          <a href="{{ path('customers') }}"> Customers </a>
+        </li>
+      </ul>
+    </li>
+    <li class="dropdown dropdown-fw dropdown-fw-disabled {{ (app.request.get('_route')) starts with 'reports' ? "active open selected" }}">
+      <a href="javascript:;" class="text-uppercase"><i class="icon-layers"></i> Reports </a>
+      <ul class="dropdown-menu dropdown-menu-fw">
+        {#        <li class="{{ (app.request.get('_route')) starts with 'reports' ? "active" }}">#}
+        {#          <a href="{{ path('reports') }}"><i class="icon-bar-chart"></i> Reports </a>#}
+        {#        </li>#}
+        <li class="{{ (app.request.get('_route')) ends with 'financial' ? "active" }}">
+          <a href="{{ path('reports_financial') }} ">Financial</a>
+        </li>
+        <li class="{{ (app.request.get('_route')) ends with 'accounting' ? "active" }}">
+          <a href="{{ path('reports_accounting') }}">1C Report</a>
+        </li>
+        <li class="{{ (app.request.get('_route')) ends with 'vendors' ? "active" }}">
+          <a href="{{ path('reports_vendors') }} ">Vendors accounts</a>
+        </li>
+        <li class="{{ (app.request.get('_route')) ends with 'revenue' ? "active" }}">
+          <a href="{{ path('reports_revenue') }} ">Revenue</a>
+        </li>
+        <li class="{{ (app.request.get('_route')) ends with 'products' ? "active" }}">
+          <a href="{{ path('reports_products') }} ">Products</a>
+        </li>
+        <li class="{{ (app.request.get('_route')) ends with 'employees' ? "active" }}">
+          <a href="{{ path('reports_employees') }} ">Employees</a>
+        </li>
+        <li class="{{ (app.request.get('_route')) ends with 'salesby' ? "active" }}">
+          <a href="{{ path('reports_sales_by') }} ">Sales By</a>
+        </li>
+      </ul>
+    <li class="dropdown dropdown-fw dropdown-fw-disabled 
+        {{ (app.request.get('_route')) starts with 'products' ? "active open selected" }}
+        {{ (app.request.get('_route')) starts with 'vendors' ? "active open selected" }} 
+        {{ (app.request.get('_route')) starts with 'currency' ? "active open selected" }} 
+        {{ (app.request.get('_route')) starts with 'companysettings' ? "active open selected" }} 
+        {{ (app.request.get('_route')) starts with 'users' ? "active open selected" }} 
+        ">
+      <a href="javascript:;"><i class="icon-docs"></i> Settings </a>
+      <ul class="dropdown-menu dropdown-menu-fw">
+        <li>
+          <a href="{{ path('products') }}"><i class="icon-clock"></i> Products </a>
+        </li>
+        <li>
+          <a href="{{ path('vendors') }}"><i class="icon-envelope"></i> Vendors </a>
+        </li>
+        <li>
+          <a href="{{ path('companysettings') }}"><i class="icon-notebook"></i> Invoices </a>
+        </li>
+        <li>
+          <a href="{{ path('users') }}"><i class="icon-users"></i> Users </a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+<!-- END HEADER MENU -->

@@ -1,0 +1,55 @@
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    {% block menu %}
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="{{ path('dashboard') }}" style="padding: 0 15px;">
+          <img src="/images/visa_logo.png?v=1" alt="MeVisa" height="50px"/>
+        </a>
+      </div>
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
+        <ul class="nav navbar-nav">
+          <li {% if app.request.get('_route') == 'dashboard' %} class="active"{% endif %}><a href="{{ path('dashboard') }}"><span class="glyphicon glyphicon-home"></span> <span class="sr-only">(current)</span></a></li>
+          <li {% if app.request.get('_route') matches '/^order/' %} class="active"{% endif %}><a href="{{ path('orders') }}">Orders</a></li>
+          <li {% if app.request.get('_route') matches '/^customer/' %} class="active"{% endif %}><a href="{{ path('customers') }}">CRM</a></li>
+            {% if is_granted('ROLE_ACCOUNTANT') %}
+            <li {% if app.request.get('_route') matches '/^report/' %} class="active"{% endif %}><a href="{{ path('reports') }}">Reports</a></li>
+            {% endif %}
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><span class="glyphicon glyphicon-cog"></span> <span class="caret"></span></a>
+            <ul class="dropdown-menu" role="menu">
+              <li><a href="{{ path('products') }}">Products</a></li>
+                {% if is_granted('ROLE_SUPER_ADMIN') %}
+                <li class="divider"></li> 
+                <li><a href="{{ path('admin_currency') }}">Currency</a></li>
+                <li><a href="{{ path('vendors') }}">Vendors</a></li>
+                <li class="divider"></li> 
+                <li><a href="{{ path('users') }}">Users</a></li>
+                <li><a href="{{ path('companysettings') }}">Invoices</a></li>
+                {% endif %}
+            </ul>
+          </li>
+        </ul>
+        <form class="navbar-form navbar-left" role="search" action="{{ path('search') }}">
+          <input class="form-control" placeholder="Search" type="text" name="search" value="{{ app.request.query.get("search") }}"/>
+          <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search"></span></button>
+        </form>
+        <ul class="nav navbar-nav navbar-right">
+          <li style="padding-top: 15px;"><span class="badge">{{ 1|localizedcurrency('USD') }} : {{ (currency.currency.value/100)|localizedcurrency('RUB')}}</span></li>
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Hi {{ app.user.username }} <span class="caret"></span></a>
+            <ul class="dropdown-menu" role="menu">
+              <li><a href="{{ path('fos_user_change_password') }}">{{ 'change_password.submit'|trans({}, 'FOSUserBundle') }}</a></li>
+              <li><a href="{{ path('fos_user_security_logout') }}">{{ 'layout.logout'|trans({}, 'FOSUserBundle') }}</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    {% endblock %}
+  </div>
+</nav>

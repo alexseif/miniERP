@@ -1,14 +1,30 @@
-{% extends 'MeVisaERPBundle:Orders:defaultLayout.html.twig' %}
+{# srv/MeVisa/ERPBundle/Resources/views/Orders/new.html.twig #}
+{% extends ':metronic:portlet.html.twig' %}
+
 {% block title %}Order # {{ order.number }}{% endblock %}
-{% block adminPanelTitle %}Order # {{ order.number }}{% endblock %}
-{% block adminPanelBody %}
-  {{ (companions_form)?form_errors(companions_form) }}
-  <div class="panel-body">
+{% block portletActions %}
+  <div class="actions">
+    {% for product in order.orderProducts %}
+      {% if (product.product.urgent) %}
+        <span class="label label-purple">Urgent</span>
+      {% endif %}
+    {% endfor %}
+    {% if (order.ticketRequired) %}
+      <span class="label label-warning">Ticket Required</span>
+    {% endif %}
+    <span class="label label-default">{{ order.channel|upper }}</span>
+    <span class="label label-{{order.orderState.currentState.bootstrapClass}}">{{ order.stateName|upper }}</span>
+    <span class="label label-default"> {{ order.createdAt|localizeddate }}</span>
+    <span class="label label-{{order.orderState.state('post').bootstrapClass}}">{{ order.postedAt ? 'Posted '~order.postedAt|localizeddate }}</span>
+    <span class="label label-success">{{ order.completedAt ? 'Completed '~order.completedAt |localizeddate }}</span>
     <!-- Sales By -->
-    <div class="text-right">
-      <strong>Sales By:</strong> {{ (order.salesBy) ? order.salesBy.username : "N/A" }}
-    </div>
+    <strong>Sales By:</strong> {{ (order.salesBy) ? order.salesBy.username : "N/A" }}
     <!-- Sales By -->
+  </div>
+{% endblock %}
+{% block portletBody %}
+  <div class="form">
+    {{ (companions_form)?form_errors(companions_form) }}
     <div class="row">
       <div class="col-sm-4">
         {% include 'MeVisaERPBundle:Orders:show/customer.html.twig' %}
@@ -44,55 +60,55 @@
         {% include 'MeVisaERPBundle:Orders:show/logs.html.twig' %}
       </div>
     </div>
-  </div>
-{% endblock %}
-{% block adminPanelFooter %}
-  <div class="panel-footer">
-    <div class="row">
-      <div class="col-sm-5">
-        {% if(order.deletedAt is null) %}
-          <a class="btn btn-default" href="{{ path('orders_edit', { "id" : order.id }) }}">Edit</a>
-        {% endif %}
-        {% if(is_granted('ROLE_SUPER_ADMIN')) %}
+    <div class="form-actions">
+      <div class="row">
+        <div class="col-sm-5">
           {% if(order.deletedAt is null) %}
-            <a class="btn btn-danger del-btn" href="{{ path('orders_soft_delete', { "id" : order.id }) }}">Delete</a>
-          {% else %}
-            <a class="btn btn-danger del-btn" href="{{ path('orders_hard_delete', { "id" : order.id }) }}">Delete</a>
+            <a class="btn btn-default" href="{{ path('orders_edit', { "id" : order.id }) }}">Edit</a>
           {% endif %}
-        {% endif %}
-      </div>
-      <div class="col-sm-1">
-        {% if order.sendable %}
-          <a href="mailto:{{order.customer.email}}?{{ {'subject': 'В приложении готовая виза в ОАЭ.',
+          {% if(is_granted('ROLE_SUPER_ADMIN')) %}
+            {% if(order.deletedAt is null) %}
+              <a class="btn btn-danger del-btn" href="{{ path('orders_soft_delete', { "id" : order.id }) }}">Delete</a>
+            {% else %}
+              <a class="btn btn-danger del-btn" href="{{ path('orders_hard_delete', { "id" : order.id }) }}">Delete</a>
+            {% endif %}
+          {% endif %}
+        </div>
+        <div class="col-sm-1">
+          {% if order.sendable %}
+            <a href="mailto:{{order.customer.email}}?{{ {'subject': 'В приложении готовая виза в ОАЭ.',
  'body': 'Уважаемый '~order.customer.name~',
 В приложении готовая виза в ОАЭ.
 Вам необходимо ее распечатать и предъявить на стойке регистрации перед посадкой в самолет, а также на стойке паспортного контроля в ОАЭ.
 Спасибо, что воспользовались услугами нашей компании'}|url_encode }}" target="_top" class="btn btn-primary btn-block"><span class="glyphicon glyphicon-send"></span></a>
 
-        {% endif %}
-      </div>
-      <div class="col-sm-6">
-        <div class="btn-toolbar pull-right" role="toolbar">
-          {% if((order.deletedAt is not null) and (is_granted('ROLE_SUPER_ADMIN'))) %}
-            {% if order.updatedAt or "POS" == order.channel %}
-              {{ form_start(status_form) }}
-              {% for btn in status_form %}
-                {{ form_widget(btn) }}
-              {% endfor %}
-              {{ form_end(status_form) }}
-            {% endif %}
           {% endif %}
+        </div>
+        <div class="col-sm-6">
+          <div class="btn-toolbar pull-right" role="toolbar">
+            {% if((order.deletedAt is null) and (is_granted('ROLE_SUPER_ADMIN'))) %}
+              {% if order.updatedAt or "POS" == order.channel %}
+                {{ form_start(status_form) }}
+                {% for btn in status_form %}
+                  {{ form_widget(btn) }}
+                {% endfor %}
+                {{ form_end(status_form) }}
+              {% endif %}
+            {% endif %}
+          </div>
         </div>
       </div>
     </div>
   </div>
 {% endblock %}
+
 {% block content %}
   {{ parent() }}
   {% if ("post" == order.state) %}
     {% include 'MeVisaERPBundle:Orders:form/approval_modal.html.twig' %}
   {% endif %}
 {% endblock %}
+
 {% block javascripts %}
   {{ parent() }}
   <script type="text/javascript" src="/js/orderDocuments.js"></script>

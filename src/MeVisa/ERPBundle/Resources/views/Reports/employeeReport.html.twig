@@ -1,9 +1,6 @@
-{% extends ':default:admin.html.twig' %}
+{% extends 'base.html.twig' %}
 {% block title %}Report for Employees updates{% endblock %}
-{% block stylesheets %}
-  {{ parent() }}
 
-{% endblock %}
 {% block wrapper %}
   <div class="container-fluid">
     <a class="btn btn-default ml-5" href="{{ path('reports') }}"><span class="glyphicon glyphicon-arrow-left"></span></a>

@@ -1,9 +1,18 @@
+{# app/Resources/views/base.html.twig #}
 <!DOCTYPE html>
-<html>
+<!--[if IE 8]> <html lang="en" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]> <html lang="en" class="ie9 no-js"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="{% block HTMLlang%}en{% endblock %}">
+  <!--<![endif]-->
+  <!-- BEGIN HEAD -->
   <head>
-    <meta charset="UTF-8" />
-    <title>{% block title %} {% endblock %} - ВИЗА</title>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+    <meta content="{% block metaDescription %}{% endblock %}" name="description" />
+    <meta content=""{% block metaAuthor %}{% endblock %}" name="author" />
+    <title>{% block HTMLTitle %}{{ block('title') }}{% endblock %} - Wazeery Group</title>
     {% block stylesheets %}
       {% stylesheets
                 'css/jquery-ui.min.css'     
@@ -16,10 +25,39 @@
       {% endstylesheets %}
       <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/t/bs/dt-1.10.11/datatables.min.css"/>
     {% endblock %}
-    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+    <link rel="icon shortcut" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
   </head>
-  <body>
-    <div id="wrapper">{% block body %}{% endblock %}</div>
+  <!-- END HEAD -->
+  <body class="{% block bodyClass %}{% endblock %}">
+    {% block body %}
+      <!-- BEGIN CONTAINER -->
+      <div id="wrapper" class="wrapper">
+        {% block header %}
+          {% block nav %}
+            {% include 'nav.html.twig' %}
+          {% endblock %}
+        {% endblock %}
+        {% block wrapper %}
+          <div id="page-wrapper">
+            {% block beforeContent %}
+            {% endblock %}
+            <div class="container">
+              {% include 'flashMessages.html.twig' %}
+              {% block title %}
+                Dashboard
+              {% endblock %}
+              {% block content %}
+              {% endblock %}
+            </div>
+            {% block afterContent %}
+            {% endblock %}
+          </div>
+        {% endblock %}
+        {% block footer %}
+        {% endblock %}
+      </div>
+      <!-- END CONTAINER -->
+    {% endblock %}
     {% block javascripts %}
       {% javascripts
             'js/jquery-2.2.2.min.js'

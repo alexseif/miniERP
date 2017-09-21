@@ -1,56 +1,61 @@
-<div class="panel panel-default">
+<div class="portlet light bordered">
+  <div class="portlet-title">
+    <div class="caption">Order Products</div>
+    <div class="actions">
+      <a href="#" class="btn text-primary add_product_link btn-xs pull-right"><span class="glyphicon glyphicon-plus-sign" title="Add another product"></span> Add another product</a>
+    </div>
+  </div>
+  <div class="portlet-body">
+    <table class="table table-hover table-condensed order-products-form">
+      <thead>
+        <tr class="panel-heading">
+          <th style="width: 32%;">{{ form_label(form.orderProducts.vars.prototype.product) }}</th>
+          <th style="width: 14%;">{{ form_label(form.orderProducts.vars.prototype.vendor) }}</th>
+          <th style="width: 6%;">{{ form_label(form.orderProducts.vars.prototype.quantity) }}</th>
 
-  <table class="table table-hover table-condensed order-products-form">
-    <thead>
-      <tr class="panel-heading">
-        <th style="width: 40%;">{{ form_label(form.orderProducts.vars.prototype.product) }}</th>
-        <th style="width: 14%;">{{ form_label(form.orderProducts.vars.prototype.vendor) }}</th>
-        <th style="width: 10%;">{{ form_label(form.orderProducts.vars.prototype.quantity) }}</th>
-        <th style="width: 18%;">{{ form_label(form.orderProducts.vars.prototype.unitPrice) }}</th>
-        <th style="width: 18%;">{{ form_label(form.orderProducts.vars.prototype.total) }}                    
-          <a href="#" class="btn text-primary add_product_link btn-xs pull-right"><span class="glyphicon glyphicon-plus-sign" title="Add another product"></span> Add another product</a>
-        </th>
-      </tr>
-    </thead>
-    <tbody class="orderProducts" data-prototype="{{
+          {% if is_granted('ROLE_ACCOUNTANT') %}
+            <th style="width: 16%;">{{ form_label(form.orderProducts.vars.prototype.unitCost) }}</th>
+
+          {% endif %}
+          <th style="width: 16%;">{{ form_label(form.orderProducts.vars.prototype.unitPrice) }}</th>
+          <th style="width: 16%;">{{ form_label(form.orderProducts.vars.prototype.total) }}</th>
+        </tr>
+      </thead>
+      <tbody class="orderProducts" data-prototype="{{
 '<td>' ~ form_widget(form.orderProducts.vars.prototype.product) ~ '</td>'
  ~ '<td>' ~ form_widget(form.orderProducts.vars.prototype.vendor) ~ '</td>'
- ~ '<td>' ~ form_widget(form.orderProducts.vars.prototype.quantity) ~ '</td>'
- ~ '<td>' ~ form_widget(form.orderProducts.vars.prototype.unitPrice) ~ '</td>'
+ ~ '<td>' ~ form_widget(form.orderProducts.vars.prototype.quantity) ~ '</td>' }}
+             {{ (is_granted('ROLE_ACCOUNTANT')) ?  '<td>' ~ form_widget(form.orderProducts.vars.prototype.unitCost) ~ '</td>' }}
+             {{ '<td>' ~ form_widget(form.orderProducts.vars.prototype.unitPrice) ~ '</td>'
  ~ '<td>' ~ form_widget(form.orderProducts.vars.prototype.total) ~ '</td>'
-           }}">
-      {% for product in form.orderProducts %}
-        <tr>
-          <td>{{form_widget(product.product)}}</td>
-          <td>{{form_widget(product.vendor)}}</td>
-          <td>{{form_widget(product.quantity)}}</td>
-          <td>{{form_widget(product.unitPrice)}}</td>
-          <td>{{form_widget(product.total)}}</td>
-        </tr>
-      {% endfor %}
-    </tbody>
-    <tfoot>
-      <tr>
-        <td colspan="5">
-          <a href="#" class="btn text-danger btn-xs remove_product_link pull-right" tabindex="-100"><span class="glyphicon glyphicon-trash" title="Remove last product"></span> Remove last product</a>
-        </td>
-      </tr>
-    </tfoot>
-  </table>
-  <div class='panel-footer'>
-    <div class='row'>
-      <div class='col-sm-4'>
-        <label class="control-label">Subtotal</label>
-        {{ form_widget(form.productsTotal) }}
-      </div>
-      <div class='col-sm-4'>
-        <label for="mevisa_erpbundle_orders_adjustmentTotal" class="control-label required">Adjustment</label>
-        {{ form_widget(form.adjustmentTotal) }}
-      </div>
-      <div class='col-sm-4'>
-        <div class='form-group'>
-          <label class="control-label">Order Total</label>
-          <div class="col-sm-10">
+             }}">
+        {% for product in form.orderProducts %}
+          <tr>
+            <td>{{form_widget(product.product)}}</td>
+            <td>{{form_widget(product.vendor)}}</td>
+            <td>{{form_widget(product.quantity)}}</td>
+            {% if is_granted('ROLE_ACCOUNTANT') %}
+              <td>{{form_widget(product.unitCost)}}</td>
+            {% endif %}
+            <td>{{form_widget(product.unitPrice)}}</td>
+            <td>{{form_widget(product.total)}}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <div class='form-actions'>
+      <div class='row'>
+        <div class='col-sm-3 col-sm-offset-1'>
+          <label class="control-label">Subtotal</label>
+          {{ form_widget(form.productsTotal) }}
+        </div>
+        <div class='col-sm-3'>
+          <label for="mevisa_erpbundle_orders_adjustmentTotal" class="control-label required">Adjustment</label>
+          {{ form_widget(form.adjustmentTotal) }}
+        </div>
+        <div class='col-sm-3'>
+          <div class='form-group'>
+            <label>Order Total</label>
             <div class="input-group">
               {% if ("ru" == app.request.locale) %}
                 <input type="text" class="form-control" disabled="disabled" name="order_total" ><span class="input-group-addon"> руб.</span>
@@ -59,6 +64,9 @@
               {% endif %}
             </div>
           </div>
+        </div>
+        <div class="col-sm-2 text-right">
+          <a href="#" class="btn text-danger btn-xs remove_product_link" tabindex="-100"><span class="glyphicon glyphicon-trash" title="Remove last product"></span> Remove last product</a>
         </div>
       </div>
     </div>

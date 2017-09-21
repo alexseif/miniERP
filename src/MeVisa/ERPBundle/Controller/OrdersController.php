@@ -107,6 +107,7 @@ class OrdersController extends Controller
     $order->setCreatedAt(new \DateTime("now"));
     //Generate Form
     $form = $this->createForm(new OrdersType(), $order, array(
+      'isAccountant' => $this->isGranted('ROLE_ACCOUNTANT'),
       'action' => $this->generateUrl('orders_new'),
       'method' => 'POST',
     ));
@@ -141,7 +142,8 @@ class OrdersController extends Controller
 
     return array(
       'order' => $order,
-      'productPrices' => $this->getAvailableProducts(),
+      'products' => $this->getAvailableProducts(),
+      'productPrices' => $this->getAvailableProductPrices(),
       'form' => $form->createView(),
     );
   }
@@ -225,7 +227,8 @@ class OrdersController extends Controller
 
     return array(
       'order' => $order,
-      'productPrices' => $this->getAvailableProducts(),
+      'products' => $this->getAvailableProducts(),
+      'productPrices' => $this->getAvailableProductPrices(),
       'documents' => $this->getThumbnails($order),
       'logs' => $this->get('erp.order')->getOrderLog($id),
       'form' => $form->createView(),
@@ -568,11 +571,8 @@ class OrdersController extends Controller
   {
     $orderDocuments = $order->getOrderDocuments();
     foreach ($orderDocuments as $document) {
-      if (0 === strpos($document->getPath(), 'http://mevisa.ru/')) {
-        $parts = explode('/', $document->getPath());
-        $parts[count($parts) - 2] = 'thumbs';
-        $parts[count($parts) - 1] = $document->getName();
-        $document->thumbnail = implode('/', $parts);
+      if (0 === strpos($document->getPath(), 'http://mevisa.ru/') || 0 === strpos($document->getPath(), 'https://mevisa.ru/')) {
+        $document->thumbnail = false;
       } elseif (0 === strpos($document->getPath(), 'http://uaevisa.ru/')) {
         $document->thumbnail = false;
       } else {
@@ -584,6 +584,14 @@ class OrdersController extends Controller
   }
 
   private function getAvailableProducts()
+  {
+    $em = $this->getDoctrine()->getManager();
+
+    $products = $em->getRepository('MeVisaERPBundle:Products')->findAllEnabled();
+    return $products;
+  }
+
+  private function getAvailableProductPrices()
   {
     $em = $this->getDoctrine()->getManager();
     //FIXME: Select with invalid product_prices produces errors
@@ -697,6 +705,7 @@ class OrdersController extends Controller
   private function createEditForm(Orders $entity)
   {
     $form = $this->createForm(new OrdersType(), $entity, array(
+      'isAccountant' => $this->isGranted('ROLE_ACCOUNTANT'),
       'action' => $this->generateUrl('orders_edit', array('id' => $entity->getId())),
       'method' => 'PUT',
     ));

@@ -1,8 +1,9 @@
-{% extends 'AppBundle:Admin:adminLayout.html.twig' %}
-{% block backLink %}{{ path('reports') }}{% endblock %}
-{% block adminPanelTitle %}Vendors Reports{% endblock %}
-{% block adminPanelTitleBadge %}{{ reports|length }}{% endblock %}
-{% block adminPanelBody %}
+{# src/MeVisa/ERPBundle/Resources/views/Reports/vendors.html.twig #}
+{% extends ':metronic:portlet.html.twig' %}
+
+
+{% block title %}Vendors Reports{% endblock %}
+{% block portletBody %}
   <ul class="list-group">
     {% for report in reports %}
       <li class="list-group-item">

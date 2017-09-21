@@ -1,64 +1,79 @@
-{% extends 'AppBundle:Admin:adminLayout.html.twig' %}
-{% block adminPanelTitle %}Products{% endblock %}
-{% block adminPanelTitleBadge %}{{ products|length }}{% endblock %}
-{% block adminPanelTitleSmall %}
-  {% if products|first.enabled %} 
-    <label class="label label-success">Enabled</label>
-  {% else %}
-    <label class="label label-danger">Disabled</label>
-  {% endif %}
+{# srv/MeVisa/ERPBundle/Resources/views/Products/index.html.twig #}
+{% extends ':metronic:portlet.html.twig' %}
+
+{% block title %}Products{% endblock %}
+{% block stylesheets %}
+  {{ parent() }}
+  <!-- BEGIN PAGE LEVEL PLUGINS -->
+  <link href="/metronic/assets/global/plugins/bootstrap-table/bootstrap-table.min.css" rel="stylesheet" type="text/css" />
+  <!-- END PAGE LEVEL PLUGINS -->
 {% endblock %}
-{% block adminPanelHeadingRight %}
-  <div class="btn-group">
+
+
+{% block portletTitle %}Products <label class="badge">{{ products|length }}</label>{% endblock %}
+{% block portletActions %}
+  <div class="actions">
     <a href="{{ path('products')}}" class="btn btn-{{ products|first.enabled ? "primary" : "default" }}">Enabled</a>
     <a href="{{ path('products_disabled')}}" class="btn btn-{{ products|first.enabled ? "default" : "primary" }}">Disabled</a>
+    {% if is_granted('ROLE_SUPER_ADMIN') %}
+      <a href="{{ path('products_new')}}" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span> Add</a>
+    {% endif %}
   </div>
-  {% if is_granted('ROLE_SUPER_ADMIN') %}
-    <a href="{{ path('products_new')}}" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span></a>
-
-  {% endif %}
 {% endblock %}
-{% block adminPanelBody %}
-  <div class="table-responsive">
-    <table class="table table-bordered table-hover table-striped table-condensed records_list">
-      <thead>
+
+{% block portletBody %}
+  <table data-toggle="table">
+    <thead>
+      <tr>
+        <th>Country</th>
+        <th>Name</th>
+        <th>Price</th>
+
+        {% if is_granted('ROLE_ACCOUNTANT') %}
+          <th>Cost</th>
+
+        {% endif %}
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for product in products %}
         <tr>
-          <th>Country</th>
-          <th>Name</th>
-          <th>Price</th>
-
-          {% if is_granted('ROLE_ACCOUNTANT') %}
-            <th>Cost</th>
-
-          {% endif %}
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for product in products %}
-          <tr>
-            <td>{{ product.country }}</td>
-            <td>{{ product.name }}
-              <div class="pull-right">
-                {% if product.urgent %}
-                  <span class="label label-purple">Urgent</span>
-                {% endif %}
-              </div>
-            </td>
-            <td class="text-right">{{ (product.pricing|last)?(product.pricing|last.price/100)|localizedcurrency('RUB') }}</td>
-            {% if is_granted('ROLE_ACCOUNTANT') %}
-              <td class="text-right">{{ (product.pricing|last)?(product.pricing|last.cost/100)|localizedcurrency('RUB') }}</td>
-            {% endif %}
-            <td>
-              <a class="btn btn-primary btn-sm" href="{{ path('products_show', { 'id': product.id }) }}">Show</a>
-              {% if is_granted('ROLE_ACCOUNTANT') %}
-                <a class="btn btn-primary btn-sm" href="{{ path('products_edit', { 'id': product.id }) }}">Edit</a>
+          <td>{{ product.country }}</td>
+          <td>{{ product.name }}
+            <div class="pull-right">
+              {% if product.urgent %}
+                <span class="label label-purple">Urgent</span>
               {% endif %}
-              {# <a class="btn btn-default btn-sm" href="{{ path('products_show', { 'id': product.id }) }}">Orders</a> #}
-            </td>
-          </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-  </div>
+            </div>
+          </td>
+          <td class="text-right">{{ (product.pricing|last)?(product.pricing|last.price/100)|localizedcurrency('RUB') }}</td>
+          {% if is_granted('ROLE_ACCOUNTANT') %}
+            <td class="text-right">{{ (product.pricing|last)?(product.pricing|last.cost/100)|localizedcurrency('RUB') }}</td>
+          {% endif %}
+          <td>
+            <a class="btn btn-primary btn-sm" href="{{ path('products_show', { 'id': product.id }) }}">Show</a>
+            {% if is_granted('ROLE_ACCOUNTANT') %}
+              <a class="btn btn-primary btn-sm" href="{{ path('products_edit', { 'id': product.id }) }}">Edit</a>
+            {% endif %}
+            {# <a class="btn btn-default btn-sm" href="{{ path('products_show', { 'id': product.id }) }}">Orders</a> #}
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}
+
+{% block javascripts %}
+  {{ parent() }}
+  <!-- BEGIN PAGE LEVEL PLUGINS -->
+  <script src="/metronic/assets/global/plugins/bootstrap-table/bootstrap-table.min.js" type="text/javascript"></script>
+  <!-- END PAGE LEVEL PLUGINS -->
+  <!-- BEGIN PAGE LEVEL SCRIPTS -->
+  <script src="/metronic/assets/pages/scripts/table-bootstrap.min.js" type="text/javascript"></script>
+  <!-- END PAGE LEVEL SCRIPTS -->
+  <script>
+    {#    $().ready#}
+    {#    $('[data-toggle="dropdown"]').dropdown();#}
+  </script>
 {% endblock %}

@@ -1,0 +1,47 @@
+<!-- BEGIN HEADER -->
+<header class="page-header">
+  <nav class="navbar mega-menu" role="navigation">
+    <div class="container-fluid">
+      <div class="clearfix navbar-fixed-top">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="toggle-icon">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </span>
+        </button>
+        <!-- End Toggle Button -->
+        <!-- BEGIN LOGO -->
+        <a id="index" class="page-logo" href="{{ path('dashboard') }}">
+          <img src="/images/visa_logo.png" alt="Logo"> </a>
+        <!-- END LOGO -->
+        <!-- BEGIN SEARCH -->
+        <form class="search" action="{{ path('search') }}" method="GET">
+          <input type="text" class="form-control" name="search" placeholder="Search..." value="{{ app.request.query.get("search") }}">
+          <button type="submit" class="btn submit md-skip">
+            <i class="fa fa-search"></i>
+          </button>
+        </form>
+        <!-- END SEARCH -->
+        <!-- BEGIN TOPBAR ACTIONS -->
+        <div class="topbar-actions">
+{#          {% include ':metronic:group_notifications.html.twig' %}#}
+          {% include ':metronic:group_information.html.twig' %}
+          {% include ':metronic:user_profile.html.twig' %}
+          <!-- BEGIN QUICK SIDEBAR TOGGLER -->
+          {#<button type="button" class="quick-sidebar-toggler md-skip" data-toggle="collapse">
+            <span class="sr-only">Toggle Quick Sidebar</span>
+            <i class="icon-logout"></i>
+          </button>#}
+          <!-- END QUICK SIDEBAR TOGGLER -->
+        </div>
+        <!-- END TOPBAR ACTIONS -->
+      </div>
+      {% include ':metronic:header_menu.html.twig' %}
+    </div>
+    <!--/container-->
+  </nav>
+</header>
+<!-- END HEADER -->

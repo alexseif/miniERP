@@ -1,7 +1,8 @@
-{% extends 'AppBundle:Admin:adminLayout.html.twig' %}
+{# src/MeVisa/ERPBundle/Resources/views/Reports/index.html.twig #}
+{% extends ':metronic:portlet.html.twig' %}
+
 {% block title %}Reports{% endblock %}
-{% block adminPanelTitle %}Reports{% endblock %}
-{% block adminPanelBody %}
+{% block portletBody %}
   <ul class="list-group">
     {#<li class="list-group-item">
         <a href="{{ path('reports_problems') }} ">Problems</a>
