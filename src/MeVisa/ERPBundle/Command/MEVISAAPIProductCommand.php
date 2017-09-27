@@ -28,10 +28,10 @@ class MEVISAAPIProductCommand extends ContainerAwareCommand
 
   protected function execute(InputInterface $input, OutputInterface $output)
   {
-    try {
       $username = "crmscript";
       $password = "jdjnde7352jdd";
-      $url = "http://mevisa.ru/api/v1/products";
+      $url = "https://mevisa.ru/api/v1/products";
+    try {
       $curl = new \Curl\Curl();
       $curl->setBasicAuthentication($username, $password);
       $curl->get($url);
