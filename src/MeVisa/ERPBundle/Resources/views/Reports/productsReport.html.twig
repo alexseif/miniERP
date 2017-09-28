@@ -55,8 +55,9 @@
       data.addColumn('string', 'Product');
       data.addColumn('number', 'Revenue');
       data.addColumn('number', 'Quantity');
+      data.addColumn('string', 'Country');
       data.addRows([{% for op in ops %}
-        ['{{ op.name }}',{{op.sTotal/100}} , {{op.sQty}}],{% endfor %}
+        ['{{ op.name }}',   {{op.sTotal/100}} , {{op.sQty}}, '{{ op.country }}'],{% endfor %}
       ]);
 
       data.sort([{column: 1, desc: true}]);
@@ -70,7 +71,7 @@
       var donutRangeSlider = new google.visualization.ControlWrapper({
         controlType: 'CategoryFilter',
         containerId: 'filter_div',
-        "options": {"filterColumnIndex": 0}
+        "options": {"filterColumnIndex": 3}
       });
       // Create a pie chart, passing some options
       var pieChart = new google.visualization.ChartWrapper({
