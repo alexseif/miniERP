@@ -34,23 +34,40 @@
         {% if order.orderPayments|last.state == 'paid' %}
           {% for op in order.orderProducts %}
             {% set costPrint = true %}
-            {% for companion in order.orderCompanions %}
+            {% if order.orderCompanions|length > 0 %}
+              {% for companion in order.orderCompanions %}
+                <tr>
+                  <td>{{order.createdAt|localizeddate('short', 'none')}}</td>
+                  <td><a class="btn btn-link" href="{{ path('orders_show', { 'id': order.id }) }}">{{ order.number }}</a></td>
+                  <td>{{ order.customer.name }}</td>
+                  <td>{{ op.product.name }}</td>
+                  <td>{{ companion.name }}</td>
+                  <td>{{ companion.passportNumber }}</td>
+                  <td>{{ companion.nationality|country }}</td>
+                  <td>{{ op.vendor.name }}</td>
+                  <td>{{ (costPrint) ? (op.unitCost * op.quantity)/100 : 0 }}</td>
+                  <td>{{ (costPrint) ?  op.total/100 : 0 }}</td>
+                  <td>{{ (costPrint) ?  order.orderPayments|last.method }}</td>
+                  <td></td>
+                </tr>
+                {% set costPrint = false %}
+              {% endfor %}
+            {% else %}
               <tr>
                 <td>{{order.createdAt|localizeddate('short', 'none')}}</td>
                 <td><a class="btn btn-link" href="{{ path('orders_show', { 'id': order.id }) }}">{{ order.number }}</a></td>
                 <td>{{ order.customer.name }}</td>
                 <td>{{ op.product.name }}</td>
-                <td>{{ companion.name }}</td>
-                <td>{{ companion.passportNumber }}</td>
-                <td>{{ companion.nationality|country }}</td>
+                <td></td>
+                <td></td>
+                <td></td>
                 <td>{{ op.vendor.name }}</td>
                 <td>{{ (costPrint) ? (op.unitCost * op.quantity)/100 : 0 }}</td>
                 <td>{{ (costPrint) ?  op.total/100 : 0 }}</td>
                 <td>{{ (costPrint) ?  order.orderPayments|last.method }}</td>
                 <td></td>
               </tr>
-              {% set costPrint = false %}
-            {% endfor %}
+            {% endif %}
           {% endfor %}
         {% endif %}
       {% endfor %}
