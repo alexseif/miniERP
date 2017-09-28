@@ -31,23 +31,23 @@ class MEVISAAPICommand extends ContainerAwareCommand
   protected function execute(InputInterface $input, OutputInterface $output)
   {
 //TOOD: encapsulate and move
+    $username = "crmscript";
+    $password = "jdjnde7352jdd";
+    $url = "https://mevisa.ru/api/v1/orders";
     try {
-      $username = "crmscript";
-      $password = "jdjnde7352jdd";
-      $url = "http://mevisa.ru/api/v1/orders";
       $curl = new \Curl\Curl();
       $curl->setBasicAuthentication($username, $password);
       $curl->get($url);
       $response = json_decode($curl->response);
       $curl->close();
     } catch (\Exception $exc) {
+//      dump($exc);
 //TODO: do something
     }
 
     $data = $response->data;
 
     if ($data) {
-
       $em = $this->getContainer()->get('doctrine')->getManager();
       $OrderAPIService = $this->getApplication()->getKernel()->getContainer()->get('erp.order.api');
 

@@ -53,15 +53,20 @@ class MODxAPICommand extends ContainerAwareCommand
   {
     $today = new \DateTime();
     $today->setTime(00, 00, 00);
-    $curl = new \Curl\Curl();
-    $curl->get('http://uaevisa.ru/api/v1/orders', array(
-      'login' => 'api',
-      'pass' => 'YrrLeqhb',
-      'startdate' => $today->format('Y-m-d H:i'),
-      'limit' => '100'
-    ));
-    $response = $curl->response;
-    $curl->close();
+    try {
+      $curl = new \Curl\Curl();
+      $curl->get('https://uaevisa.ru/api/v1/orders', array(
+        'login' => 'api',
+        'pass' => 'YrrLeqhb',
+        'startdate' => $today->format('Y-m-d H:i'),
+        'limit' => '100'
+      ));
+      $response = $curl->response;
+      $curl->close();
+    } catch (\Exception $exc) {
+//      dump($exc);
+//TODO: do something
+    }
     return $response;
   }
 

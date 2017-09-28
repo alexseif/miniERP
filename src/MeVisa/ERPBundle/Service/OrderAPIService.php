@@ -112,7 +112,7 @@ class OrderAPIService
     $orderProduct->setQuantity($qty);
     $orderProduct->setUnitPrice($unitPrice);
     $orderProduct->setUnitCost($productPrice->getCost());
-    $orderProduct->setVendor($product->getVendor());
+//    $orderProduct->setVendor($product->getVendor());
     $orderProduct->setTotal($total);
 
     $this->Order->addOrderProduct($orderProduct);
