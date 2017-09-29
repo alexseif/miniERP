@@ -1,54 +1,23 @@
-{% extends 'base.html.twig' %}
+{# src/AppBundle/Resources/views/Currency/index.html.twig #}
+{% extends ':metronic:portlet.html.twig' %}
 
-{% block content -%}
-  <!-- Page Heading -->
-  <div class="row">
-    <div class="col-md-12">
-      <h3 class="page-header">
-        {% trans %}Currency{% endtrans %} <small> 1 USD in RUB </small>
-      </h3>
-    </div>
-  </div>
-  <!-- /.row -->
-  <!-- page content -->
-  <div class="panel panel-default">
-    <div class="panel-body">
-      <div class="row">
-        <div class="col-md-2"></div>
-        <div class="col-md-4">
-          <div class="panel panel-default">
-            <div class="panel-body">
-              {{ form(create_form) }}
-            </div>
-          </div>
-        </div>
-        <div class="col-md-4">
-          <div class="panel panel-default">
-            <div class="table-responsive">
-              <table class="table table-bordered table-hover table-striped records_list" id="currency">
-                <thead>
-                  <tr>
-                    <th>1 USD in RUB</th>
-                    <th>Created at</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {% for entity in entities %}
-                    <tr>
-                      <td>{{ entity.value|localizedcurrency('RUB') }} </td>
-                      <td>{% if entity.createdAt %}{{ entity.createdAt|date('H:i d/m/Y') }}{% endif %}
-                        {#                                                {{ form(delete_form) }}#}
-                      </td>
-                    </tr>
-                  {% endfor %}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-2"></div>
-      </div>
-    </div>
-  </div>
-  <!-- /.row -->
+{% block title -%}Currency{% endblock %}
+{% block portletBody -%}
+  <table class="table table-bordered table-hover table-striped records_list" id="currency">
+    <thead>
+      <tr>
+        <th class="text-right">1 USD in RUB</th>
+        <th>Timestamp</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for entity in entities %}
+        <tr>
+          <td>{{ (entity.value/100)|localizedcurrency('RUB') }} </td>
+          <td>{% if entity.createdAt %}{{ entity.createdAt|date('H:i d/m/Y') }}{% endif %}
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
 {% endblock %}

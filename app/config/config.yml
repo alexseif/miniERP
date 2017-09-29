@@ -198,3 +198,6 @@ fos_user:
 sonata_intl:
     timezone:
         default: Europe/Moscow
+
+open_exchange_rates:
+    api_id: 200c3f2b719f473f82cf71ec4d1f5e0a
