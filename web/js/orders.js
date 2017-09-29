@@ -87,6 +87,18 @@ function addCompanions() {
   }
 }
 
+function validateCompanions() {
+  companionsCount = $('tbody.companions tr').length;
+  if (0 == companionsCount) {
+    $('#companion-panel').before('<div class="alert alert-dismissible alert-error"><button type="button" class="close" data-dismiss="alert">×</button>You have to add a companion</div>');
+    $('html, body').animate({
+      scrollTop: $('.alert.alert-dismissible.alert-error').offset().top - 100 + 'px'
+    }, 'fast');
+    return false;
+  }
+  return true;
+}
+
 function checkCompanions(alrt) {
   companionsCount = $('tbody.companions tr').length;
   if (companionsCount < PAX) {
@@ -223,4 +235,9 @@ $(document).ready(function () {
   });
 
   $('.datepicker').datepicker({dateFormat: "dd.mm.yy"});
+
+  $('form[name="mevisa_erpbundle_orders"]').submit(function () {
+    return validateCompanions();
+  });
+
 });
