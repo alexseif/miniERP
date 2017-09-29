@@ -6,6 +6,14 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\MoneyType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Doctrine\ORM\EntityRepository;
 
 class OrdersType extends AbstractType
@@ -25,39 +33,39 @@ class OrdersType extends AbstractType
       $states[$state->getKey()] = $state->getName();
     }
     $builder
-        ->add('state', 'choice', array(
+        ->add('state', ChoiceType::class, array(
           'choices' => $states,
           'expanded' => true,
           'attr' => array('class' => 'align-inline')
             )
         )
-        ->add('productsTotal', 'money', array(
+        ->add('productsTotal', MoneyType::class, array(
           'currency' => 'RUB',
           'divisor' => 100,
           'label' => 'Subtotal',
           'read_only' => true
             )
         )
-        ->add('adjustmentTotal', 'money', array(
+        ->add('adjustmentTotal', MoneyType::class, array(
           'currency' => 'RUB',
           'divisor' => 100,
           'label' => 'Adjustment',
           'data' => 0
             )
         )
-        ->add('total', 'money', array(
+        ->add('total', MoneyType::class, array(
           'currency' => 'RUB',
           'divisor' => 100,
           'required' => false,
           'read_only' => true
             )
         )
-        ->add('people', 'integer', array(
+        ->add('people', IntegerType::class, array(
           'label' => 'PAX No',
           'attr' => array('min' => 1)
             )
         )
-        ->add('departure', 'date', array(
+        ->add('departure', DateType::class, array(
           'widget' => 'single_text',
           'format' => 'dd.MM.yyyy',
           'attr' => array(
@@ -66,7 +74,7 @@ class OrdersType extends AbstractType
             'data-date-format' => 'dd.mm.yyyy',
           ))
         )
-        ->add('arrival', 'date', array(
+        ->add('arrival', DateType::class, array(
           'widget' => 'single_text',
           'format' => 'dd.MM.yyyy',
           'attr' => array(
@@ -75,10 +83,10 @@ class OrdersType extends AbstractType
             'data-date-format' => 'dd.mm.yyyy',
           ))
         )
-        ->add('ticketRequired', 'checkbox', array(
+        ->add('ticketRequired', CheckboxType::class, array(
           'required' => false,
         ))
-        ->add('salesBy', 'entity', array(
+        ->add('salesBy', EntityType::class, array(
           'placeholder' => 'Choose a User',
           'class' => 'AppBundle:User',
           'query_builder' => function (EntityRepository $em) {
@@ -95,7 +103,7 @@ class OrdersType extends AbstractType
     if ($options['data']->getCustomer()) {
       $agent = $options['data']->getCustomer()->getAgent();
     }
-    $builder->add('orderProducts', 'collection', array(
+    $builder->add('orderProducts', CollectionType::class, array(
       'type' => new OrderProductsType($agent),
       'entry_options' => array(
         'isAccountant' => $options['isAccountant']
@@ -105,19 +113,19 @@ class OrdersType extends AbstractType
       'label' => false,
     ));
 
-    $builder->add('orderCompanions', 'collection', array(
+    $builder->add('orderCompanions', CollectionType::class, array(
       'type' => new OrderCompanionsType(),
       'allow_add' => true,
       'allow_delete' => true,
       'label' => false,
     ));
 
-    $builder->add('orderPayments', 'collection', array(
+    $builder->add('orderPayments', CollectionType::class, array(
       'type' => new OrderPaymentsType(),
       'allow_add' => true,
     ));
 
-    $builder->add('orderComments', 'collection', array(
+    $builder->add('orderComments', CollectionType::class, array(
       'type' => new OrderCommentsType(),
       'allow_add' => true,
       'allow_delete' => false,
@@ -126,7 +134,7 @@ class OrdersType extends AbstractType
       'label' => false
     ));
 
-    $builder->add('uploadedFiles', 'file', array(
+    $builder->add('uploadedFiles', FileType::class, array(
       'multiple' => true,
       'data_class' => null,
       'required' => false,
