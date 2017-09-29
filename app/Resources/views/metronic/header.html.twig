@@ -27,7 +27,20 @@
         <!-- END SEARCH -->
         <!-- BEGIN TOPBAR ACTIONS -->
         <div class="topbar-actions">
-{#          {% include ':metronic:group_notifications.html.twig' %}#}
+          <div class="btn-group-img btn-group">
+            <button type="button" 
+                    class="btn btn-sm popovers" 
+                    data-trigger="hover" 
+                    data-placement="bottom" 
+                    data-original-title="Updated:"
+                    data-content="{{ currency.currency.createdAt|localizeddate}}" 
+                    >
+              <span class="bg-grey-gallery bg-font-grey-gallery bold uppercase">
+                {{ (currency.currency.value/100)|localizedcurrency('RUB') }}
+              </span>
+            </button>
+          </div>
+          {#          {% include ':metronic:group_notifications.html.twig' %}#}
           {% include ':metronic:group_information.html.twig' %}
           {% include ':metronic:user_profile.html.twig' %}
           <!-- BEGIN QUICK SIDEBAR TOGGLER -->
