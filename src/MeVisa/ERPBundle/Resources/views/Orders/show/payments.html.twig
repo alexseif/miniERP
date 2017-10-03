@@ -33,6 +33,9 @@
   </div>
   <div class="panel-footer text-right">
     {% if order.invoices is not empty %}
+      {% if invoiceRegenerate %}
+        <a class='btn btn-default' href="{{ path('order_generate_pdf', {'id': order.id}) }}">Regenerate</a>
+      {% endif %}
       <a class="btn btn-default" href="/invoices/mevisa-invoice-{{ order.number }}-{{ (order.invoices|last).id}}.pdf" target="_blank">Open</a>
       <a class='btn btn-default'><span class="glyphicon glyphicon-send"></span></a>
       {% else %}

@@ -186,8 +186,18 @@ class OrdersController extends Controller
     $orderComment = new \MeVisa\ERPBundle\Entity\OrderComments();
     $orderComment->setOrderRef($order->getId());
 
+    $invoiceRegenerate = false;
+    $fs = new Filesystem();
+    if ($order->getInvoices()) {
+      $invoiceFile = $this->get('kernel')->getRootDir() . "/../web/invoices/mevisa-invoice-" . $order->getNumber() . "-" . $order->getInvoices()->last()->getId() . ".pdf";
+      if (!$fs->exists($invoiceFile)) {
+        $invoiceRegenerate = true;
+      }
+    }
+
     return array(
       'order' => $order,
+      'invoiceRegenerate' => $invoiceRegenerate,
       'logs' => $this->get('erp.order')->getOrderLog($id),
       'documents' => $this->getThumbnails($order),
       'status_form' => $this->createStatusForm($order)->createView(),
