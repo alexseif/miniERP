@@ -188,7 +188,7 @@ class OrdersController extends Controller
 
     $invoiceRegenerate = false;
     $fs = new Filesystem();
-    if ($order->getInvoices()) {
+    if ($order->getInvoices()->count()) {
       $invoiceFile = $this->get('kernel')->getRootDir() . "/../web/invoices/mevisa-invoice-" . $order->getNumber() . "-" . $order->getInvoices()->last()->getId() . ".pdf";
       if (!$fs->exists($invoiceFile)) {
         $invoiceRegenerate = true;
