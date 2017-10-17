@@ -141,6 +141,7 @@ class OrderService
       'companySettings' => $CompanySettings
         )
     );
+    ini_set('max_execution_time', 300);
     $mpdf = new \mPDF("ru-RU", "A4");
     $mpdf->SetTitle("MeVisa Invoice " . $order->getNumber() . '-' . $invoice->getId());
     $mpdf->SetAuthor($CompanySettings->getName());
