@@ -188,7 +188,7 @@ class OrdersController extends Controller
 
     $invoiceRegenerate = false;
     $fs = new Filesystem();
-    if ($order->getInvoices()) {
+    if ($order->getInvoices()->count()) {
       $invoiceFile = $this->get('kernel')->getRootDir() . "/../web/invoices/mevisa-invoice-" . $order->getNumber() . "-" . $order->getInvoices()->last()->getId() . ".pdf";
       if (!$fs->exists($invoiceFile)) {
         $invoiceRegenerate = true;
@@ -476,6 +476,27 @@ class OrdersController extends Controller
 
     $this->addFlash('success', 'invoice generated');
     return $this->redirect($this->generateUrl('orders_show', array('id' => $id)));
+  }
+
+  /**
+   * Action to Show Invoice.
+   *
+   * @param type $id
+   * @Route("/{id}/invoice_show", name="order_invoice_show")
+   * @Method("GET")
+   * @Template("MeVisaERPBundle:Orders:showOrderInvoice.html.twig")
+   */
+  public function showOrderInvoiceAction(Orders $order)
+  {
+    $em = $this->getDoctrine()->getManager();
+    $CompanySettings = $em->getRepository('MeVisaERPBundle:CompanySettings')->find(1);
+    $invoice = new Invoices();
+
+    return array(
+      'order' => $order,
+      'invoice' => $invoice,
+      'companySettings' => $CompanySettings
+    );
   }
 
   /**
