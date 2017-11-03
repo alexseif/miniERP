@@ -25,7 +25,6 @@ class CurrencyService
             ->em
             ->getRepository('AppBundle:Currency')
             ->getToDate();
-//        return '7400';
   }
 
 }

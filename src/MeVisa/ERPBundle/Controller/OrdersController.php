@@ -186,8 +186,18 @@ class OrdersController extends Controller
     $orderComment = new \MeVisa\ERPBundle\Entity\OrderComments();
     $orderComment->setOrderRef($order->getId());
 
+    $invoiceRegenerate = false;
+    $fs = new Filesystem();
+    if ($order->getInvoices()->count()) {
+      $invoiceFile = $this->get('kernel')->getRootDir() . "/../web/invoices/mevisa-invoice-" . $order->getNumber() . "-" . $order->getInvoices()->last()->getId() . ".pdf";
+      if (!$fs->exists($invoiceFile)) {
+        $invoiceRegenerate = true;
+      }
+    }
+
     return array(
       'order' => $order,
+      'invoiceRegenerate' => $invoiceRegenerate,
       'logs' => $this->get('erp.order')->getOrderLog($id),
       'documents' => $this->getThumbnails($order),
       'status_form' => $this->createStatusForm($order)->createView(),
@@ -469,6 +479,27 @@ class OrdersController extends Controller
   }
 
   /**
+   * Action to Show Invoice.
+   *
+   * @param type $id
+   * @Route("/{id}/invoice_show", name="order_invoice_show")
+   * @Method("GET")
+   * @Template("MeVisaERPBundle:Orders:showOrderInvoice.html.twig")
+   */
+  public function showOrderInvoiceAction(Orders $order)
+  {
+    $em = $this->getDoctrine()->getManager();
+    $CompanySettings = $em->getRepository('MeVisaERPBundle:CompanySettings')->find(1);
+    $invoice = new Invoices();
+
+    return array(
+      'order' => $order,
+      'invoice' => $invoice,
+      'companySettings' => $CompanySettings
+    );
+  }
+
+  /**
    * Action to Preview Invoice.
    *
    * @Route("/{id}/invoice_preview", name="order_invoice_preview")
@@ -609,9 +640,11 @@ class OrdersController extends Controller
     if (count($order->getOrderCompanions()) != $order->getPeople()) {
       return false;
     }
-    $orderPayment = $order->getOrderPayments()->last();
-    if ("paid" == $orderPayment->getState()) {
-      return true;
+    if ($order->getOrderPayments()->count()) {
+      $orderPayment = $order->getOrderPayments()->last();
+      if ("paid" == $orderPayment->getState()) {
+        return true;
+      }
     }
     return false;
   }

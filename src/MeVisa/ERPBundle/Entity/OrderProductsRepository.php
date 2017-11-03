@@ -28,7 +28,7 @@ class OrderProductsRepository extends EntityRepository
   public function findRevenue()
   {
     return $this->createQueryBuilder('op')
-            ->select('op, o, p, p.name as name,SUM(op.total) as sTotal, SUM(op.quantity) as sQty')
+            ->select('op, o, p, p.name as name, p.country,SUM(op.total) as sTotal, SUM(op.quantity) as sQty')
             ->leftJoin('op.orderRef', 'o')
             ->leftJoin('op.product', 'p')
             ->Where("o.state = 'approved' OR o.state = 'rejected'")
@@ -41,7 +41,7 @@ class OrderProductsRepository extends EntityRepository
   public function findRevenueByMonthAndYear($month, $year)
   {
     return $this->createQueryBuilder('op')
-            ->select('op, o, p, p.name as name,SUM(op.total) as sTotal, SUM(op.quantity) as sQty')
+            ->select('op, o, p, p.name as name, p.country,SUM(op.total) as sTotal, SUM(op.quantity) as sQty')
             ->leftJoin('op.orderRef', 'o')
             ->leftJoin('op.product', 'p')
             ->Where("o.state = 'approved' OR o.state = 'rejected'")

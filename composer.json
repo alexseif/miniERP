@@ -34,7 +34,8 @@
         "setasign/fpdi-tcpdf": "^1.6",
         "curl/curl": "^1.6",
         "symfony/polyfill-iconv": "^1.4",
-        "doctrine/doctrine-migrations-bundle": "^1.0"
+        "doctrine/doctrine-migrations-bundle": "^1.0",
+        "mrzard/open-exchange-rates-bundle": "~2.0.0"
     },
     "require-dev": {
         "sensio/generator-bundle": "~2.3",
