@@ -640,9 +640,11 @@ class OrdersController extends Controller
     if (count($order->getOrderCompanions()) != $order->getPeople()) {
       return false;
     }
-    $orderPayment = $order->getOrderPayments()->last();
-    if ("paid" == $orderPayment->getState()) {
-      return true;
+    if ($order->getOrderPayments()->count()) {
+      $orderPayment = $order->getOrderPayments()->last();
+      if ("paid" == $orderPayment->getState()) {
+        return true;
+      }
     }
     return false;
   }
