@@ -1,0 +1,17 @@
+{# srv/MeVisa/ERPBundle/Resources/views/Orders/invoice/agreement.html.twig #}
+<div class="invoice agreement">
+  <div class="row">
+    <div class="col-xs-3">
+      <small>г.  Москва</small>
+    </div>
+    <div class="col-xs-6 text-center">
+      <b>ДОГОВОР ОБ ОКАЗАНИИ ВИЗОВЫХ УСЛУГ № {{ invoice.id }}</b>
+    </div>
+    <div class="col-xs-3 text-right">
+      <small>{{ "now" | format_date(null, 'ru', 'Europe/Moscow', constant('IntlDateFormatter::LONG')) }}</small>    
+    </div>
+  </div>
+
+  {{ include(template_from_string(companySettings.jsonValue['agreement'])) }}
+  {% include 'MeVisaERPBundle:Orders:invoice/customerSignature.html.twig' %}
+</div>

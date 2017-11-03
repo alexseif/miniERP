@@ -492,8 +492,15 @@ class OrdersController extends Controller
     $CompanySettings = $em->getRepository('MeVisaERPBundle:CompanySettings')->find(1);
     $invoice = new Invoices();
 
+    $products = $order->getOrderProducts();
+    $productsLine = array();
+    foreach ($products as $product) {
+      $productsLine[] = $product->getProduct()->getName();
+    }
+    $productsLine = implode(',', $productsLine);
     return array(
       'order' => $order,
+      'productsLine' => $productsLine,
       'invoice' => $invoice,
       'companySettings' => $CompanySettings
     );

@@ -1,14 +1,18 @@
-@page {
-    margin-top: 5mm;
-    margin-bottom: 5mm;
+@media print {
+  @page { margin: 0; margin-top: 5mm; margin-bottom: 5mm;}
+  body { margin: 1.6cm;font-size: 10pt;text-align: justify; }
+  .table.sign>tbody>tr>td, .table.sign>tbody>tr>th,
+  .table.sign>tfoot>tr>td, .table.sign>tfoot>tr>th,
+  .table.sign>thead>tr>td, .table.sign>thead>tr>th{border:none;}
 }
-body{font-size: 10pt;text-align: justify;}
+p{margin: 0 0 5px 0;}
+.invoice{
+  page-break-after: always;
+}
+.agreement{font-size: 6pt;}
 table, tr, td, th, tbody, thead, tfoot {page-break-inside: avoid !important;}
 td, th{padding: 8px;}
 h1{font-size: 15pt;}
-.page {overflow: hidden;page-break-after: always;}
-.do-not-print{display: none;}
-.border-right{border-right:  1px solid #ddd;}
 .numbered-list OL{ counter-reset: item;}
 .numbered-list LI { display: block; }
 .numbered-list LI:before { content: counters(item, ".") " "; counter-increment: item; }
@@ -19,4 +23,7 @@ h1{font-size: 15pt;}
 .sign td{padding-left: 12px; font-size: x-small;}
 .tb{border: 1px solid #ddd;}
 .lb{border-left: 1px solid #ddd;}
-.bold{font-weight: bold;}
+.invoice .invoice-logo div,
+.invoice .invoice-logo p{padding:0;text-align:right;font-size: 14px;}
+.invoice .invoice-logo p.invoice-no{font-size:20px;line-height:28px;}
+.invoice table{margin: 15px 0;}

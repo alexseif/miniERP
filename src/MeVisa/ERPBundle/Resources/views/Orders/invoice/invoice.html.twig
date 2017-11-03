@@ -1,0 +1,95 @@
+{# srv/MeVisa/ERPBundle/Resources/views/Orders/invoice/invoice.html.twig #}
+<div class="invoice">
+  <div class="row invoice-logo">
+    <div class="col-xs-5 invoice-logo-space">
+      <img src="{{ absolute_url(asset('images/visa_logo.png?v=1')) }}" class="img-responsive" alt=""  /> 
+    </div>
+    <div class="col-xs-7">
+      <p class="invoice-no">Счет № {{ invoice.id }}  от {{ "now" | format_date(null, 'ru', 'Europe/Moscow', constant('IntlDateFormatter::LONG')) }}</p>
+      <div>
+        {{companySettings.jsonValue['name']|raw}}
+        {{ companySettings.jsonValue['address']|raw }}
+      </div>
+      <div>
+        <b>ИНН:</b> 7734380567<br/>
+        <b>КПП:</b> 773401001
+      </div>
+    </div>
+  </div>
+  <hr/>
+  <div class="row text-left">
+    <div class="col-xs-4">
+      <h3>Заказчик:</h3>
+      <ul class="list-unstyled">
+        <li>{{order.customer.name}}</li>
+        <li> Mr Nilson Otto </li>
+        <li> FoodMaster Ltd </li>
+        <li> Madrid </li>
+        <li> Spain </li>
+        <li> 1982 OOP </li>
+      </ul>
+    </div>
+    <div class="col-xs-4">
+      <h3>Получатель:</h3>
+      <ul class="list-unstyled">
+        <li>{{companySettings.jsonValue['name']|raw}}</li>
+        <li>{{companySettings.jsonValue['bank']|raw}}</li>
+      </ul>
+    </div>
+    <div class="col-xs-4 invoice-payment">
+      <h3>Банк получателя:</h3>
+      <ul class="list-unstyled">
+        <li>Филиал "Бизнес онлайн" ПАО "ХАНТЫ-МАНСИЙСКИЙ БАНК ОТКРЫТИЕ"</li>
+        <li><b>БИК:</b> 044525999</li>
+        <li><b>Корр. счет:</b> 30101810845250000999 </li>
+      </ul>
+    </div>
+  </div>
+  <b>Плательщик:</b> {{order.customer.name}}
+
+  <table class="table table-striped table-hover">
+    <thead>
+      <tr>
+        <th> # </th>
+        <th>Наименование товара</th>
+        <th>Коли-чество</th>
+        <th>Цена</th>
+        <th>Сумма</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for key, product in order.orderProducts %}
+        <tr>
+          {# FIXME: row number #}
+          <td>{{ key + 1 }}</td>
+          <td>{{ product.product.countryAndName }}</td>
+          <td>{{ product.quantity }}</td>
+          <td>{{ (product.unitPrice/100)|localizedcurrency('RUB') }}</td>
+          <td>{{ (product.total/100)|localizedcurrency('RUB') }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+    <tfoot>
+      <tr>
+        <th colspan="4" class="text-right">Всего к оплате</th>
+        <th>{{ (order.total/100)|localizedcurrency('RUB') }}</th>
+      </tr>
+    </tfoot>
+  </table>
+  <div class="row">
+    <div class="col-xs-5 col-xs-offset-1">
+      <div class="well">
+        <div class="signature">{{companySettings.jsonValue['invoiceSignature1']|raw}}</div>
+        <br/>
+        <p>_____________________________</p>
+      </div>
+    </div>
+    <div class="col-xs-5">
+      <div class="well">
+        <div class="signature">{{companySettings.jsonValue['invoiceSignature2']|raw}}</div>
+        <br/>
+        <p>_____________________________</p>        
+      </div>
+    </div>
+  </div>
+</div>
