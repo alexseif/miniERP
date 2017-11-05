@@ -18,12 +18,12 @@
           <li><a href="dashboard_3.html"><i class="icon-graph"></i> Completed </a></li>#}
       </ul>
     </li>
-    <li class="dropdown dropdown-fw dropdown-fw-disabled {{ (app.request.get('_route')) starts with 'orders' ? "active open selected" }}">
+    <li class="dropdown dropdown-fw dropdown-fw-disabled {{ (app.request.get('_route')) starts with 'order' ? "active open selected" }}">
       <a href="javascript:;" class="text-uppercase"><i class="icon-puzzle"></i> Orders </a>
       <ul class="dropdown-menu dropdown-menu-fw">
-        <li class="{{ ("orders" == app.request.get('_route'))?"active" }}"><a href="{{ path('orders') }}">Orders </a></li>
-        <li class="{{ ("orders_archive" == app.request.get('_route'))?"active" }}"><a href="{{ path('orders_archive') }}">Archives</a></li>
-        <li class="{{ ("orders_delete" == app.request.get('_route'))?"active" }}"><a href="{{ path('orders_delete') }}">Deleted</a></li>
+        <li class="{{ ("orders" == app.request.get('_route')) ? "active" }}"><a href="{{ path('orders') }}">Orders </a></li>
+        <li class="{{ ("orders_archive" == app.request.get('_route')) ? "active" }}"><a href="{{ path('orders_archive') }}">Archives</a></li>
+        <li class="{{ ("orders_delete" == app.request.get('_route')) ? "active" }}"><a href="{{ path('orders_delete') }}">Deleted</a></li>
       </ul>
     </li>
     <li class="dropdown dropdown-fw dropdown-fw-disabled  {{ (app.request.get('_route')) starts with 'customers' ? "active open selected" }}">
