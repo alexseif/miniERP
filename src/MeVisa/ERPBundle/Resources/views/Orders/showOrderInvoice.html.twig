@@ -1,7 +1,7 @@
 {# srv/MeVisa/ERPBundle/Resources/views/Orders/showOrderInvoice.html.twig #}
 {% extends ':metronic:base.html.twig' %}
 
-{% block title %}{{companySettings.jsonValue['name']}} Invoice {% endblock %}
+{% block title %}{{companySettings.jsonValue['name']}} {% if(order.invoices.count) %}Счет № {{ invoice.id }}{% endif %}{% endblock %}
 {% block stylesheets %}
   {{ parent() }}
   <!-- BEGIN PAGE LEVEL STYLES -->
@@ -10,15 +10,20 @@
   <!-- END PAGE LEVEL STYLES -->
 {% endblock %}
 {% block content %}
-  <div class="text-right hidden-print ">
+  <div class="text-right hidden-print">
+    <a class="btn btn-lg blue margin-bottom-5" href="{{ path('orders_show', { 'id': order.id }) }}"> 
+      <i class="fa fa-arrow-left"></i> Back
+    </a>
     <a class="btn btn-lg blue margin-bottom-5" onclick="javascript:window.print();"> Print
       <i class="fa fa-print"></i>
     </a>
-    <a class="btn btn-lg green margin-bottom-5"> Submit Your Invoice
-      <i class="fa fa-check"></i>
-    </a>
-    <hr/>
+    {% if(not order.invoices.count) %}
+      <a class="btn btn-lg green margin-bottom-5" href="{{ path('order_generate_pdf', {'id': order.id}) }}"> Generate
+        <i class="fa fa-barcode"></i>
+      </a>
+    {% endif %}
   </div>
+  <hr class="hidden-print" />
   {% include 'MeVisaERPBundle:Orders:invoice/invoice.html.twig' %}
   {% include 'MeVisaERPBundle:Orders:invoice/agreement.html.twig' %}
   {% include 'MeVisaERPBundle:Orders:invoice/waiver.html.twig' %}

@@ -186,18 +186,18 @@ class OrdersController extends Controller
     $orderComment = new \MeVisa\ERPBundle\Entity\OrderComments();
     $orderComment->setOrderRef($order->getId());
 
-    $invoiceRegenerate = false;
+    $invoiceLink = null;
     $fs = new Filesystem();
     if ($order->getInvoices()->count()) {
       $invoiceFile = $this->get('kernel')->getRootDir() . "/../web/invoices/mevisa-invoice-" . $order->getNumber() . "-" . $order->getInvoices()->last()->getId() . ".pdf";
-      if (!$fs->exists($invoiceFile)) {
-        $invoiceRegenerate = true;
+      if ($fs->exists($invoiceFile)) {
+        $invoiceLink = '/invoices/mevisa-invoice-' . $order->getNumber() . '-' . $order->getInvoices()->last()->getId() . '.pdf';
       }
     }
 
     return array(
       'order' => $order,
-      'invoiceRegenerate' => $invoiceRegenerate,
+      'invoiceLink' => $invoiceLink,
       'logs' => $this->get('erp.order')->getOrderLog($id),
       'documents' => $this->getThumbnails($order),
       'status_form' => $this->createStatusForm($order)->createView(),
@@ -475,7 +475,7 @@ class OrdersController extends Controller
     $this->get('erp.order')->generateInvoice($id);
 
     $this->addFlash('success', 'invoice generated');
-    return $this->redirect($this->generateUrl('orders_show', array('id' => $id)));
+    return $this->redirect($this->generateUrl('order_invoice_show', array('id' => $id)));
   }
 
   /**
@@ -491,6 +491,9 @@ class OrdersController extends Controller
     $em = $this->getDoctrine()->getManager();
     $CompanySettings = $em->getRepository('MeVisaERPBundle:CompanySettings')->find(1);
     $invoice = new Invoices();
+    if ($order->getInvoices()->count()) {
+      $invoice = $order->getInvoices()->last();
+    }
 
     $products = $order->getOrderProducts();
     $productsLine = array();

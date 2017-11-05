@@ -1,11 +1,15 @@
 {# srv/MeVisa/ERPBundle/Resources/views/Orders/invoice/agreement.html.twig #}
-<div class="invoice agreement">
+<div class="invoice agreement" style="page-break-after: always;">
   <div class="row">
     <div class="col-xs-3">
       <small>г.  Москва</small>
     </div>
     <div class="col-xs-6 text-center">
-      <b>ДОГОВОР ОБ ОКАЗАНИИ ВИЗОВЫХ УСЛУГ № {{ invoice.id }}</b>
+      <b>
+        {% if(not order.invoices.count) %}<s>{% endif %}
+          ДОГОВОР ОБ ОКАЗАНИИ ВИЗОВЫХ УСЛУГ № {{ invoice.id }}
+          {% if(not order.invoices.count) %}</s>{% endif %}
+      </b>
     </div>
     <div class="col-xs-3 text-right">
       <small>{{ "now" | format_date(null, 'ru', 'Europe/Moscow', constant('IntlDateFormatter::LONG')) }}</small>    

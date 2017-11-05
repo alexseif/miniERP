@@ -6,9 +6,6 @@
   .table.sign>thead>tr>td, .table.sign>thead>tr>th{border:none;}
 }
 p{margin: 0 0 5px 0;}
-.invoice{
-  page-break-after: always;
-}
 .agreement{font-size: 6pt;}
 table, tr, td, th, tbody, thead, tfoot {page-break-inside: avoid !important;}
 td, th{padding: 8px;}

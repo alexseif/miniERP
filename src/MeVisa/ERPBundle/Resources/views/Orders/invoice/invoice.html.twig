@@ -1,11 +1,15 @@
 {# srv/MeVisa/ERPBundle/Resources/views/Orders/invoice/invoice.html.twig #}
-<div class="invoice">
+<div class="invoice" style="page-break-after: always;">
   <div class="row invoice-logo">
-    <div class="col-xs-5 invoice-logo-space">
+    <div class="col-xs-4 invoice-logo-space">
       <img src="{{ absolute_url(asset('images/visa_logo.png?v=1')) }}" class="img-responsive" alt=""  /> 
     </div>
-    <div class="col-xs-7">
-      <p class="invoice-no">Счет № {{ invoice.id }}  от {{ "now" | format_date(null, 'ru', 'Europe/Moscow', constant('IntlDateFormatter::LONG')) }}</p>
+    <div class="col-xs-8">
+      <p class="invoice-no">
+        {% if(not order.invoices.count) %}<s>{% endif %}
+          Счет № {{ invoice.id }}  от {{ "now" | format_date(null, 'ru', 'Europe/Moscow', constant('IntlDateFormatter::LONG')) }}
+          {% if(not order.invoices.count) %}</s>{% endif %}
+      </p>
       <div>
         {{companySettings.jsonValue['name']|raw}}
         {{ companySettings.jsonValue['address']|raw }}
