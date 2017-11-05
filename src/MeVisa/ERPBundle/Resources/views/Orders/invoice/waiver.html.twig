@@ -1,0 +1,13 @@
+{# srv/MeVisa/ERPBundle/Resources/views/Orders/invoice/waiver.html.twig #}
+<div class="invoice">
+  <div class="row">
+    <div class="col-xs-6 col-xs-offset-3 text-center">
+      <b>Приняты документы от Заказчика:</b>
+    </div>
+    <div class="col-xs-3 text-right">
+      <small>{{ "now" | format_date(null, 'ru', 'Europe/Moscow', constant('IntlDateFormatter::LONG')) }}</small>
+    </div>
+  </div>
+  {{ companySettings.jsonValue['waiver']|raw }}
+  {% include 'MeVisaERPBundle:Orders:invoice/customerSignature.html.twig' %}
+</div>

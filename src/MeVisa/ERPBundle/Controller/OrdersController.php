@@ -479,6 +479,34 @@ class OrdersController extends Controller
   }
 
   /**
+   * Action to Show Invoice.
+   *
+   * @param type $id
+   * @Route("/{id}/invoice_show", name="order_invoice_show")
+   * @Method("GET")
+   * @Template("MeVisaERPBundle:Orders:showOrderInvoice.html.twig")
+   */
+  public function showOrderInvoiceAction(Orders $order)
+  {
+    $em = $this->getDoctrine()->getManager();
+    $CompanySettings = $em->getRepository('MeVisaERPBundle:CompanySettings')->find(1);
+    $invoice = new Invoices();
+
+    $products = $order->getOrderProducts();
+    $productsLine = array();
+    foreach ($products as $product) {
+      $productsLine[] = $product->getProduct()->getName();
+    }
+    $productsLine = implode(',', $productsLine);
+    return array(
+      'order' => $order,
+      'productsLine' => $productsLine,
+      'invoice' => $invoice,
+      'companySettings' => $CompanySettings
+    );
+  }
+
+  /**
    * Action to Preview Invoice.
    *
    * @Route("/{id}/invoice_preview", name="order_invoice_preview")
@@ -619,9 +647,11 @@ class OrdersController extends Controller
     if (count($order->getOrderCompanions()) != $order->getPeople()) {
       return false;
     }
-    $orderPayment = $order->getOrderPayments()->last();
-    if ("paid" == $orderPayment->getState()) {
-      return true;
+    if ($order->getOrderPayments()->count()) {
+      $orderPayment = $order->getOrderPayments()->last();
+      if ("paid" == $orderPayment->getState()) {
+        return true;
+      }
     }
     return false;
   }

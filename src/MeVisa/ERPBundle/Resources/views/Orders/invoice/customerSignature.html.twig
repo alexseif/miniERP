@@ -1,0 +1,15 @@
+{# srv/MeVisa/ERPBundle/Resources/views/Orders/invoice/customerSignature.html.twig #}
+<table class="table sign">
+  <tr>
+    <td style="width: 50%;"><span class="bold">Исполнитель:</span> {{companySettings.jsonValue['name']|raw}}</td>
+    <td><span class="bold">Заказчик: ФИО:</span> {{order.customer.name}}</td>
+  </tr>
+  <tr>
+    <td style="vertical-align: top;">{{ companySettings.jsonValue['agreementSignature']|raw }}</td>
+    <td style="vertical-align: top;"><p>Контактный телефон: {{order.customer.phone}}</p></td>
+  </tr>
+  <tr>
+    <td><br/>_____________________________ <small>{{ companySettings.jsonValue['agreementSignatureName']|raw }}</small></td>
+    <td><br/>_____________________________ <small>/{{order.customer.name}}/</small></td>
+  </tr>
+</table>

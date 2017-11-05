@@ -1,0 +1,25 @@
+{# srv/MeVisa/ERPBundle/Resources/views/Orders/showOrderInvoice.html.twig #}
+{% extends ':metronic:base.html.twig' %}
+
+{% block title %}{{companySettings.jsonValue['name']}} Invoice {% endblock %}
+{% block stylesheets %}
+  {{ parent() }}
+  <!-- BEGIN PAGE LEVEL STYLES -->
+  <link href="/metronic/assets/pages/css/invoice.min.css" rel="stylesheet" type="text/css" />
+  <link href="/css/pdf.css" rel="stylesheet" type="text/css" media="all"/>
+  <!-- END PAGE LEVEL STYLES -->
+{% endblock %}
+{% block content %}
+  <div class="text-right hidden-print ">
+    <a class="btn btn-lg blue margin-bottom-5" onclick="javascript:window.print();"> Print
+      <i class="fa fa-print"></i>
+    </a>
+    <a class="btn btn-lg green margin-bottom-5"> Submit Your Invoice
+      <i class="fa fa-check"></i>
+    </a>
+    <hr/>
+  </div>
+  {% include 'MeVisaERPBundle:Orders:invoice/invoice.html.twig' %}
+  {% include 'MeVisaERPBundle:Orders:invoice/agreement.html.twig' %}
+  {% include 'MeVisaERPBundle:Orders:invoice/waiver.html.twig' %}
+{% endblock %}
