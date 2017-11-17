@@ -104,11 +104,15 @@ class OrderService
     $order = $this->getOrder($id);
     $CompanySettings = $this->em->getRepository('MeVisaERPBundle:CompanySettings')->find(1);
 
-    $invoice = new \MeVisa\ERPBundle\Entity\Invoices();
-    $invoice->setCreatedAt(new \DateTime());
-    $order->addInvoice($invoice);
-    $this->em->persist($invoice);
-    $this->em->flush();
+    if ($order->getInvoices()->count() > 0) {
+      $invoice = $order->getInvoices()->last();
+    } else {
+      $invoice = new \MeVisa\ERPBundle\Entity\Invoices();
+      $invoice->setCreatedAt(new \DateTime());
+      $order->addInvoice($invoice);
+      $this->em->persist($invoice);
+      $this->em->flush();
+    }
 
     $products = $order->getOrderProducts();
     $productsLine = array();
@@ -116,6 +120,42 @@ class OrderService
       $productsLine[] = $product->getProduct()->getName();
     }
     $productsLine = implode(',', $productsLine);
+    $myProjectDirectory = __DIR__ . '/../../../../';
+    $invoiceName = 'mevisa-invoice-' . $order->getNumber() . '-' . $invoice->getId() . '.pdf';
+    $invoicePath = $myProjectDirectory . 'web/invoices/';
+    $pdfInvoiceHTML = $this->templating->render(
+        'MeVisaERPBundle:Orders:pdfinvoice.html.twig', array(
+      'order' => $order,
+      'productsLine' => $productsLine,
+      'invoice' => $invoice,
+      'companySettings' => $CompanySettings
+        )
+    );
+//    $pdfAgreementHTML = $this->templating->render(
+//        'MeVisaERPBundle:Orders:pdfagreement.html.twig', array(
+//      'order' => $order,
+//      'productsLine' => $productsLine,
+//      'invoice' => $invoice,
+//      'companySettings' => $CompanySettings
+//        )
+//    );
+//    $pdfWaiverHTML = $this->templating->render(
+//        'MeVisaERPBundle:Orders:pdfwaiver.html.twig', array(
+//      'order' => $order,
+//      'invoice' => $invoice,
+//      'companySettings' => $CompanySettings
+//        )
+//    );
+    ini_set('max_execution_time', 300);
+    $mpdf = new \mPDF("ru-RU", "A4");
+    $mpdf->SetTitle("MeVisa Invoice " . $order->getNumber() . '-' . $invoice->getId());
+    $mpdf->SetAuthor($CompanySettings->getName());
+    $mpdf->WriteHTML($pdfInvoiceHTML);
+//    $mpdf->AddPage();
+//    $mpdf->WriteHTML($pdfAgreementHTML);
+//    $mpdf->AddPage();
+//    $mpdf->WriteHTML($pdfWaiverHTML);
+    $mpdf->Output($invoicePath . $invoiceName, 'F');
 
     $this->em->flush();
   }
