@@ -102,7 +102,7 @@ class OrdersRepository extends EntityRepository
             ->leftJoin('o.orderProducts', 'opr')
             ->leftJoin('opr.product', 'p')
             ->where("o.state = ?1")
-            ->andWhere("opa.state = 'paid'")
+            ->andWhere("opa.state != 'paid'")
             ->setParameter('1', $state)
             ->orderBy("o.createdAt, o.wcId")
             ->getQuery()

@@ -102,16 +102,21 @@ class MEVISAAPICommand extends ContainerAwareCommand
               $document->setPath($file->path);
               $OrderAPIService->Order->addOrderDocument($document);
             }
+            $orderPayment = new OrderPayments();
 
             if ("paid" == $mevisaOrder->payment_state) {
-              $orderPayment = new OrderPayments();
               // method_id method_title
               $orderPayment->setMethod("CC");
               $orderPayment->setAmount($mevisaOrder->order_total * 100);
               $orderPayment->setCreatedAt(new \DateTime($mevisaOrder->order_date, $timezone));
               $orderPayment->setState("paid");
-              $OrderAPIService->Order->addOrderPayment($orderPayment);
+            } else {
+              $orderPayment->setMethod("CC");
+              $orderPayment->setAmount($mevisaOrder->order_total * 100);
+              $orderPayment->setCreatedAt(new \DateTime($mevisaOrder->order_date, $timezone));
+              $orderPayment->setState("not_paid");
             }
+            $OrderAPIService->Order->addOrderPayment($orderPayment);
 
             $OrderAPIService->Order->setTicketRequired(false);
             $OrderAPIService->persist();
