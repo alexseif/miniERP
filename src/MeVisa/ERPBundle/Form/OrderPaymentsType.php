@@ -25,6 +25,7 @@ class OrderPaymentsType extends AbstractType
           'expanded' => true,
           'attr' => array('class' => 'align-inline')
         ))
+        
         ->add('method', 'choice', array(
           // TODO: get payment options properly
           'choices' => array(
@@ -39,6 +40,9 @@ class OrderPaymentsType extends AbstractType
         ->add('amount', 'money', array(
           'currency' => 'RUB',
           'divisor' => 100,
+          'required' => false
+        ))
+        ->add('paymentRef', 'text', array(
           'required' => false
         ))
         ->add('detail', 'textarea', array(

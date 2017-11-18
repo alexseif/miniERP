@@ -34,6 +34,14 @@ class OrderPayments
    * @var string
    *
    * @Gedmo\Versioned
+   * @ORM\Column(name="payment_ref", type="string", length=255, nullable=true)
+   */
+  private $paymentRef;
+
+  /**
+   * @var string
+   *
+   * @Gedmo\Versioned
    * @ORM\Column(name="method", type="string", length=255, nullable=true)
    */
   private $method;
@@ -222,4 +230,27 @@ class OrderPayments
     return $this->orderRef;
   }
 
+
+    /**
+     * Set paymentRef
+     *
+     * @param string $paymentRef
+     * @return OrderPayments
+     */
+    public function setPaymentRef($paymentRef)
+    {
+        $this->paymentRef = $paymentRef;
+
+        return $this;
+    }
+
+    /**
+     * Get paymentRef
+     *
+     * @return string 
+     */
+    public function getPaymentRef()
+    {
+        return $this->paymentRef;
+    }
 }

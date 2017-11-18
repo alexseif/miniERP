@@ -98,7 +98,14 @@ function validateCompanions() {
   }
   return true;
 }
-
+function validatePaymentForm() {
+  var arr = ["payu", "online", "creditcard", "banktransfer"];
+  if ($.inArray($('select[name="mevisa_erpbundle_orders[orderPayments][0][method]"]').val(), arr) >= 0) {
+//    $('input[name="mevisa_erpbundle_orders[orderPayments][0][paymentRef]"]').prop('required', true);
+  } else {
+//    $('input[name="mevisa_erpbundle_orders[orderPayments][0][paymentRef]').prop('required', false);
+  }
+}
 function checkCompanions(alrt) {
   companionsCount = $('tbody.companions tr').length;
   if (companionsCount < PAX) {
@@ -136,7 +143,9 @@ var $companionHolder;
 var $agent = false;
 
 $(document).ready(function () {
-
+  $('select[name="mevisa_erpbundle_orders[orderPayments][0][method]"]').change(validatePaymentForm);
+  validatePaymentForm();
+  
   $('input[name="mevisa_erpbundle_orders[adjustmentTotal]"]').change(function () {
     updatePricesAndTotals();
   });

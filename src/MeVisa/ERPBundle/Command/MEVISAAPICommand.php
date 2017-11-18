@@ -111,7 +111,7 @@ class MEVISAAPICommand extends ContainerAwareCommand
               $orderPayment->setCreatedAt(new \DateTime($mevisaOrder->order_date, $timezone));
               $orderPayment->setState("paid");
             } else {
-              $orderPayment->setMethod("CC");
+              $orderPayment->setMethod("creditcard");
               $orderPayment->setAmount($mevisaOrder->order_total * 100);
               $orderPayment->setCreatedAt(new \DateTime($mevisaOrder->order_date, $timezone));
               $orderPayment->setState("not_paid");
