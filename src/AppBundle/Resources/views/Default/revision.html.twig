@@ -53,6 +53,7 @@
         <th>Channel</th>
         <th>Adjustment</th>
         <th>Total</th>
+        <th>Payment Ref</th>
         <th>Created</th>
         <th data-visible="false">Products</th>
         <th data-orderable="false"></th>
@@ -93,6 +94,7 @@
           <td class="col-sm-1">{{ order.channel }}</td>
           <td class="text-right col-sm-1">{{ (order.adjustmentTotal/100)|localizedcurrency('RUB') }}</td>
           <td class="text-right col-sm-2">{{ (order.total/100)|localizedcurrency('RUB') }}</td>
+          <td>{{ (order.orderPayments|length) ? order.orderPayments|last.paymentRef }}</td>
           <td class="col-sm-2">{% if order.createdAt %}{{ order.createdAt|localizeddate('medium', 'short') }}{% endif %}</td>
           <td class="" >{% for product in order.orderProducts %}{{ product.product.name }},{% endfor %}</td>
           <td class="col-sm-1"><a class="btn btn-primary btn-sm" href="{{ path('orders_show', { 'id': order.id }) }}">Open</a></td>
@@ -212,7 +214,7 @@
 
             }
           });
-          this.api().columns(9).every(function () {
+          this.api().columns(10).every(function () {
             var column = this;
             var select = $('<select class="form-control"><option value="">All</option></select>')
                     .appendTo($('#search-product').empty())
